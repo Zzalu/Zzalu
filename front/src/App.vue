@@ -2,12 +2,13 @@
   <div>
     <img alt="Vue logo" src="./assets/logo.png" />
     NAV_BAR
+    <p>MAIN</p>
   </div>
 </template>
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
   components: {},
 };
 </script>
