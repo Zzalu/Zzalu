@@ -1,5 +1,9 @@
 <template>
-  
+  <div>
+    프로필사진
+    아이디
+    이사람이 보낸 gif
+  </div>
 </template>
 
 <script>
