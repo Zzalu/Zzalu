@@ -2,7 +2,7 @@
   <div>
     <img alt="Vue logo" src="./assets/logo.png" />
     NAV_BAR
-    <p>MAIN</p>
+    <p></p>
   </div>
 </template>
 
