@@ -1,5 +1,5 @@
 <template>
-  <h1>네브바</h1>
+  <h1>로그인 되어있는 상태에서 나오는 기본 네브</h1>
 </template>
 
 <script>

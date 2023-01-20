@@ -1,5 +1,8 @@
 <template>
-  <div>로고있는 위쪽 네브</div>
+  <div>
+    다음
+    (회원가입 입력할때 다음 버튼)
+  </div>
 </template>
 
 <script>
