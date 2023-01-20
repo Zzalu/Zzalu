@@ -1,5 +1,7 @@
 <template>
-  <div>로고있는 위쪽 네브</div>
+  <div>
+    중복확인버튼만 이거인듯
+  </div>
 </template>
 
 <script>
