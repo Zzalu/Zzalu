@@ -1,4 +1,4 @@
-package com.example.zzalu.TitleHakwon;
+package com.example.zzalu.TitleHakwon.controller;
 
 
 import com.example.zzalu.amazonS3.upLoader.S3Uploader;
@@ -15,8 +15,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Controller
 public class TitleHakwonController {
-
-
 
     private String DIRNAME ="TitleHakwon";
     private final S3Uploader s3Uploader;
