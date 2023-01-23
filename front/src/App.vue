@@ -1,8 +1,9 @@
 <template>
   <div>
     <img alt="Vue logo" src="./assets/logo.png" />
-    NAV_BAR
-    <p></p>
+    <h1 class="text-3xl font-bold underline bg-red-500">
+      테일윈드 해치웠나?
+    </h1>
   </div>
 </template>
 
