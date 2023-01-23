@@ -1,32 +1,37 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel" target="_blank" rel="noopener">babel</a></li>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint" target="_blank" rel="noopener">eslint</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <div>
+    <img alt="ZZalu Light logo" src="../assets/zzalu_logo_light.png" />
+    <img alt="ZZalu Dark logo" src="../assets/zzalu_logo_dark.png">
+    <h1>더 다양한 색깔은 tailwind.config.js 파일에 다 써놨으니까 그거보면됨</h1>
+    <h1 class="prim">
+      이거는 우리 프라이머리색깔임
+    </h1>
+    <h1 class="text-3xl font-bold underline bg-zz-s">
+      이거는 우리 세컨더리 색깔임
+    </h1>
+    <h1 class="text-3xl font-bold underline text-white bg-zz-light-p">
+      이거는 라이트모드에서 어두운거 쓸때 쓰는 색깔
+    </h1>
+    <h1 class="text-3xl font-bold underline bg-zz-light-s">
+      이거는 라이트모드에서 밝은거 쓸때 쓰는 색깔
+    </h1>
+    <h1 class="text-3xl font-bold underline bg-zz-dark-p">
+      이거는 다크모드에서 밝은거 쓸때 쓰는 색깔
+    </h1>
+    <h1 class="text-3xl font-bold underline text-white bg-zz-dark-s">
+      이거는 다크모드에서 어두운거 쓸때 쓰는 색깔
+    </h1>
+    <h1 class="text-3xl font-bold underline bg-zz-light-input">
+      이거는 라이트모드 인풋창 배경색깔
+    </h1>
+    <h1 class="text-3xl font-bold underline text-white bg-zz-dark-input">
+      이거는 다크모드 인풋창 배경색깔
+    </h1>
+    <h1 class="font-carter text-3xl">this is font carter for login and signup 몲볾듦뛟</h1>
+    <h1 class="font-spoq">이거는 스포카 한 산스체 써본거임~ 몲볾듦뛟</h1>
+    <h1 class='font-spoq font-bold'>스포카 한 산스 볼드체는 어떤데 몲볾듦뛟</h1>
+    <h1 class='font-bhs text-3xl'>이것도 제목용으로 이쁜거같아 블랙 한 산스 몲볾듦뛟</h1>
+    <h1 class='font-bhs text-3xl'>this is also black han sans</h1>
   </div>
 </template>
 
@@ -41,18 +46,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.prim {
+  @apply text-3xl font-bold underline bg-zz-p
 }
 </style>
