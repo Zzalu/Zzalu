@@ -17,5 +17,6 @@ export default {
   padding: 0px;
   margin-top : 3.5rem;
   margin-left : 1.25rem;
+  margin-right : 1.25rem;
 }
 </style>
