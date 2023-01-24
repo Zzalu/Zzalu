@@ -1,17 +1,15 @@
 <template>
-  
+  <div>
+    <h1>비번바꾸기</h1>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
-  setup() {
-    
-  },
-})
+export default {
+  name: 'ChangePasswordView'
+}
 </script>
 
-<style scoped>
+<style>
 
 </style>

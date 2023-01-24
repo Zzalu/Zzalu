@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  name: "QuietChatListView",
+  name: "ChatListView",
 };
 </script>
 

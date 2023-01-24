@@ -9,15 +9,15 @@
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
+export default {
+  name: "LoginView"
 
-export default defineComponent({
-  setup() {
-    
-  },
-})
+}
 </script>
 
-<style scoped>
+<style>
 
 </style>
+
+
+
