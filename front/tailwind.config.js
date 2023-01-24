@@ -27,7 +27,7 @@ module.exports = {
         'zz-dark-div': '#6A6A6A',
         'zz-light-div': '#E9E9E9',
         
-      }
+      },
     },
     fontFamily: {
       carter: ["Carter", "Carter-One" ],
