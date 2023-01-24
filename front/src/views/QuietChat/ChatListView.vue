@@ -35,7 +35,7 @@
 import QuietChatData from "./QuietChatListData.js";
 
 export default {
-  name: "QuietChatListView",
+  name: "ChatListView",
   data() {
     return {
       data: QuietChatData,

@@ -1,17 +1,15 @@
 <template>
-
+  <div>
+    회원가입
+  </div>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
-  setup() {
-    
-  },
-})
+export default {
+  name: 'SignUpView'
+}
 </script>
 
-<style scoped>
+<style>
 
 </style>
