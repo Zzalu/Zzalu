@@ -1,17 +1,15 @@
 <template>
-  
+  <div>
+    <h1>메인</h1>
+  </div>
 </template>
 
 <script>
-import { defineComponent } from '@vue/composition-api'
-
-export default defineComponent({
-  setup() {
-    
-  },
-})
+export default {
+  name: "MainView",
+}
 </script>
 
-<style scoped>
+<style>
 
 </style>

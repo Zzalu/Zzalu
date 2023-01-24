@@ -1,4 +1,8 @@
 <template>
+  <div class=nav>
+    <router-link :to="{name: 'HelloWorldView'}">하이</router-link>
+
+  </div>
   <div class="main-margin">
     <router-view></router-view>
   </div>
@@ -9,6 +13,8 @@
 export default {
   name: 'App',
   components: {},
+  methods: {
+  },
 };
 </script>
 
@@ -17,5 +23,6 @@ export default {
   padding: 0px;
   margin-top : 3.5rem;
   margin-left : 1.25rem;
+  margin-right : 1.25rem;
 }
 </style>
