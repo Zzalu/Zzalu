@@ -1,8 +1,8 @@
 <template>
-  <div class=nav>
+  <!-- <div class=nav>
     <router-link :to="{name: 'HelloWorldView'}">하이</router-link>
 
-  </div>
+  </div> -->
   <div class="main-margin">
     <router-view></router-view>
   </div>
