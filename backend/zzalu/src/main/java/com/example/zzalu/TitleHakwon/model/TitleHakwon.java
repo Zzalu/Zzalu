@@ -1,12 +1,19 @@
 package com.example.zzalu.TitleHakwon.model;
 
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class TitleHakwon {
+
+@Getter
+@Setter
+public class TitleHakwon implements Serializable {
 
 
     @Id
@@ -18,8 +25,19 @@ public class TitleHakwon {
     private String zzulUrl;
 
 
-    @OneToMany (mappedBy = "titleHakwon")
+    @OneToMany (mappedBy = "titleHakwon",cascade = CascadeType.ALL)
     private List<TitleHakwonComent> titleHakwonComents = new ArrayList<>();
+
+     /*@OneToMany (mappedBy = "titleHakwon")
+     private List<TitleHakwonComent> titleHakwonComents = new ArrayList<>();*/
+
+    /* public void addComent (TitleHakwonComent titleHakwonComent){
+         this.titleHakwonComents.add(titleHakwonComent);
+
+         if(titleHakwonComent.getTitleHakwon()!=this){
+             titleHakwonComent.setTitleHakwon(this);
+         }
+     }*/
 
 
 
