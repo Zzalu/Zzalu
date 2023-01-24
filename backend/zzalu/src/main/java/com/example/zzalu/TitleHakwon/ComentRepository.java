@@ -29,6 +29,7 @@ public class ComentRepository {
      */
 
     public TitleHakwonComent createTitleHakwonComent (TitleHakwonComent titleHakwonComent){
+        System.out.println(titleHakwonComent.getId()+"댓글 아이디 값");
         opsHashComent.put(COMENT,titleHakwonComent.getId(),titleHakwonComent);
         return titleHakwonComent;
     }

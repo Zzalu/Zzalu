@@ -15,10 +15,10 @@ public class TitleHakwonComentController {
 
     @GetMapping("/{comentId}")
 
-    public TitleHakwonComent  getTitleHakwonComent(@PathVariable Long id){
+    public TitleHakwonComent  getTitleHakwonComent(@PathVariable Long comentId){
 
-        System.out.println("[찾고 싶은 댓글의 id 값]"+id);
-        return comentRepository.findTitleHakwonComent(id);
+        System.out.println("[찾고 싶은 댓글의 id 값]"+comentId);
+        return comentRepository.findTitleHakwonComent(comentId);
     }
 
 
@@ -32,5 +32,7 @@ public class TitleHakwonComentController {
 
            return comentRepository.createTitleHakwonComent(titleHakwonComent);
     }
+
+
 
 }
