@@ -14,10 +14,12 @@ module.exports = {
         'zz-dark-s': '#7D62A1',
         'zz-light-input': '#EDEEFF',
         'zz-dark-input': '#4B4550',
+        'zz-negative': '#C0C0C0',
         // 글씨 색깔
         'zz-error': '#FF0000',
         'zz-correct': '#58A24C',
         'zz-edit': '#3C88E7',
+        'zz-darkgray': '#646464',
         // 메달 색깔
         'zz-gold': '#EBD516',
         'zz-silver': '#A7A7A7',
