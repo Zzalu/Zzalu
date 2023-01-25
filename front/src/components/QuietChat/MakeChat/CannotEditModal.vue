@@ -1,10 +1,8 @@
 <template>
-    <div>
+    <div class="modal">
         잠깐만요!
-
-
-        <button> 취소 </button>
-        <button @click="$emit('Cancel',0)"> 만들기 </button>
+        <button @click="$emit('close-modal',false)"> 취소 </button>
+        <button> 만들기 </button>
     </div>
 </template>
 
@@ -15,6 +13,10 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="postcss">
+.modal{
+  position:fixed;
+  @apply border-2
+}
 
 </style>
