@@ -10,6 +10,13 @@ import java.io.Serializable;
 @Entity
 @Getter
 @Setter
+
+
+/***
+ *
+ * 댓글 (N)
+ *
+ */
 public class TitleHakwonComent implements Serializable {
 
     @Id
@@ -34,17 +41,4 @@ public class TitleHakwonComent implements Serializable {
     private int likeNumber;
     private int rank;
 
-
-/*   public void setTitleHakwon(TitleHakwon titleHakwon) {
-        System.out.println("setter");
-       System.out.println(this.titleHakwon +  " "  + titleHakwon);
-        this.titleHakwon = titleHakwon;
-
-        System.out.println(this.titleHakwon +  " "  + titleHakwon);
-        System.out.println(this.titleHakwon.getId()+"@@");
-
-        if(!titleHakwon.getTitleHakwonComents().contains(this)){
-            titleHakwon.getTitleHakwonComents().add(this);
-        }
-    }*/
 }

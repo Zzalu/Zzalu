@@ -13,6 +13,11 @@ import java.util.List;
 
 @Getter
 @Setter
+
+/**
+ *
+ * 게시판 (1)
+ */
 public class TitleHakwon implements Serializable {
 
 
@@ -27,17 +32,6 @@ public class TitleHakwon implements Serializable {
 
     @OneToMany (mappedBy = "titleHakwon",cascade = CascadeType.ALL)
     private List<TitleHakwonComent> titleHakwonComents = new ArrayList<>();
-
-     /*@OneToMany (mappedBy = "titleHakwon")
-     private List<TitleHakwonComent> titleHakwonComents = new ArrayList<>();*/
-
-    /* public void addComent (TitleHakwonComent titleHakwonComent){
-         this.titleHakwonComents.add(titleHakwonComent);
-
-         if(titleHakwonComent.getTitleHakwon()!=this){
-             titleHakwonComent.setTitleHakwon(this);
-         }
-     }*/
 
 
 

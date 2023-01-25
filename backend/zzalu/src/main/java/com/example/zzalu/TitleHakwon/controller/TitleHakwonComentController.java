@@ -26,13 +26,14 @@ public class TitleHakwonComentController {
      * redis에 댓글 저장하기
      * @param titleHakwonComent
      * @return
+     *
+     *
+     * 엔티티를
      */
     @PostMapping
     public TitleHakwonComent createTitleHakwonComentWithRedis (@RequestBody TitleHakwonComent titleHakwonComent){
 
            return comentRepository.createTitleHakwonComent(titleHakwonComent);
     }
-
-
 
 }

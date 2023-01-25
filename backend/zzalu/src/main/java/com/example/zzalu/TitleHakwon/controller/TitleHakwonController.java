@@ -70,14 +70,17 @@ public class TitleHakwonController {
 
         //1.현재 활성중인 제목학원의 객체를 가져온다.
 
-            TitleHakwon titleHakwon = titleHackwonDao.findTitleHakwonById(titleHakwonComent.getTitleHakwon().getId());
-            titleHakwon.getTitleHakwonComents().add(titleHakwonComent);
+            //TitleHakwon titleHakwon = titleHackwonDao.findTitleHakwonById(titleHakwonComent.getTitleHakwon().getId());
+
+
+          //  titleHakwon.getTitleHakwonComents().add(titleHakwonComent);
 
 
 
 
-           titleHackwonDao.save(titleHakwon);
-          // comentDao.save(titleHakwonComent);
+          // titleHackwonDao.save(titleHakwon); //게시판 Dao
+           comentDao.save(titleHakwonComent);
+           //@
             return new ResponseEntity<String>("sucess", HttpStatus.OK);
 
         }

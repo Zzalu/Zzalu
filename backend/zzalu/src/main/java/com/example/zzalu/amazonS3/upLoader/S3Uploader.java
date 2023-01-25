@@ -49,6 +49,7 @@ public class S3Uploader {
 
 
     private String upload(File uploadFile, String dirName) {
+        System.out.println(dirName);
         //파일이름 중복 방지 하기 위해 UUID값을 붙여줌
         String fileName = dirName + "/" + UUID.randomUUID() + "-"+ uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
