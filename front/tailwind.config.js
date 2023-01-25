@@ -28,11 +28,10 @@ module.exports = {
         'zz-dark-bg': '#E292A2D',
         'zz-dark-div': '#6A6A6A',
         'zz-light-div': '#E9E9E9',
-        
       },
     },
     fontFamily: {
-      carter: ["Carter", "Carter-One" ],
+      carter: ['Carter', 'Carter-One'],
       spoq: ['Spoqa Han Sans Neo', 'sans-serif'],
       bhs: ['Black-Han-Sans', 'sans-serif'],
     },
