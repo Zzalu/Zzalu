@@ -17,7 +17,7 @@
 
 /* 인풋창 */
 .login-input {
-  @apply bg-zz-light-input rounded-sm w-full h-8
+  @apply bg-zz-light-input rounded-sm w-full h-8 px-8 text-sm
 }
 
 .logo {
@@ -31,4 +31,11 @@
   @apply bg-zz-negative font-spoq text-white rounded-md mt-8 w-2/3 p-1 
 }
 
+/* 오른쪽 아이콘 */
+.icon-aligned-right {
+  @apply absolute my-2 mx-2 text-zz-negative
+}
 
+.icon-aligned-left {
+  @apply absolute right-6 my-2 mx-2 text-zz-negative
+}
