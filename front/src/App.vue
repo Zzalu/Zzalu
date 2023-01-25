@@ -3,17 +3,17 @@
     <div class="main-margin">
       <router-view></router-view>
     </div>
-    <!-- <main-lower-nav-bar></main-lower-nav-bar> -->
-    <!-- <font-awesome-icon icon="fa-solid fa-house" /> -->
+    <main-lower-nav-bar class="fixed inset-x-0 bottom-0"></main-lower-nav-bar>
+    <!-- <main-lower-nav-bar class="fixed bottom-0 left-0 bg-blue-600"></main-lower-nav-bar> -->
   </div>
 </template>
 
 <script>
-// import MainLowerNavBar from '@/components/Common/NavBar/MainLowerNavBar.vue';
+import MainLowerNavBar from '@/components/Common/NavBar/MainLowerNavBar.vue';
 export default {
   name: 'App',
   components: {
-    // MainLowerNavBar,
+    MainLowerNavBar,
   },
   methods: {},
 };

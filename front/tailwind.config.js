@@ -31,7 +31,7 @@ module.exports = {
       },
       spacing: {
         'nav-height': '3.2rem',
-      }
+      },
     },
     fontFamily: {
       carter: ['Carter', 'Carter-One'],
