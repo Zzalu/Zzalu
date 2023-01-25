@@ -33,7 +33,7 @@ span {
   display: inline-block;
 }
 .nav_list {
-  @apply flex flex-wrap h-nav-height content-center place-items-center;
+  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white;
 }
 .nav_item {
   @apply flex-1 cursor-pointer text-center;
