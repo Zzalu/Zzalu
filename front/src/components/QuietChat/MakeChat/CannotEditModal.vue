@@ -2,7 +2,7 @@
     <div class="modal">
         잠깐만요!
         <button @click="$emit('close-modal',false)"> 취소 </button>
-        <button> 만들기 </button>
+        <button>  만들기 </button>
     </div>
 </template>
 
