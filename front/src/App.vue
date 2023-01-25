@@ -2,8 +2,10 @@
   <!-- <div class="flex flex-col"> -->
   <div class='h-screen'>
     <div class="h-nav-height sticky inset-x-0 top-0 bg-white">top navbar</div>
-    <div class="main-margin h-full">
-      <router-view></router-view>
+    <div class="main-margin">
+      <div>
+        <router-view></router-view>
+      </div>
     </div>
     <main-lower-nav-bar class="sticky inset-x-0 bottom-0"></main-lower-nav-bar>
     <!-- <main-lower-nav-bar></main-lower-nav-bar> -->
