@@ -1,5 +1,6 @@
 <template>
-  <div>
+  <!-- 로그인 후 nav -->
+  <div class="fixed inset-x-0 bottom-0 border-t-2 border-zz-light-div">
     <ul class="nav_list">
       <li class="nav_item">
         <span>
@@ -13,7 +14,7 @@
         <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
       </li>
       <li class="nav_item">
-        <span><font-awesome-icon icon="fa-regular fa-lightbulb" /></span>
+        <span><font-awesome-icon icon="fa-regular fa-lightbulb" /> <i class="fa-solid fa-chevron-left"></i></span>
       </li>
       <li class="nav_item">
         <span><font-awesome-icon icon="fa-regular fa-user" /></span>
