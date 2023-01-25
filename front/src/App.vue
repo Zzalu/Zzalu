@@ -1,8 +1,4 @@
 <template>
-  <div class=nav>
-    <router-link :to="{name: 'HelloWorldView'}">하이</router-link>
-
-  </div>
   <div class="main-margin">
     <router-view></router-view>
   </div>
@@ -24,5 +20,6 @@ export default {
   margin-top : 3.5rem;
   margin-left : 1.25rem;
   margin-right : 1.25rem;
+  /* margin-bottom : 3.5rem; */
 }
 </style>
