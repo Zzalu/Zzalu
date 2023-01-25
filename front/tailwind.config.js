@@ -35,10 +35,12 @@ module.exports = {
       carter: ["Carter", "Carter-One" ],
       spoq: ['Spoqa Han Sans Neo', 'sans-serif'],
       bhs: ['Black-Han-Sans', 'sans-serif'],
-    }
+    },
   },
   variants: {
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/line-clamp'),
+  ],
 };
