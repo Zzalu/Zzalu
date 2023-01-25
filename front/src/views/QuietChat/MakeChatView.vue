@@ -1,7 +1,9 @@
 <template>
   <div>
     <div v-if="createCheck">
-      <CannotEditModal/>
+      <CannotEditModal
+      @close-modal="createCheck=$event"
+      />
     </div>
 
     <div class="image-container">
@@ -39,7 +41,7 @@
       </button>
     </div>
     <div class="create-btn">
-      <button @click="this.createCheck+=1">개설하기</button>
+      <button @click="this.createCheck=true">개설하기</button>
     </div>
 
   </div>
