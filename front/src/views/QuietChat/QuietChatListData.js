@@ -24,8 +24,8 @@ export default [
     {
         id : 3,
         name : '뉴진스 고독방',
-        content : '내가만든 쿠키',
-        hashtag : ['#해린','#민지','#혜인','#다니엘','#하니','#내가만든쿠키'],
+        content : '훌쩍 커버렸어 함께한 기억처럼 널 보는 내 마음은 어느새 여름 지나 가을 기다렸지 all this time Do you want somebody',
+        hashtag : ['#해린','#민지','#혜인','#다니엘','#하니','#내가만든쿠키','#Ditto'],
         master : 'NewJeans',
         Image : './assets/Newjeans.jpg',
         like : 772,
