@@ -1,5 +1,6 @@
 <template>
   <div>
+    <div v-if="createCheck" class="bg-negative"></div>
     <div v-if="createCheck">
       <CannotEditModal
       @close-modal="createCheck=$event"
@@ -40,8 +41,8 @@
         <font-awesome-icon icon="fa-solid fa-plus" />
       </button>
     </div>
-    <div class="create-btn">
-      <button @click="this.createCheck=true">개설하기</button>
+    <div class="create-btn" @click="this.createCheck=true">
+      <button >개설하기</button>
     </div>
 
   </div>
@@ -63,21 +64,25 @@ export default {
     CannotEditModal
   },
   created() {
-    console.log(this.hashtags);
   },
   methods: {
     upload(e) {
       let file = e.target.files;
       this.url = URL.createObjectURL(file[0]);
-      console.log(this.url);
     },
   },
 };
 </script>
 
 <style scoped lang="postcss">
+/* 배경 */
+.bg-negative{
+  @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0;
+}
+
+/* 이미지 */
 .image-container {
-  @apply mt-16 text-center mb-4;
+  @apply text-center mb-4;
 }
 .preview-image {
   background-image: url(./assets/zzalu_logo_light.png);
@@ -87,17 +92,19 @@ export default {
   @apply hidden;
 }
 .select-image-text {
-  @apply cursor-pointer text-xs font-bold font-spoq;
+  @apply cursor-pointer text-xs font-bold font-spoq line-clamp-1;
 }
+
+/* 생성 가이드라인 */
 .guide {
-  @apply font-bold font-spoq;
+  @apply font-bold font-spoq line-clamp-1;
 }
 .guideline {
-  @apply border-b-2 h-6 border-black w-full text-xs;
+  @apply border-b-2 h-6 border-black w-full text-xs line-clamp-1;
 }
 .caution {
   font-size: 0.625rem;
-  @apply text-zz-error font-spoq h-4;
+  @apply text-zz-error font-spoq h-4 line-clamp-1;
 }
 .hashtag {
   @apply flex flex-wrap;
@@ -112,6 +119,6 @@ export default {
   @apply text-zz-p;
 }
 .create-btn {
-  @apply text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto mt-12;
+  @apply text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto mt-8 cursor-pointer;
 }
 </style>
