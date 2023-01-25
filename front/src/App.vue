@@ -1,9 +1,12 @@
 <template>
+  <!-- <div class="flex flex-col"> -->
   <div>
+    <div class="h-nav-height sticky inset-x-0 top-0 bg-white">top navbar</div>
     <div class="main-margin">
       <router-view></router-view>
     </div>
-    <main-lower-nav-bar class="fixed inset-x-0 bottom-0"></main-lower-nav-bar>
+    <main-lower-nav-bar class="sticky inset-x-0 bottom-0"></main-lower-nav-bar>
+    <!-- <main-lower-nav-bar></main-lower-nav-bar> -->
     <!-- <main-lower-nav-bar class="fixed bottom-0 left-0 bg-blue-600"></main-lower-nav-bar> -->
   </div>
 </template>
@@ -21,9 +24,6 @@ export default {
 
 <style>
 .main-margin {
-  padding: 0px;
-  margin-top: 3.5rem;
-  margin-left: 1.25rem;
-  margin-right: 1.25rem;
+  padding: 1.25rem;
 }
 </style>
