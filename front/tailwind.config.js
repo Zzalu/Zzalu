@@ -29,6 +29,9 @@ module.exports = {
         'zz-dark-div': '#6A6A6A',
         'zz-light-div': '#E9E9E9',
       },
+      spacing: {
+        'nav-height': '3.2rem',
+      }
     },
     fontFamily: {
       carter: ['Carter', 'Carter-One'],
