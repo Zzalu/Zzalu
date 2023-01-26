@@ -3,6 +3,7 @@ package com.example.zzalu.TitleHakwon.service;
 
 import com.example.zzalu.TitleHakwon.entity.Coment;
 import com.example.zzalu.TitleHakwon.repository.ComentRepository;
+import com.example.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import com.example.zzalu.User.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -30,6 +31,8 @@ public class ComentService {
     private final ComentRepository comentRepository;
     private final MemberRepository memberRepository;
 
+    private final TitleHackwonRepository titleHackwonRepository;
+
     @PostConstruct
     private void init(){
         opsHashComent = redisTemplate.opsForHash();
@@ -56,10 +59,22 @@ public class ComentService {
 
         Coment comentEntity = Coment.builder()
                 .member(memberRepository.findMemberByMemberId(requestComent.getMemberId()))
-                .titleHakwon()build();
+                .titleHakwon(titleHackwonRepository.findTitleHakwonById(requestComent.getTitleHakwonId()))
+                .cotent(requestComent.getContent())
+                .parentComentId(requestComent.getParentComentId())
+                .comentOrder(requestComent.getComentOrder())
+                .build();
+
+
+        comentRepository.save(comentEntity);
+        System.out.println(requestComent.getTitleHakwonId());
+
+       System.out.println(titleHackwonRepository.findTitleHakwonById(requestComent.getTitleHakwonId()).getComents().size());
+
+
 
         //Dto로 변환 시켰었으면 Entity를 다시 Dto로 변환해서 보내줘야하나?
-        return coment;
+        return comentEntity;
 
 
 

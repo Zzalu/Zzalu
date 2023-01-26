@@ -33,7 +33,7 @@ public class ComentController {
 
 
 
-        System.out.println(requestComent.getUser());
+        System.out.println(requestComent.getMemberId());
         return comentService.addComent(requestComent);
 
     }

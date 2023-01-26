@@ -20,7 +20,7 @@ import java.util.List;
  *
  * 게시판 (1)
  */
-public class TitleHakwon implements Serializable {
+public class TitleHakwon  {
 
 
     @Id

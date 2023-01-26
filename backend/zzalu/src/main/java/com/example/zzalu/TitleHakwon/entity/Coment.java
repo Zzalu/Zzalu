@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.util.Date;
+
 
 /**
  * @Author 홍금비
@@ -38,7 +40,7 @@ public class Coment {
     // N:1 양방향
 
     @ManyToOne
-    @JoinColumn(name = "USER_ID")
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     //제목학원 id
@@ -53,7 +55,9 @@ public class Coment {
     //제목학원 id
 
     //계층  0은부모 자식은 1
-    int classNum;
+
+    @Column( name = "parent_coment_id",nullable = true)
+    int parentComentId;
 
     //댓글 순서
     int comentOrder;
@@ -64,28 +68,26 @@ public class Coment {
      대댓글이 특정 댓글에 종속되어있다는 것을 표시하기 위한 수단
      */
 
-    Long groupNum;
 
     //좋아요 개수
     @ColumnDefault("0")
     int likeNum;
 
 
-    public void setGroupNum(Long groupNum) {
-        if(groupNum==0){ //그룹넘버가 없는경우 (댓글인 경우 자기 자신의 값 저장)
-            this.groupNum=id;
-        }
-        this.groupNum = groupNum;
-    }
-    @Builder
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdDate;
 
-    public Coment(Member member, TitleHakwon titleHakwon, String cotent, int classNum, int comentOrder, Long groupNum, int likeNum) {
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date lastModifiedDate;
+
+    @Builder
+    public Coment(Member member, TitleHakwon titleHakwon, String cotent, int parentComentId, int comentOrder, int likeNum) {
         this.member = member;
         this.titleHakwon = titleHakwon;
         this.cotent = cotent;
-        this.classNum = classNum;
+        this.parentComentId = parentComentId;
         this.comentOrder = comentOrder;
-        this.groupNum = groupNum;
+        this.createdDate = new Date();
         this.likeNum = likeNum;
     }
 }

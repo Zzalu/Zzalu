@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class Member implements Serializable {
+public class Member  {
 
     @Id
     @Column(name="MEMBER_ID")
@@ -22,7 +22,7 @@ public class Member implements Serializable {
     String email;
     String password;
 
-    @OneToMany (mappedBy = "user" ,cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "member" ,cascade = CascadeType.ALL)
     private List<Coment> coments = new ArrayList<>();
 
 

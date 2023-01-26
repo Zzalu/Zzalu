@@ -15,7 +15,9 @@ public class RequestComent {
     /** 댓글 내용 **/
     private String content;
 
-    int classNum;
+    private Long titleHakwonId;
+
+    int parentComentId;
 
     int comentOrder;
 
