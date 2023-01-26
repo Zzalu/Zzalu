@@ -1,7 +1,7 @@
 package com.example.zzalu.User.model;
 
 
-import com.example.zzalu.TitleHakwon.model.TitleHakwonComent;
+import com.example.zzalu.TitleHakwon.entity.Coment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,16 +13,17 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-public class User implements Serializable {
+public class Member implements Serializable {
 
     @Id
-    @Column(name="USER_ID")
-    String id;
+    @Column(name="MEMBER_ID")
+    String memberId;
 
     String email;
     String password;
 
     @OneToMany (mappedBy = "user" ,cascade = CascadeType.ALL)
-    private List<TitleHakwonComent> titleHakwonComents = new ArrayList<>();
+    private List<Coment> coments = new ArrayList<>();
+
 
 }

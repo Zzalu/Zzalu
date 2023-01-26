@@ -1,6 +1,7 @@
-package com.example.zzalu.TitleHakwon.model;
+package com.example.zzalu.TitleHakwon.entity;
 
 
+import com.example.zzalu.TitleHakwon.entity.Coment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @Getter
 @Setter
+
 
 /**
  *
@@ -31,7 +33,7 @@ public class TitleHakwon implements Serializable {
 
 
     @OneToMany (mappedBy = "titleHakwon",cascade = CascadeType.ALL)
-    private List<TitleHakwonComent> titleHakwonComents = new ArrayList<>();
+    private List<Coment> coments = new ArrayList<>();
 
 
 
