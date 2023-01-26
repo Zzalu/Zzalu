@@ -1,5 +1,5 @@
 <template>
-  <!-- 뒤로가기 nav -->
+  <!-- < nav -->
   <div class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center">
     <span class="inline-block px-4">
       <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl" />
