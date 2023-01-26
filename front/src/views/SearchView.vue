@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="modal">
     <h1>검색창</h1>
     이거는 path 없음 url 바뀌는게 아니니께
   </div>
@@ -11,6 +11,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="postcss">
 
+.modal {
+  @apply fixed
+}
 </style>
