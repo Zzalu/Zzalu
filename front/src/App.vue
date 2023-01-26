@@ -2,32 +2,31 @@
   <!-- <div class="flex flex-col"> -->
   <div>
     <!-- <div class="h-nav-height sticky inset-x-0 top-0 bg-white">top navbar</div> -->
-    <go-back-top-nav-bar></go-back-top-nav-bar>
-    <logo-top-nav-bar></logo-top-nav-bar>
+    <only-go-back-top-nav></only-go-back-top-nav>
+    <small-logo-top-nav></small-logo-top-nav>
     <div class="main-margin">
       <div>
         <router-view></router-view>
       </div>
     </div>
-    <main-lower-nav-bar></main-lower-nav-bar>
-    <account-lower-nav-bar></account-lower-nav-bar>
-    <!-- <main-lower-nav-bar></main-lower-nav-bar> -->
-    <!-- <main-lower-nav-bar class="fixed bottom-0 left-0 bg-blue-600"></main-lower-nav-bar> -->
+    <main-bottom-nav></main-bottom-nav>
+    <sign-up-bottom-nav></sign-up-bottom-nav>
   </div>
 </template>
 
 <script>
-import MainLowerNavBar from '@/components/Common/NavBar/MainLowerNavBar.vue';
-import GoBackTopNavBar from '@/components/Common/NavBar/GoBackTopNavBar.vue';
-import AccountLowerNavBar from './components/Common/NavBar/AccountLowerNavBar.vue';
-import LogoTopNavBar from './components/Common/NavBar/LogoTopNavBar.vue';
+import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
+import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
+import SignUpBottomNav from './components/Common/NavBar/SignUpBottomNav.vue';
+import SmallLogoTopNav from './components/Common/NavBar/SmallLogoTopNav.vue';
+
 export default {
   name: 'App',
   components: {
-    MainLowerNavBar,
-    GoBackTopNavBar,
-    AccountLowerNavBar,
-    LogoTopNavBar,
+    MainBottomNav,
+    OnlyGoBackTopNav,
+    SignUpBottomNav,
+    SmallLogoTopNav,
   },
   methods: {},
 };
@@ -35,7 +34,8 @@ export default {
 
 <style>
 .main-margin {
-  padding: 1.25rem;
+  padding: 0 1.25rem;
   margin-bottom: 3.5rem;
+  margin-top: 3.5rem;
 }
 </style>
