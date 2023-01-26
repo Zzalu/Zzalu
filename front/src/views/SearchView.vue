@@ -1,10 +1,12 @@
 <template>
-  <div class="modal">
-    <SearchBar />
-      <div class="flex flex-wrap justify-center">
+  <div>
+    <div class="modal">
+      <SearchBar />
+      <div class="flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full">
         <div v-for="(a, i) in 20" :key="i">
           <JjalListItem />
         </div>
+      </div>
     </div>
   </div>
 </template>
@@ -26,9 +28,9 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-.navbar-main {
+/* .navbar-main {
   @apply h-nav-height fixed inset-x-0 top-24 bg-white flex items-center justify-center;
-}
+} */
 .navbar-input-box {
   @apply bg-zz-light-input w-10/12 h-9 flex items-center px-5 py-1 rounded-lg;
 }
@@ -39,6 +41,6 @@ export default {
   @apply bg-transparent text-zz-darkgray;
 }
 .modal {
-  @apply fixed inset-x-0 top-20 border bg-zz-light-input px-5 h-screen border-t-2 rounded-t-2xl pt-20;
+  @apply fixed inset-x-0 top-20 border bg-white px-5 h-screen border-t-2 rounded-t-2xl;
 }
 </style>
