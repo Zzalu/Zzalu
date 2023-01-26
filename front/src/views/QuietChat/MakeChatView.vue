@@ -85,7 +85,7 @@ export default {
   @apply text-center mb-4;
 }
 .preview-image {
-  background-image: url(./assets/zzalu_logo_light.png);
+  background-image: url(../../components/QuietChat/QuietChatList/assets/zzalu_logo_light.png);
   @apply bg-contain bg-center bg-no-repeat rounded-l-lg h-48 w-24 mx-auto;
 }
 .select-image {

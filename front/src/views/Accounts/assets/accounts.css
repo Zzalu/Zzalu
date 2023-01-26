@@ -1,5 +1,3 @@
-
-
 /* 중앙정렬하고싶을때 바깥 컨테이너 */
 .center-containers {
   @apply flex justify-center

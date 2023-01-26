@@ -47,13 +47,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 /* 회원관련 css 모두 모은 파일 */
 @import "./assets/accounts.css";
 
 /* 아이디 비번찾기 */
 .find-id-and-pwd {
-  
   @apply flex float-right text-zz-darkgray text-xs mt-1;
 }
 

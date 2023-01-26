@@ -6,7 +6,7 @@
       src="../../assets/zzalu_logo_light.png"
     />
     <h1 class="page-title">Sign Up</h1>
-    <InputUserInfo></InputUserInfo>
+    <input-user-info></input-user-info>
     <!-- <WelcomeToZzalu></WelcomeToZzalu> -->
   </div>
 </template>
