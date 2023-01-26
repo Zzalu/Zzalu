@@ -1,6 +1,6 @@
 <template>
   <!-- 로그인 후 nav -->
-  <div class="fixed inset-x-0 bottom-0 border-t-2 border-zz-light-div">
+  <div class="h-nav-height fixed box-border inset-x-0 bottom-0 border-t-2 border-zz-light-div">
     <ul class="nav_list">
       <li class="nav_item">
         <span>
