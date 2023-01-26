@@ -12,9 +12,9 @@
 </template>
 
 <script>
-export default {
-  name: 'LogoTopNavBar',
-};
+  export default {
+    name: 'OnlySmallLogoTopNav',
+  };
 </script>
 
 <style></style>
