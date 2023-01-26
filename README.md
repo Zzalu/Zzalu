@@ -8,3 +8,17 @@
 
 ### 홍금비
     - 제목학원 
+
+### 김준영
+    - 고독방 리스트, 고독방 리스트 모달, 고독방 생성, 고독방 생성 모달 css
+    - router 설치
+
+### 김지오
+    - 로그인 css
+    - tailwind 설치
+    - router, config, common.css 추가
+
+### 이채은
+    - fontawesome 설치
+    - navbar css
+
