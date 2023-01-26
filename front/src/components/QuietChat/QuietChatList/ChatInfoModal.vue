@@ -8,18 +8,21 @@
       />
       <p class="modal-title">{{ info_data.name }}</p>
     </div>
-
-    <img src="../../QuietChat/QuietChatList/assets/BTS.jpg" class="modal-img" />
-
+    <div class="img-container">
+      <img
+        src="../../QuietChat/QuietChatList/assets/nyang.gif"
+        class="modal-img"
+      />
+    </div>
     <div class="modal-content-box">
       <div class="modal-first-line">
-        <div class="flex">
+        <div class="group">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
           <p class="first-line-content">{{ info_data.master }}</p>
         </div>
-        <div class="flex">
+        <div class="group">
           <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s" />
-          <p class="first-line-content"> {{ info_data.like }} </p>
+          <p class="first-line-content">{{ info_data.like }}</p>
         </div>
       </div>
       <p class="modal-content">{{ info_data.content }}</p>
@@ -47,9 +50,6 @@ export default {
   props: {
     info_data: Object,
   },
-  created() {
-    console.log(this.info_data);
-  },
 };
 </script>
 
@@ -57,7 +57,7 @@ export default {
 /* 모달 타이틀 */
 .modal {
   min-height: 24rem;
-  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-64 h-4/6 text-center bg-zz-p;
+  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-9/12 h-96 text-center bg-zz-p;
 }
 .modal-title-box {
   @apply bg-zz-p border-2 rounded-t-xl border-zz-p;
@@ -66,22 +66,29 @@ export default {
   @apply text-xl font-bold font-carter ml-8 line-clamp-1 pt-3 pb-3 text-white;
 }
 .modal-icon {
-  @apply float-right text-3xl mr-3 cursor-pointer pt-2;
+  @apply float-right text-3xl mr-3 cursor-pointer mt-2;
 }
 /* 모달 이미지 */
-/* .modal-img {
-  @apply 
-} */
+
+.img-container {
+  @apply bg-white h-40 w-full flex justify-center items-center
+}
+.modal-img {
+  @apply h-32 w-40 
+}
 
 /* 모달 콘텐트 */
+.group {
+  @apply flex items-center
+}
 .master-icon {
-  @apply text-zz-s
+  @apply text-zz-s;
 }
 .modal-content-box {
-  @apply text-xs font-spoq ml-4 mr-3 ;
+  @apply text-xs font-spoq ml-4 mr-3;
 }
 .modal-content {
-  @apply text-white line-clamp-4 h-16 text-left;
+  @apply text-white line-clamp-3 h-12 text-left;
 }
 .modal-first-line {
   @apply flex place-content-evenly mt-2 mb-2;
