@@ -28,12 +28,18 @@
         카드
       </div>
     </div>
+    <SearchView/>
   </div>
 </template>
 
 <script>
+import SearchView from './SearchView'
+
 export default {
   name: "MainView",
+  components : {
+    SearchView
+  }
 }
 </script>
 

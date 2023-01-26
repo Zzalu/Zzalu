@@ -41,7 +41,7 @@ export default {
   @apply grid grid-cols-12 text-white mt-5 h-32;
 }
 .card-img-contanier {
-  background-image: url(./assets/Dragon.jpg);
+  background-image: url(./assets/nyang.gif);
   @apply col-span-4 border-2 bg-contain bg-center bg-no-repeat rounded-l-lg;
 }
 .card-content {
