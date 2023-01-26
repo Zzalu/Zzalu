@@ -18,14 +18,14 @@
       </div>
     </div>
     <main-bottom-nav></main-bottom-nav>
-    <sign-up-bottom-nav></sign-up-bottom-nav>
+    <!-- <sign-up-bottom-nav></sign-up-bottom-nav> -->
   </div>
 </template>
 
 <script>
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
-import SignUpBottomNav from './components/Common/NavBar/SignUpBottomNav.vue';
+// import SignUpBottomNav from './components/Common/NavBar/SignUpBottomNav.vue';
 import SmallLogoTopNav from './components/Common/NavBar/SmallLogoTopNav.vue';
 import OnlySmallLogoTopNav from './components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import OnlyBigLogoTopNav from './components/Common/NavBar/OnlyBigLogoTopNav.vue';
@@ -41,7 +41,7 @@ export default {
   components: {
     MainBottomNav,
     OnlyGoBackTopNav,
-    SignUpBottomNav,
+    // SignUpBottomNav,
     SmallLogoTopNav,
     OnlySmallLogoTopNav,
     OnlyBigLogoTopNav,
