@@ -1,5 +1,6 @@
 <template>
   <div>
+    <ChatSearchTopNav/>
     <div
       v-if="open_chat_info"
       class="bg-negative"
@@ -23,6 +24,9 @@
       </div>
     </div>
     <div class="h-4"></div>
+    <div v-if="tmpisLogin">
+      <MainBottomNav/>
+    </div>
   </div>
 </template>
 
@@ -32,6 +36,8 @@ import MakeChatButton from "../../components/QuietChat/QuietChatList/MakeChatBut
 import QuietChatList from "../../components/QuietChat/QuietChatList/QuietChatList.vue";
 import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModal";
 import QuietChatData from "./QuietChatListData.js";
+import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav"
+import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
 
 export default {
   name: "ChatListView",
@@ -40,6 +46,7 @@ export default {
       data: QuietChatData,
       open_chat_info: false,
       open_chat_info_id: null,
+      tmpisLogin : true,
     };
   },
   components: {
@@ -47,6 +54,8 @@ export default {
     MakeChatButton,
     QuietChatList,
     ChatInfoModal,
+    ChatSearchTopNav,
+    MainBottomNav
   },
 };
 </script>

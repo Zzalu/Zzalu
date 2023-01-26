@@ -1,5 +1,6 @@
 <template>
   <div>
+    <OnlyBigLogoTopNav/>
     <div>
       <p>역대 제목학원 명예의 전당</p>
       <hr>
@@ -29,16 +30,21 @@
       </div>
     </div>
     <SearchView/>
+    <MainBottomNav/>
   </div>
 </template>
 
 <script>
 import SearchView from './SearchView'
+import MainBottomNav from "../components/Common/NavBar/MainBottomNav"
+import OnlyBigLogoTopNav from "../components/Common/NavBar/OnlyBigLogoTopNav"
 
 export default {
   name: "MainView",
   components : {
-    SearchView
+    SearchView,
+    MainBottomNav,
+    OnlyBigLogoTopNav,
   }
 }
 </script>
