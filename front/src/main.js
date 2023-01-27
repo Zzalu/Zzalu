@@ -2,6 +2,7 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import './css/common.css';
 import router from './router.js';
+import store from './store.js'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -20,4 +21,4 @@ library.add(far);
 
 /* add icons to the library */
 // library.add(faHouse);
-createApp(App).use(router).component('font-awesome-icon', FontAwesomeIcon).mount('#app');
+createApp(App).use(router).use(store).component('font-awesome-icon', FontAwesomeIcon).mount('#app');

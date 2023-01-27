@@ -29,7 +29,6 @@
         카드
       </div>
     </div>
-    <p>여기가 길다면 안되는거 아니뇨</p>
     <SearchView/>
     <MainBottomNav/>
   </div>
