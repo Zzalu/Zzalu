@@ -27,6 +27,6 @@ export default {
   @apply text-zz-darkgray mr-2;
 }
 .navbar-input {
-  @apply bg-transparent text-zz-darkgray;
+  @apply bg-transparent text-zz-darkgray w-full;
 }
 </style>
