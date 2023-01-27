@@ -7,10 +7,13 @@
           <font-awesome-icon icon="fa-solid fa-house" />
         </span>
       </li>
-      <li class="nav_item">
+      <li class="nav_item"
+      >
         <span><font-awesome-icon icon="fa-regular fa-comment-dots" /></span>
       </li>
-      <li class="nav_item">
+      <li class="nav_item"
+      @click="$store.commit('open_modal')"
+      >
         <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
       </li>
       <li class="nav_item">

@@ -37,6 +37,7 @@ module.exports = {
       carter: ['Carter', 'Carter-One'],
       spoq: ['Spoqa Han Sans Neo', 'sans-serif'],
       bhs: ['Black-Han-Sans', 'sans-serif'],
+      pop: ['Poppins', 'sans-serif']
     },
   },
   variants: {

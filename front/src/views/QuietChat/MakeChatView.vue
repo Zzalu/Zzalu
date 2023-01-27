@@ -1,5 +1,6 @@
 <template>
   <div>
+    <KorGoBackTopNavBar/>
     <div v-if="createCheck" class="bg-negative"></div>
     <div v-if="createCheck">
       <CannotEditModal @close-modal="createCheck = $event" />
@@ -33,11 +34,14 @@
     <div class="create-btn" @click="this.createCheck = true">
       <button>개설하기</button>
     </div>
+    <MainBottomNav/>
   </div>
 </template>
 
 <script>
 import CannotEditModal from '../../components/QuietChat/MakeChat/CannotEditModal.vue';
+import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
+import KorGoBackTopNavBar from "../../components/Common/NavBar/KorGoBackTopNavBar"
 
 export default {
   name: 'MakeChatView',
@@ -50,6 +54,8 @@ export default {
   },
   components: {
     CannotEditModal,
+    KorGoBackTopNavBar,
+    MainBottomNav
   },
   created() {},
   methods: {
