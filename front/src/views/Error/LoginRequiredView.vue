@@ -1,19 +1,23 @@
 <template>
+  <!-- 500 -->
   <div class="text-center-container">
-    <div class="oops">OOPS</div>
-    <div class="sad-face">:(</div>
-    <div class="resting-face">:|</div>
-    <div class="flex">
+    <div class="error-title-container">
+      <div class="oops">OOPS</div>
+      <div class="sad-face">:(</div>
+      <div class="resting-face">:|</div>
+    </div>
+    <!-- 해당페이지는 로그인 후 이용하실 수 있어요 -->
+    <div class="text-oneline">
         <div class="page-sub-title-black">해당 페이지는</div>
         <div class="page-sub-title-primary">로그인</div>
         <div class="page-sub-title-black">후 이용하실 수 있어요</div>
     </div>
-
-    <div class="find-id-and-pwd">
+    <!-- 아직 회원이 아니신가요? 회원가입 -->
+    <div class="redir-accounts">
       <div>
         아직 회원이 아니신가요? |
       </div>
-      <div class="find-id">
+      <div class="join">
         회원가입
       </div>
     </div>
@@ -34,35 +38,32 @@ export default {
 </script>
 
 <style scoped lang='postcss'>
+
   .oops {
     @apply mt-16 text-8xl font-carter text-zz-s
   }
   .sad-face {
     transform: rotate(90deg);
-    right: 11.5rem;
-    @apply absolute mt-24 font-pop text-4xl
+    right: 6rem;
+    @apply relative mt-12 font-pop text-4xl
   }
 
   .resting-face {
     transform: rotate(90deg);
-    right: 16.5rem;
-    top: 9.8rem;
-    @apply absolute font-pop text-4xl
+    right: 1rem;
+    bottom: 1.5rem;
+    @apply relative font-pop text-4xl
   }
 
   .page-sub-title-black {
-    @apply my-6 mx-1 font-spoq font-bold
+    @apply mt-60 mx-1 font-spoq font-bold
   }
 
   .page-sub-title-primary {
-    @apply my-6 font-spoq font-bold text-zz-p
+    @apply mt-60 font-spoq font-bold text-zz-p
   }
 
-  .find-id-and-pwd {
-    @apply flex float-right text-zz-darkgray text-xs mt-1;
-  }
-
-  .find-id {
+  .join {
     @apply mx-1 text-zz-p;
   }
 

@@ -21,7 +21,7 @@
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
     <!-- 아이디 비번찾기 -->
-    <div class="find-id-and-pwd">
+    <div class="redir-accounts">
       <div class="find-id">아이디 |</div>
       <div>비밀번호 찾기</div>
     </div>
@@ -48,13 +48,6 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-/* 회원관련 css 모두 모은 파일 */
-@import "./assets/accounts.css";
-
-/* 아이디 비번찾기 */
-.find-id-and-pwd {
-  @apply flex float-right text-zz-darkgray text-xs mt-1;
-}
 
 .find-id {
   @apply mx-1;
