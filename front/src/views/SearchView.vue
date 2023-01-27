@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div class="modal">
-      <SearchBar />
-      <div class="flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full">
-        <div v-for="(a, i) in 20" :key="i">
-          <JjalListItem />
+    <div v-if="open_modal">
+      <div class="modal">
+        <SearchBar />
+        <div class="modal-items">
+          <div v-for="(a, i) in 50" :key="i">
+            <JjalListItem />
+          </div>
         </div>
       </div>
     </div>
@@ -14,11 +16,15 @@
 <script>
 import SearchBar from "../components/Search/SearchBar";
 import JjalListItem from "../components/Search/Item/JjalListItem";
+import { mapState } from "vuex";
 
 export default {
   name: "SearchView",
   data() {
     return {};
+  },
+  computed: {
+    ...mapState({ open_modal: "open_search_modal" }),
   },
   components: {
     SearchBar,
@@ -28,19 +34,10 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-/* .navbar-main {
-  @apply h-nav-height fixed inset-x-0 top-24 bg-white flex items-center justify-center;
-} */
-.navbar-input-box {
-  @apply bg-zz-light-input w-10/12 h-9 flex items-center px-5 py-1 rounded-lg;
-}
-.navbar-icon {
-  @apply text-zz-darkgray mr-2;
-}
-.navbar-input {
-  @apply bg-transparent text-zz-darkgray;
-}
 .modal {
-  @apply fixed inset-x-0 top-20 border bg-white px-5 h-screen border-t-2 rounded-t-2xl;
+  @apply fixed inset-x-0 top-20 border bg-white h-screen border-t-2 rounded-t-2xl;
+}
+.modal-items {
+  @apply flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full;
 }
 </style>
