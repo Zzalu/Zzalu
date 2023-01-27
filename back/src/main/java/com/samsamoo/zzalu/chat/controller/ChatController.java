@@ -28,7 +28,7 @@ public class ChatController {
             chatRoomRepository.enterChatRoom(message.getRoomId());
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
         }
-
+        //
         kafkaProducer.sendMessage(message);
 
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);

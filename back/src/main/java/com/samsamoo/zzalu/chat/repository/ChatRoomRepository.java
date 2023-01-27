@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.chat.repository;
 
+import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.chat.dto.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.util.LinkedList;
 import java.util.List;
 
 
@@ -22,6 +24,7 @@ public class ChatRoomRepository {
     private final RedisSubscriber redisSubscriber;
     // Redis
     private static final String CHAT_ROOMS = "CHAT_ROOM";
+    private static final String CHAT_MESSAGES = "CHAT_MESSAGES";
     private final RedisTemplate<String, Object> redisTemplate;
     @Autowired
     StringRedisTemplate stringRedisTemplate;
@@ -30,11 +33,20 @@ public class ChatRoomRepository {
 //    private Map<String, ChannelTopic> topics;
     private ValueOperations<String, String> opsStringTopic;
 
+    // Created 2023.01.27 by Hye Sung
+    private HashOperations<String, String, ChatMessage> opsHashChatMessage;
+
     @PostConstruct
     private void init() {
         opsHashChatRoom = redisTemplate.opsForHash();
         opsStringTopic = stringRedisTemplate.opsForValue();
+        opsHashChatMessage = redisTemplate.opsForHash();
 //        topics = new HashMap<>();
+    }
+
+    // Created 2023.01.27 by Hye Sung
+    public List<ChatMessage> findAllChatMessage() {
+        return opsHashChatMessage.values(CHAT_MESSAGES);
     }
 
     public List<ChatRoom> findAllRoom() {
@@ -52,6 +64,11 @@ public class ChatRoomRepository {
         ChatRoom chatRoom = ChatRoom.create(name);
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
+    }
+
+    public void getChatMessage(ChannelTopic topic, ChatMessage message) {
+        System.out.println("ChatRoomRepository - getChatMessage");
+        opsHashChatMessage.put(CHAT_MESSAGES, String.valueOf(topic), message);
     }
 
     /**
