@@ -15,13 +15,16 @@ public class RequestComent {
     /** 댓글 내용 **/
     private String content;
 
+    /** 제목 학원 ID **/
     private Long titleHakwonId;
 
+    /** 부모 댓글 ID (댓글 : 자기 자신 ID / 대댓글 : 댓글 ID ) **/
     int parentComentId;
 
+    /** 댓글 순서 **/
     int comentOrder;
 
-    Long groupNum;
+
 
 
 

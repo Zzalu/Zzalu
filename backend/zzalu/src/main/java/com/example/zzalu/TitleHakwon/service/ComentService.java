@@ -19,43 +19,20 @@ import javax.annotation.PostConstruct;
 @Repository
 public class ComentService {
 
-
-    private static final String COMENT="TitleHakwon:COMENT";
-
-    private final RedisTemplate<String,Object> redisTemplate;
-
-
     private final ModelMapper modelMapper;
-    private HashOperations<String,Long, Coment> opsHashComent;
+
 
     private final ComentRepository comentRepository;
     private final MemberRepository memberRepository;
 
     private final TitleHackwonRepository titleHackwonRepository;
 
-    @PostConstruct
-    private void init(){
-        opsHashComent = redisTemplate.opsForHash();
-    }
-
     /**
      * 댓글 작성
      */
     public Coment addComent (RequestComent requestComent){
 
-        //Coment coment = new Coment().
-       // System.out.println(titleHakwonComent.getId()+"댓글 아이디 값");
-        //opsHashComent.put(COMENT,titleHakwonComent.getId(),titleHakwonComent);
-        //return titleHakwonComent;
-
-
-/*
-        System.out.println(requestComent.getClassNum());
-        Coment coment = modelMapper.map(requestComent,Coment.class);
-        System.out.println(coment);
-
-
-*/
+        /** Comment 엔티티 생성 후 저장 **/
 
         Coment comentEntity = Coment.builder()
                 .member(memberRepository.findMemberByMemberId(requestComent.getMemberId()))
@@ -69,22 +46,11 @@ public class ComentService {
         comentRepository.save(comentEntity);
         System.out.println(requestComent.getTitleHakwonId());
 
-       System.out.println(titleHackwonRepository.findTitleHakwonById(requestComent.getTitleHakwonId()).getComents().size());
-
-
 
         //Dto로 변환 시켰었으면 Entity를 다시 Dto로 변환해서 보내줘야하나?
         return comentEntity;
 
 
-
-
     }
-
-    public Coment findTitleHakwonComent (Long id){
-        return opsHashComent.get(COMENT,id);
-    }
-
-
 
 }

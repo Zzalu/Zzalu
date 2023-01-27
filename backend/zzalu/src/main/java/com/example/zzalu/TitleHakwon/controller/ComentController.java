@@ -14,16 +14,6 @@ public class ComentController {
 
     private final ComentService comentService;
 
-    @GetMapping("/{comentId}")
-
-    public Coment  getTitleHakwonComent(@PathVariable Long comentId){
-
-        System.out.println("[찾고 싶은 댓글의 id 값]"+comentId);
-        return comentService.findTitleHakwonComent(comentId);
-    }
-
-
-
 
     /**
      * 댓글 저장하기
@@ -38,4 +28,17 @@ public class ComentController {
 
     }
 
+    /**
+     * 대댓글 저장하기
+     *
+     */
+    @PostMapping
+    public Coment addReplyComent(@RequestBody RequestComent requestComent){
+
+
+     //   comentService.ad
+        System.out.println(requestComent.getMemberId());
+        return comentService.addComent(requestComent);
+
+    }
 }

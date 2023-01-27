@@ -18,22 +18,14 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
-@SequenceGenerator(
-        name = "USER_SEQ_GENERATOR"
-        , sequenceName = "USER_SEQ"
-        , initialValue = 1
-        , allocationSize = 1
-)
+
 @Entity
 
 public class Coment {
 
     //대댓글 고유 아이디 (auto)
     @Id
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE
-            , generator = "USER_SEQ_GENERATOR"
-    )
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="COMENT_ID")
     Long id;
     //작성자 아이디
@@ -90,4 +82,6 @@ public class Coment {
         this.createdDate = new Date();
         this.likeNum = likeNum;
     }
+
+
 }
