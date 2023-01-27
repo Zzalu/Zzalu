@@ -1,0 +1,92 @@
+/* -------------------------------------------------------------- */
+/* 에러페이지 재사용 모음 */
+/* 텍스트 중앙정렬하고싶을때 바깥 컨테이너 */
+.text-center-container {
+  @apply grid justify-items-center
+}
+
+/* 텍스트 여러개 한줄정렬하고 싶을때 바깥 컨테이너 */
+.text-oneline {
+  @apply flex
+}
+
+/* 에러페이지 제목 컨테이너 */
+/* 이 안에 제목이랑 얼굴 들어감 */
+.error-title-container {
+  @apply absolute
+}
+
+/* 에러페이지 제목 404,500, oops */
+.error-title {
+  @apply mt-16 text-9xl font-carter text-zz-s
+}
+
+
+/* 에러페이지 중제목 */
+.error-sub-title {
+  @apply mt-72 text-lg font-spoq font-bold
+}
+
+/* 에러페이지 내용 */
+.error-content {
+  @apply font-spoq text-xs my-1
+}
+
+/* -------------------------------------------------------------- */
+/* 회원가입 관련 재사용 모음 */
+
+/* 중앙정렬하고싶을때 바깥 컨테이너 */
+.center-containers {
+  @apply flex justify-center
+}
+
+/* 화면 제목 */
+.page-title {
+  @apply font-carter text-3xl text-center
+}
+
+/* 인풋창 제목 */
+.input-title {
+  @apply font-spoq text-sm text-zz-darkgray mt-3 mb-1 mx-1
+}
+
+/* 인풋창 */
+.login-input {
+  @apply bg-zz-light-input rounded-sm w-full h-8 px-8 text-sm
+}
+
+/* 큰로고 */
+.logo {
+  @apply w-72 mx-auto
+}
+
+/* 인풋창 안 오른쪽 아이콘 */
+.icon-aligned-right {
+  @apply absolute my-2 mx-2 text-zz-negative
+}
+
+/* 인풋창 안 왼쪽 아이콘 */
+.icon-aligned-left {
+  @apply absolute right-6 my-2 mx-2 text-zz-negative
+}
+
+/* -------------------------------------------------------------- */
+/* 로그인, 회원가입으로 리다이렉트되는 작은 글씨 전체 */
+.redir-accounts {
+  @apply flex float-right text-zz-darkgray text-xs mt-4 mx-1;
+}
+
+
+
+/* -------------------------------------------------------------- */
+/* 버튼 모음 */
+/* 이전으로 버튼 */
+.go-back-button {
+  @apply my-8 p-2 bg-zz-s rounded-md font-spoq text-white
+}
+
+/* 제출버튼 */
+/*비활성화된 로그인 */
+.submit-button {
+  @apply bg-zz-negative font-spoq text-white rounded-md mt-8 w-2/3 p-1 
+}
