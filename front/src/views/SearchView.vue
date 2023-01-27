@@ -35,9 +35,26 @@ export default {
 
 <style scoped lang="postcss">
 .modal {
-  @apply fixed inset-x-0 top-20 border bg-white h-screen border-t-2 rounded-t-2xl;
+  @apply fixed top-20 inset-x-0 border bg-white h-screen border-t-2 rounded-t-2xl;
 }
 .modal-items {
   @apply flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full;
 }
+
+.modal-hidden {
+  transition: all 0.5s ease;
+  @apply fixed top-full inset-x-0 border bg-zz-p h-screen border-t-2 rounded-t-2xl;
+  .modal {
+    @apply fixed top-20 inset-x-0 border bg-zz-p h-screen border-t-2 rounded-t-2xl;
+  }
+}
+
+/* .modal-items {
+  transition: all 0.5s ease;
+  @apply flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full;
+} */
+/* .modal-items:hover {
+  transition: all 0.5s ease;
+  @apply flex flex-wrap justify-center fixed overflow-y-scroll top-full h-full;
+} */
 </style>
