@@ -1,24 +1,20 @@
-import { createStore } from 'vuex'
+import { createStore } from 'vuex';
 
 const store = createStore({
   state() {
     return {
       //하단내브바 서치모달
       open_search_modal: false,
-    }
+    };
   },
   mutations: {
     //하단내브바 서치모달
     open_modal(state) {
-      state.open_search_modal = true
-    }
+      state.open_search_modal = true;
+    },
   },
-  actions: {
+  actions: {},
+  getters: {},
+});
 
-  },
-  getters: {
-
-  }
-})
-
-export default store
+export default store;

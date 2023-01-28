@@ -7,6 +7,7 @@
         <div>
           <span>{{ date }}</span>
           <h1>오늘의 제목학원</h1>
+          <span>{{ isLogin }}</span>
         </div>
         <button>역대 제목학원</button>
         <!-- 짤 -->
@@ -31,13 +32,21 @@
 </template>
 
 <script>
-import OnlySmallLogoTopNav from '../components/Common/NavBar/OnlySmallLogoTopNav.vue';
+import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
 export default {
   components: { OnlySmallLogoTopNav },
   name: 'TitleCompetitionView',
-  data() {
+  setup() {
+    const store = useStore();
+    // const isLogin = store.state.useStore.isLogin;
+    // state는 moduleName으로 쪼개서 들어간다.
+    const date = computed(() => store.state.titleCompetitionStore.date);
+    const isLogin = computed(() => store.state.userStore.isLogin);
     return {
-      date: '23.01.19',
+      date,
+      isLogin,
     };
   },
 };
