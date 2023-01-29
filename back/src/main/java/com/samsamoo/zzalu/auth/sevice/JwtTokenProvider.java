@@ -31,7 +31,7 @@ public class JwtTokenProvider {
     // 나중에 key 변경 후, application.yml gitgnore하기
     @Value("${jwt.token.secret}")
     private String secretKey;
-    private MemberRepository memberRepository;
+    final private MemberRepository memberRepository;
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
     public TokenInfo generateToken(Authentication authentication) {
