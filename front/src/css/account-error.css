@@ -1,4 +1,38 @@
 /* -------------------------------------------------------------- */
+/* 전체 재사용 */
+
+/* 큰로고 */
+.logo {
+  @apply w-72 mx-auto
+}
+
+/* -------------------------------------------------------------- */
+/* 버튼 모음 */
+/* 이전으로 버튼- 중앙 */
+.go-back-button {
+  @apply my-8 p-2 bg-zz-s rounded-md font-spoq text-white
+}
+
+/* 다음으로 버튼-오른쪽 */
+.go-next-button {
+  @apply mt-4 ml-4 p-2 px-12 bg-zz-p rounded-md font-spoq text-white
+}
+
+/* 메일 다시보내기 버튼 */
+.send-again-button {
+  @apply bg-zz-light-p text-white rounded-full font-spoq text-xs mt-2 py-1 px-3
+}
+
+/* 제출버튼 */
+/*비활성화된 로그인 */
+.submit-button {
+  @apply bg-zz-p font-spoq text-white rounded-md mt-8 w-2/3 p-1 
+}
+
+
+
+
+/* -------------------------------------------------------------- */
 /* 에러페이지 재사용 모음 */
 /* 텍스트 중앙정렬하고싶을때 바깥 컨테이너 */
 .text-center-container {
@@ -24,13 +58,15 @@
 
 /* 에러페이지 중제목 */
 .error-sub-title {
-  @apply mt-72 text-lg font-spoq font-bold
+  @apply text-lg font-spoq font-bold
 }
 
 /* 에러페이지 내용 */
 .error-content {
   @apply font-spoq text-xs my-1
 }
+
+
 
 /* -------------------------------------------------------------- */
 /* 회원가입 관련 재사용 모음 */
@@ -40,9 +76,10 @@
   @apply flex justify-center
 }
 
+
 /* 화면 제목 */
-.page-title {
-  @apply font-carter text-3xl text-center
+.account-title {
+  @apply font-carter text-3xl text-center 
 }
 
 /* 인풋창 제목 */
@@ -51,23 +88,47 @@
 }
 
 /* 인풋창 */
-.login-input {
-  @apply bg-zz-light-input rounded-sm w-full h-8 px-8 text-sm
+.account-input {
+  @apply bg-zz-light-input rounded-sm w-full h-10 px-8 text-sm
 }
 
-/* 큰로고 */
-.logo {
-  @apply w-72 mx-auto
-}
-
-/* 인풋창 안 오른쪽 아이콘 */
-.icon-aligned-right {
-  @apply absolute my-2 mx-2 text-zz-negative
+.input-without-title {
+  @apply flex mt-4
 }
 
 /* 인풋창 안 왼쪽 아이콘 */
 .icon-aligned-left {
-  @apply absolute right-6 my-2 mx-2 text-zz-negative
+  @apply absolute my-3 mx-2 text-zz-negative
+}
+
+/* 인풋창 안 오른쪽 아이콘 */
+.icon-aligned-right {
+  @apply absolute right-6 my-3 mx-2 text-zz-negative
+}
+
+/* 중복확인버튼-인풋창 안에 들어가는 버튼 */
+.button-in-input {
+  @apply absolute right-8 my-1.5 px-2 py-1 rounded-md bg-zz-s text-white text-sm
+}
+
+/* 남은시간 */
+.time-remain {
+  @apply mt-2 text-xs font-spoq font-bold
+}
+
+/* 코드입력 */
+.input-code {
+  @apply mt-6 bg-zz-light-input rounded-sm text-sm mx-2 h-12 w-12
+}
+
+/* 전송코드입력 text */
+.almost-done {
+  @apply mt-6 text-zz-s text-center
+}
+
+/* 메일 못받음? text */
+.didnt-get-mail {
+  @apply mt-6 text-zz-light-p text-center                                                                                               
 }
 
 /* -------------------------------------------------------------- */
@@ -76,17 +137,9 @@
   @apply flex float-right text-zz-darkgray text-xs mt-4 mx-1;
 }
 
-
-
-/* -------------------------------------------------------------- */
-/* 버튼 모음 */
-/* 이전으로 버튼 */
-.go-back-button {
-  @apply my-8 p-2 bg-zz-s rounded-md font-spoq text-white
+.redir-accounts-click {
+  @apply mx-1 text-zz-p;
 }
 
-/* 제출버튼 */
-/*비활성화된 로그인 */
-.submit-button {
-  @apply bg-zz-negative font-spoq text-white rounded-md mt-8 w-2/3 p-1 
-}
+
+

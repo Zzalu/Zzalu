@@ -17,7 +17,7 @@
       <div>
         아직 회원이 아니신가요? |
       </div>
-      <div class="join">
+      <div class="redir-accounts-click">
         회원가입
       </div>
     </div>
@@ -63,8 +63,6 @@ export default {
     @apply mt-60 font-spoq font-bold text-zz-p
   }
 
-  .join {
-    @apply mx-1 text-zz-p;
-  }
+
 
 </style>

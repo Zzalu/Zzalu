@@ -1,10 +1,13 @@
 <template>
   <div class="text-center-container">
+    <!-- 404 -->
     <div class="error-title-container">
       <div class="error-title">404</div>
       <div class="sad-face">:(</div>
     </div>
-    <div class="error-sub-title">요청하시는 페이지를 찾을 수 없습니다 !</div>
+    <!-- 중제목 -->
+    <div class="error-sub-title mt-72">요청하시는 페이지를 찾을 수 없습니다 !</div>
+    <!-- 내용 -->
     <div class="error-content">
       찾으시려는 페이지의 주소를 잘못 입력 되었거나,
     </div>
@@ -14,6 +17,7 @@
     <div class="error-content">
       궁금한 점이 있으시면 고객센터를 통해 문의해주시기 바랍니다.
     </div>
+    <!-- 버튼 -->
     <button class="go-back-button">이전 페이지</button>
   </div>
   <main-bottom-nav></main-bottom-nav>
