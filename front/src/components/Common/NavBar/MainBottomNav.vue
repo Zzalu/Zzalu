@@ -12,7 +12,7 @@
         <span><font-awesome-icon icon="fa-regular fa-comment-dots" /></span>
       </li>
       <li class="nav_item"
-      @click="$store.commit('open_modal')"
+      @click="$store.commit('searchModalStore/open_modal')"
       >
         <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
       </li>
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'MainBottomNavBar',
 };
