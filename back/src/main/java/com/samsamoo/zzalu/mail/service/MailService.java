@@ -1,7 +1,8 @@
 package com.samsamoo.zzalu.mail.service;
 
+import com.samsamoo.zzalu.mail.exception.EmailExistException;
 import com.samsamoo.zzalu.mail.utils.MailUtils;
-import com.samsamoo.zzalu.mail.dto.AuthResponse;
+import com.samsamoo.zzalu.mail.dto.EmailResponse;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,10 +53,10 @@ public class MailService {
         return buffer.toString();
     }
 
-    public AuthResponse sendMail(String userEmail) {
+    public EmailResponse sendMail(String userEmail) {
         // 이메일 있는지 검사
         if (!checkUniqueUserEmail(userEmail)) {
-            throw new IllegalArgumentException("이미 존재하는 email 주소입니다.");
+            throw new EmailExistException();
         };
 
         // 4자리 난수 인증번호 생성
@@ -64,7 +65,7 @@ public class MailService {
         // 인증 메일 보내기
         try {
             MailUtils sendMail = new MailUtils(mailSender);
-            sendMail.setSubject("[Zzalu]회원가입 이메일 인증");
+            sendMail.setSubject("[Zzalu] 회원가입 이메일 인증");
             sendMail.setText(new StringBuffer().append("<h1>[이메일]</h1>")
                     .append("<p>아래 인증코드를 앱에 입력해주세요.</p>")
                     .append("<p>인증코드: "+ authKey +"</p>")
@@ -77,7 +78,7 @@ public class MailService {
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        return new AuthResponse(authKey);
+        return new EmailResponse(authKey);
 
     }
 

@@ -2,12 +2,14 @@ package com.samsamoo.zzalu.member.service;
 
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
-import com.samsamoo.zzalu.exception.AppException;
-import com.samsamoo.zzalu.exception.ErrorCode;
 import com.samsamoo.zzalu.member.dto.MemberDTO;
 import com.samsamoo.zzalu.member.dto.SignupRequest;
 import com.samsamoo.zzalu.member.dto.UniqueResponse;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.exception.AuthorizationException;
+import com.samsamoo.zzalu.member.exception.InvalidPasswordException;
+import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
+import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 
 @Service
@@ -37,16 +40,11 @@ public class MemberService {
 
     @Transactional
     public MemberDTO signup(SignupRequest signupRequest) {
-        String password = signupRequest.getPassword();
-        if (!password.equals(signupRequest.getPasswordConfirmation())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
-        }
+        validatePassword(signupRequest.getPassword(),signupRequest.getPasswordConfirmation());
         String rawPassword = signupRequest.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         signupRequest.setPassword(encPassword);
         Member savedMember = memberRepository.save(signupRequest.toEntity());
-
-
 
         return new MemberDTO(savedMember);
     }
@@ -54,7 +52,7 @@ public class MemberService {
     // 수정
     private void validatePassword(String password, String passwordConfirmation) {
         if (!password.equals(passwordConfirmation)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new PasswordConfirmationException();
         }
     }
     public UniqueResponse checkUniqueUsername(String username) {
@@ -71,10 +69,10 @@ public class MemberService {
     public TokenInfo login(String username, String password) {
         // username 없을 때 리턴
         Member selectedMember = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, username + "이 없습니다."));
+                .orElseThrow(() -> new MemberNotFoundException());
         // password 틀림
         if (!passwordEncoder.matches(password, selectedMember.getPassword())) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD, "비밀번호를 잘못 입력했습니다.");
+            throw new InvalidPasswordException();
         }
         // exception 안 났으면 토큰 발행
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
@@ -92,6 +90,14 @@ public class MemberService {
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
         return tokenInfo;
+
+    }
+    public MemberDTO getMyProfile(String token, String username) {
+
+        Member member = jwtTokenProvider.getMember(token);
+        log.info("여기까지 OK");
+
+        return new MemberDTO(member);
 
     }
 }

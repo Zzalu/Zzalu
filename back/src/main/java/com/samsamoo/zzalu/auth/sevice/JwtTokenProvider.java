@@ -2,6 +2,9 @@ package com.samsamoo.zzalu.auth.sevice;
 
 
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
+import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
+import com.samsamoo.zzalu.member.repo.MemberRepository;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,6 +31,7 @@ public class JwtTokenProvider {
     // 나중에 key 변경 후, application.yml gitgnore하기
     @Value("${jwt.token.secret}")
     private String secretKey;
+    private MemberRepository memberRepository;
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
     public TokenInfo generateToken(Authentication authentication) {
@@ -42,6 +47,7 @@ public class JwtTokenProvider {
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
+                .claim("username", authentication.getName())
                 .setExpiration(accessTokenExpiresIn)
                 .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 방식
                 .compact();
@@ -96,6 +102,16 @@ public class JwtTokenProvider {
             return false;
         }
     }
+    public Member getMember(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        String username = String.valueOf(claims.getBody().get("username"));
+        log.info("username = {}", username); // nanamoon
+        Optional<Member> member = memberRepository.findByUsername(username);
+        log.info("member = {}", member);
+
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException());
+    }
 
     private Claims parseClaims(String accessToken) {
         try {
@@ -106,4 +122,5 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
+
 }
