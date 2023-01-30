@@ -5,7 +5,9 @@
         <div :class="open_list_modal ? 'hide-modal-items' : 'modal-items'">
           <SearchBar />
           <div v-for="(a, i) in 50" :key="i">
-            <JjalListItem :i="i" />
+            <JjalListItem :i="i"
+            @select_id="select_id"
+            />
           </div>
         </div>
       </div>
@@ -35,16 +37,31 @@ export default {
     const open_list_modal = computed(
       () => store.state.searchModalStore.open_list_modal
     );
+
+    const send_select_jjal_num = (e) => {
+      store.commit("searchModalStore/send_select_jjal_num",e);
+    }
     return {
       open_search_modal,
       open_list_modal,
+      send_select_jjal_num,
     };
   },
+  // data() {
+  //   return {
+  //     select_jjal_num : null,  
+  //   }
+  // },
   components: {
     SearchBar,
     JjalListItem,
     StoreList,
   },
+  methods: {
+    select_id(e) {
+      this.send_select_jjal_num(e)
+    }
+  }
 };
 </script>
 
@@ -58,7 +75,7 @@ export default {
   @apply fixed top-20 inset-x-0 border bg-white h-screen border-t-2 rounded-t-2xl;
 }
 .hide-modal {
-  @apply fixed inset-x-0 top-20 bg-black border bg-white h-screen border-t-2 rounded-t-2xl;
+  @apply fixed inset-x-0 top-20 border bg-white h-screen border-t-2 rounded-t-2xl;
 }
 .modal-items {
   @apply flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full;
