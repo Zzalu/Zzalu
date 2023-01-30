@@ -6,6 +6,8 @@ import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,17 +21,22 @@ import org.springframework.stereotype.Service;
 
 
 import java.nio.charset.Charset;
+import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class JwtTokenProvider {
     // 나중에 key 변경 후, application.yml gitgnore하기
-    @Value("${jwt.token.secret}")
-    private String secretKey;
-    final private MemberRepository memberRepository;
+
+    private final Key key;
+    private final MemberRepository memberRepository;
+    public JwtTokenProvider(@Value("${jwt.token.secret}") String secretKey, MemberRepository memberRepository) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.memberRepository = memberRepository;
+    }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
     public TokenInfo generateToken(Authentication authentication) {
@@ -49,13 +56,13 @@ public class JwtTokenProvider {
                 .claim("auth", authorities)
                 .claim("username", authentication.getName())
                 .setExpiration(accessTokenExpiresIn)
-                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes(Charset.forName("UTF-8"))) // 암호화 방식
+                .signWith(key, SignatureAlgorithm.HS256) // 암호화 방식
                 .compact();
 
         // Refresh token 생성
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(now + 86400000))
-                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         return TokenInfo.builder()
@@ -91,13 +98,15 @@ public class JwtTokenProvider {
 //        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 
         try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
 //            Jws<Claims> claims = Jwts.parser()
 //                    .setSigningKey(secretKey.getBytes())
 //                    .parseClaimsJws(token);
 //
 //            return !claims.getBody().getExpiration().before(new Date());
-            Jws claims = Jwts.parser().setSigningKey(secretKey.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token);
-            return true;
+//            Jws claims = Jwts.parser().setSigningKey(secretKey.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token);
+//            return true;
 
         }catch(ExpiredJwtException e) {   //Token이 만료된 경우 Exception이 발생한다.
             log.error("Token Expired");
@@ -110,7 +119,7 @@ public class JwtTokenProvider {
         return false;
     }
     public Member getMember(String token) {
-        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
         String username = String.valueOf(claims.getBody().get("username"));
         log.info("username = {}", username); // nanamoon
         Optional<Member> member = memberRepository.findByUsername(username);
@@ -122,9 +131,7 @@ public class JwtTokenProvider {
 
     private Claims parseClaims(String accessToken) {
         try {
-            return Jwts.parser()
-                    .setSigningKey(secretKey.getBytes())
-                    .parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }

@@ -72,9 +72,9 @@ public class MemberController {
     @PostMapping("/follow")
     public  ResponseEntity<?> follow(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody FollowRequest followRequest) {
         String token = bearerToken.substring(7);
-//        if (!jwtTokenProvider.validateToken(token)) {
-//            throw new InvalidTokenException();
-//        }
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new InvalidTokenException();
+        }
         FollowResponse followResponse = memberService.follow(token, followRequest);
         return ResponseEntity.ok().body(followResponse);
     }
