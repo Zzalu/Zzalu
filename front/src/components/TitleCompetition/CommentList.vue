@@ -1,11 +1,10 @@
 <template>
-  <div>
-    <ol>
-      <li v-for="(comment, rank) in comments" :key="rank">
-        <CommentListItem :comment="comment" />
-      </li>
-    </ol>
-  </div>
+  <ol>
+    <li v-for="(comment, rank) in comments" :key="rank" class="mb-1">
+      <CommentListItem :comment="comment" />
+      <span class="w-full h-divider-height bg-zz-light-div"></span>
+    </li>
+  </ol>
 </template>
 
 <script>

@@ -1,14 +1,14 @@
 <template>
   <li>
     <div>
-      <div class="flex items-center ju">
+      <div class="flex items-center mb-2">
         <div class="w-3 h-3 rounded-full mr-2">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs">{{ time }}</p>
       </div>
-      <p class="text-base">{{ content }}</p>
+      <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row">
         <div class="w-full">
           <button class="text-xs mr-2">답글쓰기</button>
