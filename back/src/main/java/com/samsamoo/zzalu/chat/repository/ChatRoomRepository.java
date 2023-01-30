@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.chat.repository;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.chat.dto.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
@@ -11,7 +12,6 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
-import java.util.LinkedList;
 import java.util.List;
 
 
@@ -26,27 +26,36 @@ public class ChatRoomRepository {
     private static final String CHAT_ROOMS = "CHAT_ROOM";
     private static final String CHAT_MESSAGES = "CHAT_MESSAGES";
     private final RedisTemplate<String, Object> redisTemplate;
-    @Autowired
-    StringRedisTemplate stringRedisTemplate;
+
+    private final StringRedisTemplate stringRedisTemplate;
+
+    private final RedisTemplate<String, ChatMessage> redisChatMessageTemplate;
+
     private HashOperations<String, String, ChatRoom> opsHashChatRoom;
     // 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 채팅방에 매치되는 topic정보를 Map에 넣어 roomId로 찾을수 있도록 한다.
 //    private Map<String, ChannelTopic> topics;
     private ValueOperations<String, String> opsStringTopic;
 
     // Created 2023.01.27 by Hye Sung
-    private HashOperations<String, String, ChatMessage> opsHashChatMessage;
+    private ListOperations<String, ChatMessage> opsListChatMessage;
 
     @PostConstruct
     private void init() {
         opsHashChatRoom = redisTemplate.opsForHash();
         opsStringTopic = stringRedisTemplate.opsForValue();
-        opsHashChatMessage = redisTemplate.opsForHash();
+        opsListChatMessage = redisChatMessageTemplate.opsForList();
 //        topics = new HashMap<>();
     }
 
     // Created 2023.01.27 by Hye Sung
-    public List<ChatMessage> findAllChatMessage() {
-        return opsHashChatMessage.values(CHAT_MESSAGES);
+    public void findAllChatMessage(String id) {
+        System.out.println("ChatRoomRepository - findAllChatMessage : " + opsListChatMessage.size(id + id));
+        long size = opsListChatMessage.size(id + id);
+        List<ChatMessage> chatMessages = opsListChatMessage.range(id + id, 0, size);
+        for(ChatMessage message : chatMessages) {
+            System.out.println("전 채팅 목록 출력 : " + message.getSender() + " : " + message.getMessage());
+        }
+        System.out.println(chatMessages);
     }
 
     public List<ChatRoom> findAllRoom() {
@@ -69,7 +78,10 @@ public class ChatRoomRepository {
     public void setChatMessage(ChatMessage message) {
         System.out.println("ChatRoomRepository - getChatMessage");
         String topic = opsStringTopic.get(message.getRoomId());
-        opsHashChatMessage.put(CHAT_MESSAGES, String.valueOf(topic), message);
+        ChatRoom chatRoom = opsHashChatRoom.get(CHAT_ROOMS, topic);
+        opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
+        System.out.println("==============================================");
+        chatRoom.setChatMessageCount(chatRoom.getChatMessageCount() + 1);
     }
 
     /**

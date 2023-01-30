@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
-public class ChatMessage {
+public class ChatMessage implements Serializable {
     public enum MessageType {
         ENTER, JOIN, TALK, @JsonEnumDefaultValue UNKNOWN;
     }

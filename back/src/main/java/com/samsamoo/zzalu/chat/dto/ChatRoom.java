@@ -17,11 +17,13 @@ public class ChatRoom  implements Serializable {
     private String roomId;
     private String name;
     private List<ChatMessage> chatMessages;
+    private double chatMessageCount;
 
     public static ChatRoom create(String name) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
+        chatRoom.chatMessageCount = 1;
         return chatRoom;
     }
 }
