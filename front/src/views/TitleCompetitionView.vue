@@ -1,31 +1,24 @@
 <template>
   <div>
     <only-small-logo-top-nav></only-small-logo-top-nav>
-    <div>
+    <div class="flex flex-col items-center">
       <!-- 오늘의 제목학원 header -->
-      <div>
-        <div>
-          <span>{{ date }}</span>
-          <h1>오늘의 제목학원</h1>
-          <span>{{ isLogin }}</span>
+      <div class="w-full">
+        <div class="relative w-full">
+          <span class="text-xs font-medium">{{ date }}</span>
+          <h1 class="text-xl font-bold">오늘의 제목학원</h1>
+          <div class="absolute right-0 top-0 flex flex-row items-center bg-zz-p p-1 rounded-md">
+            <button class="text-xs text-white">역대 제목학원</button>
+            <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
+          </div>
         </div>
-        <button>역대 제목학원</button>
         <!-- 짤 -->
         <div><img src="../assets/logo.png" alt="짤" /></div>
       </div>
 
       <!-- TOP 5 -->
-      <div>
-        <ol>
-          <li>
-            <button>
-              <span> 1위입니다 </span>
-            </button>
-            <font-awesome-icon icon="fa-regular fa-heart" />
-          </li>
-        </ol>
-      </div>
       <!-- 댓글 -->
+      <comment-list></comment-list>
       <div></div>
     </div>
   </div>
@@ -34,19 +27,17 @@
 <script>
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
-import { computed } from '@vue/runtime-core';
+import CommentList from '../components/TitleCompetition/CommentList.vue';
+
 export default {
-  components: { OnlySmallLogoTopNav },
+  components: { OnlySmallLogoTopNav, CommentList },
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
-    // const isLogin = store.state.useStore.isLogin;
-    // state는 moduleName으로 쪼개서 들어간다.
-    const date = computed(() => store.state.titleCompetitionStore.date);
-    const isLogin = computed(() => store.state.userStore.isLogin);
+    const date = store.state.titleCompetitionStore.date;
+
     return {
       date,
-      isLogin,
     };
   },
 };
