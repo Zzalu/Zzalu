@@ -55,7 +55,7 @@ public class Comment {
     private TitleHakwon titleHakwon;
 
 
-    @OneToMany(mappedBy = "parentComment", orphanRemoval = true)
+    @OneToMany(mappedBy = "parentComment", orphanRemoval = true)  //자식도 삭제
     private List<ReplyComment> replyCommentList = new ArrayList<>();
 
     //좋아요 개수

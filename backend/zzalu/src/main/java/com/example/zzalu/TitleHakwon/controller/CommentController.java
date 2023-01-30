@@ -61,7 +61,7 @@ public class CommentController {
      * Cursor 기반 페이징
      */
 
-    @GetMapping()
+    @GetMapping(value = "/reply")
     public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@RequestParam Long lastCommentId, @RequestParam Long parentCommentId ,@RequestParam int size){
 
         List<ReplyCommentResponse> replyCommentResponseList = commentService.getReplyCommentList(lastCommentId,parentCommentId,size);
@@ -92,13 +92,20 @@ public class CommentController {
      * 대댓글  삭제
      */
     @DeleteMapping
-    public  ResponseEntity<String> deleteComment(Long commentId){
+    public  ResponseEntity<String> deleteComment(@RequestParam Long commentId){
+        System.out.println(commentId);
+
+        if(commentService.deleteComment(commentId)==1){
+
+            return new ResponseEntity<>("삭제완료",HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>("삭제 불가",HttpStatus.NO_CONTENT);
+        }
 
 
-        return null;
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/reply")
     public  ResponseEntity<String> deleteReplyComment(Long replyCommentId){
         return null;
     }

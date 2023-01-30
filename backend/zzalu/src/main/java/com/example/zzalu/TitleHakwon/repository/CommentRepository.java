@@ -11,4 +11,6 @@ public interface CommentRepository extends JpaRepository<Comment, String> {
 
     Comment findById(Long id);
     Page<Comment> findByIdLessThanAndTitleHakwonIdOrderByIdDesc(Long lastCommentId, Long titleHackwonId , PageRequest pageRequest);
+
+    void deleteById (Long id);
 }

@@ -41,7 +41,7 @@ public class CommentResponse {
         //삭제된 댓글이라면 삭제 된 댓글이라고 알려준다.
         return comment.getIsDeleted() == DeleteCommentStatus.Y ?
                 new CommentResponse(comment.getId(), "삭제된 댓글입니다.", null, null,0,0) :
-                new CommentResponse(comment.getId(), comment.getCotent(), comment.getMember().getMemberId(), comment.getMember().getNickName(),0,comment.getLikeNum());
+                new CommentResponse(comment.getId(), comment.getCotent(), comment.getMember().getMemberId(), comment.getMember().getNickName(),comment.getReplyCommentList().size(),comment.getLikeNum());
     }
 
     public static List<CommentResponse> convertCommentToDtoList(List<Comment> commentList) {

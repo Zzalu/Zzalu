@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import com.example.zzalu.TitleHakwon.dto.CommentRequest;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @RequiredArgsConstructor  //얘가 자동으로 생성자 주입해줌
@@ -101,6 +103,38 @@ public class CommentService {
     public Page<ReplyComment> fetchReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
         PageRequest pageRequest = PageRequest.of(0, size);
         return  replyCommentRepository.findByIdLessThanAndParentCommentIdOrderByIdDesc(lastReplyCommentId,parentCommentId,pageRequest);
+    }
+
+    /**
+     * 댓글 수정
+     * 이 댓글을 작성한 사용자인지 아닌지 판단하게끔 백에서 해줘야하나?
+     */
+
+
+    /**
+     * 대댓글 수정
+     */
+
+
+
+    /**
+     * 댓글 삭제
+     */
+    @Transactional
+    public int deleteComment (Long id){
+         commentRepository.deleteById(id);
+        return 1;
+
+    }
+
+
+    /**
+     * 대댓글 삭제
+     */
+
+    public int  deleteReplyCommnete(Long id){
+        ReplyComment comment = replyCommentRepository.deleteById(id);
+        return 1;
     }
 
 }
