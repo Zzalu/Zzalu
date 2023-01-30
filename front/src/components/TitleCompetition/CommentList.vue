@@ -16,7 +16,7 @@ export default {
   setup() {
     const comments = [
       {
-        profile_image: 'logo',
+        profile_image: 'profile.jpg',
         nickname: '내가 1등',
         content: '1등의 댓글이야',
         time: '13시간 전',
@@ -24,7 +24,7 @@ export default {
         like_cnt: 231,
       },
       {
-        profile_image: 'logo',
+        profile_image: 'profile.jpg',
         nickname: '내가 2등',
         content: '2등의 댓글이야',
         time: '13시간 전',

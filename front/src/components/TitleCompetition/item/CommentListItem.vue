@@ -1,15 +1,29 @@
 <template>
   <li>
     <div>
-      <!-- <img src="../../../assets/logo.png" alt="프로필" /> -->
-      <img :src="require(`@/assets/${profile_image}.png`)" alt="프로필 이미지" />
-      <p>{{ nickname }}</p>
-      <p>{{ time }}</p>
-      <p>{{ content }}</p>
-      <div>
-        <button>답글쓰기</button>
-        <button v-if="reply_cnt > 0">{{ reply_cnt }}개의 답글보기</button>
-        <button>{{ like_cnt }}<font-awesome-icon icon="fa-regular fa-heart" /></button>
+      <div class="flex items-center ju">
+        <div class="w-3 h-3 rounded-full mr-2">
+          <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
+        </div>
+        <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
+        <p class="text-xs">{{ time }}</p>
+      </div>
+      <p class="text-base">{{ content }}</p>
+      <div class="flex flex-row">
+        <div class="w-full">
+          <button class="text-xs mr-2">답글쓰기</button>
+          <button v-if="reply_cnt > 0" class="text-xs">
+            <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
+            <span class="text-center">{{ reply_cnt }}개의 답글보기</span>
+          </button>
+        </div>
+
+        <div class="flex items-center text-zz-p">
+          <span class="text-xs mr-1">
+            {{ like_cnt }}
+          </span>
+          <button class="my-auto"><font-awesome-icon icon="fa-regular fa-heart" class="text-xs" /></button>
+        </div>
       </div>
     </div>
   </li>
