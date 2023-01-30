@@ -10,6 +10,8 @@ public class MemberDTO {
     private String username;
     private String userEmail;
     private String nickname;
+
+    private String profilePath;
     private boolean accountNonLocked;
     private boolean enabled;
     private boolean accountNonExpired;
@@ -20,6 +22,7 @@ public class MemberDTO {
         this.username = member.getUsername();
         this.userEmail = member.getUserEmail();
         this.nickname = member.getNickname();
+        this.profilePath = member.getProfilePath();
         this.accountNonLocked = member.isAccountNonLocked();
         this.enabled = member.isEnabled();
         this.accountNonExpired = member.isAccountNonExpired();

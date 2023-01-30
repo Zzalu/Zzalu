@@ -8,9 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,7 +18,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member implements UserDetails {
-    @Id
+    @Id @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, length = 100, unique = true)
@@ -52,6 +50,15 @@ public class Member implements UserDetails {
         add("USER");
     }};
 
+    //팔로잉
+    @Builder.Default
+    @ManyToMany
+    private Set<Member> following = new HashSet<>();
+
+    @Builder.Default
+    @ManyToMany(mappedBy = "following")
+    private Set<Member> follower = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -78,5 +85,19 @@ public class Member implements UserDetails {
     @Override
     public boolean isEnabled() {
         return this.enabled;
+    }
+
+    public void followMember(Member member){
+        this.getFollowing().add(member);
+        member.getFollower().add(this);
+    }
+
+    public void unfollowMember(Member yourMember) {
+        for (Member member : following) {
+            if (member == yourMember) {
+                this.getFollowing().remove(member);
+                member.getFollower().remove(this);
+            }
+        }
     }
 }

@@ -2,12 +2,13 @@ package com.samsamoo.zzalu.member.controller;
 
 import com.samsamoo.zzalu.auth.dto.LoginRequest;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
+import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.mail.dto.EmailResponse;
 import com.samsamoo.zzalu.mail.dto.EmailRequest;
 import com.samsamoo.zzalu.mail.service.MailService;
-import com.samsamoo.zzalu.member.dto.MemberDTO;
-import com.samsamoo.zzalu.member.dto.SignupRequest;
-import com.samsamoo.zzalu.member.dto.UniqueResponse;
+import com.samsamoo.zzalu.member.dto.*;
+import com.samsamoo.zzalu.member.exception.InvalidTokenException;
+import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,7 @@ public class MemberController {
     // 4. 회원가입 요청 (마무리) > (POST)
     private final MemberService memberService;
     private final MailService mailService;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/signup")
     public ResponseEntity<MemberDTO> signup(@Valid @RequestBody SignupRequest signupRequest) {
@@ -51,6 +53,15 @@ public class MemberController {
         UniqueResponse uniqueResponse = memberService.checkUniqueNickname(nickname);
         return ResponseEntity.ok().body(uniqueResponse);
     }
+    @GetMapping(value = "/my-info", params = "username")
+    public  ResponseEntity<MemberDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken, @RequestParam String username) {
+        String token = bearerToken.substring(7);
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new InvalidTokenException();
+        }
+        MemberDTO memberDTO = memberService.getMyProfile(token, username);
+        return ResponseEntity.ok().body(memberDTO);
+    }
 
     @PostMapping("/login")
     public  ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest) {
@@ -58,10 +69,14 @@ public class MemberController {
         return ResponseEntity.ok().body(tokenInfo);
     }
 
-    @GetMapping(value = "/my-info", params = "username")
-    public  ResponseEntity<MemberDTO> getMyProfile(@RequestHeader(value = "Authorization") String token, @RequestParam String username) {
-        MemberDTO memberDTO = memberService.getMyProfile(token, username);
-        return ResponseEntity.ok().body(memberDTO);
+    @PostMapping("/follow")
+    public  ResponseEntity<?> follow(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody FollowRequest followRequest) {
+        String token = bearerToken.substring(7);
+//        if (!jwtTokenProvider.validateToken(token)) {
+//            throw new InvalidTokenException();
+//        }
+        FollowResponse followResponse = memberService.follow(token, followRequest);
+        return ResponseEntity.ok().body(followResponse);
     }
 
 }

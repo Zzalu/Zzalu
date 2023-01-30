@@ -39,6 +39,4 @@ public class SignupRequest {
                 .nickname(nickname)
                 .build();
     }
-
-
 }

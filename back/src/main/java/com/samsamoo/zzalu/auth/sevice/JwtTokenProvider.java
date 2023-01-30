@@ -18,10 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Collection;
-import java.util.Optional;
+import java.nio.charset.Charset;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -41,6 +39,8 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
 
+//        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+
 
         // Access token 생성
         Date accessTokenExpiresIn = new Date(now + 86400000); // 유효기간 1일
@@ -49,13 +49,13 @@ public class JwtTokenProvider {
                 .claim("auth", authorities)
                 .claim("username", authentication.getName())
                 .setExpiration(accessTokenExpiresIn)
-                .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 방식
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes(Charset.forName("UTF-8"))) // 암호화 방식
                 .compact();
 
         // Refresh token 생성
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(now + 86400000))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, secretKey.getBytes())
                 .compact();
 
         return TokenInfo.builder()
@@ -87,20 +87,27 @@ public class JwtTokenProvider {
 
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
+        log.info("token = {}", token);
+//        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+
         try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey.getBytes())
-                    .parseClaimsJws(token).getBody();
+//            Jws<Claims> claims = Jwts.parser()
+//                    .setSigningKey(secretKey.getBytes())
+//                    .parseClaimsJws(token);
+//
+//            return !claims.getBody().getExpiration().before(new Date());
+            Jws claims = Jwts.parser().setSigningKey(secretKey.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token);
             return true;
 
         }catch(ExpiredJwtException e) {   //Token이 만료된 경우 Exception이 발생한다.
             log.error("Token Expired");
-            return false;
+
 
         }catch(JwtException e) {        //Token이 변조된 경우 Exception이 발생한다.
             log.error("Token Error");
-            return false;
+
         }
+        return false;
     }
     public Member getMember(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);

@@ -2,9 +2,7 @@ package com.samsamoo.zzalu.member.service;
 
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
-import com.samsamoo.zzalu.member.dto.MemberDTO;
-import com.samsamoo.zzalu.member.dto.SignupRequest;
-import com.samsamoo.zzalu.member.dto.UniqueResponse;
+import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.AuthorizationException;
 import com.samsamoo.zzalu.member.exception.InvalidPasswordException;
@@ -98,6 +96,17 @@ public class MemberService {
         log.info("여기까지 OK");
 
         return new MemberDTO(member);
+
+    }
+
+    public FollowResponse follow(String token, FollowRequest followRequest) {
+        Member me = jwtTokenProvider.getMember(token);
+        Long yourId = followRequest.getYourId();
+        Member you = memberRepository.findById(yourId)
+                .orElseThrow(() -> new MemberNotFoundException());
+        me.followMember(you);
+
+        return new FollowResponse(me.getId(), yourId);
 
     }
 }
