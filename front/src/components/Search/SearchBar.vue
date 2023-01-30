@@ -18,7 +18,6 @@ export default {
 
 <style scoped lang="postcss">
 .navbar-main {
-  
   @apply h-nav-height fixed inset-x-0 top-24 flex items-center justify-center;
 }
 .navbar-input-box {

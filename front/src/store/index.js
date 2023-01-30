@@ -10,7 +10,7 @@ const store = new Vuex.Store({
     // 키 : 값 형태로 저장됨
     userStore,
     titleCompetitionStore,
-    searchModalStore
+    searchModalStore,
   },
 });
 export default store;

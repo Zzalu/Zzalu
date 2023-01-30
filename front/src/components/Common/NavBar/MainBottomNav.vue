@@ -12,7 +12,7 @@
         <span><font-awesome-icon icon="fa-regular fa-comment-dots" /></span>
       </li>
       <li class="nav_item"
-      @click="$store.commit('searchModalStore/open_modal')"
+      @click="open_modal"
       >
         <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
       </li>
@@ -27,9 +27,20 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
 
 export default {
   name: 'MainBottomNavBar',
+  setup() {
+    const store = useStore();
+
+    const open_modal = () => {
+      store.commit("searchModalStore/open_search_modal");
+    };
+    return {
+      open_modal,
+    };
+  },
 };
 </script>
 

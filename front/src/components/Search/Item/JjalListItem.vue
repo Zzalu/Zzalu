@@ -14,7 +14,7 @@
           <font-awesome-icon 
           class="scrap-icon"
           icon="fa-regular fa-star" 
-          @click="보관함리스트열기뷰엑스로보낼거임"
+          @click="open_list_modal"
           />
         </div>
         <img
@@ -27,7 +27,7 @@
       <div @mousedown="LongClickStart" @mouseup="LongClickEnd">
         <img
           class="jjal-img"
-          src="../../QuietChat/QuietChatList/assets/rmfoTrnsk.gif"
+          src="../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg"
         />
       </div>
     </div>
@@ -35,8 +35,20 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+
 export default {
   name: "JjalListItem",
+  setup() {
+    const store = useStore();
+
+    const open_list_modal = () => {
+      store.commit("searchModalStore/open_list_modal")
+    };
+    return {
+      open_list_modal
+    }
+  },
   data() {
     return {
       start_time: null,
