@@ -6,6 +6,10 @@
   @apply w-72 mx-auto
 }
 
+.celebrate {
+  @apply w-56 mb-4
+}
+
 /* -------------------------------------------------------------- */
 /* 버튼 모음 */
 /* 이전으로 버튼- 중앙 */
@@ -59,6 +63,11 @@
 /* 에러페이지 중제목 */
 .error-sub-title {
   @apply text-lg font-spoq font-bold
+}
+
+
+.error-content-bold {
+  @apply font-spoq font-bold text-sm
 }
 
 /* 에러페이지 내용 */
@@ -142,4 +151,29 @@
 }
 
 
+/* ------------------------------- */
+/* 회원정보 수정 관련 */
 
+.settings-button {
+  @apply flex-auto bg-zz-light-input text-zz-light-p text-xl font-spoq my-1 py-2 px-16 h-16 text-left
+}
+
+.settings-icon-aligned-left {
+  @apply absolute mx-5 my-5 h-8 text-zz-light-p
+}
+
+.settings-toggle-right {
+  @apply absolute right-6 mx-5 my-2 h-14 text-zz-light-p
+}
+
+.settings-right-letter-off {
+  top: 17.65rem;
+  right: 1.75rem;
+  @apply absolute mx-6 text-xs font-spoq text-zz-light-p font-bold
+}
+
+/* .settings-right-letter-on {
+  top: 17.65rem;
+  right:3.25rem;
+  @apply absolute mx-6 text-xs font-spoq text-white font-bold
+} */

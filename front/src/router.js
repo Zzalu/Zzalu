@@ -5,6 +5,7 @@ import SignUpView from "./views/Accounts/SignUpView";
 import LoginView from "./views/Accounts/LoginView";
 import FindIdView from "./views/Accounts/FindIdView";
 import ResetPasswordView from "./views/Accounts/ResetPasswordView";
+import AccountDeleteView from './views/Accounts/AccountDeleteView'
 // QUIET CHAT
 import ChatListView from "./views/QuietChat/ChatListView";
 import MakeChatView from "./views/QuietChat/MakeChatView";
@@ -16,7 +17,9 @@ import LoginRequiredView from "./views/Error/LoginRequiredView";
 // MAIN
 import MainView from "./views/MainView";
 // PROFILE
-import ProfileView from "./views/ProfileView";
+import ProfileView from "./views/Profile/ProfileView";
+import UserSettingsView from "./views/Profile/UserSettingsView";
+import EditProfileView from "./views/Profile/EditProfileView";
 // TITLE COMPETITION
 import TitleCompetitionView from "./views/TitleCompetitionView";
 // ZZAL DETAIL
@@ -51,6 +54,11 @@ const routes = [
     path: "/reset-password",
     name: "reset-password",
     component: ResetPasswordView,
+  },
+  {
+    path: "/account-delete",
+    name: "account-delete",
+    component: AccountDeleteView,
   },
   // QUIET CHAT
   {
@@ -90,10 +98,21 @@ const routes = [
     name: "main",
     component: MainView,
   },
+  // PROFILE
   {
     path: "/profile/:user_id",
     name: "profile",
     component: ProfileView,
+  },  
+  {
+    path: "/settings",
+    name: "settings",
+    component: UserSettingsView,
+  },
+  {
+    path: "/edit-profile",
+    name: "edit-profile",
+    component: EditProfileView,
   },
   {
     path: "/title-competition/:id",

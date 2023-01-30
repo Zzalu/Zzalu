@@ -2,7 +2,7 @@
   <h1 class="account-title mb-10" v-if="$route.name == 'signup'">Sign Up</h1>
   <div class="mt-20">
     <h2 class="find-id-input-title" v-if="$route.name == 'find-id'">아이디 찾기</h2>
-    <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
+    <font-awesome-icon icon="fa-solid fa-envelope" class='icon-aligned-left'/>
       <input
         type="text"
         class="account-input"
