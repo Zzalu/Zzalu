@@ -20,15 +20,13 @@ public class RedisPublisher {
     private final ChatRoomRepository chatRoomRepository;
 
     @KafkaListener(topics="exam", groupId = "foo")
-    public void kafkaPublish(String message) throws JsonProcessingException {
+    public void kafkaListener(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessage chatMessage = objectMapper.readValue(message, ChatMessage.class);
-        chatRoomRepository.getChatMessage((ChannelTopic) chatRoomRepository.getTopic(chatMessage.getRoomId()), chatMessage);
         redisTemplate.convertAndSend(((ChannelTopic) chatRoomRepository.getTopic(chatMessage.getRoomId())).getTopic(), chatMessage);
     }
 
     public void publish(ChannelTopic topic, ChatMessage message) {
-        chatRoomRepository.getChatMessage(topic, message);
         redisTemplate.convertAndSend(topic.getTopic(), message);
     }
 }

@@ -66,8 +66,9 @@ public class ChatRoomRepository {
         return chatRoom;
     }
 
-    public void getChatMessage(ChannelTopic topic, ChatMessage message) {
+    public void setChatMessage(ChatMessage message) {
         System.out.println("ChatRoomRepository - getChatMessage");
+        String topic = opsStringTopic.get(message.getRoomId());
         opsHashChatMessage.put(CHAT_MESSAGES, String.valueOf(topic), message);
     }
 
