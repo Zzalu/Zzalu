@@ -78,5 +78,12 @@ public class MemberController {
         FollowResponse followResponse = memberService.follow(token, followRequest);
         return ResponseEntity.ok().body(followResponse);
     }
+    // 프로필 반환
+    @PostMapping("/profile/{memberId}")
+    public  ResponseEntity<?> getProfile(@PathVariable Long memberId) {
+
+        MyProfileDTO myProfileDTO = memberService.getProfile(memberId);
+        return ResponseEntity.ok().body(myProfileDTO);
+    }
 
 }

@@ -104,9 +104,24 @@ public class MemberService {
         Long yourId = followRequest.getYourId();
         Member you = memberRepository.findById(yourId)
                 .orElseThrow(() -> new MemberNotFoundException());
+        log.info("me={}, you={}",me.getMemberId(), you.getMemberId());
         me.followMember(you);
+        memberRepository.save(me);
+        memberRepository.save(you);
 
-        return new FollowResponse(me.getId(), yourId);
+
+        return new FollowResponse(me.getMemberId(), yourId);
+
+    }
+
+    public MyProfileDTO getProfile(Long memberId) {
+        Member me = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException());
+        MyProfileDTO profile = new MyProfileDTO(me);
+        return profile;
+
+
+
 
     }
 }

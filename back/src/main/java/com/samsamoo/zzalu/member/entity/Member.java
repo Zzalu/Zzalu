@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.member.entity;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -17,10 +18,11 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class Member implements UserDetails {
-    @Id @Column(name = "MEMBER_ID")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long memberId;
     @Column(nullable = false, length = 100, unique = true)
     private String username; //아이디
     @Column(nullable = false, length = 100)
@@ -90,6 +92,9 @@ public class Member implements UserDetails {
     public void followMember(Member member){
         this.getFollowing().add(member);
         member.getFollower().add(this);
+//        log.info("youfollower = {}", member.getFollower());
+//        log.info("me = {}", this);
+
     }
 
     public void unfollowMember(Member yourMember) {
