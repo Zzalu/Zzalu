@@ -19,9 +19,20 @@
 
         <!-- TOP 5 -->
         <!-- 댓글 -->
+        <nav class="flex justify-between">
+          <div class="flex">
+            <h2 class="text-xl text-zz-p">댓글</h2>
+            <span class="text-base text-zz-p">({{ comment_count }})</span>
+          </div>
+          <div>
+            <button class="sort-text">인기순</button>
+            <button class="sort-text">최신순</button>
+            <button class="sort-text">과거순</button>
+          </div>
+        </nav>
         <comment-list></comment-list>
         <!-- 댓글 input -->
-        <input type="text" />
+        <input type="text" class="w-full" />
       </div>
     </div>
     <main-bottom-nav />
@@ -40,12 +51,17 @@ export default {
   setup() {
     const store = useStore();
     const date = store.state.titleCompetitionStore.date;
-
+    const comment_count = store.state.titleCompetitionStore.comment_count;
     return {
       date,
+      comment_count,
     };
   },
 };
 </script>
 
-<style></style>
+<style>
+.sort-text {
+  @apply text-xs text-zz-p mr-1;
+}
+</style>

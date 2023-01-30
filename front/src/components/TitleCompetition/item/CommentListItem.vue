@@ -6,7 +6,8 @@
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
-        <p class="text-xs">{{ time }}</p>
+        <p class="text-xs mr-1">{{ time }}</p>
+        <p v-if="modified" class="text-xs">(수정됨)</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row">
@@ -43,6 +44,7 @@ export default {
     const content = ref(props.comment.content);
     const reply_cnt = ref(props.comment.reply_cnt);
     const like_cnt = ref(props.comment.like_cnt);
+    const modified = ref(props.comment.modified);
 
     console.log(props);
 
@@ -53,6 +55,7 @@ export default {
       content,
       reply_cnt,
       like_cnt,
+      modified,
     };
   },
 };

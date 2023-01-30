@@ -21,6 +21,7 @@ export default {
         time: '13시간 전',
         reply_cnt: 1,
         like_cnt: 231,
+        modified: false,
       },
       {
         profile_image: 'profile.jpg',
@@ -29,6 +30,7 @@ export default {
         time: '13시간 전',
         reply_cnt: 0,
         like_cnt: 110,
+        modified: true,
       },
     ];
     return {

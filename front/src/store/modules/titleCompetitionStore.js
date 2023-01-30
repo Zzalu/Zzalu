@@ -1,7 +1,8 @@
 const titleCompetitionStore = {
   namespaced: true,
   state: () => ({
-    date: '11.11.11',
+    date: '23.01.30',
+    comment_count: '2',
   }),
   mutations: {},
   getters: {},
