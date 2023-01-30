@@ -1,11 +1,12 @@
 <template>
   <div class="text-center-container">
+    <!-- 500 -->
     <div class="error-title-container">
       <div class="error-title">500</div>
       <div class="sad-face">:(</div>
       <div class="resting-face">:|</div>
     </div>
-    <div class="error-sub-title">서비스 이용에 불편을 드려 죄송합니다.</div>
+    <div class="error-sub-title mt-72 ">서비스 이용에 불편을 드려 죄송합니다.</div>
     <div class="error-content">
       시스템 에러가 발생하여 해당 페이지를 표시할 수 없습니다.
     </div>

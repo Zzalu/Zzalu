@@ -4,7 +4,7 @@ import App from "./App"
 import SignUpView from "./views/Accounts/SignUpView";
 import LoginView from "./views/Accounts/LoginView";
 import FindIdView from "./views/Accounts/FindIdView";
-import ChangePasswordView from "./views/Accounts/ChangePasswordView";
+import ResetPasswordView from "./views/Accounts/ResetPasswordView";
 // QUIET CHAT
 import ChatListView from "./views/QuietChat/ChatListView";
 import MakeChatView from "./views/QuietChat/MakeChatView";
@@ -48,9 +48,9 @@ const routes = [
     component: FindIdView,
   },
   {
-    path: "/change-password",
-    name: "change-password",
-    component: ChangePasswordView,
+    path: "/reset-password",
+    name: "reset-password",
+    component: ResetPasswordView,
   },
   // QUIET CHAT
   {
