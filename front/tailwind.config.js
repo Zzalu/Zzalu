@@ -31,19 +31,18 @@ module.exports = {
       },
       spacing: {
         'nav-height': '3.2rem',
+        'divider-height': '0.5px',
       },
     },
     fontFamily: {
       carter: ['Carter', 'Carter-One'],
       spoq: ['Spoqa Han Sans Neo', 'sans-serif'],
       bhs: ['Black-Han-Sans', 'sans-serif'],
-      pop: ['Poppins', 'sans-serif']
+      pop: ['Poppins', 'sans-serif'],
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('@tailwindcss/line-clamp')],
 };

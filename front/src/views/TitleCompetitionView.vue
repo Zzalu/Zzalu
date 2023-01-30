@@ -1,55 +1,67 @@
 <template>
   <div>
     <only-small-logo-top-nav></only-small-logo-top-nav>
-    <div>
+    <div class="flex flex-col items-center">
       <!-- 오늘의 제목학원 header -->
-      <div>
-        <div>
-          <span>{{ date }}</span>
-          <h1>오늘의 제목학원</h1>
-          <span>{{ isLogin }}</span>
+      <div class="w-full">
+        <div class="relative w-full flex flex-col items-center">
+          <div>
+            <span class="text-xs font-medium">{{ date }}</span>
+            <h1 class="text-xl font-bold">오늘의 제목학원</h1>
+          </div>
+          <div class="absolute right-0 top-0 flex flex-row items-center bg-zz-p p-1 rounded-md">
+            <button class="text-xs text-white">역대 제목학원</button>
+            <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
+          </div>
+          <!-- 짤 -->
+          <div class="h-48"><img src="../assets/logo.png" alt="짤" /></div>
         </div>
-        <button>역대 제목학원</button>
-        <!-- 짤 -->
-        <div><img src="../assets/logo.png" alt="짤" /></div>
-      </div>
 
-      <!-- TOP 5 -->
-      <div>
-        <ol>
-          <li>
-            <button>
-              <span> 1위입니다 </span>
-            </button>
-            <font-awesome-icon icon="fa-regular fa-heart" />
-          </li>
-        </ol>
+        <!-- TOP 5 -->
+        <!-- 댓글 -->
+        <nav class="flex justify-between">
+          <div class="flex">
+            <h2 class="text-xl text-zz-p">댓글</h2>
+            <span class="text-base text-zz-p">({{ comment_count }})</span>
+          </div>
+          <div>
+            <button class="sort-text">인기순</button>
+            <button class="sort-text">최신순</button>
+            <button class="sort-text">과거순</button>
+          </div>
+        </nav>
+        <comment-list></comment-list>
+        <!-- 댓글 input -->
+        <input type="text" class="w-full" />
       </div>
-      <!-- 댓글 -->
-      <div></div>
     </div>
+    <main-bottom-nav />
   </div>
 </template>
 
 <script>
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
-import { computed } from '@vue/runtime-core';
+import CommentList from '../components/TitleCompetition/CommentList.vue';
+import MainBottomNav from '../components/Common/NavBar/MainBottomNav.vue';
+
 export default {
-  components: { OnlySmallLogoTopNav },
+  components: { OnlySmallLogoTopNav, CommentList, MainBottomNav },
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
-    // const isLogin = store.state.useStore.isLogin;
-    // state는 moduleName으로 쪼개서 들어간다.
-    const date = computed(() => store.state.titleCompetitionStore.date);
-    const isLogin = computed(() => store.state.userStore.isLogin);
+    const date = store.state.titleCompetitionStore.date;
+    const comment_count = store.state.titleCompetitionStore.comment_count;
     return {
       date,
-      isLogin,
+      comment_count,
     };
   },
 };
 </script>
 
-<style></style>
+<style>
+.sort-text {
+  @apply text-xs text-zz-p mr-1;
+}
+</style>
