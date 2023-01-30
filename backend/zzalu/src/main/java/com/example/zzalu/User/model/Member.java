@@ -1,7 +1,7 @@
 package com.example.zzalu.User.model;
 
 
-import com.example.zzalu.TitleHakwon.entity.Coment;
+import com.example.zzalu.TitleHakwon.entity.Comment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,11 +19,15 @@ public class Member  {
     @Column(name="MEMBER_ID")
     String memberId;
 
+    String nickName;
+
     String email;
+
+
     String password;
 
     @OneToMany (mappedBy = "member" ,cascade = CascadeType.ALL)
-    private List<Coment> coments = new ArrayList<>();
+    private List<Comment> coments = new ArrayList<>();
 
 
 }

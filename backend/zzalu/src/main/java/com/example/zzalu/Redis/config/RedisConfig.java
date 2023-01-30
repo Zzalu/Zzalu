@@ -1,7 +1,7 @@
 package com.example.zzalu.Redis.config;
 
 
-import com.example.zzalu.TitleHakwon.entity.Coment;
+import com.example.zzalu.TitleHakwon.entity.Comment;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +39,7 @@ public class RedisConfig {
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
        // redisTemplate.setValueSerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Coment.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Comment.class));
         return redisTemplate;
     }
 

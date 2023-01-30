@@ -1,9 +1,10 @@
 package com.example.zzalu.TitleHakwon.controller;
 
 
-import com.example.zzalu.TitleHakwon.repository.ComentRepository;
+import com.example.zzalu.TitleHakwon.entity.Comment;
+import com.example.zzalu.TitleHakwon.repository.CommentRepository;
 import com.example.zzalu.TitleHakwon.repository.TitleHackwonRepository;
-import com.example.zzalu.TitleHakwon.entity.Coment;
+import com.example.zzalu.TitleHakwon.entity.Comment;
 import com.example.zzalu.TitleHakwon.entity.TitleHakwon;
 import com.example.zzalu.amazonS3.upLoader.S3Uploader;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ public class TitleHakwonController {
     @Autowired
     TitleHackwonRepository titleHackwonDao;
     @Autowired
-    ComentRepository comentDao;
+    CommentRepository commentDao;
 
 
     //관리자가 제목학원을 등록합니다.
@@ -94,7 +95,7 @@ public class TitleHakwonController {
     }
 
     @PostMapping("/uploadComent")
-    public  ResponseEntity<String>   uploadComent(@RequestBody Coment titleHakwonComent) throws IOException{
+    public  ResponseEntity<String>   uploadComent(@RequestBody Comment titleHakwonComent) throws IOException{
 
 
 
@@ -109,7 +110,7 @@ public class TitleHakwonController {
 
 
           // titleHackwonDao.save(titleHakwon); //게시판 Dao
-           comentDao.save(titleHakwonComent);
+           commentDao.save(titleHakwonComent);
            //@
             return new ResponseEntity<String>("sucess", HttpStatus.OK);
 

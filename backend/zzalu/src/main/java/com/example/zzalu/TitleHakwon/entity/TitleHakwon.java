@@ -1,7 +1,7 @@
 package com.example.zzalu.TitleHakwon.entity;
 
 
-import com.example.zzalu.TitleHakwon.entity.Coment;
+import com.example.zzalu.TitleHakwon.entity.Comment;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -32,8 +32,9 @@ public class TitleHakwon  {
     private String zzulUrl;
 
 
-    @OneToMany (mappedBy = "titleHakwon",cascade = CascadeType.ALL)
-    private List<Coment> coments = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "titleHakwon", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
 
 
