@@ -5,6 +5,7 @@ import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.InvalidPasswordException;
+import com.samsamoo.zzalu.member.exception.InvalidTokenException;
 import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
 import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
@@ -61,6 +62,13 @@ public class MemberService {
         return new UniqueResponse(unique);
     }
 
+    // 토큰 검증 실패 시 에외 발생
+    private void checkToken(String token) {
+        if (!jwtTokenProvider.validateToken(token)) {
+            throw new InvalidTokenException();
+        }
+    }
+
 
     public TokenInfo login(String username, String password) {
         // username 없을 때 리턴
@@ -88,25 +96,20 @@ public class MemberService {
         return tokenInfo;
 
     }
-    public MemberDTO getMyProfile(String token, String username) {
+    public ProfileDTO getMyProfile(String token) {
+        // 토큰 검증
+        checkToken(token);
 
-        Member member = jwtTokenProvider.getMember(token);
-        log.info("여기까지 OK");
-
-        return new MemberDTO(member);
-
+        Member me = jwtTokenProvider.getMember(token);
+        ProfileDTO myProfile = new ProfileDTO(me);
+        return myProfile;
     }
 
 
-
-    public MyProfileDTO getProfile(Long memberId) {
-        Member me = memberRepository.findById(memberId)
+    public ProfileDTO getProfile(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException());
-        MyProfileDTO profile = new MyProfileDTO(me);
+        ProfileDTO profile = new ProfileDTO(member);
         return profile;
-
-
-
-
     }
 }

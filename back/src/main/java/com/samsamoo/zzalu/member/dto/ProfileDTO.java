@@ -1,9 +1,15 @@
 package com.samsamoo.zzalu.member.dto;
 
 import com.samsamoo.zzalu.member.entity.Member;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
+@Getter
+@Setter
+@RequiredArgsConstructor
 public class ProfileDTO {
     private Long id;
     private String username;
@@ -14,9 +20,7 @@ public class ProfileDTO {
     private int followingCnt;
     private int followerCnt;
 
-    private Boolean followState;
-
-    public ProfileDTO(Member member, Boolean isFollowing) {
+    public ProfileDTO(Member member) {
         this.id = member.getId();
         this.username = member.getUsername();
         this.userEmail = member.getUserEmail();
@@ -25,6 +29,5 @@ public class ProfileDTO {
         this.profilePath = member.getProfilePath();
         this.followingCnt = member.getFollowing().size();
         this.followerCnt = member.getFollower().size();
-        this.followState = isFollowing;
     }
 }

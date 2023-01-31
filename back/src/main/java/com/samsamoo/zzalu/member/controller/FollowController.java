@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.member.controller;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.dto.follow.FollowMemberDTO;
 import com.samsamoo.zzalu.member.dto.follow.FollowResponse;
+import com.samsamoo.zzalu.member.dto.follow.FollowStateResponse;
 import com.samsamoo.zzalu.member.dto.follow.UnfollowResponse;
 import com.samsamoo.zzalu.member.service.FollowService;
 import lombok.RequiredArgsConstructor;
@@ -55,4 +56,14 @@ public class FollowController {
 
         return ResponseEntity.ok().body(followerList);
     }
+
+    //--------------------------------------팔로우 여부 확인----------------------------------------
+    @GetMapping ("/follow-state/{memberId}")
+    public ResponseEntity<FollowStateResponse> getFollowState(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
+        String token = bearerToken.substring(7);
+        FollowStateResponse followState = followService.getFollowState(token, memberId);
+
+        return ResponseEntity.ok().body(followState);
+    }
+
 }

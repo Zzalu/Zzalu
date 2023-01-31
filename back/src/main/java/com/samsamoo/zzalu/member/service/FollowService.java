@@ -1,10 +1,7 @@
 package com.samsamoo.zzalu.member.service;
 
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
-import com.samsamoo.zzalu.member.dto.follow.FollowMemberDTO;
-import com.samsamoo.zzalu.member.dto.follow.FollowResponse;
-import com.samsamoo.zzalu.member.dto.follow.MyFollowMemberDTO;
-import com.samsamoo.zzalu.member.dto.follow.UnfollowResponse;
+import com.samsamoo.zzalu.member.dto.follow.*;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.FollowException;
 import com.samsamoo.zzalu.member.exception.InvalidTokenException;
@@ -153,5 +150,18 @@ public class FollowService {
             }
         }
         return followerList;
+    }
+
+    public FollowStateResponse getFollowState(String token, Long memberId) {
+        // 토큰 검증
+        checkToken(token);
+
+        // 팔로우 상태 확인
+        Member me = jwtTokenProvider.getMember(token);
+        Member you = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        Boolean followState = me.getFollowing().contains(you);
+        return new FollowStateResponse(me.getId(), you.getId(), followState);
     }
 }

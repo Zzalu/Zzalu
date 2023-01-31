@@ -7,11 +7,8 @@ import com.samsamoo.zzalu.mail.dto.EmailResponse;
 import com.samsamoo.zzalu.mail.dto.EmailRequest;
 import com.samsamoo.zzalu.mail.service.MailService;
 import com.samsamoo.zzalu.member.dto.*;
-import com.samsamoo.zzalu.member.exception.InvalidTokenException;
-import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,23 +66,18 @@ public class MemberController {
     }
 
     //--------------------------------------나의 프로필 확인-------------------------------------------
-    @GetMapping(value = "/my-info", params = "username")
-    public  ResponseEntity<MemberDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken, @RequestParam String username) {
+    @GetMapping(value = "/my-profile")
+    public  ResponseEntity<ProfileDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new InvalidTokenException();
-        }
-        MemberDTO memberDTO = memberService.getMyProfile(token, username);
-        return ResponseEntity.ok().body(memberDTO);
+        ProfileDTO myProfile = memberService.getMyProfile(token);
+        return ResponseEntity.ok().body(myProfile);
     }
-
 
     //--------------------------------------다른 사람 프로필 확인-------------------------------------------
     @GetMapping("/{memberId}")
-    public  ResponseEntity<?> getProfile(@PathVariable Long memberId) {
+    public  ResponseEntity<ProfileDTO> getProfile(@PathVariable Long memberId) {
 
-        MyProfileDTO myProfileDTO = memberService.getProfile(memberId);
-        return ResponseEntity.ok().body(myProfileDTO);
+        ProfileDTO profile = memberService.getProfile(memberId);
+        return ResponseEntity.ok().body(profile);
     }
-
 }
