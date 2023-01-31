@@ -18,9 +18,6 @@ public class MyProfileDTO {
     private String userEmail;
     private LocalDate enrollDate;
     private String profilePath;
-    //팔로잉, 팔로워
-//    private List<FollowingDTO> following;
-//    private List<FollowerDTO> follower;
     private int followingCnt;
     private int followerCnt;
 

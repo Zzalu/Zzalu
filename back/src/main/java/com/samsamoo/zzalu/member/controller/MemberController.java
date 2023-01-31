@@ -31,29 +31,44 @@ public class MemberController {
     private final MailService mailService;
     private final JwtTokenProvider jwtTokenProvider;
 
+    //--------------------------------------회원가입-------------------------------------------
     @PostMapping("/signup")
     public ResponseEntity<MemberDTO> signup(@Valid @RequestBody SignupRequest signupRequest) {
         MemberDTO memberDTO = memberService.signup(signupRequest);
         return ResponseEntity.created(URI.create("/members/" + memberDTO.getId())).body(memberDTO);
     }
 
+    //--------------------------------------이메일 인증-------------------------------------------
     @PostMapping("/signup/email")
     public ResponseEntity<EmailResponse> validateUniqueNickname(@RequestBody @Valid EmailRequest emailRequest) {
         EmailResponse emailResponse = mailService.sendMail(emailRequest.getUserEmail());
         return ResponseEntity.ok().body(emailResponse);
     }
 
+    //--------------------------------------아이디 중복 체크-------------------------------------------
     @GetMapping(value = "/signup/exists", params = "username")
     public ResponseEntity<UniqueResponse> validateUniqueUsername(@RequestParam String username) {
+        // username 유효성 검사.
+
         UniqueResponse uniqueResponse = memberService.checkUniqueUsername(username);
         return ResponseEntity.ok().body(uniqueResponse);
     }
 
+    //--------------------------------------닉네임 중복 체크-------------------------------------------
     @GetMapping(value = "/signup/exists", params = "nickname")
     public ResponseEntity<UniqueResponse> validateUniqueNickname(@RequestParam String nickname) {
         UniqueResponse uniqueResponse = memberService.checkUniqueNickname(nickname);
         return ResponseEntity.ok().body(uniqueResponse);
     }
+
+    //--------------------------------------로그인-------------------------------------------
+    @PostMapping("/login")
+    public  ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest) {
+        TokenInfo tokenInfo = memberService.login(loginRequest.getUsername(), loginRequest.getPassword());
+        return ResponseEntity.ok().body(tokenInfo);
+    }
+
+    //--------------------------------------나의 프로필 확인-------------------------------------------
     @GetMapping(value = "/my-info", params = "username")
     public  ResponseEntity<MemberDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken, @RequestParam String username) {
         String token = bearerToken.substring(7);
@@ -64,14 +79,8 @@ public class MemberController {
         return ResponseEntity.ok().body(memberDTO);
     }
 
-    @PostMapping("/login")
-    public  ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest) {
-        TokenInfo tokenInfo = memberService.login(loginRequest.getUsername(), loginRequest.getPassword());
-        return ResponseEntity.ok().body(tokenInfo);
-    }
 
-
-    // 프로필 반환
+    //--------------------------------------다른 사람 프로필 확인-------------------------------------------
     @GetMapping("/{memberId}")
     public  ResponseEntity<?> getProfile(@PathVariable Long memberId) {
 

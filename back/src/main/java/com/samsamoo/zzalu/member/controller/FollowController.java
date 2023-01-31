@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -42,7 +43,16 @@ public class FollowController {
     @GetMapping ("/following/{memberId}")
     public ResponseEntity<?> getFollowingList(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
         String token = bearerToken.substring(7);
-        List<?> followingDTO = followService.getFollowingList(token, memberId);
-        return ResponseEntity.ok().body(followingDTO);
+        List<Object> followingList = followService.getFollowingList(token, memberId);
+        return ResponseEntity.ok().body(followingList);
+    }
+
+    //--------------------------------------팔로워 리스트 읽기--------------------------------------
+    @GetMapping ("/follower/{memberId}")
+    public ResponseEntity<?> getFollowerList(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
+        String token = bearerToken.substring(7);
+        List<Object> followerList = followService.getFollowerList(token, memberId);
+
+        return ResponseEntity.ok().body(followerList);
     }
 }
