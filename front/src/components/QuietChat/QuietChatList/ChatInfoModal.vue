@@ -10,7 +10,7 @@
     </div>
     <div class="img-container">
       <img
-        src="../../QuietChat/QuietChatList/assets/nyang.gif"
+        src="../../QuietChat/QuietChatList/assets/9_16img.jpg"
         class="modal-img"
       />
     </div>

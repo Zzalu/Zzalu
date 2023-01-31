@@ -99,6 +99,8 @@ export default {
   font-size: 0.625rem;
   @apply text-zz-error font-spoq h-4 line-clamp-1;
 }
+
+/* 해시태그 */
 .hashtag {
   @apply flex flex-wrap;
 }

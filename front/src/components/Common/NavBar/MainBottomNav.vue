@@ -1,6 +1,6 @@
 <template>
   <!-- 로그인 후 nav -->
-  <div class="h-nav-height fixed box-border inset-x-0 bottom-0 border-t-2 border-zz-light-div">
+  <div class="h-nav-height fixed box-border inset-x-0 bottom-0 border-t-2 border-zz-light-div z-50">
     <ul class="nav_list">
       <li class="nav_item">
         <span>
@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 span {
   display: inline-block;
 }

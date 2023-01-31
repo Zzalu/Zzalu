@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="body"
+    v-if="check_search_modal"
     @click="close_modal"
     ></div>
     <OnlyBigLogoTopNav/>
