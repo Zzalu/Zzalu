@@ -24,7 +24,7 @@ export default {
         size: 1,
       });
     });
-    const comments = store.state.titleCompetitionStore.comments;
+    let comments = store.state.titleCompetitionStore.comments;
 
     return {
       comments,

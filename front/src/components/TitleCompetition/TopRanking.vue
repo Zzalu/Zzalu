@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: 'CommentRankings',
+  name: 'TopRanking',
   setup() {
     const rank = 1;
     const comment_content = '댓글 내용입니다';
