@@ -9,33 +9,23 @@
 
 <script>
 import CommentListItem from './item/CommentListItem.vue';
+import { useStore } from 'vuex';
+import { onBeforeMount } from '@vue/runtime-core';
+
 export default {
   components: { CommentListItem },
   name: 'CommentList',
   setup() {
-    const comments = [
-      {
-        comment_id: '1',
-        member_id: 'memberid',
-        profile_image: 'profile.jpg',
-        nickname: '내가 1등',
-        content: '1등의 댓글이야',
-        time: '13시간 전',
-        reply_cnt: 1,
-        like_cnt: 231,
-        modified: false,
-      },
-      {
-        comment_id: '2',
-        profile_image: 'profile.jpg',
-        nickname: '내가 2등',
-        content: '2등의 댓글이야',
-        time: '13시간 전',
-        reply_cnt: 0,
-        like_cnt: 110,
-        modified: true,
-      },
-    ];
+    const store = useStore();
+    onBeforeMount(() => {
+      store.dispatch('titleCompetitionStore/getCommentList', {
+        lastCommentId: Number.MAX_SAFE_INTEGER,
+        titleHakwonId: 1,
+        size: 1,
+      });
+    });
+    const comments = store.state.titleCompetitionStore.comments;
+
     return {
       comments,
     };
