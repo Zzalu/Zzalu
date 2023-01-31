@@ -54,11 +54,11 @@ public class Member implements UserDetails {
     //팔로잉
     @Builder.Default
     @ManyToMany
-    private Set<Member> following = new HashSet<>();
+    private List<Member> following = new ArrayList<>();
 
     @Builder.Default
     @ManyToMany(mappedBy = "following")
-    private Set<Member> follower = new HashSet<>();
+    private List<Member> follower = new ArrayList<>();
 
 
     @Override
@@ -89,8 +89,11 @@ public class Member implements UserDetails {
     }
 
     public void followMember(Member member){
-        this.getFollowing().add(member);
-        member.getFollower().add(this);
+        List<Member> myFollowings = this.getFollowing();
+        if (!myFollowings.contains(member)) {
+            this.getFollowing().add(0, member);
+            member.getFollower().add(0, this);
+        }
     }
 
     public void unfollowMember(Member you) {
@@ -104,7 +107,6 @@ public class Member implements UserDetails {
             Member member = yourItr.next();
             if (member.equals(this)) {
                 yourItr.remove();
-
             }
         }
     }

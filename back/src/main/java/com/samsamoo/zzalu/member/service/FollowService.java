@@ -73,13 +73,13 @@ public class FollowService {
                 .orElseThrow(() -> new MemberNotFoundException());
 
         // 내가 팔로잉하고 있는 맴버들 불러오기
-        LinkedHashSet<Member> targetFollowings = (LinkedHashSet<Member>) target.getFollowing();
+        List<Member> targetFollowings =  target.getFollowing();
 
         List<Object> followingList = new ArrayList<>();
 
         // 둘이 일치할 경우 > MyFollowMemberDTO 사용
         if(me.equals(target)) {
-            for (Iterator<Member> itr = targetFollowings.iterator(); itr.hasNext(); ) {
+            for (Iterator<Member> itr = targetFollowings.iterator(); itr.hasNext();) {
                 Member entity = itr.next();
                 // entity를 dto로 변환
                 MyFollowMemberDTO dto = new MyFollowMemberDTO(entity);
@@ -91,7 +91,7 @@ public class FollowService {
             for (Iterator<Member> itr = targetFollowings.iterator(); itr.hasNext();) {
                 Member entity = itr.next();
                 // 내가 팔로우 하고 있는지 여부를 넣어줘야 한다.
-                Set<Member> followers = entity.getFollower();
+                List<Member> followers = entity.getFollower();
                 Boolean isFollowing = followers.contains(me);
                 // entity를 dto로 변환
                 FollowMemberDTO dto = new FollowMemberDTO(entity, isFollowing);
