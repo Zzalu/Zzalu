@@ -14,7 +14,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/coment")
+@RequestMapping("/comment")
+@CrossOrigin("*")
 public class CommentController {
 
     private final CommentService commentService;
@@ -73,12 +74,23 @@ public class CommentController {
      * [UPDATE]
      * 댓글 수정
      */
+    @PutMapping()
+    public ResponseEntity<String> updateComment (@RequestParam Long id , @RequestBody CommentRequest commentRequest){
+        commentService.updateComment(id,commentRequest);
+        return new ResponseEntity<>("댓글 변경완료",HttpStatus.OK);
+    }
 
 
     /**
      * [UPDATE]
      * 대댓글  수정
      */
+
+    @PutMapping(value = "/reply")
+    public  ResponseEntity<String> updateReplyComent (@RequestParam Long id , @RequestBody ReplyCommentRequest replyCommentRequest){
+        commentService.updateReplyComment(id,replyCommentRequest);
+        return new ResponseEntity<>("대댓글 변경완료",HttpStatus.OK);
+    }
 
 
     /**
@@ -87,10 +99,6 @@ public class CommentController {
      */
 
 
-    /**
-     * [DELETE]
-     * 대댓글  삭제
-     */
     @DeleteMapping
     public  ResponseEntity<String> deleteComment(@RequestParam Long commentId){
         System.out.println(commentId);
@@ -105,9 +113,19 @@ public class CommentController {
 
     }
 
+
+    /**
+     * [DELETE]
+     * 대댓글  삭제
+     */
+
     @DeleteMapping(value = "/reply")
-    public  ResponseEntity<String> deleteReplyComment(Long replyCommentId){
-        return null;
+    public  ResponseEntity<String> deleteReplyComment(@RequestParam Long replyCommentId){
+
+
+       commentService.deleteReplyCommnete(replyCommentId);
+        return new ResponseEntity<>("삭제완료",HttpStatus.OK);
+
     }
 
 }

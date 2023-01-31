@@ -10,14 +10,18 @@ import com.example.zzalu.TitleHakwon.repository.CommentRepository;
 import com.example.zzalu.TitleHakwon.repository.ReplyCommentRepository;
 import com.example.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import com.example.zzalu.User.repository.MemberRepository;
+import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import com.example.zzalu.TitleHakwon.dto.CommentRequest;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor  //얘가 자동으로 생성자 주입해줌
 @Repository
@@ -37,6 +41,7 @@ public class CommentService {
                 .member(memberRepository.findMemberByMemberId(requestComment.getMemberId()))
                 .titleHakwon(titleHackwonRepository.findTitleHakwonById(requestComment.getTitleHakwonId()))
                 .cotent(requestComment.getContent())
+                .replyCommentList(new ArrayList<>())
                 .build();
 
 
@@ -62,6 +67,7 @@ public class CommentService {
                 .parentComment(commentRepository.findById(replyCommentRequest.getParentComentId()))
                 .build();
 
+        System.out.println(commentRepository.findById(replyCommentRequest.getParentComentId()).getId());
 
       replyCommentRepository.save(replyComment);
 
@@ -76,8 +82,13 @@ public class CommentService {
      */
 
     public List<CommentResponse> getCommentList (Long lastCommentId, Long titleHakwonId, int size){
+        
+        System.out.println(lastCommentId+"마지막아이디"+" "+size+"크기");
 
         Page<Comment> comments = fetchCommentPages(lastCommentId,titleHakwonId, size);
+
+        System.out.println(comments.getContent());
+
 
         return CommentResponse.convertCommentToDtoList(comments.getContent());
     }
@@ -109,13 +120,43 @@ public class CommentService {
      * 댓글 수정
      * 이 댓글을 작성한 사용자인지 아닌지 판단하게끔 백에서 해줘야하나?
      */
+    public void updateComment (Long id, CommentRequest commentRequest){
+
+       Comment comment = commentRepository.findById(id);
+
+
+        //수정하고자 하는 댓글이 존재할때만 수정한다.
+        if(comment!=null){
+
+            System.out.println("@@");
+            if(!StringUtils.isEmpty(commentRequest.getContent()) && !StringUtils.isEmpty(commentRequest.getMemberId())){
+                comment.setCotent(commentRequest.getContent());
+            }
+            System.out.println("수정 가능");
+            commentRepository.save(comment);
+        }
+
+    }
 
 
     /**
      * 대댓글 수정
      */
 
+  public void updateReplyComment (Long id  , ReplyCommentRequest replyCommentRequest){
 
+      ReplyComment replyComment = replyCommentRepository.findById(id);
+
+      if(replyComment!=null){
+          if(!StringUtils.isEmpty(replyCommentRequest.getContent())){
+              replyComment.setCotent(replyCommentRequest.getContent());
+          }
+          replyCommentRepository.save(replyComment);
+      }
+
+
+
+  }
 
     /**
      * 댓글 삭제
@@ -131,10 +172,10 @@ public class CommentService {
     /**
      * 대댓글 삭제
      */
+    @Transactional
+    public void  deleteReplyCommnete(Long id){
+        replyCommentRepository.deleteById(id);
 
-    public int  deleteReplyCommnete(Long id){
-        ReplyComment comment = replyCommentRepository.deleteById(id);
-        return 1;
     }
 
 }

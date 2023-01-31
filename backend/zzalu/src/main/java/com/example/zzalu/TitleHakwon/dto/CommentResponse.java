@@ -38,6 +38,9 @@ public class CommentResponse {
         this.likeNumber = likeNumber;
     }
     public static CommentResponse convertCommentToDto(Comment comment) {
+        if(comment.getReplyCommentList()==null){
+            System.out.println("리스트없음");
+        }
         //삭제된 댓글이라면 삭제 된 댓글이라고 알려준다.
         return comment.getIsDeleted() == DeleteCommentStatus.Y ?
                 new CommentResponse(comment.getId(), "삭제된 댓글입니다.", null, null,0,0) :
