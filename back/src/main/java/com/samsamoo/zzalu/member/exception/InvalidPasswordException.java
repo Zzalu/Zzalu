@@ -8,4 +8,7 @@ public class InvalidPasswordException extends BadRequestException {
     public InvalidPasswordException() {
         super(MESSAGE);
     }
+    public InvalidPasswordException(String message) {
+        super(message);
+    }
 }

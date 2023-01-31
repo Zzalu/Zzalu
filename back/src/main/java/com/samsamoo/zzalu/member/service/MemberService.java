@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Iterator;
+import java.util.List;
 
 
 @Service
@@ -71,10 +73,9 @@ public class MemberService {
         // username 없을 때 리턴
         Member selectedMember = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new MemberNotFoundException());
-        // password 틀림
-        if (!passwordEncoder.matches(password, selectedMember.getPassword())) {
-            throw new InvalidPasswordException();
-        }
+
+        checkPasswordMatch(selectedMember, password);
+
         // exception 안 났으면 토큰 발행
         // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
@@ -93,6 +94,14 @@ public class MemberService {
         return tokenInfo;
 
     }
+
+    private void checkPasswordMatch(Member member, String password) {
+        // password 틀림
+        if (!passwordEncoder.matches(password, member.getPassword())) {
+            throw new InvalidPasswordException("비밀번호가 다릅니다.");
+        }
+    }
+
     public ProfileDTO getMyProfile(String token) {
         // 토큰 검증
         checkToken(token);
@@ -115,7 +124,7 @@ public class MemberService {
         checkToken(token);
         // 닉네임 중복 체크
         if (!checkUniqueNickname(request.getNickname())) {
-            throw new WrongFormatException("닉네임이 중복입니다.");
+            throw new NotMatchException("닉네임이 중복입니다.");
         }
         // 토큰에서 Member 반환
         Member me = jwtTokenProvider.getMember(token);
@@ -123,5 +132,34 @@ public class MemberService {
         me.update(request);
         // Member 저장
         memberRepository.save(me);
+    }
+
+    @Transactional
+    public void deleteMember(String token, String rawPassword) {
+        checkToken(token);
+        Member me = jwtTokenProvider.getMember(token);
+
+        checkPasswordMatch(me, rawPassword);
+
+        // 나의 팔로잉 리스트의 유저(you)들의 follower에서 나를 삭제
+        List<Member> followings = me.getFollowing();
+        Iterator<Member> followingItr = followings.iterator();
+        while (followingItr.hasNext()) {
+            Member you = followingItr.next();
+            // 나를 삭제
+            you.getFollower().remove(me);
+            memberRepository.save(you);
+        }
+
+        // 나의 팔로우 리스트의 유저들의 following에서 나를 삭제
+        List<Member> followers = me.getFollower();
+        Iterator<Member> followerItr = followers.iterator();
+        while (followerItr.hasNext()) {
+            Member you = followerItr.next();
+            // 나를 삭제
+            you.getFollowing().remove(me);
+            memberRepository.save(you);
+        }
+        memberRepository.delete(me);
     }
 }

@@ -81,10 +81,17 @@ public class MemberController {
 
     //--------------------------------------회원 정보 수정-------------------------------------------
     @PatchMapping
-    public ResponseEntity updateMember (@RequestHeader(value = "Authorization") String bearerToken, @RequestBody UpdateMemberRequest request) {
+    public ResponseEntity updateMember(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody UpdateMemberRequest request) {
         String token = bearerToken.substring(7);
         memberService.updateMember(token, request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-    //--------------------------------------회원 정보 수정-------------------------------------------
+    //--------------------------------------회원 탈퇴-------------------------------------------
+    @DeleteMapping
+    public ResponseEntity deleteMember(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody PasswordDTO passwordDTO) {
+        String token = bearerToken.substring(7);
+        memberService.deleteMember(token, passwordDTO.getRawPassword());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

@@ -100,19 +100,11 @@ public class JwtTokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-//            Jws<Claims> claims = Jwts.parser()
-//                    .setSigningKey(secretKey.getBytes())
-//                    .parseClaimsJws(token);
-//
-//            return !claims.getBody().getExpiration().before(new Date());
-//            Jws claims = Jwts.parser().setSigningKey(secretKey.getBytes(Charset.forName("UTF-8"))).parseClaimsJws(token);
-//            return true;
 
-        }catch(ExpiredJwtException e) {   //Token이 만료된 경우 Exception이 발생한다.
+        }catch(ExpiredJwtException e) {   // Token이 만료된 경우 Exception이 발생한다.
             log.error("Token Expired");
 
-
-        }catch(JwtException e) {        //Token이 변조된 경우 Exception이 발생한다.
+        }catch(JwtException e) {        // Token이 변조된 경우 Exception이 발생한다.
             log.error("Token Error");
 
         }
