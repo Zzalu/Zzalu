@@ -7,5 +7,4 @@ import java.util.List;
 
 
 public interface GiphyGifRepository extends JpaRepository<GiphyGif, Long> {
-    List<GiphyGif> findAllByGifPath(String gifPath);
 }

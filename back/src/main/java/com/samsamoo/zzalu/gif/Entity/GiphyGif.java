@@ -15,6 +15,7 @@ import java.io.Serializable;
 public class GiphyGif {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="_ID")
     private Long id;
 
     @Column(name="GIF_PATH", nullable = false, unique = true)
