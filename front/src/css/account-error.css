@@ -10,6 +10,8 @@
   @apply w-56 mb-4
 }
 
+
+
 /* -------------------------------------------------------------- */
 /* 버튼 모음 */
 /* 이전으로 버튼- 중앙 */
@@ -177,3 +179,20 @@
   right:3.25rem;
   @apply absolute mx-6 text-xs font-spoq text-white font-bold
 } */
+
+/* --------------------------------------- */
+/* 해시태그 */
+
+.hashtag {
+  @apply bg-zz-s text-white font-spoq rounded-full px-4 mx-1 my-1
+}
+
+.hashtag-edit {
+  @apply absolute text-white border-2 border-zz-error rounded-full bg-zz-error
+}
+
+/* -------------------------------------------------- */
+/* 프로필 */
+.profile-title {
+  @apply text-zz-p font-bold font-spoq text-lg
+}

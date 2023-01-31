@@ -5,7 +5,8 @@ import SignUpView from "./views/Accounts/SignUpView";
 import LoginView from "./views/Accounts/LoginView";
 import FindIdView from "./views/Accounts/FindIdView";
 import ResetPasswordView from "./views/Accounts/ResetPasswordView";
-import AccountDeleteView from './views/Accounts/AccountDeleteView'
+import AccountDeleteView from './views/Accounts/AccountDeleteView';
+import ChangePasswordView from './views/Accounts/ChangePasswordView';
 // QUIET CHAT
 import ChatListView from "./views/QuietChat/ChatListView";
 import MakeChatView from "./views/QuietChat/MakeChatView";
@@ -60,6 +61,11 @@ const routes = [
     name: "account-delete",
     component: AccountDeleteView,
   },
+  {
+    path: "/change-password",
+    name: "change-password",
+    component: ChangePasswordView,
+  },
   // QUIET CHAT
   {
     path: "/chat/:chat_id",
@@ -100,7 +106,7 @@ const routes = [
   },
   // PROFILE
   {
-    path: "/profile/:user_id",
+    path: "/profile/",
     name: "profile",
     component: ProfileView,
   },  
@@ -120,7 +126,7 @@ const routes = [
     component: TitleCompetitionView,
   },
   {
-  path: "/zzal/:zzal_id",
+  path: "/zzal/",
   name: "zzal",
   component: ZzalDetailView,
   },
