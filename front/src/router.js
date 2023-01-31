@@ -21,6 +21,7 @@ import MainView from "./views/MainView";
 import ProfileView from "./views/Profile/ProfileView";
 import UserSettingsView from "./views/Profile/UserSettingsView";
 import EditProfileView from "./views/Profile/EditProfileView";
+import FollowView from "./views/Profile/FollowView";
 // TITLE COMPETITION
 import TitleCompetitionView from "./views/TitleCompetitionView";
 // ZZAL DETAIL
@@ -84,7 +85,11 @@ const routes = [
   },
   // ERROR
   {
-    path: "/error-404",
+    path: '/:pathMatch(.*)*',
+    redirect: '/error-404',
+  },
+  {
+    path:'/error-404',
     name: "error-404",
     component: Error404View,
   },
@@ -109,6 +114,11 @@ const routes = [
     path: "/profile/",
     name: "profile",
     component: ProfileView,
+  },  
+  {
+    path: "/profile/follow",
+    name: "follow",
+    component: FollowView,
   },  
   {
     path: "/settings",

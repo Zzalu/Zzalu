@@ -1,26 +1,40 @@
 <template>
   <!-- 로그인 후 nav -->
-  <div class="h-nav-height fixed box-border inset-x-0 bottom-0 border-t-2 border-zz-light-div z-50">
+  <div
+    class="
+      h-nav-height
+      fixed
+      box-border
+      inset-x-0
+      bottom-0
+      border-t-2 border-zz-light-div
+      z-50
+    "
+  >
     <ul class="nav_list">
       <li class="nav_item">
-        <span>
+        <router-link to="/main">
           <font-awesome-icon icon="fa-solid fa-house" />
-        </span>
-      </li>
-      <li class="nav_item"
-      >
-        <span><font-awesome-icon icon="fa-regular fa-comment-dots" /></span>
-      </li>
-      <li class="nav_item"
-      @click="open_modal"
-      >
-        <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
+        </router-link>
       </li>
       <li class="nav_item">
-        <span><font-awesome-icon icon="fa-regular fa-lightbulb" /> <i class="fa-solid fa-chevron-left"></i></span>
+        <router-link to="/chat-list">
+          <font-awesome-icon icon="fa-regular fa-comment-dots" />
+        </router-link>
+      </li>
+      <li class="nav_item" @click="open_modal">
+        <span class="search"
+          ><font-awesome-icon icon="fa-solid fa-magnifying-glass"
+        /></span>
       </li>
       <li class="nav_item">
-        <span><font-awesome-icon icon="fa-regular fa-user" /></span>
+        <router-link to="/title-competition">
+          <font-awesome-icon icon="fa-regular fa-lightbulb" />
+          <i class="fa-solid fa-chevron-left"></i
+        ></router-link>
+      </li>
+      <li class="nav_item">
+        <router-link to="/profile"><font-awesome-icon icon="fa-regular fa-user" /></router-link>
       </li>
     </ul>
   </div>
@@ -30,7 +44,7 @@
 import { useStore } from "vuex";
 
 export default {
-  name: 'MainBottomNavBar',
+  name: "MainBottomNavBar",
   setup() {
     const store = useStore();
 

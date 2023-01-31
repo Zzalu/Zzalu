@@ -5,7 +5,7 @@
   >
     <div class="flex items-center">
       <span class="line-clamp-1">계정이 없으신가요?</span>
-      <button class="text-zz-p text-xl ml-2"><p class="line-clamp-1">가입하기</p></button>
+      <router-link to="/signup" class="text-zz-p text-xl ml-2"><p class="line-clamp-1">가입하기</p></router-link>
     </div>
   </div>
 </template>
