@@ -1,9 +1,9 @@
 <template>
   <!-- < nav -->
   <div class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center">
-    <span class="inline-block absolute right-0 px-4">
+    <router-link to="/settings" class="inline-block absolute right-0 px-4">
       <font-awesome-icon icon="fa-solid fa-bars" class="text-2xl" />
-    </span>
+    </router-link>
   </div>
 </template>
 
