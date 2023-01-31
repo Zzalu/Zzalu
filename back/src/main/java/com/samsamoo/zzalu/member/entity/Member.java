@@ -18,11 +18,10 @@ import java.util.stream.Collectors;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Slf4j
 public class Member implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long memberId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     @Column(nullable = false, length = 100, unique = true)
     private String username; //아이디
     @Column(nullable = false, length = 100)
@@ -92,16 +91,20 @@ public class Member implements UserDetails {
     public void followMember(Member member){
         this.getFollowing().add(member);
         member.getFollower().add(this);
-//        log.info("youfollower = {}", member.getFollower());
-//        log.info("me = {}", this);
-
     }
 
-    public void unfollowMember(Member yourMember) {
-        for (Member member : following) {
-            if (member == yourMember) {
-                this.getFollowing().remove(member);
-                member.getFollower().remove(this);
+    public void unfollowMember(Member you) {
+        for(Iterator<Member> myItr = following.iterator(); myItr.hasNext();) {
+            Member member = myItr.next();
+            if (member.equals(you)) {
+                myItr.remove();
+            }
+        }
+        for(Iterator<Member> yourItr = you.getFollower().iterator(); yourItr.hasNext();) {
+            Member member = yourItr.next();
+            if (member.equals(this)) {
+                yourItr.remove();
+
             }
         }
     }

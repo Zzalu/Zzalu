@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.member.dto;
+package com.samsamoo.zzalu.member.dto.follow;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FollowResponse {
-    private Long myId;
-    private Long yourId;
+    private Long followerId;
+    private Long followingId;
 
 }

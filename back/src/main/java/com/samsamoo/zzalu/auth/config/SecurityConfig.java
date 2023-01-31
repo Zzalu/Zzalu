@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .antMatchers("/members/signup", "/members/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/reviews/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/members/signup/email").authenticated()
-//                .anyRequest().permitAll()
+                .anyRequest().permitAll()
 //                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()

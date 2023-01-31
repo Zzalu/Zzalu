@@ -25,7 +25,7 @@ public class MyProfileDTO {
     private int followerCnt;
 
     public MyProfileDTO(Member member) {
-        this.id = member.getMemberId();
+        this.id = member.getId();
         this.username = member.getUsername();
         this.userEmail = member.getUserEmail();
         this.nickname = member.getNickname();

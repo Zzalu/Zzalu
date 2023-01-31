@@ -11,6 +11,7 @@ import com.samsamoo.zzalu.member.exception.InvalidTokenException;
 import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,17 +70,9 @@ public class MemberController {
         return ResponseEntity.ok().body(tokenInfo);
     }
 
-    @PostMapping("/follow")
-    public  ResponseEntity<?> follow(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody FollowRequest followRequest) {
-        String token = bearerToken.substring(7);
-        if (!jwtTokenProvider.validateToken(token)) {
-            throw new InvalidTokenException();
-        }
-        FollowResponse followResponse = memberService.follow(token, followRequest);
-        return ResponseEntity.ok().body(followResponse);
-    }
+
     // 프로필 반환
-    @PostMapping("/profile/{memberId}")
+    @GetMapping("/{memberId}")
     public  ResponseEntity<?> getProfile(@PathVariable Long memberId) {
 
         MyProfileDTO myProfileDTO = memberService.getProfile(memberId);

@@ -18,7 +18,7 @@ public class MemberDTO {
 
 
     public MemberDTO(Member member) {
-        this.id = member.getMemberId();
+        this.id = member.getId();
         this.username = member.getUsername();
         this.userEmail = member.getUserEmail();
         this.nickname = member.getNickname();

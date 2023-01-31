@@ -24,7 +24,7 @@ public class SignupRequest {
     private String passwordConfirmation;
 
     @NotBlank(message = "닉네임을 입력해주세요.")
-    @Size(min = 3, max = 50, message = "닉네임는 3자 이상 50자 이하여야 합니다.")
+    @Size(min = 1, max = 10, message = "닉네임는 1자 이상 10자 이하여야 합니다.")
     private String nickname;
 
     @NotBlank(message = "이메일을 입력해주세요.")

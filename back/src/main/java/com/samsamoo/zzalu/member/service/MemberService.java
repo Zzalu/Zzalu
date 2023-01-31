@@ -4,7 +4,6 @@ import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.AuthorizationException;
 import com.samsamoo.zzalu.member.exception.InvalidPasswordException;
 import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
 import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
@@ -19,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Optional;
 
 
 @Service
@@ -99,20 +97,7 @@ public class MemberService {
 
     }
 
-    public FollowResponse follow(String token, FollowRequest followRequest) {
-        Member me = jwtTokenProvider.getMember(token);
-        Long yourId = followRequest.getYourId();
-        Member you = memberRepository.findById(yourId)
-                .orElseThrow(() -> new MemberNotFoundException());
-        log.info("me={}, you={}",me.getMemberId(), you.getMemberId());
-        me.followMember(you);
-        memberRepository.save(me);
-        memberRepository.save(you);
 
-
-        return new FollowResponse(me.getMemberId(), yourId);
-
-    }
 
     public MyProfileDTO getProfile(Long memberId) {
         Member me = memberRepository.findById(memberId)
