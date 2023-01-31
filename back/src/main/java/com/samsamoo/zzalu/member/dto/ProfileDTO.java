@@ -16,6 +16,7 @@ public class ProfileDTO {
     private String nickname;
     private String userEmail;
     private LocalDate enrollDate;
+    private String profileMessage;
     private String profilePath;
     private int followingCnt;
     private int followerCnt;
@@ -26,6 +27,7 @@ public class ProfileDTO {
         this.userEmail = member.getUserEmail();
         this.nickname = member.getNickname();
         this.enrollDate = LocalDate.from(member.getEnrollDate());
+        this.profileMessage = member.getProfileMessage();
         this.profilePath = member.getProfilePath();
         this.followingCnt = member.getFollowing().size();
         this.followerCnt = member.getFollower().size();

@@ -31,6 +31,8 @@ public class Member implements UserDetails {
     @Column(nullable = false, length = 100)
     private String nickname;
     @Builder.Default
+    private String profileMessage = null;
+    @Builder.Default
     private String profilePath = null;
     @Builder.Default
     private LocalDateTime enrollDate = LocalDateTime.now();
