@@ -8,6 +8,7 @@ import com.samsamoo.zzalu.member.dto.follow.UnfollowResponse;
 import com.samsamoo.zzalu.member.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,20 +25,20 @@ public class FollowController {
 
     //--------------------------------------팔로우-------------------------------------------
     @PostMapping("/follow/{memberId}")
-    public ResponseEntity<?> follow(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
+    public ResponseEntity<FollowResponse> follow(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
         String token = bearerToken.substring(7);
         log.info("bearerToken = {}", bearerToken);
         FollowResponse followResponse = followService.follow(token, memberId);
-        return ResponseEntity.ok().body(followResponse);
+        return new ResponseEntity<FollowResponse>(followResponse, HttpStatus.CREATED);
     }
 
     //--------------------------------------팔로우 취소-------------------------------------------
     @DeleteMapping ("/follow/{memberId}")
-    public ResponseEntity<?> unfollow(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
+    public ResponseEntity<UnfollowResponse> unfollow(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
         String token = bearerToken.substring(7);
         log.info("bearerToken = {}", bearerToken);
         UnfollowResponse unfollowResponse = followService.unfollow(token, memberId);
-        return ResponseEntity.ok().body(unfollowResponse);
+        return new ResponseEntity<UnfollowResponse>(unfollowResponse, HttpStatus.NO_CONTENT);
     }
 
     //--------------------------------------팔로잉 리스트 읽기--------------------------------------

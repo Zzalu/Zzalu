@@ -126,7 +126,7 @@ public class JwtTokenProvider {
         log.info("member = {}", member);
 
         return memberRepository.findByUsername(username)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException("로그인된 사용자를 찾을 수 없습니다."));
     }
 
     private Claims parseClaims(String accessToken) {

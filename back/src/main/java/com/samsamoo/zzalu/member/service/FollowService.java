@@ -27,7 +27,7 @@ public class FollowService {
         // 팔로우 과정
         Member me = jwtTokenProvider.getMember(token);
         Member you = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException("팔로우 대상을 찾을 수 없습니다."));
 
         // 자신 팔로우 막기
         checkSelfFollow(me, you);
@@ -47,7 +47,7 @@ public class FollowService {
         // 언 팔로우 과정
         Member me = jwtTokenProvider.getMember(token);
         Member you = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException());
+                .orElseThrow(() -> new MemberNotFoundException("언팔로우 대상을 찾을 수 없습니다."));
         // 자신 언 팔로우 막기
         checkSelfFollow(me, you);
 

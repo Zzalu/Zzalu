@@ -2,7 +2,6 @@ package com.samsamoo.zzalu.member.controller;
 
 import com.samsamoo.zzalu.auth.dto.LoginRequest;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.mail.dto.EmailResponse;
 import com.samsamoo.zzalu.mail.dto.EmailRequest;
 import com.samsamoo.zzalu.mail.service.MailService;
@@ -26,7 +25,6 @@ public class MemberController {
     // 4. 회원가입 요청 (마무리) > (POST)
     private final MemberService memberService;
     private final MailService mailService;
-    private final JwtTokenProvider jwtTokenProvider;
 
     //--------------------------------------회원가입-------------------------------------------
     @PostMapping("/signup")

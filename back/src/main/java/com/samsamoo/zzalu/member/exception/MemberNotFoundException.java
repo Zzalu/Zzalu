@@ -9,4 +9,7 @@ public class MemberNotFoundException extends NotFoundException {
     public MemberNotFoundException() {
         super(MESSAGE);
     }
+    public MemberNotFoundException(String message) {
+        super(message);
+    }
 }
