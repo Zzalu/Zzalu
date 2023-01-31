@@ -2,7 +2,6 @@
   <div>
     <div v-if="open_search_modal">
       <div :class="open_list_modal ? 'hide-modal-items' : null"></div>
-
       <div class="modal">
         <div class="modal-items">
           <SearchBar />
@@ -67,13 +66,13 @@ export default {
   @apply fixed inset-0 z-50 h-80 w-52 bg-white m-auto rounded-2xl border;
 }
 .modal {
-  @apply fixed top-20 inset-x-0 border bg-white h-screen border-t-2 rounded-t-2xl;
+  @apply fixed top-20 inset-x-0 border bg-white h-screen border-t-2 rounded-t-2xl z-10;
 }
 
 /* 보관함 모달창 외부 클릭범위 */
 .list-view-bg {
   opacity: 0.5;
-  @apply fixed inset-0 z-10;
+  @apply fixed inset-0 z-30;
 }
 /* 짤 리스트 */
 .modal-items {
@@ -82,6 +81,6 @@ export default {
 /* 보관함 선택시 어두워지는 범위 */
 .hide-modal-items {
   opacity: 0.3;
-  @apply flex flex-wrap fixed inset-x-0 top-20 h-full bg-black z-10 rounded-t-2xl;
+  @apply flex flex-wrap fixed inset-x-0 top-20 h-full bg-black z-30 rounded-t-2xl;
 }
 </style>
