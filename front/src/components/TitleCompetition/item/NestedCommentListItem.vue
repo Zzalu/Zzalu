@@ -15,7 +15,7 @@
           <button class="text-xs mr-2">답글쓰기</button>
           <button v-if="reply_cnt > 0" class="text-xs">
             <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
-            <span class="text-center" @click="nested_active = !nested_active">{{ reply_cnt }}개의 답글보기</span>
+            <span class="text-center">{{ reply_cnt }}개의 답글보기</span>
           </button>
         </div>
 
@@ -26,19 +26,13 @@
           <button class="my-auto"><font-awesome-icon icon="fa-regular fa-heart" class="text-xs" /></button>
         </div>
       </div>
-      <!-- 대댓글 -->
-      <div v-if="nested_active">
-        <nested-comment-list />
-      </div>
     </div>
   </li>
 </template>
 
 <script>
 import { ref } from '@vue/reactivity';
-import NestedCommentList from '../NestedCommentList.vue';
 export default {
-  components: { NestedCommentList },
   name: 'CommentListItem',
   props: {
     comment: Object,
@@ -51,7 +45,6 @@ export default {
     const reply_cnt = ref(props.comment.reply_cnt);
     const like_cnt = ref(props.comment.like_cnt);
     const modified = ref(props.comment.modified);
-    const nested_active = false;
 
     console.log(props);
 
@@ -63,7 +56,6 @@ export default {
       reply_cnt,
       like_cnt,
       modified,
-      nested_active,
     };
   },
 };

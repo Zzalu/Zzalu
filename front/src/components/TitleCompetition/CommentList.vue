@@ -1,6 +1,6 @@
 <template>
   <ol>
-    <li v-for="(comment, rank) in comments" :key="rank" class="mb-1">
+    <li v-for="comment in comments" :key="comment.comment_id" class="mb-1">
       <CommentListItem :comment="comment" />
       <span class="w-full h-divider-height bg-zz-light-div"></span>
     </li>
@@ -15,6 +15,8 @@ export default {
   setup() {
     const comments = [
       {
+        comment_id: '1',
+        member_id: 'memberid',
         profile_image: 'profile.jpg',
         nickname: '내가 1등',
         content: '1등의 댓글이야',
@@ -24,6 +26,7 @@ export default {
         modified: false,
       },
       {
+        comment_id: '2',
         profile_image: 'profile.jpg',
         nickname: '내가 2등',
         content: '2등의 댓글이야',
