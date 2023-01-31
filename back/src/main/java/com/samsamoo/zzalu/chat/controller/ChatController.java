@@ -29,6 +29,10 @@ public class ChatController {
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             chatRoomRepository.enterChatRoom(message.getRoomId());
             chatRoomRepository.findAllChatMessage(message.getRoomId());
+            List<ChatMessage> chatMessages = chatRoomRepository.findAllChatMessage(message.getRoomId());
+            for(ChatMessage cm : chatMessages) {
+                System.out.println(cm.getSender() + " : " + cm.getMessage());
+            }
 //            System.out.println("ChatController - if(ENTER) - findAllChatMessage : " + chatRoomRepository.findAllChatMessage(message.getRoomId()));
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
 

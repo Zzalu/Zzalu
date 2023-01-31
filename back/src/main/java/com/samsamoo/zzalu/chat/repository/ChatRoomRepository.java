@@ -6,6 +6,8 @@ import com.samsamoo.zzalu.chat.dto.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -48,14 +50,13 @@ public class ChatRoomRepository {
     }
 
     // Created 2023.01.27 by Hye Sung
-    public void findAllChatMessage(String id) {
+    @Cacheable(cacheNames = "ChatMessages", key = "#id + #id")
+    public List<ChatMessage> findAllChatMessage(String id) {
         System.out.println("ChatRoomRepository - findAllChatMessage : " + opsListChatMessage.size(id + id));
+        System.out.println("Cache 미적용");
         long size = opsListChatMessage.size(id + id);
         List<ChatMessage> chatMessages = opsListChatMessage.range(id + id, 0, size);
-        for(ChatMessage message : chatMessages) {
-            System.out.println("전 채팅 목록 출력 : " + message.getSender() + " : " + message.getMessage());
-        }
-        System.out.println(chatMessages);
+       return chatMessages;
     }
 
     public List<ChatRoom> findAllRoom() {
@@ -75,6 +76,8 @@ public class ChatRoomRepository {
         return chatRoom;
     }
 
+
+    @CacheEvict(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()", allEntries = true)
     public void setChatMessage(ChatMessage message) {
         System.out.println("ChatRoomRepository - getChatMessage");
         String topic = opsStringTopic.get(message.getRoomId());
