@@ -52,9 +52,12 @@ export default {
     const store = useStore();
     const date = store.state.titleCompetitionStore.date;
     const comment_count = store.state.titleCompetitionStore.comment_count;
+
+    const getCommentList = store.dispatch('titleCompetitionStore/getCommentList');
     return {
       date,
       comment_count,
+      getCommentList,
     };
   },
 };

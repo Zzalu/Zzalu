@@ -1,6 +1,6 @@
 <template>
   <ol>
-    <li v-for="(comment, rank) in comments" :key="rank" class="mb-1">
+    <li v-for="comment in comments" :key="comment.comment_id" class="mb-1">
       <CommentListItem :comment="comment" />
       <span class="w-full h-divider-height bg-zz-light-div"></span>
     </li>
@@ -9,30 +9,23 @@
 
 <script>
 import CommentListItem from './item/CommentListItem.vue';
+import { useStore } from 'vuex';
+import { onBeforeMount } from '@vue/runtime-core';
+
 export default {
   components: { CommentListItem },
   name: 'CommentList',
   setup() {
-    const comments = [
-      {
-        profile_image: 'profile.jpg',
-        nickname: '내가 1등',
-        content: '1등의 댓글이야',
-        time: '13시간 전',
-        reply_cnt: 1,
-        like_cnt: 231,
-        modified: false,
-      },
-      {
-        profile_image: 'profile.jpg',
-        nickname: '내가 2등',
-        content: '2등의 댓글이야',
-        time: '13시간 전',
-        reply_cnt: 0,
-        like_cnt: 110,
-        modified: true,
-      },
-    ];
+    const store = useStore();
+    onBeforeMount(() => {
+      store.dispatch('titleCompetitionStore/getCommentList', {
+        lastCommentId: Number.MAX_SAFE_INTEGER,
+        titleHakwonId: 1,
+        size: 1,
+      });
+    });
+    let comments = store.state.titleCompetitionStore.comments;
+
     return {
       comments,
     };
