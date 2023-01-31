@@ -4,10 +4,7 @@ import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.InvalidPasswordException;
-import com.samsamoo.zzalu.member.exception.InvalidTokenException;
-import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
-import com.samsamoo.zzalu.member.exception.PasswordConfirmationException;
+import com.samsamoo.zzalu.member.exception.*;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -52,14 +49,14 @@ public class MemberService {
             throw new PasswordConfirmationException();
         }
     }
-    public UniqueResponse checkUniqueUsername(String username) {
-        boolean unique = !memberRepository.existsMemberByUsername(username);
-        return new UniqueResponse(unique);
+    public Boolean checkUniqueUsername(String username) {
+        return !memberRepository.existsMemberByUsername(username);
+
     }
 
-    public UniqueResponse checkUniqueNickname(String nickname) {
-        boolean unique = !memberRepository.existsMemberByNickname(nickname);
-        return new UniqueResponse(unique);
+    public Boolean checkUniqueNickname(String nickname) {
+        return !memberRepository.existsMemberByNickname(nickname);
+
     }
 
     // 토큰 검증 실패 시 에외 발생
@@ -111,5 +108,20 @@ public class MemberService {
                 .orElseThrow(() -> new MemberNotFoundException());
         ProfileDTO profile = new ProfileDTO(member);
         return profile;
+    }
+
+    public void updateMember(String token, UpdateMemberRequest request) {
+        // 토큰 인증
+        checkToken(token);
+        // 닉네임 중복 체크
+        if (!checkUniqueNickname(request.getNickname())) {
+            throw new WrongFormatException("닉네임이 중복입니다.");
+        }
+        // 토큰에서 Member 반환
+        Member me = jwtTokenProvider.getMember(token);
+        // Member 수정
+        me.update(request);
+        // Member 저장
+        memberRepository.save(me);
     }
 }

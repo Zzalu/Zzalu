@@ -2,8 +2,8 @@ package com.samsamoo.zzalu.member.exception;
 
 import com.samsamoo.zzalu.advice.BadRequestException;
 
-public class FollowException extends BadRequestException {
-    public FollowException(String message) {
+public class WrongFormatException extends BadRequestException {
+    public WrongFormatException(String message) {
         super(message);
     }
 

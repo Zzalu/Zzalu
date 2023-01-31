@@ -3,7 +3,7 @@ package com.samsamoo.zzalu.member.service;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.dto.follow.*;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.FollowException;
+import com.samsamoo.zzalu.member.exception.WrongFormatException;
 import com.samsamoo.zzalu.member.exception.InvalidTokenException;
 import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
@@ -68,7 +68,7 @@ public class FollowService {
     // 자신을 팔로우, 언팔로우 요청 예외 발생
      private void checkSelfFollow(Member me, Member you) {
          if (me.equals(you)) {
-             throw new FollowException("자신을 팔로우하거나 언팔로우 할 수 없습니다.");
+             throw new WrongFormatException("자신을 팔로우하거나 언팔로우 할 수 없습니다.");
          }
     }
 

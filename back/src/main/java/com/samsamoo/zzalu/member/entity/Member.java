@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.member.entity;
 
+import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,7 +15,6 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -111,5 +111,11 @@ public class Member implements UserDetails {
                 yourItr.remove();
             }
         }
+    }
+
+    public void update(UpdateMemberRequest request) {
+        this.profilePath = request.getProfilePath();
+        this.nickname = request.getNickname();
+        this.profileMessage = request.getProfileMessage();
     }
 }

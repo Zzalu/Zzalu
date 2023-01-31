@@ -8,6 +8,7 @@ import com.samsamoo.zzalu.mail.service.MailService;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,31 +42,30 @@ public class MemberController {
     }
 
     //--------------------------------------아이디 중복 체크-------------------------------------------
-    @GetMapping(value = "/signup/exists", params = "username")
+    @GetMapping(value = "/exists", params = "username")
     public ResponseEntity<UniqueResponse> validateUniqueUsername(@RequestParam String username) {
         // username 유효성 검사.
-
-        UniqueResponse uniqueResponse = memberService.checkUniqueUsername(username);
-        return ResponseEntity.ok().body(uniqueResponse);
+        Boolean unique = memberService.checkUniqueUsername(username);
+        return ResponseEntity.ok().body(new UniqueResponse(unique));
     }
 
     //--------------------------------------닉네임 중복 체크-------------------------------------------
-    @GetMapping(value = "/signup/exists", params = "nickname")
+    @GetMapping(value = "/exists", params = "nickname")
     public ResponseEntity<UniqueResponse> validateUniqueNickname(@RequestParam String nickname) {
-        UniqueResponse uniqueResponse = memberService.checkUniqueNickname(nickname);
-        return ResponseEntity.ok().body(uniqueResponse);
+        Boolean unique = memberService.checkUniqueNickname(nickname);
+        return ResponseEntity.ok().body(new UniqueResponse(unique));
     }
 
     //--------------------------------------로그인-------------------------------------------
     @PostMapping("/login")
-    public  ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<TokenInfo> login(@RequestBody LoginRequest loginRequest) {
         TokenInfo tokenInfo = memberService.login(loginRequest.getUsername(), loginRequest.getPassword());
         return ResponseEntity.ok().body(tokenInfo);
     }
 
     //--------------------------------------나의 프로필 확인-------------------------------------------
     @GetMapping(value = "/my-profile")
-    public  ResponseEntity<ProfileDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
+    public ResponseEntity<ProfileDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
         ProfileDTO myProfile = memberService.getMyProfile(token);
         return ResponseEntity.ok().body(myProfile);
@@ -73,9 +73,18 @@ public class MemberController {
 
     //--------------------------------------다른 사람 프로필 확인-------------------------------------------
     @GetMapping("/{memberId}")
-    public  ResponseEntity<ProfileDTO> getProfile(@PathVariable Long memberId) {
+    public ResponseEntity<ProfileDTO> getProfile(@PathVariable Long memberId) {
 
         ProfileDTO profile = memberService.getProfile(memberId);
         return ResponseEntity.ok().body(profile);
     }
+
+    //--------------------------------------회원 정보 수정-------------------------------------------
+    @PatchMapping
+    public ResponseEntity updateMember (@RequestHeader(value = "Authorization") String bearerToken, @RequestBody UpdateMemberRequest request) {
+        String token = bearerToken.substring(7);
+        memberService.updateMember(token, request);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    //--------------------------------------회원 정보 수정-------------------------------------------
 }

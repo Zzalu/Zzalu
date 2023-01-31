@@ -24,12 +24,12 @@ public class FollowController {
     private final FollowService followService;
 
     //--------------------------------------팔로우-------------------------------------------
-    @PostMapping("/follow/{memberId}")
+    @PutMapping("/follow/{memberId}")
     public ResponseEntity<FollowResponse> follow(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long memberId) {
         String token = bearerToken.substring(7);
         log.info("bearerToken = {}", bearerToken);
         FollowResponse followResponse = followService.follow(token, memberId);
-        return new ResponseEntity<FollowResponse>(followResponse, HttpStatus.CREATED);
+        return new ResponseEntity<FollowResponse>(followResponse, HttpStatus.OK);
     }
 
     //--------------------------------------팔로우 취소-------------------------------------------
