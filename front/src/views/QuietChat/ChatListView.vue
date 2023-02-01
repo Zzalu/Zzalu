@@ -1,31 +1,18 @@
 <template>
   <div>
-    <ChatSearchTopNav/>
-    <div
-      v-if="open_chat_info"
-      class="bg-negative"
-      @click="open_chat_info = false"
-    ></div>
+    <ChatSearchTopNav />
+    <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
     <ChatFilter />
     <MakeChatButton />
     <div v-for="(datas, i) in data" :key="i">
-      <QuietChatList
-        :datas="datas"
-        @click="
-          open_chat_info = true;
-          open_chat_info_id = i;
-        "
-      />
-      <div v-if="open_chat_info">
-        <ChatInfoModal
-          :info_data="data[open_chat_info_id]"
-          @close-modal="open_chat_info = $event"
-        />
-      </div>
+      <QuietChatList :datas="datas" @click="chat_data(i)" />
+    </div>
+    <div v-if="open_chat_info">
+      <ChatInfoModal :info_data="data[open_chat_id]" />
     </div>
     <div class="h-4"></div>
     <div v-if="tmpisLogin">
-      <MainBottomNav/>
+      <MainBottomNav />
     </div>
   </div>
 </template>
@@ -36,17 +23,34 @@ import MakeChatButton from "../../components/QuietChat/QuietChatList/MakeChatBut
 import QuietChatList from "../../components/QuietChat/QuietChatList/QuietChatList.vue";
 import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModal";
 import QuietChatData from "./QuietChatListData.js";
-import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav"
-import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
+import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
+import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "ChatListView",
-  data() {
+  setup() {
+    const store = useStore();
+
+    const open_chat_info = computed(
+      () => store.state.quietChatStore.open_chat_info
+    );
+    const open_chat_id = computed(
+      () => store.state.quietChatStore.open_chat_id
+    );
+    const send_chat_data = (e) => {
+      store.commit("quietChatStore/open_chat_info");
+      store.commit("quietChatStore/open_chat_id", e);
+    };
+    const close_chat_info = () => {
+      store.commit("quietChatStore/close_chat_info");
+    };
     return {
-      data: QuietChatData,
-      open_chat_info: false,
-      open_chat_info_id: null,
-      tmpisLogin : true,
+      open_chat_info,
+      open_chat_id,
+      send_chat_data,
+      close_chat_info,
     };
   },
   components: {
@@ -55,7 +59,30 @@ export default {
     QuietChatList,
     ChatInfoModal,
     ChatSearchTopNav,
-    MainBottomNav
+    MainBottomNav,
+  },
+  data() {
+    return {
+      data: QuietChatData,
+      tmpisLogin: true,
+    };
+  },
+  methods: {
+    chat_data(i) {
+      this.send_chat_data(i);
+    },
+    close_chat() {
+      this.close_chat_info();
+    },
+  },
+  watch: {
+    open_chat_info: function (value) {
+      if (value == true) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.removeProperty("overflow");
+      }
+    },
   },
 };
 </script>

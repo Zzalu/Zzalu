@@ -2,7 +2,7 @@
   <div class="modal">
     <div class="modal-title-box">
       <font-awesome-icon
-        @click="$emit('close-modal', false)"
+        @click="close_modal"
         class="modal-icon"
         icon="fa-solid fa-xmark"
       />
@@ -45,20 +45,40 @@
 </template>
 
 <script>
+import { useStore } from "vuex"
+
 export default {
   name: "ChatInfoModal",
+  setup() {
+    const store = useStore();
+
+    const close_chat_info = () => {
+      store.commit("quietChatStore/close_chat_info");
+    };
+    return {
+      close_chat_info
+    }
+  },
   props: {
     info_data: Object,
   },
+  unmounted() {
+    this.close_chat_info()
+  },
+  methods: {
+    close_modal() {
+      this.close_chat_info()
+    }
+  }
 };
 </script>
 
 <style scoped lang="postcss">
+/* 모달 타이틀 */
 .modal {
   min-height: 24rem;
-  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-72 h-96 text-center bg-zz-p font-spoq;
+  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-9/12 h-96 text-center bg-zz-p;
 }
-/* 모달 타이틀 */
 .modal-title-box {
   @apply bg-zz-p border-2 rounded-t-xl border-zz-p;
 }
@@ -88,7 +108,6 @@ export default {
   @apply text-xs font-spoq ml-4 mr-3;
 }
 .modal-content {
-  word-break: keep-all;
   @apply text-white line-clamp-3 h-12 text-left;
 }
 .modal-first-line {

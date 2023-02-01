@@ -6,7 +6,7 @@
       <div v-for="(data,b) in room_data" :key="b">
         <HotChattingRoomListItem 
         :room_data="data"
-        :b="b"
+        @click="chat_data(b)"
         />
       </div>
     </div>
@@ -16,9 +16,22 @@
 <script>
 import HotChattingRoomListItem from "../Main/Item/HotChattingRoomListItem";
 import HotCahttingRoomData from "../../views/QuietChat/QuietChatListData.js";
+import { useStore } from "vuex";
 
 export default {
   name: "HotChattingRoomList",
+  setup() {
+    const store = useStore();
+
+    const send_chat_data = (e) => {
+      store.commit("quietChatStore/open_chat_info")
+      store.commit("quietChatStore/open_chat_id",e)
+    };
+
+    return {
+      send_chat_data
+    }
+  },
   data() {
     return {
       room_data : HotCahttingRoomData
@@ -27,6 +40,11 @@ export default {
   components: {
     HotChattingRoomListItem,
   },
+  methods : {
+    chat_data(b) {
+      this.send_chat_data(b)
+    }
+  }
 };
 </script>
 
