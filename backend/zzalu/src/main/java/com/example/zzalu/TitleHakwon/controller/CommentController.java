@@ -152,8 +152,15 @@ public class CommentController {
      * 댓글 좋아요 취소하기
      */
     @PutMapping("/cancel")
-    public ResponseEntity<String> cancelCommentLikes (@RequestParam Long commentId){
-        return  null;
+    public ResponseEntity<String> cancelCommentLikes (@RequestParam Long commentId ,@RequestParam String memberId){
+
+        if(!commentService.existCommentLike(commentId,memberId)){
+            return new ResponseEntity<>("좋아요를 누른 기록이 없습니다.",HttpStatus.FORBIDDEN);
+        }else{
+            //그렇지 않은 경우는 좋아요 가능
+            commentService.cancelCommentLikes(commentId,memberId);
+            return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
+        }
     }
 
 

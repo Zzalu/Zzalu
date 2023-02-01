@@ -222,8 +222,23 @@ public class CommentService {
      * 1.댓글 좋아요 기록에서 삭제
      * 2. 댓글 좋아요 -1
      */
+    @Transactional
 
-    public void cancelCommentLikes(Long id){
+    public void cancelCommentLikes(Long commentId , String memberId){
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if(!comment.isPresent()){
+            return;
+        }
+        if(!member.isPresent()){
+            return;
+        }
+
+        commentLikeRepository.deleteByComment_IdAndMember_MemberId(commentId,memberId);
+
+        comment.get().setLikeNum(comment.get().getLikeNum()-1);
+        commentRepository.save(comment.get());
 
     }
 
