@@ -1,10 +1,12 @@
 package com.samsamoo.zzalu.mail.controller;
 
 import com.samsamoo.zzalu.mail.dto.ChangePassEmailRequest;
-import com.samsamoo.zzalu.mail.dto.SignupEmailRequest;
+import com.samsamoo.zzalu.mail.dto.EmailRequest;
 import com.samsamoo.zzalu.mail.dto.EmailResponse;
 import com.samsamoo.zzalu.mail.service.MailService;
+import com.samsamoo.zzalu.member.dto.follow.UnfollowResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,8 +23,8 @@ public class MailController {
 
     //--------------------------------------회원가입 이메일 인증-------------------------------------------
     @PostMapping("/signup")
-    public ResponseEntity<EmailResponse> sendSignupEmail(@RequestBody @Valid SignupEmailRequest signupEmailRequest) {
-        EmailResponse emailResponse = mailService.sendMail(signupEmailRequest.getUserEmail());
+    public ResponseEntity<EmailResponse> sendSignupEmail(@RequestBody @Valid EmailRequest emailRequest) {
+        EmailResponse emailResponse = mailService.sendMail(emailRequest.getUserEmail());
         return ResponseEntity.ok().body(emailResponse);
     }
 
@@ -33,4 +35,12 @@ public class MailController {
         EmailResponse emailResponse = mailService.sendChangeMail(request.getUserEmail(), request.getUsername());
         return ResponseEntity.ok().body(emailResponse);
     }
+    //--------------------------------------아이디 찾기(아이디 전송)-----------------------------------------
+    @PostMapping("/username")
+    public ResponseEntity findUsername(@RequestBody @Valid EmailRequest emailRequest) {
+
+        mailService.findUsername(emailRequest);
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
 }

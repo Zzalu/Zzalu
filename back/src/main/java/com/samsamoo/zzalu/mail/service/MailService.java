@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.mail.service;
 
+import com.samsamoo.zzalu.mail.dto.EmailRequest;
 import com.samsamoo.zzalu.mail.exception.EmailExistException;
 import com.samsamoo.zzalu.mail.utils.MailUtils;
 import com.samsamoo.zzalu.mail.dto.EmailResponse;
@@ -73,7 +74,7 @@ public class MailService {
         try {
             MailUtils sendMail = new MailUtils(mailSender);
             sendMail.setSubject("[Zzalu] 이메일 인증");
-            sendMail.setText(new StringBuffer().append("<h1>[이메일]</h1>")
+            sendMail.setText(new StringBuffer().append("<h2>[Zzalu]</h2>")
                     .append("<p>아래 인증코드를 앱에 입력해주세요.</p>")
                     .append("<p>인증코드: "+ authKey +"</p>")
                     .toString());
@@ -102,5 +103,30 @@ public class MailService {
         }
         // send Email
         return realEmailSender(userEmail);
+    }
+
+    public void findUsername(EmailRequest emailRequest) {
+        // email로 가입된 회원 있는지 확인 > 회원 가져오기
+        String userEmail = emailRequest.getUserEmail();
+        Member member = memberRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new MemberNotFoundException("해당 이메일로 가입된 회원이 없습니다."));
+        // 회원의 username 반환
+        String foundUsername = member.getUsername();
+
+        // 이메일 전송
+        try {
+            MailUtils sendMail = new MailUtils(mailSender);
+            sendMail.setSubject("[Zzalu] 이메일 인증");
+            sendMail.setText(new StringBuffer().append("<h2>[Zzalu]</h2>")
+                    .append("<p>회원 아이디: "+ foundUsername +"</p>")
+                    .toString());
+            sendMail.setFrom(username, "관리자");
+            sendMail.setTo(userEmail);
+            sendMail.send();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }
