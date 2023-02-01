@@ -38,7 +38,7 @@
   <div class="account-right">
     <div class="redir-accounts">
     <div>이미 계정이 있으신가요?</div>
-    <div class="redir-accounts-click">로그인</div></div>
+    <router-link to="/login" class="redir-accounts-click">로그인</router-link></div>
     <button class="go-next-button">다음</button>
   </div>
 
@@ -49,7 +49,20 @@
 <script>
 export default {
   name: "InputUserInfo",
-};
+  data () {
+    return {
+      // 회원 정보
+      credentials: {
+        email: '',
+        password: '',
+        passwordCheck: '',
+        nickname: '',
+        image: '@assets/profile.jpg',
+        // username: null,
+      },
+    }
+  }
+}
 </script>
 
 <style lang="postcss" scoped>
