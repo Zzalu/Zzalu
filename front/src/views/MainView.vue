@@ -1,101 +1,12 @@
 <template>
-  <!-- <div :class="check_search_modal ? 'not-scroll' : null">-->
-    <div class="not-scroll">
+  <div class="not-scroll">
     <div class="body" v-if="check_search_modal" @click="close_modal"></div>
     <OnlyBigLogoTopNav class="z-30" />
-    <div>
-      <p class="focus-text">역대 제목학원 명예의 전당</p>
-      <hr class="mb-5" />
-      <!-- 포문돌릴곳 -->
-      <div class="flex overflow-x-auto">
-        <div v-for="a in 10" :key="a">
-          <div class="title-competition-card-container">
-            <div class="title-competiton-img-container">
-              <!-- 아이콘 날짜 사진 -->
-              <div class="absolute z-10">
-                <p class="title-competiton-icon-text1">Jan</p>
-                <p class="title-competiton-icon-text2">1</p>
-              </div>
-              <div class="absolute">
-                <font-awesome-icon
-                  icon="fa-solid fa-bookmark"
-                  class="date-icon"
-                />
-              </div>
-              <img
-                src="../components/QuietChat/QuietChatList/assets/9_16img.jpg"
-                class="title-competiton-img"
-                alt=""
-              />
-            </div>
-            <div class="flex">
-              <div>
-                <!-- 컨텐트 -->
-                <div class="title-competition-content-profile">
-                  <img
-                    class="title-competiton-content-img"
-                    src="../components/QuietChat/QuietChatList/assets/Newjeans.jpg"
-                  />
-                  <p class="title-competiton-content-text">
-                    이름이최대열글자라니
-                  </p>
-                </div>
-              </div>
-              <!-- 좋아요 -->
-              <div class="title-competiton-button-contain">
-                <font-awesome-icon
-                  icon="fa-solid fa-heart"
-                  class="title-competiton-button-icon"
-                />
-                <p class="title-competiton-button-text">999</p>
-              </div>
-            </div>
-            <!-- 내용 -->
-            <p class="title-competiton-content">
-              잠깐만요. 불공평한거 같은데요. 이 펜싱 대회 만약 더 길다면
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <p class="focus-text">user.id님을 위한 추천 짤</p>
-      <hr class="mb-5" />
-      <div class="flex overflow-x-auto">
-        <div v-for="b in 30" :key="b">
-          <div class="recommend-img"></div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <p class="focus-text">오늘의 인기 짤</p>
-      <hr class="mb-5" />
-      <div class="flex overflow-x-auto">
-        <div v-for="b in 30" :key="b">
-          <div class="popular-img"></div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <p class="focus-text">요새 핫한 고독방</p>
-      <hr class="mb-5" />
-      <div class="flex overflow-x-auto">
-        <div v-for="b in 5" :key="b">
-          <div class="quiet-chat-card-contain">
-            <div class="quiet-chat-like-contain">
-              <font-awesome-icon
-                icon="fa-solid fa-heart"
-                class="quiet-chat-like-icon"
-              />
-              <p class="quiet-chat-like-text">999</p>
-            </div>
-            <div class="quiet-chat-box">
-              <div class="quiet-chat-title">무한도전 고독방</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AcademyList />
+    <RecommendedJjalList />
+    <PopularJjalList />
+    <HotChattingRoomList />
+
     <SearchView />
     <div class="h-5"></div>
     <MainBottomNav />
@@ -106,6 +17,10 @@
 import SearchView from "./SearchView";
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav";
 import OnlyBigLogoTopNav from "../components/Common/NavBar/OnlyBigLogoTopNav";
+import AcademyList from "../components/Main/AcademyList";
+import RecommendedJjalList from "../components/Main/RecommendedJjalList";
+import PopularJjalList from "../components/Main/PopularJjalList";
+import HotChattingRoomList from "../components/Main/HotChattingRoomList";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 
@@ -129,6 +44,10 @@ export default {
     SearchView,
     MainBottomNav,
     OnlyBigLogoTopNav,
+    AcademyList,
+    RecommendedJjalList,
+    PopularJjalList,
+    HotChattingRoomList,
   },
   methods: {
     close_modal() {
@@ -137,6 +56,16 @@ export default {
       }
     },
   },
+  watch: {
+    // 외부 스크롤 막기
+    check_search_modal : function (value) {
+      if (value == true) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.removeProperty('overflow');
+      }
+    } 
+  }
 };
 </script>
 
@@ -153,7 +82,7 @@ export default {
   @apply font-bhs text-2xl line-clamp-1 mt-5;
 }
 /* 역대 명예의 전당 전체 */
-.title-competition-card-container {
+/* .title-competition-card-container {
   @apply border w-36 h-48 rounded-2xl mr-5;
 }
 .title-competiton-img-container {
@@ -201,11 +130,11 @@ export default {
 .title-competiton-content {
   word-break: keep-all;
   @apply mt-2 text-xs line-clamp-2 font-spoq mx-1;
-}
+} */
 
 /* 추천 이미지 */
 
-.recommend-img {
+/* .recommend-img {
   background-image: url(../components/QuietChat/QuietChatList/assets/goodgood.gif);
   @apply w-28 h-36 rounded-2xl mr-2 border bg-cover bg-no-repeat bg-center;
 }
@@ -213,7 +142,7 @@ export default {
 .popular-img {
   background-image: url(../components/QuietChat/QuietChatList/assets/rmfoTrnsk.gif);
   @apply w-28 h-36 rounded-2xl mr-2 border bg-cover bg-no-repeat bg-center;
-}
+} */
 
 /* 고독방 카드 */
 
