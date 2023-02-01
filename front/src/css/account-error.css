@@ -148,10 +148,12 @@
 /* -------------------------------------------------------------- */
 /* 로그인, 회원가입으로 리다이렉트되는 작은 글씨 전체 */
 .redir-accounts {
+  word-break: keep-all;
   @apply flex float-right text-zz-darkgray text-xs mt-4 mx-1;
 }
 
 .redir-accounts-click {
+  word-break: keep-all;
   @apply mx-1 text-zz-p;
 }
 
