@@ -1,9 +1,8 @@
-package com.samsamoo.zzalu.gif.Entity;
+package com.samsamoo.zzalu.gifs.entity;
 
 import lombok.*;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 
 @Entity
@@ -12,10 +11,10 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GiphyGif {
+public class GiphyGifs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="_ID")
+    @Column(name="ID")
     private Long id;
 
     @Column(name="GIF_PATH", nullable = false, unique = true)
