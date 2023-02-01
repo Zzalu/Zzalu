@@ -12,30 +12,26 @@
     "
   >
     <ul class="nav_list">
-      <li class="nav_item">
-        <router-link to="/main">
-          <font-awesome-icon icon="fa-solid fa-house" />
-        </router-link>
-      </li>
-      <li class="nav_item">
-        <router-link to="/chat-list">
-          <font-awesome-icon icon="fa-regular fa-comment-dots" />
-        </router-link>
-      </li>
+      <router-link to="/main" class="nav_item">
+        <font-awesome-icon icon="fa-solid fa-house" />
+      </router-link>
+
+      <router-link to="/chat-list" class="nav_item">
+        <font-awesome-icon icon="fa-regular fa-comment-dots" />
+      </router-link>
       <li class="nav_item" @click="open_modal">
         <span class="search"
           ><font-awesome-icon icon="fa-solid fa-magnifying-glass"
         /></span>
       </li>
-      <li class="nav_item">
-        <router-link to="/title-competition">
-          <font-awesome-icon icon="fa-regular fa-lightbulb" />
-          <i class="fa-solid fa-chevron-left"></i
-        ></router-link>
-      </li>
-      <li class="nav_item">
-        <router-link to="/profile"><font-awesome-icon icon="fa-regular fa-user" /></router-link>
-      </li>
+      <router-link to="/title-competition" class="nav_item">
+        <font-awesome-icon icon="fa-regular fa-lightbulb" />
+        <i class="fa-solid fa-chevron-left"></i
+      ></router-link>
+
+      <router-link to="/profile" class="nav_item"
+        ><font-awesome-icon icon="fa-regular fa-user"
+      /></router-link>
     </ul>
   </div>
 </template>

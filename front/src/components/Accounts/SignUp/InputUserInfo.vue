@@ -1,5 +1,5 @@
 <template>
-  <h1 class="account-title mb-10">Sign Up</h1>
+  <!-- <h1 class="account-title mb-10">Sign Up</h1> -->
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
     <input
