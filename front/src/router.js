@@ -1,89 +1,75 @@
 import { createWebHistory, createRouter } from "vue-router";
-import App from "./App"
-// ACCOUNTS
-import SignUpView from "./views/Accounts/SignUpView";
-import LoginView from "./views/Accounts/LoginView";
-import FindIdView from "./views/Accounts/FindIdView";
-import ResetPasswordView from "./views/Accounts/ResetPasswordView";
-import AccountDeleteView from './views/Accounts/AccountDeleteView';
-import ChangePasswordView from './views/Accounts/ChangePasswordView';
-// QUIET CHAT
-import ChatListView from "./views/QuietChat/ChatListView";
-import MakeChatView from "./views/QuietChat/MakeChatView";
-import ChatInsideView from "./views/QuietChat/ChatInsideView";
-// Error
-import Error404View from "./views/Error/Error404View";
-import Error500View from "./views/Error/Error500View";
-import LoginRequiredView from "./views/Error/LoginRequiredView";
-// MAIN
-import MainView from "./views/MainView";
-// PROFILE
-import ProfileView from "./views/Profile/ProfileView";
-import UserSettingsView from "./views/Profile/UserSettingsView";
-import EditProfileView from "./views/Profile/EditProfileView";
-import FollowView from "./views/Profile/FollowView";
-// TITLE COMPETITION
-import TitleCompetitionView from "./views/TitleCompetitionView";
-// ZZAL DETAIL
-import ZzalDetailView from "./views/ZzalDetailView";
-// temp
-import HelloWorldView from "./views/HelloWorldView"
-
+// import App from "./App"
 
 
 const routes = [
   {
     path: "/",
-    component: App,
+    redirect: "/main"
+    // component: App,
   },
+  // --------------------------------------------------------
   // ACCOUNTS
+
+  // 로그인
   {
     path: "/login",
     name: "login",
-    component: LoginView,
+    component: () => import ('@/views/Accounts/LoginView'),
   },
+  // 회원가입
   {
     path: "/signup",
     name: "signup",
-    component: SignUpView,
+    component: () => import ('@/views/Accounts/SignUpView'),
   },
+  // 아이디찾기
   {
     path: "/find-id",
     name: "find-id",
-    component: FindIdView,
+    component: () => import ('@/views/Accounts/FindIdView'),
   },
+  // 비번찾기(재설정)
   {
     path: "/reset-password",
     name: "reset-password",
-    component: ResetPasswordView,
+    component: () => import ('@/views/Accounts/ResetPasswordView'),
   },
+  // 탈퇴
   {
     path: "/account-delete",
     name: "account-delete",
-    component: AccountDeleteView,
+    component: () => import ('@/views/Accounts/AccountDeleteView'),
   },
+  // 설정에서 비번변경
   {
     path: "/change-password",
     name: "change-password",
-    component: ChangePasswordView,
+    component: () => import ('@/views/Accounts/ChangePasswordView'),
   },
+  // ----------------------------------------------------------------
   // QUIET CHAT
+  // 고독방 안
   {
     path: "/chat/:chat_id",
     name: "chat",
-    component: ChatInsideView,
+    component: () => import ('@/views/QuietChat/ChatInsideView'),
   },
+  // 고독방 만들기
   {
     path: "/make-chat",
     name: "make-chat",
-    component: MakeChatView,
+    component: () => import ('@/views/QuietChat/MakeChatView'),
   },
+  // 채팅 리스트
   {
     path: "/chat-list",
     name: "chat-list",
-    component: ChatListView,
+    component: () => import ('@/views/QuietChat/ChatListView'),
   },
+  
   // ERROR
+  // 에러404 페이지X
   {
     path: '/:pathMatch(.*)*',
     redirect: '/error-404',
@@ -91,62 +77,67 @@ const routes = [
   {
     path:'/error-404',
     name: "error-404",
-    component: Error404View,
+    component: () => import ('@/views/Error/Error404View'),
   },
+  // 에러 500 internal server error
   {
     path: "/error-500",
     name: "error-500",
-    component: Error500View,
+    component: () => import ('@/views/Error/Error500View'),
   },
+  // 로그인 필요
   {
     path: "/login-required",
     name: "login-required",
-    component: LoginRequiredView,
+    component: () => import ('@/views/Error/LoginRequiredView'),
   },
+  // ------------------------------------------------------------
   // MAIN
   {
     path: "/main",
     name: "main",
-    component: MainView,
+    component: () => import ('@/views/MainView'),
   },
+  // ------------------------------------------------------------------
   // PROFILE
+  // 프로필 메인
   {
-    path: "/profile/",
+    path: "/profile/:user_id",
     name: "profile",
-    component: ProfileView,
+    component: () => import ('@/views/Profile/ProfileView'),
   },  
+  // 팔로우 팔로잉
   {
-    path: "/profile/follow",
+    path: "/profile/:user_id/follow",
     name: "follow",
-    component: FollowView,
+    component: () => import ('@/views/Profile/FollowView'),
   },  
+  // 설정 가는 페이지
   {
-    path: "/settings",
+    path: "/:user_id/settings",
     name: "settings",
-    component: UserSettingsView,
+    component: () => import ('@/views/Profile/UserSettingsView'),
   },
+  // 프로필 정보 수정
   {
-    path: "/edit-profile",
+    path: "/:user_id/edit-profile",
     name: "edit-profile",
-    component: EditProfileView,
+    component: () => import ('@/views/Profile/EditProfileView'),
   },
+  // -----------------------------------------------------------------
+  // 제목학원
   {
     path: "/title-competition/:id",
     name: "title-competition",
-    component: TitleCompetitionView,
+    component: () => import ('@/views/TitleCompetitionView'),
   },
+  // --------------------------------------------------------------------
+  // 짤 디테일
   {
-  path: "/zzal/",
+  path: "/zzal/:zzal_id",
   name: "zzal",
-  component: ZzalDetailView,
+  component: () => import ('@/views/ZzalDetailView'),
   },
-  // temp
-  {
-    path: "/HelloWorld",
-    name: "HelloWorldView",
-    component: HelloWorldView,
-  },
-
 ];
 
 const router = createRouter({
