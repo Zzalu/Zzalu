@@ -30,9 +30,10 @@ public class MailService {
     private final MemberRepository memberRepository;
     private int size;
 
-    public boolean checkUniqueUserEmail(String email) {
-        boolean unique = !memberRepository.existsMemberByUserEmail(email);
-        return unique;
+    public void checkUniqueUserEmail(String email) {
+        if (memberRepository.existsMemberByUserEmail(email)) {
+            throw new EmailExistException();
+        };
     }
     //인증키 생성
     private String getKey(int size) {
@@ -55,9 +56,7 @@ public class MailService {
 
     public EmailResponse sendMail(String userEmail) {
         // 이메일 있는지 검사
-        if (!checkUniqueUserEmail(userEmail)) {
-            throw new EmailExistException();
-        };
+       checkUniqueUserEmail(userEmail);
 
         // 4자리 난수 인증번호 생성
         String authKey = getKey(4);

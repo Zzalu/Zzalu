@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.member.service;
 
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.mail.service.MailService;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.*;
@@ -29,6 +30,7 @@ public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final MailService mailService;
 
 
     @Value("${jwt.token.secret}")
@@ -36,7 +38,18 @@ public class MemberService {
 
     @Transactional
     public MemberDTO signup(SignupRequest signupRequest) {
-        validatePassword(signupRequest.getPassword(),signupRequest.getPasswordConfirmation());
+        // 아이디 중복
+        if (!checkUniqueUsername(signupRequest.getUsername())) {
+            throw new NotMatchException("이미 존재하는 아이디입니다.");
+        }
+        // 닉네임 중복
+        if (!checkUniqueNickname(signupRequest.getNickname())) {
+            throw new NotMatchException("이미 존재하는 닉네임입니다.");
+        }
+        validatePassword(signupRequest.getPassword(),signupRequest.getPasswordConfirmation()); // 비번, 비번확인 일치 여부
+        mailService.checkUniqueUserEmail(signupRequest.getUserEmail()); // 이메일 중복 > 바로 예외 발생
+
+        // 비밀번호 인코딩
         String rawPassword = signupRequest.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         signupRequest.setPassword(encPassword);
