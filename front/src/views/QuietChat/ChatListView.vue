@@ -26,7 +26,7 @@ import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModa
 import QuietChatData from "./QuietChatListData.js";
 import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
-import SearchView from "../SearchView"
+import SearchView from "../SearchView";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 
@@ -41,6 +41,9 @@ export default {
     const open_chat_id = computed(
       () => store.state.quietChatStore.open_chat_id
     );
+    const check_search_modal = computed(
+      () => store.state.searchModalStore.open_search_modal
+    );
     const send_chat_data = (e) => {
       store.commit("quietChatStore/open_chat_info");
       store.commit("quietChatStore/open_chat_id", e);
@@ -51,6 +54,7 @@ export default {
     return {
       open_chat_info,
       open_chat_id,
+      check_search_modal,
       send_chat_data,
       close_chat_info,
     };
@@ -80,11 +84,14 @@ export default {
   },
   watch: {
     open_chat_info: function (value) {
-      if (value == true) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.removeProperty("overflow");
-      }
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
+    check_search_modal: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
     },
   },
 };
