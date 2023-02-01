@@ -2,7 +2,7 @@
   <div class="modal">
     <div class="modal-title-box">
       <font-awesome-icon
-        @click="$emit('close-modal', false)"
+        @click="close_modal"
         class="modal-icon"
         icon="fa-solid fa-xmark"
       />
@@ -45,11 +45,31 @@
 </template>
 
 <script>
+import { useStore } from "vuex"
+
 export default {
   name: "ChatInfoModal",
+  setup() {
+    const store = useStore();
+
+    const close_chat_info = () => {
+      store.commit("quietChatStore/close_chat_info");
+    };
+    return {
+      close_chat_info
+    }
+  },
   props: {
     info_data: Object,
   },
+  unmounted() {
+    this.close_chat_info()
+  },
+  methods: {
+    close_modal() {
+      this.close_chat_info()
+    }
+  }
 };
 </script>
 

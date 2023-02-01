@@ -20,7 +20,7 @@
     <input class="guideline" />
     <p class="caution"></p>
     <p class="guide">해시태그</p>
-    <div class="hashtag">
+    <div class="hashtag-contain">
       <div v-if="hashtags.length == 0">빈 해시태그</div>
       <div v-else class="hashtag-div">
         <div v-for="(hashtag, i) in hashtags" :key="i">
@@ -101,7 +101,7 @@ export default {
 }
 
 /* 해시태그 */
-.hashtag {
+.hashtag-contain {
   @apply flex flex-wrap;
 }
 .hashtag-div {

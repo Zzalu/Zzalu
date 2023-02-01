@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div class="create-chat-button">
-      <router-link to="/make-chat" class="create-chat">
+    <router-link to="/make-chat" class="create-chat-button">
+      <font-awesome-icon icon="fa-solid fa-comment-medical" />
+      <div to="/make-chat" class="create-chat">
         새로운 고독방 개설하기
-      </router-link>
-    </div>
+      </div>
+    </router-link>
   </div>
 </template>
 
@@ -16,9 +17,9 @@ export default {
 
 <style scoped lang="postcss">
 .create-chat-button {
-  @apply bg-zz-p rounded-lg w-9/12 h-10 text-white mx-auto text-center py-2;
+  @apply bg-zz-p rounded-lg w-9/12 h-10 text-white mx-auto py-2 flex items-center justify-center;
 }
 .create-chat {
-  @apply line-clamp-1
+  @apply line-clamp-1 font-spoq ml-2
 }
 </style>
