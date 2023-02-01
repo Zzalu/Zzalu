@@ -44,7 +44,7 @@ export default {
     comment: Object,
   },
   setup(props) {
-    console.log(props);
+    // console.log(props);
     const comment_data = reactive({
       profile_image: 'profile.jpg',
       id: props.comment.id,
@@ -57,7 +57,7 @@ export default {
       like_cnt: props.comment.likeNumber,
     });
 
-    console.log(comment_data);
+    // console.log(comment_data);
 
     return {
       ...toRefs(comment_data),
