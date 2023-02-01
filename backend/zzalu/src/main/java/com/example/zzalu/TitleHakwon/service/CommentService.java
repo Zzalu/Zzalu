@@ -5,10 +5,13 @@ import com.example.zzalu.TitleHakwon.dto.CommentResponse;
 import com.example.zzalu.TitleHakwon.dto.ReplyCommentRequest;
 import com.example.zzalu.TitleHakwon.dto.ReplyCommentResponse;
 import com.example.zzalu.TitleHakwon.entity.Comment;
+import com.example.zzalu.TitleHakwon.entity.CommentLike;
 import com.example.zzalu.TitleHakwon.entity.ReplyComment;
+import com.example.zzalu.TitleHakwon.repository.CommentLikeRepository;
 import com.example.zzalu.TitleHakwon.repository.CommentRepository;
 import com.example.zzalu.TitleHakwon.repository.ReplyCommentRepository;
 import com.example.zzalu.TitleHakwon.repository.TitleHackwonRepository;
+import com.example.zzalu.User.model.Member;
 import com.example.zzalu.User.repository.MemberRepository;
 import io.netty.util.internal.StringUtil;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +34,8 @@ public class CommentService {
     private final ReplyCommentRepository replyCommentRepository;
     private final MemberRepository memberRepository;
     private final TitleHackwonRepository titleHackwonRepository;
+
+    private final CommentLikeRepository commentLikeRepository;
 
     /**
      * 댓글 작성
@@ -64,10 +69,10 @@ public class CommentService {
         ReplyComment replyComment = ReplyComment.builder()
                 .member(memberRepository.findMemberByMemberId(replyCommentRequest.getMemberId()))
                 .cotent(replyCommentRequest.getContent())
-                .parentComment(commentRepository.findById(replyCommentRequest.getParentComentId()))
+                .parentComment(commentRepository.findById(replyCommentRequest.getParentCommentId()).get())
                 .build();
 
-        System.out.println(commentRepository.findById(replyCommentRequest.getParentComentId()).getId());
+
 
       replyCommentRepository.save(replyComment);
 
@@ -122,7 +127,7 @@ public class CommentService {
      */
     public void updateComment (Long id, CommentRequest commentRequest){
 
-       Comment comment = commentRepository.findById(id);
+       Optional<Comment> comment = commentRepository.findById(id);
 
 
         //수정하고자 하는 댓글이 존재할때만 수정한다.
@@ -130,10 +135,10 @@ public class CommentService {
 
             System.out.println("@@");
             if(!StringUtils.isEmpty(commentRequest.getContent()) && !StringUtils.isEmpty(commentRequest.getMemberId())){
-                comment.setCotent(commentRequest.getContent());
+                comment.get().setCotent(commentRequest.getContent());
             }
             System.out.println("수정 가능");
-            commentRepository.save(comment);
+            commentRepository.save(comment.get());
         }
 
     }
@@ -176,6 +181,60 @@ public class CommentService {
     public void  deleteReplyCommnete(Long id){
         replyCommentRepository.deleteById(id);
 
+    }
+
+
+    /**
+     * 댓글에 좋아요 누르기
+     *
+     * 1. 댓글 좋아요 기록에 추가
+     * 2. 댓글 좋아요 +1
+     */
+    public void clickCommentLikes(Long commentId , String memberId){
+
+        //존재하지 않은 댓글이였다면?
+        Optional<Comment> comment = commentRepository.findById(commentId);
+        Optional<Member> member = memberRepository.findById(memberId);
+
+        if(!comment.isPresent()){
+            return;
+        }
+        if(!member.isPresent()){
+                return;
+        }
+        //존재하지 않는 멤버였다면?
+
+        CommentLike commentLike = CommentLike.builder()
+                .member(member.get())
+                .comment(comment.get()).build();
+        //좋아요을 눌렀으면 좋아요기록 테이블에 저장하고
+
+        commentLikeRepository.save(commentLike);
+
+        //해당 댓글의 좋아요 +1을 증가시킨다.
+        comment.get().setLikeNum(comment.get().getLikeNum()+1);
+        commentRepository.save(comment.get());
+
+    }
+
+    /**
+     * 댓글에 좋아요 취소하기
+     * 1.댓글 좋아요 기록에서 삭제
+     * 2. 댓글 좋아요 -1
+     */
+
+    public void cancelCommentLikes(Long id){
+
+    }
+
+
+    /**
+     * 댓글 좋아요 기록이 존재하는지
+     */
+
+    public  boolean existCommentLike(Long commentId ,String memberId ){
+
+        return commentLikeRepository.existsByComment_IdAndMember_MemberId(commentId,memberId);
     }
 
 }

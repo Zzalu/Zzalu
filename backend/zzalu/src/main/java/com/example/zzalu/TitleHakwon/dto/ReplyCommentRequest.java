@@ -16,5 +16,5 @@ public class ReplyCommentRequest {
     private String content;
 
     /** 부모 댓글 ID (댓글 : 자기 자신 ID / 대댓글 : 댓글 ID ) **/
-    private Long parentComentId;
+    private Long parentCommentId;
 }
