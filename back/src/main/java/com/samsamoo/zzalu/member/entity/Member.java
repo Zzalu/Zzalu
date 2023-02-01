@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.member.entity;
 import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -37,7 +38,6 @@ public class Member implements UserDetails {
     @Builder.Default
     private LocalDateTime enrollDate = LocalDateTime.now();
 
-//    @Column(columnDefinition="bit(1) default 0") // False
     @Builder.Default
     private boolean accountNonLocked = true; // 계정 공개 여부
 
@@ -117,5 +117,9 @@ public class Member implements UserDetails {
         this.profilePath = request.getProfilePath();
         this.nickname = request.getNickname();
         this.profileMessage = request.getProfileMessage();
+    }
+
+    public void changePass(String newPass) {
+        this.password = newPass;
     }
 }

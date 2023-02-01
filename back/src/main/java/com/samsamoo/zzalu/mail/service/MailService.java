@@ -3,6 +3,9 @@ package com.samsamoo.zzalu.mail.service;
 import com.samsamoo.zzalu.mail.exception.EmailExistException;
 import com.samsamoo.zzalu.mail.utils.MailUtils;
 import com.samsamoo.zzalu.mail.dto.EmailResponse;
+import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
+import com.samsamoo.zzalu.member.exception.NotMatchException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,15 +59,20 @@ public class MailService {
 
     public EmailResponse sendMail(String userEmail) {
         // 이메일 있는지 검사
-       checkUniqueUserEmail(userEmail);
+        checkUniqueUserEmail(userEmail);
+        // 메일 실제로 보내는 메서드
+        return realEmailSender(userEmail);
 
+    }
+
+    private EmailResponse realEmailSender(String userEmail) {
         // 4자리 난수 인증번호 생성
         String authKey = getKey(4);
 
         // 인증 메일 보내기
         try {
             MailUtils sendMail = new MailUtils(mailSender);
-            sendMail.setSubject("[Zzalu] 회원가입 이메일 인증");
+            sendMail.setSubject("[Zzalu] 이메일 인증");
             sendMail.setText(new StringBuffer().append("<h1>[이메일]</h1>")
                     .append("<p>아래 인증코드를 앱에 입력해주세요.</p>")
                     .append("<p>인증코드: "+ authKey +"</p>")
@@ -78,7 +86,21 @@ public class MailService {
             e.printStackTrace();
         }
         return new EmailResponse(authKey);
-
     }
 
+    public EmailResponse sendChangeMail(String userEmail, String username) {
+        // 둘이 같은지 확인
+        Member memberA = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException("해당 아이디의 회원을 찾을 수 없습니다."));
+
+        Member memberB = memberRepository.findByUserEmail(userEmail)
+                .orElseThrow(() -> new MemberNotFoundException("해당 이메일의 회원을 찾을 수 없습니다."));
+
+        log.info("memberA ={}, memberB = {}", memberA.getId(), memberB.getId());
+        if (!memberA.equals(memberB)) {
+            throw new NotMatchException("회원 아이디와 이메일이 일치하지 않습니다.");
+        }
+        // send Email
+        return realEmailSender(userEmail);
+    }
 }

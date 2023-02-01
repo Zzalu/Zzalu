@@ -8,11 +8,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
-public class EmailRequest {
+@NoArgsConstructor
+public class ChangePassEmailRequest {
     @NotBlank
     @Email
     private String userEmail;
-
+    private String username;
 }

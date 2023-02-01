@@ -19,6 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 @Service
@@ -174,5 +176,28 @@ public class MemberService {
             memberRepository.save(you);
         }
         memberRepository.delete(me);
+    }
+
+    public void changePass(ChangePassRequest request) {
+        // member 반환
+        Member member = memberRepository.findById(request.getId())
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        // 비밀번호 확인과 일치하는지
+        String newPass = request.getNewPassword();
+        validatePassword(newPass, request.getNewPasswordConfirmation());
+
+        // 비밀번호 형식이 맞는지 확인
+        Pattern passPattern = Pattern.compile("^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,20}$");
+        Matcher passMatcher = passPattern.matcher(newPass);
+        if(!passMatcher.find()){
+            throw new InvalidPasswordException("비밀번호는 영문과 특수문자 숫자를 포함하며 8~20자이어야 합니다.");
+        }
+
+        // member의 비밀번호 변경
+        member.changePass(passwordEncoder.encode(newPass));
+
+        // member 저장
+        memberRepository.save(member);
     }
 }
