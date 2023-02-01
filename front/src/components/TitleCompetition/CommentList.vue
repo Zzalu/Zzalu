@@ -9,25 +9,25 @@
 
 <script>
 import CommentListItem from './item/CommentListItem.vue';
+import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
-import { onBeforeMount } from '@vue/runtime-core';
 
 export default {
   components: { CommentListItem },
   name: 'CommentList',
   setup() {
     const store = useStore();
-    onBeforeMount(() => {
-      store.dispatch('titleCompetitionStore/getCommentList', {
-        lastCommentId: Number.MAX_SAFE_INTEGER,
-        titleHakwonId: 1,
-        size: 1,
-      });
+
+    store.dispatch('titleCompetitionStore/getCommentList', {
+      lastCommentId: Number.MAX_SAFE_INTEGER,
+      titleHakwonId: 1,
+      size: 1,
     });
-    let comments = store.state.titleCompetitionStore.comments;
+
+    let comments = reactive(store.state.titleCompetitionStore.comments);
 
     return {
-      comments,
+      ...toRefs(comments),
     };
   },
 };
