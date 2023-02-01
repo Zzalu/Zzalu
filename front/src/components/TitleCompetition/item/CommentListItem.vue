@@ -6,8 +6,8 @@
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
-        <p class="text-xs mr-1">{{ time }}</p>
-        <p v-if="modified" class="text-xs">(수정됨)</p>
+        <!-- <p class="text-xs mr-1">{{ time }}</p> -->
+        <!-- <p v-if="modified" class="text-xs">(수정됨)</p> -->
       </div>
       <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row">
@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { reactive, toRefs } from '@vue/reactivity';
 import NestedCommentList from '../NestedCommentList.vue';
 export default {
   components: { NestedCommentList },
@@ -44,26 +44,23 @@ export default {
     comment: Object,
   },
   setup(props) {
-    const profile_image = ref(props.comment.profile_image);
-    const nickname = ref(props.comment.nickname);
-    const time = ref(props.comment.time);
-    const content = ref(props.comment.content);
-    const reply_cnt = ref(props.comment.reply_cnt);
-    const like_cnt = ref(props.comment.like_cnt);
-    const modified = ref(props.comment.modified);
-    const nested_active = false;
-
     console.log(props);
+    const comment_data = reactive({
+      profile_image: 'profile.jpg',
+      id: props.comment.id,
+      nickname: props.comment.nickname,
+      time: '13시간 전',
+      content: props.comment.content,
+      reply_cnt: props.comment.replyCommentsSize,
+      modified: false,
+      nested_active: false,
+      like_cnt: props.comment.likeNumber,
+    });
+
+    console.log(comment_data);
 
     return {
-      profile_image,
-      nickname,
-      time,
-      content,
-      reply_cnt,
-      like_cnt,
-      modified,
-      nested_active,
+      ...toRefs(comment_data),
     };
   },
 };

@@ -8,8 +8,8 @@ const titleCompetitionStore = {
   }),
   getters: {},
   mutations: {
-    ADD_COMMENTS(state, comments) {
-      state.comments.push(comments);
+    ADD_COMMENTS(state, new_comments) {
+      state.comments.push(...new_comments);
     },
   },
   actions: {

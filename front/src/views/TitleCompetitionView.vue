@@ -18,7 +18,7 @@
         </div>
 
         <!-- TOP 5 -->
-        <!-- 댓글 -->
+        <!-- 댓글 네브 -->
         <nav class="flex justify-between">
           <div class="flex">
             <h2 class="text-xl text-zz-p">댓글</h2>
@@ -30,6 +30,7 @@
             <button class="sort-text">과거순</button>
           </div>
         </nav>
+        <!-- 댓글 리스트 -->
         <comment-list></comment-list>
         <!-- 댓글 input -->
         <input type="text" class="w-full" />
@@ -52,12 +53,14 @@ export default {
     const store = useStore();
     const date = store.state.titleCompetitionStore.date;
     const comment_count = store.state.titleCompetitionStore.comment_count;
-
-    const getCommentList = store.dispatch('titleCompetitionStore/getCommentList');
+    store.dispatch('titleCompetitionStore/getCommentList', {
+      lastCommentId: Number.MAX_SAFE_INTEGER,
+      titleHakwonId: 1,
+      size: 5,
+    });
     return {
       date,
       comment_count,
-      getCommentList,
     };
   },
 };
