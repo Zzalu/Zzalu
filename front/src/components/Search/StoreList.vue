@@ -1,5 +1,5 @@
 <template>
-  <div ref="List">
+  <div ref="List" class="dark:border-zz-dark-div">
     <div v-if="!creating">
       <div class="list-title">
         <p class="list-title-content">저장하기</p>
@@ -37,9 +37,9 @@
         </div>
       </div>
 
-      <p class="m-2 text-xs font-bhs">이름</p>
+      <p class="m-2 text-xs font-bhs dark:text-white">이름</p>
       <div class="creating-input-contain">
-        <input placeholder="보관함 이름 입력.." class="font-spoq" />
+        <input placeholder="보관함 이름 입력.." class="font-spoq dark:text-white" style="background-color:transparent"/>
       </div>
       <div class="creating-save-btn-contain" ref="tmp2">
         <button class="cancel-btn"
@@ -167,7 +167,7 @@ export default {
 <style scoped lang="postcss">
 /* 상단 */
 .list-title {
-  @apply mt-2 flex items-center mb-2 ;
+  @apply mt-2 flex items-center mb-2 dark:text-white;
 }
 
 .list-title-content {
@@ -184,7 +184,7 @@ export default {
 }
 /* 보관함 목록 */
 .list-items-contain {
-  @apply h-56 overflow-y-scroll font-spoq;
+  @apply h-56 overflow-y-scroll font-spoq dark:text-white;
 }
 .list-items {
   @apply m-2;
@@ -200,7 +200,7 @@ export default {
 /* 생성중일때 리스트 */
 
 .creating-list-items-contain {
-  @apply border h-40 overflow-y-scroll font-spoq;
+  @apply h-40 overflow-y-scroll font-spoq dark:text-white;
 }
 
 /* 생성중일때 인풋 */
@@ -216,7 +216,7 @@ export default {
 }
 
 .cancel-btn {
-  @apply border border-zz-p text-zz-p px-5 rounded-lg py-1 text-xs;
+  @apply border border-zz-p text-zz-p px-5 rounded-lg py-1 text-xs dark:bg-white;
 }
 
 /* 체크박스 커스텀마이징 */

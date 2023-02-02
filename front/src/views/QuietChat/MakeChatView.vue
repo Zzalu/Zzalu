@@ -108,7 +108,7 @@ export default {
   @apply flex text-white flex-wrap;
 }
 .hashtag-text {
-  @apply border rounded-lg bg-zz-p px-2 py-1 mr-2;
+  @apply border rounded-lg bg-zz-p px-2 py-1 mr-2 mb-2;
 }
 .hashtag-btn {
   @apply text-zz-p;
