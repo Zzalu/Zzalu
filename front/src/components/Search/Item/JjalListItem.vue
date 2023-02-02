@@ -20,7 +20,9 @@
       </div>
     </div>
     <div v-else class="jjal-box">
-      <div v-touch:press="LongClickStart" v-touch:release="LongClickEnd">
+      <div v-touch:press="LongClickStart" v-touch:release="LongClickEnd"
+      @click="route"
+      >
         <img
           class="jjal-img"
           src="../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg"
@@ -73,12 +75,13 @@ export default {
     },
     LongClickEnd() {
       let result = Date.now() - this.start_time;
-      if (result > 300) {
+      if (result > 500) {
         this.$emit("select_id", this.i);
-      } else {
-        this.$router.push(`/zzal/${this.i}`);
       }
     },
+    route() {
+      this.$router.push(`/zzal/${this.i}`);
+    }
   },
 };
 </script>
