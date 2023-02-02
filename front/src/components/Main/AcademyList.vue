@@ -25,5 +25,4 @@ export default {
 .focus-text {
   @apply font-bhs text-2xl line-clamp-1 mt-5;
 }
-
 </style>
