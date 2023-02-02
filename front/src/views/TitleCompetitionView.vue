@@ -51,7 +51,7 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-// import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
@@ -61,15 +61,14 @@ export default {
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
-    // const route = useRoute();
+    const route = useRoute();
     const date = store.state.titleCompetitionStore.date; // 제목학원 날짜
     const comment_count = store.state.titleCompetitionStore.comment_count; // 댓글 개수
-    store.dispatch('titleCompetitionStore/getCommentList', {
-      lastCommentId: Number.MAX_SAFE_INTEGER,
-      titleHakwonId: 1,
-      size: 5,
-    });
+    const titleCompetition_id = route.params.id;
     const scrollTest = ref(null);
+    console.log(titleCompetition_id);
+    store.dispatch('titleCompetitionStore/setTitleCompetitionId', titleCompetition_id);
+    store.dispatch('titleCompetitionStore/getCommentList', 3);
 
     onMounted(() => {
       // console.log(scrollTest);
