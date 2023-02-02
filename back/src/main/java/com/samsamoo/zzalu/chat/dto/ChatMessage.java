@@ -3,10 +3,13 @@ package com.samsamoo.zzalu.chat.dto;
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
 import lombok.Getter;
 import lombok.Setter;
+import org.joda.time.LocalDate;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
-public class ChatMessage {
+public class ChatMessage implements Serializable {
     public enum MessageType {
         ENTER, JOIN, TALK, @JsonEnumDefaultValue UNKNOWN;
     }
@@ -15,5 +18,6 @@ public class ChatMessage {
     private String roomId;
     private String sender;
     private String message;
+    private LocalDate sendDate;
 
 }

@@ -32,7 +32,8 @@ public class KafkaObjectChangeConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(
                 configs,
                 new StringDeserializer(),
-                new JsonDeserializer<>(ChatMessage.class));
+                new JsonDeserializer<>(ChatMessage.class)
+        );
     }
 
     @Bean

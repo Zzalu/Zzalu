@@ -17,10 +17,10 @@ public class ChatRoomController {
 
     private final ChatRoomRepository chatRoomRepository;
 
-    @GetMapping("/room")
-    public String rooms(Model model) {
-        return "chat/room";
-    }
+//    @GetMapping("/room")
+//    public String rooms(Model model) {
+//        return "chat/room";
+//    }
 
     @GetMapping("/rooms")
     @ResponseBody
@@ -30,15 +30,15 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
+    public ChatRoom createRoom(@RequestParam(name = "name") String name, @RequestParam(name = "imagePath") String imagePath) {
+        return chatRoomRepository.createChatRoom(name, imagePath);
     }
 
-    @GetMapping("/room/enter/{roomId}")
-    public String roomDetail(Model model, @PathVariable String roomId) {
-        model.addAttribute("roomId", roomId);
-        return "chat/roomdetail";
-    }
+//    @GetMapping("/room/enter/{roomId}")
+//    public String roomDetail(Model model, @PathVariable String roomId) {
+//        model.addAttribute("roomId", roomId);
+//        return "chat/roomdetail";
+//    }
 
     @GetMapping("/room/{roomId}")
     @ResponseBody

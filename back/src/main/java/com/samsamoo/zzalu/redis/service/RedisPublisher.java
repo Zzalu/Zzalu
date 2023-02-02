@@ -10,6 +10,8 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class RedisPublisher {
@@ -18,7 +20,7 @@ public class RedisPublisher {
     private final ChatRoomRepository chatRoomRepository;
 
     @KafkaListener(topics="exam", groupId = "foo")
-    public void kafkaPublish(String message) throws JsonProcessingException {
+    public void kafkaListener(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessage chatMessage = objectMapper.readValue(message, ChatMessage.class);
         redisTemplate.convertAndSend(((ChannelTopic) chatRoomRepository.getTopic(chatMessage.getRoomId())).getTopic(), chatMessage);
