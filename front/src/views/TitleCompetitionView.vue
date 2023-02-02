@@ -14,16 +14,19 @@
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
-          <div ref="scrollTest" class="h-48"><img src="../assets/logo.png" alt="짤" /></div>
-          <!-- 댓글 스크롤 했을 때 짤fixed -->
+          <!-- <div ref="scrollTest" class="h-48"><img src="../assets/logo.png" alt="짤" /></div> -->
+          <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
+            <img class="title-image" src="../assets/logo.png" alt="짤" />
+          </div>
+          <!-- 댓글 스크롤 했을 때 짤fixed
           <div v-if="isFixed" class="zzal_fixed">
             <img src="../assets/logo.png" alt="짤" />
-          </div>
+          </div> -->
         </header>
 
         <!-- TOP 5 -->
         <!-- 댓글 네브 -->
-        <nav class="flex justify-between">
+        <nav ref="scrollTest" class="flex justify-between">
           <div class="flex">
             <h2 class="text-xl text-zz-p">댓글</h2>
             <span class="text-base text-zz-p">({{ comment_count }})</span>
@@ -48,8 +51,9 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import CommentList from '../components/TitleCompetition/CommentList.vue';
-import MainBottomNav from '../components/Common/NavBar/MainBottomNav.vue';
+// import { useRoute } from 'vue-router';
+import CommentList from '@/components/TitleCompetition/CommentList.vue';
+import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
 
 export default {
@@ -57,6 +61,7 @@ export default {
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
+    // const route = useRoute();
     const date = store.state.titleCompetitionStore.date; // 제목학원 날짜
     const comment_count = store.state.titleCompetitionStore.comment_count; // 댓글 개수
     store.dispatch('titleCompetitionStore/getCommentList', {
@@ -67,30 +72,29 @@ export default {
     const scrollTest = ref(null);
 
     onMounted(() => {
-      console.log(scrollTest);
+      // console.log(scrollTest);
       window.addEventListener('scroll', scroll);
     });
     onBeforeUnmount(() => {
       window.removeEventListener('scroll', scroll);
     });
 
-    let isFixed = ref(false);
+    let isScrolled = ref(false);
 
     function scroll() {
-      // console.log('hi: ' + scrollTest.value.offsetTop);
       if (window.scrollY > scrollTest.value.offsetTop) {
-        isFixed = true;
+        isScrolled.value = ref(true);
       } else {
-        isFixed = false;
+        isScrolled.value = ref(false);
       }
-      console.log(window.scrollY);
-      console.log(isFixed);
+      // console.log(window.scrollY);
+      // console.log(isScrolled.value);
     }
 
     return {
       date,
       comment_count,
-      isFixed,
+      isScrolled,
       scrollTest,
       scroll,
     };
@@ -103,11 +107,18 @@ export default {
   @apply text-xs text-zz-p mr-1;
 }
 
-.title_header {
+.title-header {
   @apply relative w-full flex flex-col items-center;
 }
 
-.zzal_fixed {
-  @apply fixed top-0 left-auto z-10 h-20;
+.big-imange {
+  @apply h-48;
+}
+.small-image {
+  @apply h-20 fixed;
+}
+
+.title-image {
+  @apply h-full w-full;
 }
 </style>
