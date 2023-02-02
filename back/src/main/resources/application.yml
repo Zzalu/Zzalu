@@ -42,10 +42,10 @@ spring:
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
     password: zzalu_c109!
-    url: jdbc:mysql://localhost:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
     username: root
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: 127.0.0.1:9092
   #    consumer:
   #      auto-offset-reset: earliest
   #      bootstrap-servers: localhost:9092
