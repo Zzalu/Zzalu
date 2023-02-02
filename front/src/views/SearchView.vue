@@ -7,7 +7,7 @@
           <div class="modal">
             <div class="modal-items">
               <SearchBar />
-              <div v-for="(a, i) in 20" :key="i">
+              <div v-for="(a, i) in 120" :key="i">
                 <JjalListItem :i="i" @select_id="select_id" />
               </div>
             </div>

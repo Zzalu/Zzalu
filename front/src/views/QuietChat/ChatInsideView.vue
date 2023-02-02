@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>채팅방안</h1>
+    <button v-touch:longtap="hi">ㅇㅇㅇㅇㅇㅇㅇ인사봇</button>
     <MainBottomNav />
   </div>
 </template>
@@ -12,6 +13,11 @@ export default {
   components: {
     MainBottomNav,
   },
+  methods: {
+    hi() {
+      console.log("인사합니다");
+    }
+  }
 };
 </script>
 

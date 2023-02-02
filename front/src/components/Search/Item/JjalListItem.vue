@@ -20,7 +20,7 @@
       </div>
     </div>
     <div v-else class="jjal-box">
-      <div @mousedown="LongClickStart" @mouseup="LongClickEnd">
+      <div v-touch:press="LongClickStart" v-touch:release="LongClickEnd">
         <img
           class="jjal-img"
           src="../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg"
@@ -44,7 +44,7 @@ export default {
     };
     const select_jjal_num = computed(
       () => store.state.searchModalStore.select_jjal_num
-    )
+    );
     return {
       open_list_modal,
       select_jjal_num,
@@ -76,7 +76,7 @@ export default {
       if (result > 300) {
         this.$emit("select_id", this.i);
       } else {
-        // this.$router.push(`/zzal/${this.i}`);
+        this.$router.push(`/zzal/${this.i}`);
       }
     },
   },
