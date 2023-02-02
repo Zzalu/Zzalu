@@ -45,7 +45,9 @@ public class SecurityConfig {
                 .antMatchers("/h2-console/**").permitAll() // 추가
                 .antMatchers("/members/signup", "/members/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/reviews/**").authenticated()
+                .antMatchers(HttpMethod.POST,"/members/signup/email").authenticated()
                 .anyRequest().permitAll()
+//                .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt사용하는 경우 씀

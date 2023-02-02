@@ -2,7 +2,12 @@ package com.samsamoo.zzalu.auth.sevice;
 
 
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
+import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
+import com.samsamoo.zzalu.member.repo.MemberRepository;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,18 +20,23 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Collection;
+import java.nio.charset.Charset;
+import java.security.Key;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
-@RequiredArgsConstructor
 @Service
 public class JwtTokenProvider {
     // 나중에 key 변경 후, application.yml gitgnore하기
-    @Value("${jwt.token.secret}")
-    private String secretKey;
+
+    private final Key key;
+    private final MemberRepository memberRepository;
+    public JwtTokenProvider(@Value("${jwt.token.secret}") String secretKey, MemberRepository memberRepository) {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
+        this.key = Keys.hmacShaKeyFor(keyBytes);
+        this.memberRepository = memberRepository;
+    }
 
     // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성하는 메서드
     public TokenInfo generateToken(Authentication authentication) {
@@ -36,20 +46,23 @@ public class JwtTokenProvider {
                 .collect(Collectors.joining(","));
         long now = (new Date()).getTime();
 
+//        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+
 
         // Access token 생성
         Date accessTokenExpiresIn = new Date(now + 86400000); // 유효기간 1일
         String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorities)
+                .claim("username", authentication.getName())
                 .setExpiration(accessTokenExpiresIn)
-                .signWith(SignatureAlgorithm.HS256, secretKey) // 암호화 방식
+                .signWith(key, SignatureAlgorithm.HS256) // 암호화 방식
                 .compact();
 
         // Refresh token 생성
         String refreshToken = Jwts.builder()
                 .setExpiration(new Date(now + 86400000))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
         return TokenInfo.builder()
@@ -81,29 +94,39 @@ public class JwtTokenProvider {
 
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
+        log.info("token = {}", token);
+//        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+
         try {
-            Claims claims = Jwts.parser()
-                    .setSigningKey(secretKey.getBytes())
-                    .parseClaimsJws(token).getBody();
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
 
-        }catch(ExpiredJwtException e) {   //Token이 만료된 경우 Exception이 발생한다.
+        }catch(ExpiredJwtException e) {   // Token이 만료된 경우 Exception이 발생한다.
             log.error("Token Expired");
-            return false;
 
-        }catch(JwtException e) {        //Token이 변조된 경우 Exception이 발생한다.
+        }catch(JwtException e) {        // Token이 변조된 경우 Exception이 발생한다.
             log.error("Token Error");
-            return false;
+
         }
+        return false;
+    }
+    public Member getMember(String token) {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        String username = String.valueOf(claims.getBody().get("username"));
+        log.info("username = {}", username); // nanamoon
+        Optional<Member> member = memberRepository.findByUsername(username);
+        log.info("member = {}", member);
+
+        return memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException("로그인된 사용자를 찾을 수 없습니다."));
     }
 
     private Claims parseClaims(String accessToken) {
         try {
-            return Jwts.parser()
-                    .setSigningKey(secretKey.getBytes())
-                    .parseClaimsJws(accessToken).getBody();
+            return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
     }
+
 }
