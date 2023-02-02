@@ -1,9 +1,8 @@
 package com.samsamoo.zzalu.member.entity;
 
+import com.samsamoo.zzalu.board.entity.Board;
 import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,6 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class Member implements UserDetails {
     @Id
+    @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false, length = 100, unique = true)
@@ -62,6 +62,9 @@ public class Member implements UserDetails {
     @ManyToMany(mappedBy = "following")
     private List<Member> follower = new ArrayList<>();
 
+    // 보드 OneToMany
+    @OneToMany(mappedBy = "member")
+    private List<Board> boards = new ArrayList<Board>();
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -121,5 +124,10 @@ public class Member implements UserDetails {
 
     public void changePass(String newPass) {
         this.password = newPass;
+    }
+
+    public void createBoard(Board board) {
+        this.getBoards().add(board);
+
     }
 }

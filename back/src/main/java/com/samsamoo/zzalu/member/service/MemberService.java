@@ -77,7 +77,7 @@ public class MemberService {
     }
 
     // 토큰 검증 실패 시 에외 발생
-    private void checkToken(String token) {
+    public void checkToken(String token) {
         if (!jwtTokenProvider.validateToken(token)) {
             throw new InvalidTokenException();
         }

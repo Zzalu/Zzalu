@@ -1,7 +1,5 @@
 package com.samsamoo.zzalu.member.controller;
 
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
-import com.samsamoo.zzalu.member.dto.follow.FollowMemberDTO;
 import com.samsamoo.zzalu.member.dto.follow.FollowResponse;
 import com.samsamoo.zzalu.member.dto.follow.FollowStateResponse;
 import com.samsamoo.zzalu.member.dto.follow.UnfollowResponse;
@@ -13,14 +11,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping
 @Slf4j
 public class FollowController {
-    private final JwtTokenProvider jwtTokenProvider;
     private final FollowService followService;
 
     //--------------------------------------팔로우-------------------------------------------

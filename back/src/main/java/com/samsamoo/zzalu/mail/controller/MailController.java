@@ -4,7 +4,6 @@ import com.samsamoo.zzalu.mail.dto.ChangePassEmailRequest;
 import com.samsamoo.zzalu.mail.dto.EmailRequest;
 import com.samsamoo.zzalu.mail.dto.EmailResponse;
 import com.samsamoo.zzalu.mail.service.MailService;
-import com.samsamoo.zzalu.member.dto.follow.UnfollowResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
