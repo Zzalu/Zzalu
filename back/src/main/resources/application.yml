@@ -40,7 +40,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
   datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     password: zzalu_c109!
     url: jdbc:mysql://127.0.0.1:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
     username: root
