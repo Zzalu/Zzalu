@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="focus-text">요새 핫한 고독방</p>
-    <hr class="mb-5" />
+    <hr class="mb-5 border-0 bg-zz-light-input h-1 dark:bg-zz-dark-div" />
     <div class="flex overflow-x-auto">
       <div v-for="(data,b) in room_data" :key="b">
         <HotChattingRoomListItem 
@@ -50,6 +50,6 @@ export default {
 
 <style scoped lang="postcss">
 .focus-text {
-  @apply font-bhs text-2xl line-clamp-1 mt-5;
+  @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
 }
 </style>

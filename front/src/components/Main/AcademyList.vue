@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="focus-text">역대 제목학원 명예의 전당</p>
-    <hr class="mb-5"/>
+    <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div"/>
     <div class="flex overflow-x-auto">
       <div v-for="a in 10" :key="a">
         <AcademyListItem/>
@@ -23,6 +23,6 @@ export default {
 
 <style scoped lang="postcss">
 .focus-text {
-  @apply font-bhs text-2xl line-clamp-1 mt-5;
+  @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
 }
 </style>
