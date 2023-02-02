@@ -50,9 +50,9 @@ public class CommentController {
      */
 
     @GetMapping()
-    public  ResponseEntity<List<CommentResponse>> getCommentList (@RequestParam Long lastCommentId, @RequestParam Long titleHakwonId ,@RequestParam int size){
+    public  ResponseEntity<List<CommentResponse>> getCommentList (@RequestParam Long lastCommentId, @RequestParam Long titleHakwonId ,@RequestParam int size,@RequestParam String username){
 
-        List<CommentResponse> commentResponseList = commentService.getCommentList(lastCommentId,titleHakwonId,size);
+        List<CommentResponse> commentResponseList = commentService.getCommentList(lastCommentId,titleHakwonId,size,username);
         return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
     }
 
@@ -134,14 +134,14 @@ public class CommentController {
      * 댓글 좋아요 하기
      */
 
-    @PutMapping("/click")
-    public ResponseEntity<String> clickCommentLikes (@RequestParam Long commentId , @RequestParam String memberId){
+    @PutMapping("/plus/like")
+    public ResponseEntity<String> clickCommentLikes (@RequestParam Long commentId , @RequestParam String username){
         //좋아요를 할껀데 기존에 누른 기록이 있었으면 안됨
-        if(commentService.existCommentLike(commentId,memberId)){
+        if(commentService.existCommentLike(commentId,username)){
             return new ResponseEntity<>("이미존재함",HttpStatus.FORBIDDEN);
         }else{
             //그렇지 않은 경우는 좋아요 가능
-            commentService.clickCommentLikes(commentId,memberId);
+            commentService.clickCommentLikes(commentId,username);
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
         }
     }
@@ -151,14 +151,14 @@ public class CommentController {
      * [UPDATE]
      * 댓글 좋아요 취소하기
      */
-    @PutMapping("/cancel")
-    public ResponseEntity<String> cancelCommentLikes (@RequestParam Long commentId ,@RequestParam String memberId){
+    @PutMapping("/minus/like")
+    public ResponseEntity<String> cancelCommentLikes (@RequestParam Long commentId ,@RequestParam String username){
 
-        if(!commentService.existCommentLike(commentId,memberId)){
+        if(!commentService.existCommentLike(commentId,username)){
             return new ResponseEntity<>("좋아요를 누른 기록이 없습니다.",HttpStatus.FORBIDDEN);
         }else{
             //그렇지 않은 경우는 좋아요 가능
-            commentService.cancelCommentLikes(commentId,memberId);
+            commentService.cancelCommentLikes(commentId,username);
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
         }
     }

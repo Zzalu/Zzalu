@@ -42,16 +42,16 @@ public class CommentService {
     public CommentResponse addComment (CommentRequest requestComment){
 
         Comment comment = Comment.builder()
-                .member(memberRepository.findByUsername(requestComment.getMemberId()).get())
+                .member(memberRepository.findByUsername(requestComment.getUsername()).get())
                 .titleHakwon(titleHackwonRepository.findTitleHakwonById(requestComment.getTitleHakwonId()))
-                .cotent(requestComment.getContent())
+                .content(requestComment.getContent())
                 .replyCommentList(new ArrayList<>())
                 .build();
 
 
         commentRepository.save(comment);
 
-        return CommentResponse.convertCommentToDto(comment);
+        return new CommentResponse(comment);
 
 
     }
@@ -85,16 +85,33 @@ public class CommentService {
      * 무한 스크롤 / 커서 기반 페이지 네이션
      */
 
-    public List<CommentResponse> getCommentList (Long lastCommentId, Long titleHakwonId, int size){
-        
-        System.out.println(lastCommentId+"마지막아이디"+" "+size+"크기");
+    public List<CommentResponse> getCommentList (Long lastCommentId, Long titleHakwonId, int size ,String username){
 
         Page<Comment> comments = fetchCommentPages(lastCommentId,titleHakwonId, size);
 
-        System.out.println(comments.getContent());
+        // 유저 아이디가 없는 경우 즉 로그인 하지 않은 상태
+        if(username==null){
+            return CommentResponse.convertCommentToDtoList(comments.getContent());
+        }else{
+            //사용자가 로그인이 되어있는 경우 좋아요를 눌렀던 기록을 불러온다.
 
+            List<CommentResponse> commentResponseList = new ArrayList<>();
 
-        return CommentResponse.convertCommentToDtoList(comments.getContent());
+            for(Comment comment : comments){
+                CommentResponse  commentResponse = new CommentResponse(comment);
+
+                //좋아요 누른 기록이 존재한다면
+                if(existCommentLike(comment.getId(),username)){
+                    //좋아요 누른 기록으로 보낸다.
+                    commentResponse.updateIsPressed();
+                }
+
+                commentResponseList.add(commentResponse);
+            }
+
+            return commentResponseList;
+        }
+
     }
 
     private Page<Comment> fetchCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
@@ -131,12 +148,9 @@ public class CommentService {
 
         //수정하고자 하는 댓글이 존재할때만 수정한다.
         if(comment!=null){
-
-            System.out.println("@@");
-            if(!StringUtils.isEmpty(commentRequest.getContent()) && !StringUtils.isEmpty(commentRequest.getMemberId())){
-                comment.get().setCotent(commentRequest.getContent());
+            if(!StringUtils.isEmpty(commentRequest.getContent()) && !StringUtils.isEmpty(commentRequest.getUsername())) {
+                comment.get().upDateContent(commentRequest.getContent(), true);
             }
-            System.out.println("수정 가능");
             commentRepository.save(comment.get());
         }
 
@@ -147,7 +161,7 @@ public class CommentService {
      * 대댓글 수정
      */
 
-  public void updateReplyComment (Long id  , ReplyCommentRequest replyCommentRequest){
+  public void updateReplyComment (Long id, ReplyCommentRequest replyCommentRequest){
 
       ReplyComment replyComment = replyCommentRepository.findById(id);
 
@@ -211,7 +225,7 @@ public class CommentService {
         commentLikeRepository.save(commentLike);
 
         //해당 댓글의 좋아요 +1을 증가시킨다.
-        comment.get().setLikeNum(comment.get().getLikeNum()+1);
+        comment.get().plusLikeNum();
         commentRepository.save(comment.get());
 
     }
@@ -236,7 +250,7 @@ public class CommentService {
 
         commentLikeRepository.deleteByComment_IdAndMemberUsername(commentId,memberId);
 
-        comment.get().setLikeNum(comment.get().getLikeNum()-1);
+        comment.get().minusLikeNum();
         commentRepository.save(comment.get());
 
     }

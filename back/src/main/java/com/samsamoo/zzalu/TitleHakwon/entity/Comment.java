@@ -6,9 +6,11 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,14 +21,13 @@ import java.util.List;
 **/
 
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 
 @AllArgsConstructor
 @Builder
 
 @Entity
-
+@EntityListeners(AuditingEntityListener.class)
 public class Comment {
 
     /** 댓글 고유 아이디 **/
@@ -39,7 +40,7 @@ public class Comment {
     /** 댓글 내용 **/
     @Column(nullable = false)
     @Lob //가변길의를 갖는 큰 데이터를 저장하는데 사용하는 데이터형이다
-    String cotent;
+    String content;
 
     /** 작성자 아이디 **/
     // N:1 양방향
@@ -54,21 +55,47 @@ public class Comment {
     private TitleHakwon titleHakwon;
 
 
+    /** 대댓글 목록 **/
     @OneToMany(mappedBy = "parentComment", orphanRemoval = true)  //자식도 삭제
     private List<ReplyComment> replyCommentList = new ArrayList<>();
 
-    //좋아요 개수
+    /** 좋아요 개수  **/
     @ColumnDefault("0")
     int likeNum;
 
-    @CreationTimestamp
-    private LocalDateTime createdDate;
+    /** 생성 시간 **/
 
+    private String createdDate;
+
+    /** 마지막 수정 시간 **/
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
 
-    @Enumerated(value = EnumType.STRING)
-    private DeleteCommentStatus isDeleted;
+
+    /** 수정 여부 **/
+    @Column(nullable = false)
+    private boolean isUpdated =false;
+
+
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public void upDateContent(String content, boolean isUpdated){
+        this.content = content;
+        this.isUpdated=isUpdated;
+    }
+
+    public  void plusLikeNum (){
+        this.likeNum+=1;
+    }
+
+    public  void minusLikeNum (){
+        this.likeNum-=1;
+    }
+
 
 
 
