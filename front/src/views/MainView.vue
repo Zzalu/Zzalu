@@ -12,7 +12,6 @@
     <div v-if="open_chat_info">
       <ChatInfoModal :info_data="chat_data[open_chat_id]" class="z-50" />
     </div>
-
     <SearchView />
     <div class="h-5"></div>
     <MainBottomNav />
@@ -31,7 +30,7 @@ import ChatInfoModal from "../components/QuietChat/QuietChatList/ChatInfoModal";
 import HotCahttingRoomData from "../views/QuietChat/QuietChatListData.js";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-import { onBeforeMount } from '@vue/runtime-core';
+import { onBeforeMount } from "@vue/runtime-core";
 
 export default {
   name: "MainView",
@@ -54,9 +53,9 @@ export default {
       store.commit("quietChatStore/close_chat_info");
     };
     onBeforeMount(() => {
-      store.dispatch('quietChatStore/getQuietList'),
-      store.dispatch('quietChatStore/getGIFList')
-    }) 
+      store.dispatch("quietChatStore/getQuietList"),
+        store.dispatch("quietChatStore/getGIFList");
+    });
     return {
       check_search_modal,
       close_search_modal,
@@ -92,6 +91,9 @@ export default {
     close_chat() {
       this.close_chat_info();
     },
+    hi() {
+      console.log('hi');
+    }
   },
   watch: {
     // 외부 스크롤 막기
@@ -101,6 +103,7 @@ export default {
         : document.body.style.removeProperty("overflow");
     },
     check_search_modal: function (value) {
+      console.log('hi');
       value
         ? (document.body.style.overflow = "hidden")
         : document.body.style.removeProperty("overflow");

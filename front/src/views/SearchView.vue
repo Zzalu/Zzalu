@@ -1,20 +1,26 @@
 <template>
   <div>
-    <div v-if="open_search_modal">
-      <div :class="open_list_modal ? 'hide-modal-items' : null"></div>
-      <div class="modal">
-        <div class="modal-items">
-          <SearchBar />
-          <div v-for="(a, i) in 60" :key="i">
-            <JjalListItem :i="i" @select_id="select_id" />
+    <div>
+      <transition name="fade">
+        <div v-if="open_search_modal">
+          <div :class="open_list_modal ? 'hide-modal-items' : null"></div>
+          <div class="modal">
+            <div class="modal-items">
+              <SearchBar />
+              <div v-for="(a, i) in 120" :key="i">
+                <JjalListItem :i="i" @select_id="select_id" />
+              </div>
+            </div>
           </div>
         </div>
+      </transition>
+      <!-- <transition name="slide-fade"> -->
+        <div v-if="open_list_modal">
+          <div class="list-view-bg"></div>
+          <StoreList class="list-view" />
+        </div>
       </div>
-    </div>
-    <div v-if="open_list_modal">
-      <div class="list-view-bg"></div>
-      <StoreList class="list-view" />
-    </div>
+      <!-- </transition> -->
   </div>
 </template>
 
@@ -60,13 +66,50 @@ export default {
 </script>
 
 <style scoped lang="postcss">
+.fade-enter-active{
+  transform: translateY(90vh);
+  position: fixed;
+  opacity: 0;
+  transition: all 0.2s ease-in;
+  @apply inset-x-0 top-0
+}
+.fade-leave-active {
+  transform: translateY(90vh);
+  position: fixed;
+  transition: all 0.2s ease-out;
+  @apply inset-0
+}
+
+.fade-leave-to {
+  /* transform: translateY(-10px); */
+  opacity: 0;
+}
+.fade-enter-to {
+  transform: translateY(0px);
+  position: fixed;
+  opacity: 1;
+}
+.slide-fade-enter {
+  transform: translateY(10px);
+  opacity: 0;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 1s ease;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
+}
 /* 보관함 모달창 전체 */
 .list-view {
   margin: 0;
   @apply fixed inset-0 z-50 h-80 w-52 bg-white m-auto rounded-2xl border;
 }
 .modal {
-  box-shadow: 0px 0px 20px;
+  box-shadow: 0px 0px 7px;
   @apply fixed top-20 inset-x-0 border bg-white h-screen border-t-2 rounded-t-2xl z-10;
 }
 

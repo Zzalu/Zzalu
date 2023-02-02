@@ -52,7 +52,8 @@ export default {
 <style scoped lang="postcss">
 
 .title-competition-card-container {
-  @apply border w-36 h-48 rounded-2xl mr-5;
+  box-shadow:0 0 5px black;
+  @apply border w-36 h-48 rounded-2xl ml-3 mr-2 mb-1;
 }
 .title-competiton-img-container {
   @apply relative;
