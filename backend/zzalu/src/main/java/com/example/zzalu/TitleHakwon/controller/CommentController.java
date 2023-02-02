@@ -163,6 +163,17 @@ public class CommentController {
         }
     }
 
+    /**
+     * [GET]
+     * 댓글 최신순 조회
+     */
+
+
+    /**
+     * [GET]
+     * 대댓글 최신순 조회
+     */
+
 
 
 
