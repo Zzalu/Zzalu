@@ -91,6 +91,9 @@ export default {
     close_chat() {
       this.close_chat_info();
     },
+    hi() {
+      console.log('hi');
+    }
   },
   watch: {
     // 외부 스크롤 막기
@@ -100,6 +103,7 @@ export default {
         : document.body.style.removeProperty("overflow");
     },
     check_search_modal: function (value) {
+      console.log('hi');
       value
         ? (document.body.style.overflow = "hidden")
         : document.body.style.removeProperty("overflow");
