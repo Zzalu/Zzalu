@@ -11,8 +11,8 @@ import com.samsamoo.zzalu.TitleHakwon.repository.CommentLikeRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.ReplyCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
-import com.samsamoo.zzalu.User.model.Member;
-import com.samsamoo.zzalu.User.repository.MemberRepository;
+import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.repo.MemberRepository;
 import com.samsamoo.zzalu.TitleHakwon.dto.CommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -42,7 +42,7 @@ public class CommentService {
     public CommentResponse addComment (CommentRequest requestComment){
 
         Comment comment = Comment.builder()
-                .member(memberRepository.findMemberByMemberId(requestComment.getMemberId()))
+                .member(memberRepository.findByUsername(requestComment.getMemberId()).get())
                 .titleHakwon(titleHackwonRepository.findTitleHakwonById(requestComment.getTitleHakwonId()))
                 .cotent(requestComment.getContent())
                 .replyCommentList(new ArrayList<>())
@@ -66,7 +66,7 @@ public class CommentService {
          */
 
         ReplyComment replyComment = ReplyComment.builder()
-                .member(memberRepository.findMemberByMemberId(replyCommentRequest.getMemberId()))
+                .member(memberRepository.findByUsername(replyCommentRequest.getMemberId()).get())
                 .cotent(replyCommentRequest.getContent())
                 .parentComment(commentRepository.findById(replyCommentRequest.getParentCommentId()).get())
                 .build();
@@ -193,7 +193,7 @@ public class CommentService {
 
         //존재하지 않은 댓글이였다면?
         Optional<Comment> comment = commentRepository.findById(commentId);
-        Optional<Member> member = memberRepository.findById(memberId);
+        Optional<Member> member = memberRepository.findByUsername(memberId);
 
         if(!comment.isPresent()){
             return;
@@ -225,7 +225,7 @@ public class CommentService {
 
     public void cancelCommentLikes(Long commentId , String memberId){
         Optional<Comment> comment = commentRepository.findById(commentId);
-        Optional<Member> member = memberRepository.findById(memberId);
+        Optional<Member> member = memberRepository.findByUsername(memberId);
 
         if(!comment.isPresent()){
             return;
@@ -234,7 +234,7 @@ public class CommentService {
             return;
         }
 
-        commentLikeRepository.deleteByComment_IdAndMember_MemberId(commentId,memberId);
+        commentLikeRepository.deleteByComment_IdAndMemberUsername(commentId,memberId);
 
         comment.get().setLikeNum(comment.get().getLikeNum()-1);
         commentRepository.save(comment.get());
@@ -248,7 +248,7 @@ public class CommentService {
 
     public  boolean existCommentLike(Long commentId ,String memberId ){
 
-        return commentLikeRepository.existsByComment_IdAndMember_MemberId(commentId,memberId);
+        return commentLikeRepository.existsByComment_IdAndMemberUsername(commentId,memberId);
     }
 
 }

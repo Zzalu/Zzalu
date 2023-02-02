@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.member.entity;
 
+import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
 import com.samsamoo.zzalu.board.entity.Board;
 import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import lombok.*;
@@ -57,6 +58,11 @@ public class Member implements UserDetails {
     @Builder.Default
     @ManyToMany
     private List<Member> following = new ArrayList<>();
+
+    //댓글
+    @OneToMany (mappedBy = "member" ,cascade = CascadeType.ALL)
+    private List<Comment> coments = new ArrayList<>();
+
 
     @Builder.Default
     @ManyToMany(mappedBy = "following")

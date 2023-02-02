@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.TitleHakwon.entity;
 
 
-import com.samsamoo.zzalu.User.model.Member;
+import com.samsamoo.zzalu.member.entity.Member;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
