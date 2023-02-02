@@ -41,7 +41,7 @@ spring:
       max-request-size: 10MB
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    password: ssafy
+    password: zzalu_c109!
     url: jdbc:mysql://localhost:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
     username: root
   kafka:
