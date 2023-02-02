@@ -18,7 +18,7 @@
       궁금한 점이 있으시면 고객센터를 통해 문의해주시기 바랍니다.
     </div>
     <!-- 버튼 -->
-    <button class="go-back-button">이전 페이지</button>
+    <button class="go-back-button" @click="goBack">이전 페이지</button>
   </div>
   <main-bottom-nav></main-bottom-nav>
 </template>
@@ -30,7 +30,13 @@ export default {
   name: "Error404View",
   components: {
     MainBottomNav,
+  },
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    }
   }
+
 };
 </script>
 

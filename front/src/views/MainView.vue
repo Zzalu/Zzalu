@@ -1,5 +1,5 @@
 <template>
-  <div class="not-scroll">
+  <div class="not-scroll dark:bg-zz-bd">
     <div class="body" v-if="check_search_modal" @click="close_modal"></div>
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
     <OnlyBigLogoTopNav class="z-30" />

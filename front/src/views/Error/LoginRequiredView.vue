@@ -9,7 +9,7 @@
     <!-- 해당페이지는 로그인 후 이용하실 수 있어요 -->
     <div class="text-oneline">
         <div class="page-sub-title-black">해당 페이지는</div>
-        <div class="page-sub-title-primary">로그인</div>
+        <router-link to="/login" class="page-sub-title-primary">로그인</router-link>
         <div class="page-sub-title-black">후 이용하실 수 있어요</div>
     </div>
     <!-- 아직 회원이 아니신가요? 회원가입 -->
@@ -17,11 +17,11 @@
       <div>
         아직 회원이 아니신가요? |
       </div>
-      <div class="redir-accounts-click">
+      <router-link to="/signup" class="redir-accounts-click">
         회원가입
-      </div>
+      </router-link>
     </div>
-    <button class="go-back-button">이전 페이지</button>
+    <button class="go-back-button" @click="goBack">이전 페이지</button>
   </div>
   <main-bottom-nav></main-bottom-nav>
 </template>
@@ -33,7 +33,14 @@ export default {
   name: "LoginRequiredView",
   components: {
     MainBottomNav,
-  }
+  },
+  methods: {
+    goBack () {
+      this.$router.go(-1)
+    }
+  },
+
+
 }
 </script>
 
