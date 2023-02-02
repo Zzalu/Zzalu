@@ -11,6 +11,11 @@
       z-50
     "
   >
+    <div
+      class="close-modal"
+      v-if="check_search_modal"
+      @click="close_modal"
+    ></div>
     <ul class="nav_list">
       <router-link to="/main" class="nav_item">
         <font-awesome-icon icon="fa-solid fa-house" />
@@ -38,28 +43,55 @@
 
 <script>
 import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "MainBottomNavBar",
   setup() {
     const store = useStore();
 
+    const check_search_modal = computed(
+      () => store.state.searchModalStore.open_search_modal
+    );
+    const close_search_modal = () => {
+      store.commit("searchModalStore/open_search_modal");
+    };
     const open_modal = () => {
       store.commit("searchModalStore/open_search_modal");
     };
     return {
       open_modal,
+      close_search_modal,
+      check_search_modal,
     };
+  },
+  methods: {
+    close_modal() {
+      if (this.check_search_modal == true) {
+        this.close_search_modal();
+      }
+    },
+  },
+  watch: {
+    check_search_modal: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
   },
 };
 </script>
 
 <style scoped lang="postcss">
+.close-modal {
+  height: 4rem;
+  @apply fixed inset-x-0 top-0 z-40;
+}
 span {
   display: inline-block;
 }
 .nav_list {
-  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-black ;
+  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-black;
 }
 .nav_item {
   @apply flex-1 cursor-pointer text-center dark:text-white;
