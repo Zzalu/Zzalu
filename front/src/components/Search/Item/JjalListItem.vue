@@ -103,7 +103,7 @@ export default {
 .select-jjal-box {
   overflow: hidden;
   /* filter: opacity(0.5) drop-shadow(0 0 0 rgb(0, 0, 0)); */
-  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
+  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center ;
 }
 
 .jjal-box {

@@ -21,12 +21,12 @@ export default {
   @apply h-nav-height fixed inset-x-0 top-24 flex items-center justify-center;
 }
 .navbar-input-box {
-  @apply bg-zz-light-input w-10/12 h-9 flex items-center px-5 py-1 rounded-lg;
+  @apply bg-zz-light-input w-10/12 h-9 flex items-center px-5 py-1 rounded-lg dark:bg-zz-dark-input;
 }
 .navbar-icon {
   @apply text-zz-darkgray mr-2;
 }
 .navbar-input {
-  @apply bg-transparent text-zz-darkgray w-full;
+  @apply bg-transparent text-zz-darkgray w-full dark:text-white font-spoq;
 }
 </style>
