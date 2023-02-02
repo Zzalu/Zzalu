@@ -46,8 +46,9 @@ export default {
       store.commit("quietChatStore/close_chat_info");
     };
     onBeforeMount(() => {
-      store.dispatch("quietChatStore/getQuietList"),
-        store.dispatch("quietChatStore/getGIFList");
+      // axios 요청
+      // store.dispatch("quietChatStore/getQuietList"),
+      //   store.dispatch("quietChatStore/getGIFList");
     });
     return {
       open_chat_info,

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="my-nav-height px-5">
+    <div class="my-nav-height px-5 dark:bg-zz-bd">
       <div>
         <router-view></router-view>
       </div>
@@ -27,7 +27,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="postcss">
 .main-margin {
   padding: 0 1.25rem;
   margin-bottom: 3.5rem;

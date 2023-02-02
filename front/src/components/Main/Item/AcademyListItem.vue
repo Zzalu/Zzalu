@@ -53,7 +53,7 @@ export default {
 
 .title-competition-card-container {
   box-shadow:0 0 5px black;
-  @apply border w-36 h-48 rounded-2xl ml-3 mr-2 mb-1;
+  @apply border w-36 h-48 rounded-2xl ml-3 mr-2 mb-1 dark:border-zz-dark-div;
 }
 .title-competiton-img-container {
   @apply relative;
@@ -84,10 +84,10 @@ export default {
 }
 .title-competiton-content-text {
   font-size: 0.2rem;
-  @apply font-spoq line-clamp-1;
+  @apply font-spoq line-clamp-1 dark:text-white;
 }
 .title-competiton-button-contain {
-  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1;
+  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 ;
 }
 .title-competiton-button-icon {
   font-size: 0.6rem;
@@ -99,6 +99,6 @@ export default {
 }
 .title-competiton-content {
   word-break: keep-all;
-  @apply mt-2 text-xs line-clamp-2 font-spoq mx-1;
+  @apply mt-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white;
 }
 </style>

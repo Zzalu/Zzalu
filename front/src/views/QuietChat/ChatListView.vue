@@ -1,11 +1,32 @@
 <template>
-  <div>
+  <div class="test">
     <ChatSearchTopNav />
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
     <ChatFilter />
     <MakeChatButton />
-    <div v-for="(datas, i) in data" :key="i">
-      <QuietChatList :datas="datas" @click="chat_data(i)" />
+    <!-- 고독방이 있다면 -->
+    <div v-if="data.length >= 1">
+      <div v-for="(datas, i) in data" :key="i">
+        <QuietChatList :datas="datas" @click="chat_data(i)" />
+      </div>
+    </div>
+    <!-- 필터로 걸러진 고독방이 없다면 -->
+    <div v-else>
+      <div class="text-center-container">
+        <div class="error-title-container">
+          <div class="oops">OOPS</div>
+          <div class="sad-face">:(</div>
+          <div class="resting-face">:|</div>
+        </div>
+        <div class="mt-52">
+          <div class="error-content">
+            찾으시려는 페이지의 주소를 잘못 입력 되었거나,
+          </div>
+          <div class="error-content">
+            주소의 변경 혹은 삭제로인해 현재 사용하실 수 없습니다.
+          </div>
+        </div>
+      </div>
     </div>
     <div v-if="open_chat_info">
       <ChatInfoModal :info_data="data[open_chat_id]" />
@@ -100,5 +121,26 @@ export default {
 <style scoped lang="postcss">
 .bg-negative {
   @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0;
+}
+/* .test {
+  min-height:84vh;
+  @apply h-full
+} */
+
+/* OOPS */
+.oops {
+  @apply mt-16 text-8xl font-carter text-zz-s;
+}
+.sad-face {
+  transform: rotate(90deg);
+  right: 6rem;
+  @apply relative mt-12 font-pop text-4xl dark:text-white;
+}
+
+.resting-face {
+  transform: rotate(90deg);
+  right: 1rem;
+  bottom: 1.5rem;
+  @apply relative font-pop text-4xl dark:text-white;
 }
 </style>

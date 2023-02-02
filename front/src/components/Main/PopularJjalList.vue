@@ -1,7 +1,7 @@
 <template>
   <div>
     <p class="focus-text">오늘의 인기 짤</p>
-    <hr class="mb-5" />
+    <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
     <div class="flex overflow-x-auto">
       <div v-for="b in 30" :key="b">
         <PopularJjalListItem/>
@@ -24,7 +24,7 @@ export default {
 <style scoped lang="postcss">
 
 .focus-text {
-  @apply font-bhs text-2xl line-clamp-1 mt-5;
+  @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
 }
 
 .popular-img {

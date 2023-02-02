@@ -74,13 +74,13 @@ export default {
   @apply text-zz-p border-b-4 border-zz-p font-spoq;
 }
 .filter-one-not-select {
-  @apply text-black border-b-4 font-spoq;
+  @apply text-black border-b-4 font-spoq dark:text-white;
 }
 .filter-two-select {
   @apply text-zz-p border-t-4 border-zz-p font-spoq;
 }
 .filter-two-not-select {
-  @apply text-black border-t-4 font-spoq;
+  @apply text-black border-t-4 font-spoq dark:text-white;
 }
 .menu-one {
   @apply grid grid-cols-3 text-center;
