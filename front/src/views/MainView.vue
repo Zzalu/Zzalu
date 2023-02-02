@@ -95,19 +95,15 @@ export default {
   },
   watch: {
     // 외부 스크롤 막기
-    check_search_modal: function (value) {
-      if (value == true) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.removeProperty("overflow");
-      }
-    },
     open_chat_info: function (value) {
-      if (value == true) {
-        document.body.style.overflow = "hidden";
-      } else {
-        document.body.style.removeProperty("overflow");
-      }
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
+    check_search_modal: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
     },
   },
 };

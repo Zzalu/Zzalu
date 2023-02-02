@@ -5,7 +5,7 @@
       <div class="modal">
         <div class="modal-items">
           <SearchBar />
-          <div v-for="(a, i) in 120" :key="i">
+          <div v-for="(a, i) in 60" :key="i">
             <JjalListItem :i="i" @select_id="select_id" />
           </div>
         </div>
@@ -66,6 +66,7 @@ export default {
   @apply fixed inset-0 z-50 h-80 w-52 bg-white m-auto rounded-2xl border;
 }
 .modal {
+  box-shadow: 0px 0px 20px;
   @apply fixed top-20 inset-x-0 border bg-white h-screen border-t-2 rounded-t-2xl z-10;
 }
 
