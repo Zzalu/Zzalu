@@ -1,5 +1,5 @@
 import { createWebHistory, createRouter } from "vue-router";
-// import App from "./App"
+import Signup from '@/views/Accounts/SignUpView'
 
 
 const routes = [
@@ -18,10 +18,34 @@ const routes = [
     component: () => import ('@/views/Accounts/LoginView'),
   },
   // 회원가입
+  // SignUp
   {
     path: "/signup",
     name: "signup",
-    component: () => import ('@/views/Accounts/SignUpView'),
+    component: Signup,
+    children:[
+      {
+        path: "",
+        name: "input-info",
+        component: () => import("@/components/Accounts/SignUp/InputUserInfo.vue")
+      },
+      {
+        path: "/email",
+        name: "input-email",
+        component: () => import("@/components/Accounts/InputEmail.vue"),
+        props: true
+      },
+      {
+        path: "/input-code",
+        name: "input-code",
+        component: () => import("@/components/Accounts/InputCodeForm.vue")
+      },
+      {
+        path: "/complete",
+        name: "complete",
+        component: () => import("@/components/Accounts/SignUp/WelcomeToZzalu.vue")
+      }
+    ]
   },
   // 아이디찾기
   {
@@ -70,10 +94,10 @@ const routes = [
   
   // ERROR
   // 에러404 페이지X
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/error-404',
-  },
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   redirect: '/error-404',
+  // },
   {
     path:'/error-404',
     name: "error-404",

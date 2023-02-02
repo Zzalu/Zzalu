@@ -6,7 +6,8 @@
       src="../../assets/zzalu_logo_light.png"
     />
     <h1 class="account-title mb-10">Sign Up</h1>
-    <input-user-info></input-user-info>
+    <router-view></router-view>
+    <!-- <input-user-info></input-user-info> -->
     <!-- <input-email v-if="second"></input-email> -->
     <!-- <input-code-form v-if="three"></input-code-form> -->
     <!-- <welcome-to-zzalu v-if="four"></welcome-to-zzalu> -->
@@ -16,7 +17,7 @@
 </template>
 
 <script> 
-import InputUserInfo from '../../components/Accounts/SignUp/InputUserInfo.vue'
+// import InputUserInfo from '../../components/Accounts/SignUp/InputUserInfo.vue'
 // import InputEmail from '../../components/Accounts/InputEmail.vue'
 // import InputCodeForm from '../../components/Accounts/InputCodeForm.vue'
 // import WelcomeToZzalu from '../../components/Accounts/SignUp/WelcomeToZzalu.vue'
@@ -25,7 +26,7 @@ import InputUserInfo from '../../components/Accounts/SignUp/InputUserInfo.vue'
 export default {
   name: 'SignUpView',
   components: {
-    InputUserInfo,
+    // InputUserInfo,
     // InputEmail,
     // InputCodeForm,
     // WelcomeToZzalu

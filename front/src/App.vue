@@ -1,6 +1,7 @@
+
 <template>
   <div>
-    <div class="my-nav-height px-5">
+    <div class="px-5">
       <div>
         <router-view></router-view>
       </div>
