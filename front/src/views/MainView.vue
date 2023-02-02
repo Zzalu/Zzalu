@@ -12,7 +12,6 @@
     <div v-if="open_chat_info">
       <ChatInfoModal :info_data="chat_data[open_chat_id]" class="z-50" />
     </div>
-
     <SearchView />
     <div class="h-5"></div>
     <MainBottomNav />
@@ -31,7 +30,7 @@ import ChatInfoModal from "../components/QuietChat/QuietChatList/ChatInfoModal";
 import HotCahttingRoomData from "../views/QuietChat/QuietChatListData.js";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-import { onBeforeMount } from '@vue/runtime-core';
+import { onBeforeMount } from "@vue/runtime-core";
 
 export default {
   name: "MainView",
@@ -54,9 +53,9 @@ export default {
       store.commit("quietChatStore/close_chat_info");
     };
     onBeforeMount(() => {
-      store.dispatch('quietChatStore/getQuietList'),
-      store.dispatch('quietChatStore/getGIFList')
-    }) 
+      store.dispatch("quietChatStore/getQuietList"),
+        store.dispatch("quietChatStore/getGIFList");
+    });
     return {
       check_search_modal,
       close_search_modal,

@@ -27,8 +27,9 @@ export default {
 <style scoped lang="postcss">
 
 .quiet-chat-card-contain {
+  box-shadow:0 0 5px black;
   background-image: url("../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg");
-  @apply border h-48 w-36 bg-center bg-cover rounded-2xl relative ml-5;
+  @apply border h-48 w-36 bg-center bg-cover rounded-2xl relative ml-2 mr-3 mb-1;
 }
 
 .quiet-chat-like-contain {

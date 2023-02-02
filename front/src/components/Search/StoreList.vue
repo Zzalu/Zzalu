@@ -3,7 +3,7 @@
     <div v-if="!creating">
       <div class="list-title">
         <p class="list-title-content">저장하기</p>
-        <p class="list-title-make border" @mouseup="ChangeCreate">
+        <p class="list-title-make" @mouseup="ChangeCreate">
           <font-awesome-icon icon="fa-solid fa-plus" /> 새보관함 만들기
         </p>
       </div>
@@ -37,9 +37,9 @@
         </div>
       </div>
 
-      <p class="m-2 text-xs">이름</p>
+      <p class="m-2 text-xs font-bhs">이름</p>
       <div class="creating-input-contain">
-        <input placeholder="보관함 이름 입력.." />
+        <input placeholder="보관함 이름 입력.." class="font-spoq" />
       </div>
       <div class="creating-save-btn-contain" ref="tmp2">
         <button class="cancel-btn"
@@ -167,15 +167,15 @@ export default {
 <style scoped lang="postcss">
 /* 상단 */
 .list-title {
-  @apply mt-2 flex items-center mb-2;
+  @apply mt-2 flex items-center mb-2 ;
 }
 
 .list-title-content {
-  @apply mr-auto ml-4 mt-1;
+  @apply mr-auto ml-4 mt-1 font-bhs;
 }
 
 .list-title-make {
-  @apply text-xs ml-auto pr-2 text-zz-p;
+  @apply text-xs ml-auto pr-2 text-zz-p font-spoq;
 }
 
 /* 생성중일 때 */
@@ -184,14 +184,14 @@ export default {
 }
 /* 보관함 목록 */
 .list-items-contain {
-  @apply h-56 overflow-y-scroll;
+  @apply h-56 overflow-y-scroll font-spoq;
 }
 .list-items {
   @apply m-2;
 }
 /* 저장 버튼 */
 .save-btn-contain {
-  @apply h-7 absolute bottom-0 left-16 right-16 flex justify-center mb-4;
+  @apply h-7 absolute bottom-0 left-16 right-16 flex justify-center mb-4 font-spoq;
 }
 .save-btn {
   @apply bg-zz-s text-white px-5 rounded-lg py-1 text-xs;
@@ -200,7 +200,7 @@ export default {
 /* 생성중일때 리스트 */
 
 .creating-list-items-contain {
-  @apply border h-40 overflow-y-scroll;
+  @apply border h-40 overflow-y-scroll font-spoq;
 }
 
 /* 생성중일때 인풋 */
@@ -212,7 +212,7 @@ export default {
 /* 생성중일 때 버튼 */
 
 .creating-save-btn-contain {
-  @apply flex place-content-evenly;
+  @apply flex place-content-evenly font-spoq;
 }
 
 .cancel-btn {
