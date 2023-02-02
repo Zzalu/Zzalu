@@ -1,7 +1,7 @@
 // /** @type {import('tailwindcss').Config} */
 module.exports = {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
@@ -25,7 +25,7 @@ module.exports = {
         'zz-silver': '#A7A7A7',
         'zz-bronze': '#948150',
         // 디바이더 색깔, 백그라운드 색깔
-        'zz-dark-bg': '#E292A2D',
+        'zz-bd': '#292A2D',
         'zz-dark-div': '#6A6A6A',
         'zz-light-div': '#E9E9E9',
       },

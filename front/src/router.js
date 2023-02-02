@@ -102,7 +102,8 @@ const routes = [
   // PROFILE
   // 프로필 메인
   {
-    path: "/profile/:user_id",
+    // path: "/profile/:user_id",
+    path: "/profile",
     name: "profile",
     component: () => import ('@/views/Profile/ProfileView'),
   },  
@@ -114,7 +115,8 @@ const routes = [
   },  
   // 설정 가는 페이지
   {
-    path: "/:user_id/settings",
+    // path: "/:user_id/settings",
+    path: "/settings",
     name: "settings",
     component: () => import ('@/views/Profile/UserSettingsView'),
   },

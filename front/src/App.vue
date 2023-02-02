@@ -9,10 +9,21 @@
 </template>
 
 <script>
+import { useDark } from "@vueuse/core";
+
+const isDark = useDark();
 export default {
   name: 'App',
+  data() {
+    return {
+      isDark
+    }
+  },
   components: {},
   methods: {},
+  mounted() {
+    // this.darkmode = this.userInfo.company_name || "";
+},
 };
 </script>
 

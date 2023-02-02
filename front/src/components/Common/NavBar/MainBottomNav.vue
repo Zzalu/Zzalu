@@ -59,10 +59,10 @@ span {
   display: inline-block;
 }
 .nav_list {
-  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white;
+  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-black ;
 }
 .nav_item {
-  @apply flex-1 cursor-pointer text-center;
+  @apply flex-1 cursor-pointer text-center dark:text-white;
 }
 .search {
   @apply h-12 w-12 bg-zz-p rounded-xl text-white p-3;

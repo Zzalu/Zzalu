@@ -16,6 +16,7 @@
 /* 버튼 모음 */
 /* 이전으로 버튼- 중앙 */
 .go-back-button {
+  word-break: keep-all;
   @apply my-8 p-2 bg-zz-s rounded-md font-spoq text-white
 }
 
@@ -162,11 +163,11 @@
 /* 회원정보 수정 관련 */
 
 .settings-button {
-  @apply flex-auto bg-zz-light-input text-zz-light-p text-xl font-spoq my-1 py-2 px-16 h-16 text-left
+  @apply flex-auto bg-zz-light-input text-zz-light-p text-xl font-spoq my-1 py-2 px-16 h-16 text-left dark:text-white
 }
 
 .settings-icon-aligned-left {
-  @apply absolute mx-5 my-5 h-8 text-zz-light-p
+  @apply absolute mx-5 my-5 h-8 text-zz-light-p dark:text-white
 }
 
 .settings-toggle-right {
@@ -179,11 +180,11 @@
   @apply absolute mx-6 text-xs font-spoq text-zz-light-p font-bold
 }
 
-/* .settings-right-letter-on {
+.settings-right-letter-on {
   top: 17.65rem;
   right:3.25rem;
   @apply absolute mx-6 text-xs font-spoq text-white font-bold
-} */
+}
 
 /* --------------------------------------- */
 /* 해시태그 */
