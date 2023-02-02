@@ -1,6 +1,5 @@
 <template>
   <div class="not-scroll dark:bg-zz-bd">
-    <div class="body" v-if="check_search_modal" @click="close_modal"></div>
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
     <OnlyBigLogoTopNav class="z-30" />
     <AcademyList />
@@ -37,12 +36,6 @@ export default {
   setup() {
     const store = useStore();
 
-    const check_search_modal = computed(
-      () => store.state.searchModalStore.open_search_modal
-    );
-    const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal");
-    };
     const open_chat_info = computed(
       () => store.state.quietChatStore.open_chat_info
     );
@@ -53,12 +46,11 @@ export default {
       store.commit("quietChatStore/close_chat_info");
     };
     onBeforeMount(() => {
-      store.dispatch("quietChatStore/getQuietList"),
-        store.dispatch("quietChatStore/getGIFList");
+      // axios 요청
+      // store.dispatch("quietChatStore/getQuietList"),
+      //   store.dispatch("quietChatStore/getGIFList");
     });
     return {
-      check_search_modal,
-      close_search_modal,
       open_chat_info,
       open_chat_id,
       close_chat_info,
@@ -83,27 +75,13 @@ export default {
     this.close_chat_info();
   },
   methods: {
-    close_modal() {
-      if (this.check_search_modal == true) {
-        this.close_search_modal();
-      }
-    },
     close_chat() {
       this.close_chat_info();
     },
-    hi() {
-      console.log('hi');
-    }
   },
   watch: {
     // 외부 스크롤 막기
     open_chat_info: function (value) {
-      value
-        ? (document.body.style.overflow = "hidden")
-        : document.body.style.removeProperty("overflow");
-    },
-    check_search_modal: function (value) {
-      console.log('hi');
       value
         ? (document.body.style.overflow = "hidden")
         : document.body.style.removeProperty("overflow");
@@ -115,10 +93,6 @@ export default {
 <style scoped lang="postcss">
 .bg-negative {
   @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0 z-40;
-}
-.body {
-  height: 4rem;
-  @apply fixed inset-x-0 top-0 z-40;
 }
 
 .focus-text {

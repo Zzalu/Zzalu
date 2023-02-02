@@ -28,7 +28,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="postcss">
 .main-margin {
   padding: 0 1.25rem;
   margin-bottom: 3.5rem;
