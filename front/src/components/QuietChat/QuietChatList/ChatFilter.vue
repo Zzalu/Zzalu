@@ -71,16 +71,16 @@ export default {
 
 <style scoped lang="postcss">
 .filter-one-select {
-  @apply text-zz-p border-b-4 border-zz-p;
+  @apply text-zz-p border-b-4 border-zz-p font-spoq;
 }
 .filter-one-not-select {
-  @apply text-black border-b-4;
+  @apply text-black border-b-4 font-spoq;
 }
 .filter-two-select {
-  @apply text-zz-p border-t-4 border-zz-p;
+  @apply text-zz-p border-t-4 border-zz-p font-spoq;
 }
 .filter-two-not-select {
-  @apply text-black border-t-4;
+  @apply text-black border-t-4 font-spoq;
 }
 .menu-one {
   @apply grid grid-cols-3 text-center;

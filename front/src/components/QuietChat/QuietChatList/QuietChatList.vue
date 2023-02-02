@@ -38,17 +38,18 @@ export default {
 
 <style scoped lang="postcss">
 .card-container {
-  @apply grid grid-cols-12 text-white mt-5 h-32;
+  @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq;
 }
 .card-img-contanier {
-  background-image: url(./assets/Dragon.jpg);
-  @apply col-span-4 border-2 bg-contain bg-center bg-no-repeat rounded-l-lg;
+  background-image: url(./assets/nyang.gif);
+  @apply col-span-4 border-2 bg-cover bg-center bg-no-repeat rounded-l-lg;
 }
 .card-content {
+  word-break: keep-all;
   @apply col-span-8 bg-zz-p rounded-r-lg pl-2 flex flex-col;
 }
 .master-icon {
-  @apply mt-2 mr-1 text-zz-light-p;
+  @apply mt-2 mr-1 text-zz-light-p text-xs;
 }
 .master-p {
   font-size: 0.25rem;
@@ -78,6 +79,6 @@ export default {
 }
 .last-lane {
   font-size: 0.5rem;
-  @apply flex mt-auto pb-2;
+  @apply flex mt-auto pb-2 items-center;
 }
 </style>

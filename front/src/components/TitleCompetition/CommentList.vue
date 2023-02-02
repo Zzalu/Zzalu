@@ -1,0 +1,53 @@
+<template>
+  <ol ref="commentListComponent">
+    <li v-for="comment in comments" :key="comment.id" :comment="comment" class="mb-1">
+      <CommentListItem :comment="comment" />
+      <span class="w-full h-divider-height bg-zz-light-div"></span>
+    </li>
+  </ol>
+</template>
+
+<script>
+import CommentListItem from './item/CommentListItem.vue';
+// import { reactive, toRefs } from 'vue';
+import { useStore } from 'vuex';
+import { onMounted, ref } from 'vue';
+
+export default {
+  components: { CommentListItem },
+  name: 'CommentList',
+  setup() {
+    const store = useStore();
+    const commentListComponent = ref(null);
+    let comments = store.state.titleCompetitionStore.comments;
+
+    const roadMoreComments = () => {
+      store.dispatch('titleCompetitionStore/getCommentList', 1);
+    };
+    /* const roadMoreComments = () => {
+      store.dispatch('titleCompetitionStore/getCommentList', {
+        lastCommentId: Number.MAX_SAFE_INTEGER,
+        titleHakwonId: 1,
+        size: 5,
+      });
+    }; */
+    onMounted(() => {
+      window.addEventListener('scroll', handleScroll);
+    });
+    const handleScroll = () => {
+      let element = commentListComponent.value;
+      if (element.getBoundingClientRect().bottom < window.innerHeight) {
+        roadMoreComments();
+      }
+    };
+
+    return {
+      comments,
+      roadMoreComments,
+      commentListComponent,
+    };
+  },
+};
+</script>
+
+<style scoped></style>

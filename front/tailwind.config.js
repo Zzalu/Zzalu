@@ -1,7 +1,7 @@
 // /** @type {import('tailwindcss').Config} */
 module.exports = {
   purge: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  darkMode: false, // or 'media' or 'class'
+  darkMode: 'class', // or 'media' or 'class'
   theme: {
     extend: {
       colors: {
@@ -25,24 +25,24 @@ module.exports = {
         'zz-silver': '#A7A7A7',
         'zz-bronze': '#948150',
         // 디바이더 색깔, 백그라운드 색깔
-        'zz-dark-bg': '#E292A2D',
+        'zz-bd': '#292A2D',
         'zz-dark-div': '#6A6A6A',
         'zz-light-div': '#E9E9E9',
       },
       spacing: {
         'nav-height': '3.2rem',
+        'divider-height': '0.5px',
       },
     },
     fontFamily: {
       carter: ['Carter', 'Carter-One'],
       spoq: ['Spoqa Han Sans Neo', 'sans-serif'],
       bhs: ['Black-Han-Sans', 'sans-serif'],
+      pop: ['Poppins', 'sans-serif'],
     },
   },
   variants: {
     extend: {},
   },
-  plugins: [
-    require('@tailwindcss/line-clamp'),
-  ],
+  plugins: [require('@tailwindcss/line-clamp')],
 };

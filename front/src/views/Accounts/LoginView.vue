@@ -6,24 +6,24 @@
       class="logo"
       src="../../assets/zzalu_logo_light.png"
     />
-    <h1 class="page-title">Login</h1>
+    <h1 class="account-title">Login</h1>
     <!-- 아이디 비번 입력창 -->
     <h2 class="input-title">아이디</h2>
-    <div class="input-with-icon">
-      <font-awesome-icon icon="fa-solid fa-user" class='icon-aligned-right'/>
-    <input type="text" class="login-input" placeholder="아이디를 입력하세요"/>
+    <div>
+      <font-awesome-icon icon="fa-solid fa-user" class='icon-aligned-left'/>
+      <input type="text" class="account-input" placeholder="아이디를 입력하세요"/>
     </div>
     <h2 class="input-title">비밀번호</h2>
-    <div class="input-with-icon">
-      <font-awesome-icon icon="fa-solid fa-lock" class='icon-aligned-right'/>
-      <input type="text" class="login-input" placeholder="비밀번호를 입력하세요"/>
-      <font-awesome-icon icon="fa-solid fa-eye" class='icon-aligned-left'/>
+    <div>
+      <font-awesome-icon icon="fa-solid fa-lock" class='icon-aligned-left'/>
+      <input type="text" class="account-input" placeholder="비밀번호를 입력하세요"/>
+      <font-awesome-icon icon="fa-solid fa-eye" class='icon-aligned-right'/>
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
     <!-- 아이디 비번찾기 -->
-    <div class="find-id-and-pwd">
-      <div class="find-id">아이디 |</div>
-      <div>비밀번호 찾기</div>
+    <div class="redir-accounts">
+      <router-link to="/find-id" class="find-id">아이디 |</router-link>
+      <router-link to="/reset-password">비밀번호 찾기</router-link>
     </div>
     <!-- 소셜로그인 -->
     <div class="divide-social">
@@ -39,23 +39,21 @@
   <div class='center-containers'>
     <button class='submit-button'>로그인</button>
   </div>
+  <sign-up-bottom-nav></sign-up-bottom-nav>
 </template>
 
 <script>
+import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue'
+
 export default {
   name: "LoginView",
+  components: {
+    SignUpBottomNav,
+  }
 };
 </script>
 
-<style scoped>
-/* 회원관련 css 모두 모은 파일 */
-@import "./assets/accounts.css";
-
-/* 아이디 비번찾기 */
-.find-id-and-pwd {
-  
-  @apply flex float-right text-zz-darkgray text-xs mt-1;
-}
+<style scoped lang="postcss">
 
 .find-id {
   @apply mx-1;

@@ -1,36 +1,26 @@
 <template>
   <div>
+    <KorGoBackTopNavBar/>
     <div v-if="createCheck" class="bg-negative"></div>
     <div v-if="createCheck">
-      <CannotEditModal
-      @close-modal="createCheck=$event"
-      />
+      <CannotEditModal @close-modal="createCheck = $event" />
     </div>
 
     <div class="image-container">
-      <div
-        v-if="url != null"
-        class="preview-image"
-        :style="`background-image:url(${this.url})`"
-      ></div>
+      <div v-if="url != null" class="preview-image" :style="`background-image:url(${this.url})`"></div>
       <div v-else class="preview-image"></div>
       <input @change="upload" type="file" id="file" class="select-image" />
-      <label class="select-image-text" for="file">
-        <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label
-      >
+      <label class="select-image-text" for="file"> <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label>
     </div>
 
     <p class="guide">고독방 이름</p>
-    <input
-      class="guideline"
-      placeholder="고독방을 제외한 고독방 이름을 입력해주세요."
-    />
+    <input class="guideline" placeholder="고독방을 제외한 고독방 이름을 입력해주세요." />
     <p class="caution">고독방 이름에는 특수문자를 사용할 수 없습니다.</p>
     <p class="guide">고독방 한 줄 소개</p>
     <input class="guideline" />
     <p class="caution"></p>
     <p class="guide">해시태그</p>
-    <div class="hashtag">
+    <div class="hashtag-contain">
       <div v-if="hashtags.length == 0">빈 해시태그</div>
       <div v-else class="hashtag-div">
         <div v-for="(hashtag, i) in hashtags" :key="i">
@@ -41,30 +31,33 @@
         <font-awesome-icon icon="fa-solid fa-plus" />
       </button>
     </div>
-    <div class="create-btn" @click="this.createCheck=true">
-      <button >개설하기</button>
+    <div class="create-btn" @click="this.createCheck = true">
+      <button>개설하기</button>
     </div>
-
+    <MainBottomNav/>
   </div>
 </template>
 
 <script>
-import CannotEditModal from '../../components/QuietChat/MakeChat/CannotEditModal.vue'
+import CannotEditModal from '../../components/QuietChat/MakeChat/CannotEditModal.vue';
+import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
+import KorGoBackTopNavBar from "../../components/Common/NavBar/KorGoBackTopNavBar"
 
 export default {
-  name: "MakeChatView",
+  name: 'MakeChatView',
   data() {
     return {
       url: null,
-      hashtags: ["고양이", "키보드", "morehashtag1", "morehashtag2"],
-      createCheck : 0,
+      hashtags: ['고양이', '키보드', 'morehashtag1', 'morehashtag2'],
+      createCheck: 0,
     };
   },
-  components :{
-    CannotEditModal
+  components: {
+    CannotEditModal,
+    KorGoBackTopNavBar,
+    MainBottomNav
   },
-  created() {
-  },
+  created() {},
   methods: {
     upload(e) {
       let file = e.target.files;
@@ -76,7 +69,7 @@ export default {
 
 <style scoped lang="postcss">
 /* 배경 */
-.bg-negative{
+.bg-negative {
   @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0;
 }
 
@@ -85,7 +78,7 @@ export default {
   @apply text-center mb-4;
 }
 .preview-image {
-  background-image: url(./assets/zzalu_logo_light.png);
+  background-image: url(../../components/QuietChat/QuietChatList/assets/zzalu_logo_light.png);
   @apply bg-contain bg-center bg-no-repeat rounded-l-lg h-48 w-24 mx-auto;
 }
 .select-image {
@@ -106,7 +99,9 @@ export default {
   font-size: 0.625rem;
   @apply text-zz-error font-spoq h-4 line-clamp-1;
 }
-.hashtag {
+
+/* 해시태그 */
+.hashtag-contain {
   @apply flex flex-wrap;
 }
 .hashtag-div {

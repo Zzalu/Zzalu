@@ -34,7 +34,7 @@ export default [
     },
     {
         id : 4,
-        name : '도라에몽 고독방',
+        name : '도라에몽 고독방인데 이름이 굉장히 길어져버린 고독방',
         content : '진구야아앙~~~',
         hashtag : ['#도라에몽','#친구'],
         master : '김지오',
