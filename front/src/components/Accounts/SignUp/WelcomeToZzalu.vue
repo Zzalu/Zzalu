@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10">
+  <div class="mt-10" id="WelcomeToZzalu">
     <div class="text-center-container">
       <div class="text-oneline">
         <div class="error-sub-title">환영합니다!</div>
