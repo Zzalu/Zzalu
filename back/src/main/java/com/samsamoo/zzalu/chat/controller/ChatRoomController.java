@@ -30,8 +30,8 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam String name) {
-        return chatRoomRepository.createChatRoom(name);
+    public ChatRoom createRoom(@RequestParam(name = "name") String name, @RequestParam(name = "imagePath") String imagePath) {
+        return chatRoomRepository.createChatRoom(name, imagePath);
     }
 
 //    @GetMapping("/room/enter/{roomId}")

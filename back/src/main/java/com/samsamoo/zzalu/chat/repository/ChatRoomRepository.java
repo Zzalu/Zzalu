@@ -5,6 +5,7 @@ import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.chat.dto.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -70,8 +71,8 @@ public class ChatRoomRepository {
     /**
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
      */
-    public ChatRoom createChatRoom(String name) {
-        ChatRoom chatRoom = ChatRoom.create(name);
+    public ChatRoom createChatRoom(String name, String imagePath) {
+        ChatRoom chatRoom = ChatRoom.create(name, imagePath);
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
@@ -79,25 +80,19 @@ public class ChatRoomRepository {
 
     @CacheEvict(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()", allEntries = true)
     public void setChatMessage(ChatMessage message) {
-        System.out.println("ChatRoomRepository - getChatMessage");
+        message.setSendDate(LocalDate.now());
         String topic = opsStringTopic.get(message.getRoomId());
         ChatRoom chatRoom = opsHashChatRoom.get(CHAT_ROOMS, topic);
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
-        System.out.println("==============================================");
-        chatRoom.setChatMessageCount(chatRoom.getChatMessageCount() + 1);
     }
 
     /**
      * 채팅방 입장 : redis에 topic을 만들고 pub/sub 통신을 하기 위해 리스너를 설정한다.
      */
     public void enterChatRoom(String roomId) {
-//        ChannelTopic topic = topics.get(roomId);
-        System.out.println("ChatRoomRepository - enterChatRoom - get : " + opsStringTopic.get(roomId));
-        System.out.println("ChatRoomRepository - enterChatRoom - TOPIC : " + new ChannelTopic(roomId));
         String topic = opsStringTopic.get(roomId);
         if (topic == null) {
             redisMessageListener.addMessageListener(redisSubscriber, new ChannelTopic(roomId));
-//            topics.put(roomId, topic);
             opsStringTopic.set(roomId, String.valueOf(new ChannelTopic(roomId)));
         }
         redisMessageListener.addMessageListener(redisSubscriber, new ChannelTopic(roomId));
@@ -105,6 +100,5 @@ public class ChatRoomRepository {
 
     public ChannelTopic getTopic(String roomId) {
        return ChannelTopic.of(opsStringTopic.get(roomId));
-//        return topics.get(roomId);
     }
 }

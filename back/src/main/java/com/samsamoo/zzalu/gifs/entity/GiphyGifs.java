@@ -3,9 +3,10 @@ package com.samsamoo.zzalu.gifs.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
-@Entity
+@Entity(name="com.samsamoo.zzalu.gifs.entity.GiphyGifs")
 @Getter
 @Setter
 @Builder
@@ -14,7 +15,7 @@ import javax.persistence.*;
 public class GiphyGifs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ID")
+    @Column(name="GIF_ID")
     private Long id;
 
     @Column(name="GIF_PATH", nullable = false, unique = true)
@@ -22,14 +23,17 @@ public class GiphyGifs {
 
     @Column(name="USE_COUNT", nullable = false)
     @Builder.Default
+    @NotNull
     private Long useCount = 0L;
 
     @Column(name="DOWNLOAD_COUNT", nullable = false)
     @Builder.Default
+    @NotNull
     private Long downloadCount = 0L;
 
     @Column(name="LIKE_COUNT", nullable = false)
     @Builder.Default
+    @NotNull
     private Long likeCount = 0L;
 
     @Column(name="TAGS")
@@ -52,9 +56,11 @@ public class GiphyGifs {
 
     @Column(name="VISITED_COUNT", nullable = false)
     @Builder.Default
+    @NotNull
     private Long visitedCount = 0L;
 
     @Column(name="SCRAP_COUNT", nullable = false)
     @Builder.Default
+    @NotNull
     private Long scrapCount = 0L;
 }
