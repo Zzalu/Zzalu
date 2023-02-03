@@ -87,21 +87,22 @@ for search in search_dict:
             update_sql = ""
             select_sql = ""
             try:
-                exists_sql = "SELECT EXISTS (SELECT * FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "') AS SUCCESS"
-                cur.execute(exists_sql)
-                exists_sql_return = cur.fetchone()[0]
+                if("'" not in d):
+                    exists_sql = "SELECT EXISTS (SELECT * FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "') AS SUCCESS"
+                    cur.execute(exists_sql)
+                    exists_sql_return = cur.fetchone()[0]
 
-                if(exists_sql_return == 1):    # 이미 존재하는 경우
-                    select_sql = "SELECT TAGS FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "'"
-                    cur.execute(select_sql)
-                    get_tags = cur.fetchone()[0]
-                    get_tags_list = list(set(get_tags.split(",") + search_tag_list))
-                    update_sql = "UPDATE GIFS SET TAGS='" + ",".join(s for s in get_tags_list) + "'"
+                    if(exists_sql_return == 1):    # 이미 존재하는 경우
+                        select_sql = "SELECT TAGS FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "'"
+                        cur.execute(select_sql)
+                        get_tags = cur.fetchone()[0]
+                        get_tags_list = list(set(get_tags.split(",") + search_tag_list))
+                        update_sql = "UPDATE GIFS SET TAGS='" + ",".join(s for s in get_tags_list) + "'"
 
-                else:
-                    insert_sql = "INSERT INTO GIFS (GIF_PATH, TAGS, SORUCES, SORUCES_POST_URL, SORUCES_TLD, IMPORT_DATETIME, SOURCE_TYPE) VALUES('" + d["images"]["480w_still"]["url"] + "','" + ','.join(s for s in gif_dict[d["images"]["480w_still"]["url"]]["tags"]) + "','" + d["source"] + "','" + d["source_post_url"] + "','" +  d["source_tld"]+ "','" +  d["import_datetime"] + "'," + "2" + ")"
-                    print(insert_sql)
-                    cur.execute(insert_sql);
+                    else:
+                        insert_sql = "INSERT INTO GIFS (GIF_PATH, TAGS, SORUCES, SORUCES_POST_URL, SORUCES_TLD, IMPORT_DATETIME, SOURCE_TYPE) VALUES('" + d["images"]["480w_still"]["url"] + "','" + ','.join(s for s in gif_dict[d["images"]["480w_still"]["url"]]["tags"]) + "','" + d["source"] + "','" + d["source_post_url"] + "','" +  d["source_tld"]+ "','" +  d["import_datetime"] + "'," + "2" + ")"
+                        print(insert_sql)
+                        cur.execute(insert_sql);
             except pymysql.err.InternalError as e:
                 code, msg = e.args
                 print("=== sql execute failed ===")
