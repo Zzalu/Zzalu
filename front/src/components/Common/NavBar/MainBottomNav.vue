@@ -31,7 +31,7 @@
           ><font-awesome-icon icon="fa-solid fa-magnifying-glass"
         /></span>
       </li>
-      <router-link to="/title-competition" class="nav_item">
+      <router-link to="/title-competition/1" class="nav_item">
         <font-awesome-icon icon="fa-regular fa-lightbulb" />
         <i class="fa-solid fa-chevron-left"></i
       ></router-link>
