@@ -16,7 +16,6 @@ export default {
   setup() {
     const store = useStore();
     let nested_comments = store.state.titleCompetitionStore.nested_comments;
-
     const roadMoreNestedComments = () => {
       store.dispatch('titleCompetitionStore/getNestedCommentList', 1);
     };
