@@ -71,8 +71,8 @@ public class ChatRoomRepository {
     /**
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
      */
-    public ChatRoom createChatRoom(String name, String imagePath) {
-        ChatRoom chatRoom = ChatRoom.create(name, imagePath);
+    public ChatRoom createChatRoom(String userNmae, Long memberId, String name, String imagePath) {
+        ChatRoom chatRoom = ChatRoom.create(userNmae, memberId, name, imagePath);
         opsHashChatRoom.put(CHAT_ROOMS, chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }
