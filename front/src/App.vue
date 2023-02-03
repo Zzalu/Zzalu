@@ -28,8 +28,8 @@ export default {
 <style scoped lang="postcss">
 .main-margin {
   padding: 0 1.25rem;
-  margin-bottom: 3.5rem;
-  margin-top: 3.5rem;
-  @apply px-5 dark:bg-zz-bd
+  margin-bottom: 3.2rem;
+  margin-top: 3.2rem;
+  @apply px-5 dark:bg-zz-bd;
 }
 </style>
