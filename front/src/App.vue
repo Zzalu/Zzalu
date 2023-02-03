@@ -1,7 +1,6 @@
-
 <template>
   <div>
-    <div class="px-5">
+    <div class="main-margin px-5 dark:bg-zz-bd">
       <div>
         <router-view></router-view>
       </div>
@@ -10,21 +9,21 @@
 </template>
 
 <script>
-import { useDark } from "@vueuse/core";
+import { useDark } from '@vueuse/core';
 
 const isDark = useDark();
 export default {
   name: 'App',
   data() {
     return {
-      isDark
-    }
+      isDark,
+    };
   },
   components: {},
   methods: {},
   mounted() {
     // this.darkmode = this.userInfo.company_name || "";
-},
+  },
 };
 </script>
 
