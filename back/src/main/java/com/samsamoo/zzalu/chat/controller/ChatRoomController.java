@@ -1,7 +1,9 @@
 package com.samsamoo.zzalu.chat.controller;
 
 import com.samsamoo.zzalu.chat.dto.ChatRoom;
+import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
+import com.samsamoo.zzalu.member.dto.SignupRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,8 +32,11 @@ public class ChatRoomController {
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoom createRoom(@RequestParam(name = "name") String name, @RequestParam(name = "imagePath") String imagePath) {
-        return chatRoomRepository.createChatRoom(name, imagePath);
+    public ChatRoom createRoom(@RequestBody ChatRoomEnroll chatRoomEnroll) {
+        System.out.println("chatroomenroll");
+        System.out.println(chatRoomEnroll.toString());
+        return chatRoomRepository.createChatRoom(chatRoomEnroll.getUserName(), chatRoomEnroll.getMemberId(), chatRoomEnroll.getRoomName(), chatRoomEnroll.getImagePath());
+
     }
 
 //    @GetMapping("/room/enter/{roomId}")
