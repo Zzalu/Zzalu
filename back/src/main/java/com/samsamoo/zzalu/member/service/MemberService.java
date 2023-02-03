@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.member.service;
 
+import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.mail.service.MailService;
@@ -15,8 +16,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -33,6 +37,8 @@ public class MemberService {
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
     private final MailService mailService;
+    private final S3Uploader s3Uploader;
+
 
 
     @Value("${jwt.token.secret}")
@@ -134,19 +140,32 @@ public class MemberService {
         return profile;
     }
 
-    public void updateMember(String token, UpdateMemberRequest request) {
+    public UpdateMember updateMember(String token, UpdateMemberRequest request) throws IOException {
         // 토큰 인증
         checkToken(token);
-        // 닉네임 중복 체크
+        // 닉네임 중복 체크??
         if (!checkUniqueNickname(request.getNickname())) {
             throw new NotMatchException("닉네임이 중복입니다.");
+        }
+        UpdateMember updateMember = new UpdateMember();
+        // s3로 프로필 이미지 업로드 및 반환
+        if (request.getProfileMultipartFile() != null) {
+            String returnUrl =  s3Uploader.upload(request.getProfileMultipartFile(), "MemberProfile");
+            updateMember.setProfilePath(returnUrl);
+        }
+        if (request.getNickname() != null) {
+            updateMember.setNickname(request.getNickname());
+        }
+        if (request.getProfileMessage() != null) {
+            updateMember.setProfileMessage(request.getProfileMessage());
         }
         // 토큰에서 Member 반환
         Member me = jwtTokenProvider.getMember(token);
         // Member 수정
-        me.update(request);
+        me.update(updateMember);
         // Member 저장
         memberRepository.save(me);
+        return updateMember;
     }
 
     @Transactional
