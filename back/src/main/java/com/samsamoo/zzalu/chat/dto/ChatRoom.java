@@ -2,10 +2,12 @@ package com.samsamoo.zzalu.chat.dto;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.joda.time.LocalDate;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,14 +21,14 @@ public class ChatRoom  implements Serializable {
     private String name;
     private List<ChatMessage> chatMessages;
     private String imagePath;
-    private LocalDate enrollDate;
+    private LocalDateTime enrollDate;
 
     public static ChatRoom create(String name, String imagePath) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
         chatRoom.name = name;
         chatRoom.imagePath = imagePath;
-        chatRoom.enrollDate = LocalDate.now();
+        chatRoom.enrollDate = LocalDateTime.now();
         return chatRoom;
     }
 }

@@ -59,7 +59,9 @@ dependencies {
 	//amzaon s3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-
+	// =========================== LocalDateTime ====================================
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.10.1'
 
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
