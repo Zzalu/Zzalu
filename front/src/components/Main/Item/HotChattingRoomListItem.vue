@@ -29,7 +29,7 @@ export default {
 .quiet-chat-card-contain {
   box-shadow:0 0 5px black;
   background-image: url("../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg");
-  @apply border h-48 w-36 bg-center bg-cover rounded-2xl relative ml-2 mr-3 mb-1 dark:border-zz-dark-div;
+  @apply border-2 h-48 w-36 bg-center bg-cover rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
 }
 
 .quiet-chat-like-contain {
@@ -49,7 +49,7 @@ export default {
 .quiet-chat-box {
   height: 3rem;
   word-break: keep-all;
-  @apply border border-white absolute bottom-0 inset-x-0 flex items-center justify-center bg-zz-p rounded-b-xl dark:border-zz-dark-div;
+  @apply border-t-2 border-white absolute bottom-0 inset-x-0 flex items-center justify-center bg-zz-p rounded-b-xl dark:border-zz-dark-div;
 }
 
 .quiet-chat-title {
