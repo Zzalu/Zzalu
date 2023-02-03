@@ -21,7 +21,7 @@
           <p class="first-line-content">{{ info_data.master }}</p>
         </div>
         <div class="group">
-          <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s" />
+          <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s dark:text-zz-p" />
           <p class="first-line-content">{{ info_data.like }}</p>
         </div>
       </div>
@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="flex place-content-evenly">
-      <button class="modal-create-btn">
+      <button class="modal-create-btn ">
         <router-link to="/chat/0"> 입장하기 </router-link>
       </button>
     </div>
@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import { useStore } from "vuex"
+import { useStore } from "vuex";
 
 export default {
   name: "ChatInfoModal",
@@ -56,20 +56,20 @@ export default {
       store.commit("quietChatStore/close_chat_info");
     };
     return {
-      close_chat_info
-    }
+      close_chat_info,
+    };
   },
   props: {
     info_data: Object,
   },
   unmounted() {
-    this.close_chat_info()
+    this.close_chat_info();
   },
   methods: {
     close_modal() {
-      this.close_chat_info()
-    }
-  }
+      this.close_chat_info();
+    },
+  },
 };
 </script>
 
@@ -77,32 +77,32 @@ export default {
 /* 모달 타이틀 */
 .modal {
   min-height: 24rem;
-  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-9/12 h-96 text-center bg-zz-p;
+  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-9/12 h-96 text-center bg-zz-p dark:bg-zz-dark-s;
 }
 .modal-title-box {
-  @apply bg-zz-p border-2 rounded-t-xl border-zz-p;
+  @apply bg-zz-p rounded-t-xl border-zz-p dark:bg-zz-dark-s;
 }
 .modal-title {
   @apply text-xl font-bold font-carter ml-8 line-clamp-1 pt-3 pb-3 text-white;
 }
 .modal-icon {
-  @apply float-right text-3xl mr-3 cursor-pointer mt-2;
+  @apply float-right text-3xl mr-3 cursor-pointer mt-2 dark:text-white;
 }
 /* 모달 이미지 */
 
 .img-container {
-  @apply bg-white h-40 w-full flex justify-center items-center
+  @apply bg-white h-40 w-full flex justify-center items-center dark:bg-zz-bd;
 }
 .modal-img {
-  @apply h-32 w-40 
+  @apply h-32 w-40;
 }
 
 /* 모달 콘텐트 */
 .group {
-  @apply flex items-center
+  @apply flex items-center;
 }
 .master-icon {
-  @apply text-zz-s;
+  @apply text-zz-s dark:text-zz-p;
 }
 .modal-content-box {
   @apply text-xs font-spoq ml-4 mr-3;
@@ -125,6 +125,6 @@ export default {
   @apply ml-1;
 }
 .modal-create-btn {
-  @apply rounded-xl mt-3 w-32 h-8 bg-zz-s text-white;
+  @apply rounded-xl mt-3 w-32 h-8 bg-zz-s text-white dark:bg-zz-p;
 }
 </style>

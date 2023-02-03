@@ -1,6 +1,7 @@
 <template>
   <!-- 로그인 후 nav -->
-  <SearchView/>
+
+  <SearchView />
   <div
     class="
       h-nav-height
@@ -18,6 +19,12 @@
       v-if="check_search_modal"
       @click="close_modal"
     ></div>
+    <div
+      class="close-modals"
+      v-if="check_search_modal"
+      @click="close_modal"
+    ></div>
+
     <ul class="nav_list">
       <router-link to="/main" class="nav_item">
         <font-awesome-icon icon="fa-solid fa-house" />
@@ -46,12 +53,12 @@
 <script>
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-import SearchView from "../../../views/SearchView"
+import SearchView from "../../../views/SearchView";
 
 export default {
   name: "MainBottomNavBar",
-  components : {
-    SearchView
+  components: {
+    SearchView,
   },
   setup() {
     const store = useStore();
@@ -90,8 +97,12 @@ export default {
 
 <style scoped lang="postcss">
 .close-modal {
-  height: 4rem;
+  height: 5rem;
   @apply fixed inset-x-0 top-0 z-40;
+}
+.close-modals {
+  height: 3.2rem;
+  @apply absolute inset-x-0 bottom-0 top-0 z-50;
 }
 span {
   display: inline-block;
