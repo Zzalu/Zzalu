@@ -5,8 +5,7 @@ const api = apiInstance();
 function getComments(params, success, fail) {
   api.get(`/comment`, { params: params }).then(success).catch(fail);
 }
-function test(param) {
-  console.log(param);
+function getNestedComments(params, success, fail) {
+  api.get(`/comment/reply`, { params: params }).then(success).catch(fail);
 }
-
-export { getComments, test };
+export { getComments, getNestedComments };

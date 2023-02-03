@@ -24,13 +24,7 @@ export default {
     const roadMoreComments = () => {
       store.dispatch('titleCompetitionStore/getCommentList', 1);
     };
-    /* const roadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getCommentList', {
-        lastCommentId: Number.MAX_SAFE_INTEGER,
-        titleHakwonId: 1,
-        size: 5,
-      });
-    }; */
+
     onMounted(() => {
       window.addEventListener('scroll', handleScroll);
     });

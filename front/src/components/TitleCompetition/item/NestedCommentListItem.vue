@@ -31,31 +31,27 @@
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { reactive, toRefs } from '@vue/reactivity';
 export default {
-  name: 'CommentListItem',
+  name: 'NestedCommentListItem',
   props: {
-    comment: Object,
+    nested_comment: Object,
   },
   setup(props) {
-    const profile_image = ref(props.comment.profile_image);
-    const nickname = ref(props.comment.nickname);
-    const time = ref(props.comment.time);
-    const content = ref(props.comment.content);
-    const reply_cnt = ref(props.comment.reply_cnt);
-    const like_cnt = ref(props.comment.like_cnt);
-    const modified = ref(props.comment.modified);
-
     console.log(props);
+    const nested_comment_data = reactive({
+      profile_image: 'profile.jpg',
+      id: props.comment.id,
+      nickname: props.comment.nickname,
+      time: '13시간 전',
+      content: props.comment.content,
+      modified: false,
+      like_cnt: props.comment.likeNumber,
+    });
+    console.log(nested_comment_data);
 
     return {
-      profile_image,
-      nickname,
-      time,
-      content,
-      reply_cnt,
-      like_cnt,
-      modified,
+      ...toRefs(nested_comment_data),
     };
   },
 };
