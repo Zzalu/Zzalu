@@ -14,7 +14,7 @@ import java.util.List;
 public class CommentResponse {
 
     /** 댓글 ID **/
-    private Long id;
+    private Long commentId;
     /** 내용 **/
     private String content;
 
@@ -40,7 +40,7 @@ public class CommentResponse {
 
     /** 응답 Dto로 변환 **/
     public CommentResponse(Comment comment) {
-        this.id = comment.getId();
+        this.commentId = comment.getId();
         this.content = comment.getContent();
         this.username = comment.getMember().getUsername();
         this.nickname = comment.getMember().getNickname();

@@ -44,7 +44,6 @@ public class TitleHakwon  {
 
 
 
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "titleHakwon", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 

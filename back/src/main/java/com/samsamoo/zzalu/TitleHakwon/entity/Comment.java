@@ -22,10 +22,8 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-
 @AllArgsConstructor
 @Builder
-
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 public class Comment {
@@ -57,7 +55,12 @@ public class Comment {
 
     /** 대댓글 목록 **/
     @OneToMany(mappedBy = "parentComment", orphanRemoval = true)  //자식도 삭제
+    @Builder.Default
     private List<ReplyComment> replyCommentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comment", orphanRemoval = true)
+    @Builder.Default
+    private List<CommentLike> commentLikeList = new ArrayList<>();
 
     /** 좋아요 개수  **/
     @ColumnDefault("0")
@@ -74,6 +77,7 @@ public class Comment {
 
     /** 수정 여부 **/
     @Column(nullable = false)
+    @Builder.Default
     private boolean isUpdated =false;
 
 

@@ -1,16 +1,15 @@
 package com.samsamoo.zzalu.TitleHakwon.controller;
 
-import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
-import com.samsamoo.zzalu.TitleHakwon.dto.ReplyCommentRequest;
-import com.samsamoo.zzalu.TitleHakwon.dto.ReplyCommentResponse;
+import com.samsamoo.zzalu.TitleHakwon.dto.*;
 import com.samsamoo.zzalu.TitleHakwon.service.CommentService;
-import com.samsamoo.zzalu.TitleHakwon.dto.CommentRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
@@ -50,9 +49,9 @@ public class CommentController {
      */
 
     @GetMapping()
-    public  ResponseEntity<List<CommentResponse>> getCommentList (@RequestParam Long lastCommentId, @RequestParam Long titleHakwonId ,@RequestParam int size,@RequestParam String username){
+    public  ResponseEntity<List<CommentResponse>> getRecentCommentList (@RequestBody SearchCommentRequest searchCommentRequest){
 
-        List<CommentResponse> commentResponseList = commentService.getCommentList(lastCommentId,titleHakwonId,size,username);
+        List<CommentResponse> commentResponseList = commentService.getRecentCommentList(searchCommentRequest);
         return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
     }
 
@@ -63,9 +62,9 @@ public class CommentController {
      */
 
     @GetMapping(value = "/reply")
-    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@RequestParam Long lastCommentId, @RequestParam Long parentCommentId ,@RequestParam int size){
+    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@RequestBody SearchReplyCommentRequest searchReplyCommentRequest){
 
-        List<ReplyCommentResponse> replyCommentResponseList = commentService.getReplyCommentList(lastCommentId,parentCommentId,size);
+        List<ReplyCommentResponse> replyCommentResponseList = commentService.getReplyCommentList(searchReplyCommentRequest);
         return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
     }
 
@@ -75,8 +74,8 @@ public class CommentController {
      * 댓글 수정
      */
     @PutMapping()
-    public ResponseEntity<String> updateComment (@RequestParam Long id , @RequestBody CommentRequest commentRequest){
-        commentService.updateComment(id,commentRequest);
+    public ResponseEntity<String> updateComment (@RequestBody UpdateCommentRequest commentRequest){
+        commentService.updateComment(commentRequest);
         return new ResponseEntity<>("댓글 변경완료",HttpStatus.OK);
     }
 
@@ -87,8 +86,8 @@ public class CommentController {
      */
 
     @PutMapping(value = "/reply")
-    public  ResponseEntity<String> updateReplyComent (@RequestParam Long id , @RequestBody ReplyCommentRequest replyCommentRequest){
-        commentService.updateReplyComment(id,replyCommentRequest);
+    public  ResponseEntity<String> updateReplyComent (@RequestBody UpdateCommentRequest commentRequest){
+        commentService.updateReplyComment(commentRequest);
         return new ResponseEntity<>("대댓글 변경완료",HttpStatus.OK);
     }
 
@@ -159,7 +158,7 @@ public class CommentController {
         }else{
             //그렇지 않은 경우는 좋아요 가능
             commentService.cancelCommentLikes(commentId,username);
-            return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
+            return new ResponseEntity<>("좋아요 취소 완료 ",HttpStatus.OK);
         }
     }
 
@@ -167,13 +166,18 @@ public class CommentController {
      * [GET]
      * 상위 좋아요 50개 댓글
      */
+    @GetMapping("/best50")
+    public  ResponseEntity<List<CommentResponse>> getBest50CommentList (@RequestBody Map<String, String> map){
 
+        //로그인한 유저가 아닌 경우는
+        Long titleHakwonId = Long.parseLong(map.get("titleHakwonId").toString());
+        String username = map.get("username")==null ? null : map.get("username");
+        //로그인한 유저가 있다면 상위 좋아요 50개 댓글을 불러올때 댓글 누른 기록을 확인..
+        List<CommentResponse> commentResponseList = commentService.getBest50CommentList(titleHakwonId, username);
 
+        return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
+    }
 
-    /**
-     * [GET]
-     * 대댓글 최신순 조회
-     */
 
 
 

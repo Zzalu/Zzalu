@@ -8,16 +8,15 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * 대댓글 Entity
  */
 @Getter
-@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
-
 @Entity
 public class ReplyComment {
 
@@ -30,7 +29,7 @@ public class ReplyComment {
     /** 대댓글 내용 **/
     @Column(nullable = false)
     @Lob //가변길의를 갖는 큰 데이터를 저장하는데 사용하는 데이터형이다
-    String cotent;
+    String content;
 
     /** 작성자 아이디 **/
     // N:1 양방향
@@ -47,18 +46,30 @@ public class ReplyComment {
     private Comment parentComment;
 
     //좋아요 개수
-    @ColumnDefault("0")
-    int likeNum;
 
+    /** 생성 시간 **/
 
-    @CreationTimestamp
-    private LocalDateTime createdDate;
+    private String createdDate;
 
     @UpdateTimestamp
     private LocalDateTime lastModifiedDate;
 
-    @Enumerated(value = EnumType.STRING)
-    private DeleteCommentStatus isDeleted;
 
+    /** 수정 여부 **/
+    @Column(nullable = false)
+    @Builder.Default
+    private boolean isUpdated =false;
+
+
+    @PrePersist
+    public void onPrePersist(){
+        this.createdDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+
+    public void upDateContent(String content, boolean isUpdated){
+        this.content = content;
+        this.isUpdated=isUpdated;
+    }
 
 }
