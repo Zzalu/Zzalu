@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.board.entity;
 
+import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.member.entity.Member;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,6 +37,6 @@ public class Board {
 
     @ManyToMany
     @JoinTable(name = "BOARD_GIF", joinColumns = @JoinColumn(name = "BOARD_ID"), inverseJoinColumns = @JoinColumn(name = "GIF_ID"))
-    private List<Gif> gifs = new ArrayList<Gif>();
+    private List<Gifs> gifs = new ArrayList<Gifs>();
 
 }
