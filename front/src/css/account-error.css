@@ -3,7 +3,7 @@
 
 /* 큰로고 */
 .logo {
-  @apply w-72 mx-auto
+  @apply w-72 mx-auto 
 }
 
 .celebrate {
@@ -94,17 +94,17 @@
 
 /* 화면 제목 */
 .account-title {
-  @apply font-carter text-3xl text-center 
+  @apply font-carter text-3xl text-center dark:text-white
 }
 
 /* 인풋창 제목 */
 .input-title {
-  @apply font-spoq text-sm text-zz-darkgray mt-3 mb-1 mx-1
+  @apply font-spoq text-sm text-zz-darkgray mt-3 mb-1 mx-1 dark:text-gray-50
 }
 
 /* 인풋창 */
 .account-input {
-  @apply bg-zz-light-input rounded-sm w-full h-10 px-8 text-sm
+  @apply bg-zz-light-input rounded-sm w-full h-10 px-8 text-sm dark:bg-zz-dark-input
 }
 
 .input-without-title {
@@ -150,12 +150,12 @@
 /* 로그인, 회원가입으로 리다이렉트되는 작은 글씨 전체 */
 .redir-accounts {
   word-break: keep-all;
-  @apply flex float-right text-zz-darkgray text-xs mt-4 mx-1;
+  @apply flex float-right text-zz-darkgray text-xs mt-4 mx-1 dark:text-zz-p;
 }
 
 .redir-accounts-click {
   word-break: keep-all;
-  @apply mx-1 text-zz-p;
+  @apply mx-1 text-zz-p dark:text-white;
 }
 
 

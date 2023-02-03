@@ -30,18 +30,18 @@ const routes = [
         component: () => import("@/components/Accounts/SignUp/InputUserInfo.vue")
       },
       {
-        path: "/email",
+        path: "email",
         name: "input-email",
         component: () => import("@/components/Accounts/InputEmail.vue"),
         props: true
       },
       {
-        path: "/input-code",
+        path: "input-code",
         name: "input-code",
         component: () => import("@/components/Accounts/InputCodeForm.vue")
       },
       {
-        path: "/complete",
+        path: "complete",
         name: "complete",
         component: () => import("@/components/Accounts/SignUp/WelcomeToZzalu.vue")
       }
@@ -91,30 +91,6 @@ const routes = [
     name: "chat-list",
     component: () => import ('@/views/QuietChat/ChatListView'),
   },
-  
-  // ERROR
-  // 에러404 페이지X
-  // {
-  //   path: '/:pathMatch(.*)*',
-  //   redirect: '/error-404',
-  // },
-  {
-    path:'/error-404',
-    name: "error-404",
-    component: () => import ('@/views/Error/Error404View'),
-  },
-  // 에러 500 internal server error
-  {
-    path: "/error-500",
-    name: "error-500",
-    component: () => import ('@/views/Error/Error500View'),
-  },
-  // 로그인 필요
-  {
-    path: "/login-required",
-    name: "login-required",
-    component: () => import ('@/views/Error/LoginRequiredView'),
-  },
   // ------------------------------------------------------------
   // MAIN
   {
@@ -160,9 +136,33 @@ const routes = [
   // --------------------------------------------------------------------
   // 짤 디테일
   {
-  path: "/zzal/:zzal_id",
+  // path: "/zzal/:zzal_id",
   name: "zzal",
   component: () => import ('@/views/ZzalDetailView'),
+  },
+  // ----------------------------------------------------------------
+  // ERROR
+  // 에러404 페이지X
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/error-404',
+  },
+  {
+    path:'/error-404',
+    name: "error-404",
+    component: () => import ('@/views/Error/Error404View'),
+  },
+  // 에러 500 internal server error
+  {
+    path: "/error-500",
+    name: "error-500",
+    component: () => import ('@/views/Error/Error500View'),
+  },
+  // 로그인 필요
+  {
+    path: "/login-required",
+    name: "login-required",
+    component: () => import ('@/views/Error/LoginRequiredView'),
   },
 ];
 

@@ -12,6 +12,17 @@
     <div class="flex float-right mt-10">
       <button class="go-next-button">다음</button>
     </div>
+    <!-- <p>1</p>
+    <p>1</p>
+    <p>1</p>
+    <p>1</p>
+    <p>1</p>
+    <p>1</p>
+    <p>1</p><p>1</p>
+    <p>1</p>
+    <p>1</p><p>1</p><p>1</p>
+    <p>1</p><p>1</p><p>1</p> -->
+    
   </div>
 </template>
 
