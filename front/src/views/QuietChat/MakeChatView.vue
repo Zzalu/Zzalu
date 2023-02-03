@@ -75,25 +75,25 @@ export default {
 
 /* 이미지 */
 .image-container {
-  @apply text-center mb-4;
+  @apply text-center mb-4 ;
 }
 .preview-image {
-  background-image: url(../../components/QuietChat/QuietChatList/assets/zzalu_logo_light.png);
-  @apply bg-contain bg-center bg-no-repeat rounded-l-lg h-48 w-24 mx-auto;
+  background-image: url(../../components/QuietChat/QuietChatList/assets/zzalu_logo_dark.png);
+  @apply bg-contain bg-center bg-no-repeat rounded-l-lg h-48 w-24 mx-auto bg-transparent;
 }
 .select-image {
   @apply hidden;
 }
 .select-image-text {
-  @apply cursor-pointer text-xs font-bold font-spoq line-clamp-1;
+  @apply cursor-pointer text-xs font-bold font-spoq line-clamp-1 dark:text-white;
 }
 
 /* 생성 가이드라인 */
 .guide {
-  @apply font-bold font-spoq line-clamp-1;
+  @apply font-bold font-spoq line-clamp-1 dark:text-white;
 }
 .guideline {
-  @apply border-b-2 h-6 border-black w-full text-xs line-clamp-1;
+  @apply border-b-2 h-6 border-black w-full text-xs line-clamp-1 bg-transparent dark:border-white;
 }
 .caution {
   font-size: 0.625rem;
@@ -102,18 +102,18 @@ export default {
 
 /* 해시태그 */
 .hashtag-contain {
-  @apply flex flex-wrap;
+  @apply flex flex-wrap ;
 }
 .hashtag-div {
   @apply flex text-white flex-wrap;
 }
 .hashtag-text {
-  @apply border rounded-lg bg-zz-p px-2 py-1 mr-2 mb-2;
+  @apply border rounded-lg bg-zz-p px-2 py-1 mr-2 mb-2 font-spoq dark:border-zz-dark-div;
 }
 .hashtag-btn {
   @apply text-zz-p;
 }
 .create-btn {
-  @apply text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto mt-8 cursor-pointer;
+  @apply text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto mt-8 cursor-pointer font-spoq dark:border-zz-dark-div;
 }
 </style>

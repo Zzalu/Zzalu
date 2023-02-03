@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="main-margin px-5 dark:bg-zz-bd">
+    <div class="main-margin">
       <div>
         <router-view></router-view>
       </div>
@@ -28,7 +28,8 @@ export default {
 <style scoped lang="postcss">
 .main-margin {
   padding: 0 1.25rem;
-  margin-bottom: 3.5rem;
-  margin-top: 3.5rem;
+  margin-bottom: 3.2rem;
+  margin-top: 3.2rem;
+  @apply px-5 dark:bg-zz-bd;
 }
 </style>

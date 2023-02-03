@@ -87,7 +87,7 @@ export default {
   @apply font-spoq line-clamp-1 dark:text-white;
 }
 .title-competiton-button-contain {
-  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 ;
+  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 dark:border-zz-dark-div;
 }
 .title-competiton-button-icon {
   font-size: 0.6rem;
