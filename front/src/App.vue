@@ -22,7 +22,6 @@ export default {
   components: {},
   methods: {},
   mounted() {
-    // this.darkmode = this.userInfo.company_name || "";
 },
 };
 </script>
