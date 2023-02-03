@@ -22,6 +22,7 @@ public class ChatRoom  implements Serializable {
     private List<ChatMessage> chatMessages;
     private String imagePath;
     private LocalDateTime enrollDate;
+    private LocalDateTime lastActivation;
 
     public static ChatRoom create(String name, String imagePath) {
         ChatRoom chatRoom = new ChatRoom();

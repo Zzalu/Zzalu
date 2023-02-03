@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.gifs.controller;
 
-import com.samsamoo.zzalu.gifs.entity.GiphyGifs;
-import com.samsamoo.zzalu.gifs.service.GiphyGifsService;
+import com.samsamoo.zzalu.gifs.entity.Gifs;
+import com.samsamoo.zzalu.gifs.service.GifsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,25 +11,25 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/giphy")
+@RequestMapping("/gif")
 public class GifsController {
 
-    private final GiphyGifsService giphyGifService;
+    private final GifsService giphyGifService;
 
     @GetMapping("/gifs")
-    public ResponseEntity<List<GiphyGifs>> mainPage() {
-        List<GiphyGifs> giphyGifList = giphyGifService.findAllGif();
+    public ResponseEntity<List<Gifs>> mainPage() {
+        List<Gifs> giphyGifList = giphyGifService.findAllGif();
         return ResponseEntity.ok().body(giphyGifList);
     }
 
     @PostMapping("/gif")
-    public ResponseEntity<Optional<GiphyGifs>> findById(@RequestParam("gifId") Long gifId) {
-        Optional<GiphyGifs> giphyGifList = giphyGifService.findById(gifId);
+    public ResponseEntity<Optional<Gifs>> findById(@RequestParam("gifId") Long gifId) {
+        Optional<Gifs> giphyGifList = giphyGifService.findById(gifId);
         return ResponseEntity.ok().body(giphyGifList);
     }
 
     @GetMapping("/main/gifs")
-    public ResponseEntity<List<GiphyGifs>> findTop90() {
+    public ResponseEntity<List<Gifs>> findTop90() {
         return ResponseEntity.ok().body(giphyGifService.findTop90());
     }
 

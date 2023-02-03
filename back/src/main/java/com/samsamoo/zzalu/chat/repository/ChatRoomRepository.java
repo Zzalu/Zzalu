@@ -5,7 +5,6 @@ import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.chat.dto.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,6 +14,7 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -80,9 +80,10 @@ public class ChatRoomRepository {
 
     @CacheEvict(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()", allEntries = true)
     public void setChatMessage(ChatMessage message) {
-        message.setSendDate(LocalDate.now());
-        String topic = opsStringTopic.get(message.getRoomId());
-        ChatRoom chatRoom = opsHashChatRoom.get(CHAT_ROOMS, topic);
+        LocalDateTime sendDate = LocalDateTime.now();
+        message.setSendDate(sendDate);
+        ChatRoom chatRoom = findRoomById(message.getRoomId());
+        chatRoom.setLastActivation(sendDate);
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
     }
 

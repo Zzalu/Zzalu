@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class GiphyGifs {
+public class Gifs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="GIF_ID")
@@ -63,4 +63,9 @@ public class GiphyGifs {
     @Builder.Default
     @NotNull
     private Long scrapCount = 0L;
+
+    @Column(name="SOURCE_TYPE")
+    @Builder.Default
+    @NotNull
+    private  int sourceType = 0;
 }
