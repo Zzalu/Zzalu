@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen">
+  <div>
     <my-profile-top-nav></my-profile-top-nav>
     <profile-info></profile-info>
     <user-stats></user-stats>

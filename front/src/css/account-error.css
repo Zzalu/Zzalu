@@ -22,7 +22,7 @@
 
 /* 다음으로 버튼-오른쪽 */
 .go-next-button {
-  @apply mt-4 ml-4 p-2 px-12 bg-zz-p rounded-md font-spoq text-white
+  @apply mt-4 ml-4 p-2 px-12 bg-zz-p rounded-md font-spoq text-white mb-2
 }
 
 /* 메일 다시보내기 버튼 */

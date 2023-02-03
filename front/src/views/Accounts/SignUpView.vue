@@ -1,5 +1,6 @@
 <template>
   <div>
+    <only-go-back-top-nav></only-go-back-top-nav>
     <img
       alt="ZZalu Light logo"
       class="logo"
@@ -18,17 +19,21 @@
 </template>
 
 <script> 
-
-
-
+import { useDark } from '@vueuse/core';
+import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
+const isDark = useDark();
 export default {
   name: 'SignUpView',
   components: {
-
-  }
+    OnlyGoBackTopNav
+  },
+  data() {
+    return {
+      isDark,
+    };
+  },
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="postcss">
 </style>
