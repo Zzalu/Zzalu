@@ -1,12 +1,13 @@
 package com.samsamoo.zzalu.gifs.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 
-@Entity(name="com.samsamoo.zzalu.gifs.entity.GiphyGifs")
+@Entity
 @Getter
 @Setter
 @Builder
@@ -22,16 +23,19 @@ public class Gifs {
     private String gifPath;
 
     @Column(name="USE_COUNT", nullable = false)
+    @ColumnDefault("0")
     @Builder.Default
     @NotNull
     private Long useCount = 0L;
 
     @Column(name="DOWNLOAD_COUNT", nullable = false)
+    @ColumnDefault("0")
     @Builder.Default
     @NotNull
     private Long downloadCount = 0L;
 
     @Column(name="LIKE_COUNT", nullable = false)
+    @ColumnDefault("0")
     @Builder.Default
     @NotNull
     private Long likeCount = 0L;
@@ -55,16 +59,19 @@ public class Gifs {
     private String relationsVideo;
 
     @Column(name="VISITED_COUNT", nullable = false)
+    @ColumnDefault("0")
     @Builder.Default
     @NotNull
     private Long visitedCount = 0L;
 
     @Column(name="SCRAP_COUNT", nullable = false)
+    @ColumnDefault("0")
     @Builder.Default
     @NotNull
     private Long scrapCount = 0L;
 
     @Column(name="SOURCE_TYPE")
+    @ColumnDefault("0")
     @Builder.Default
     @NotNull
     private  int sourceType = 0;

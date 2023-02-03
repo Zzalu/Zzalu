@@ -47,7 +47,7 @@ for search in search_dict:
         params = parse.urlencode({
             "q": keyword,
             "api_key": "ODoOz3VrkVbbaAlIBxDDH2WbSj7GPMvW",
-            "limit": "10"
+            "limit": "100"
         })
         
         with request.urlopen("".join((url, "?", params))) as response:
@@ -87,19 +87,20 @@ for search in search_dict:
             update_sql = ""
             select_sql = ""
             try:
-                exists_sql = "SELECT EXISTS (SELECT * FROM GIPHY_GIF WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "') AS SUCCESS"
+                exists_sql = "SELECT EXISTS (SELECT * FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "') AS SUCCESS"
                 cur.execute(exists_sql)
                 exists_sql_return = cur.fetchone()[0]
 
                 if(exists_sql_return == 1):    # 이미 존재하는 경우
-                    select_sql = "SELECT TAGS FROM GIPHY_GIF WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "'"
+                    select_sql = "SELECT TAGS FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "'"
                     cur.execute(select_sql)
                     get_tags = cur.fetchone()[0]
                     get_tags_list = list(set(get_tags.split(",") + search_tag_list))
-                    update_sql = "UPDATE GIPHY_GIF SET TAGS='" + ",".join(s for s in get_tags_list) + "'"
+                    update_sql = "UPDATE GIFS SET TAGS='" + ",".join(s for s in get_tags_list) + "'"
 
                 else:
-                    insert_sql = "INSERT INTO GIPHY_GIF (GIF_PATH, TAGS, SORUCES, SORUCES_POST_URL, SORUCES_TLD, IMPORT_DATETIME) VALUES('" + d["images"]["480w_still"]["url"] + "','" + ','.join(s for s in gif_dict[d["images"]["480w_still"]["url"]]["tags"]) + "','" + d["source"] + "','" + d["source_post_url"] + "','" +  d["source_tld"]+ "','" +  d["import_datetime"] + "')"
+                    insert_sql = "INSERT INTO GIFS (GIF_PATH, TAGS, SORUCES, SORUCES_POST_URL, SORUCES_TLD, IMPORT_DATETIME, SOURCE_TYPE) VALUES('" + d["images"]["480w_still"]["url"] + "','" + ','.join(s for s in gif_dict[d["images"]["480w_still"]["url"]]["tags"]) + "','" + d["source"] + "','" + d["source_post_url"] + "','" +  d["source_tld"]+ "','" +  d["import_datetime"] + "'," + "2" + ")"
+                    print(insert_sql)
                     cur.execute(insert_sql);
             except pymysql.err.InternalError as e:
                 code, msg = e.args
@@ -115,43 +116,3 @@ for search in search_dict:
 conn.commit();
 conn.close();
 print("=== DB 반영 완료 ===")
-
-
-# gif_dict = {};
-
-# keyword = "game"
-# url = "http://api.giphy.com/v1/gifs/search"
-# params = parse.urlencode({
-#     "q": keyword,
-#     "api_key": "ODoOz3VrkVbbaAlIBxDDH2WbSj7GPMvW",
-#     "limit": "2"
-# })
-
-# with request.urlopen("".join((url, "?", params))) as response:
-#     data = json.loads(response.read())
-
-
-# print(json.dumps(data, sort_keys=True, indent=4))
-# # print(data["data"][0]["embed_url"])
-
-# print("====== 파싱 내용 출력 ======")
-# for d in data["data"]:
-
-#     # 기존에 keyword 추가
-#     if(d["images"]["480w_still"]["url"] in gif_dict) : 
-#         if(keyword not in gif_dict[d["images"]["480w_still"]["url"]["tags"]]):    # keyworkd 있는지 확인
-#             gif_dict[d["images"]["480w_still"]["url"]["tags"]].append(keyword)
-
-#     # gif_dict 추가
-#     else :
-#         gif_dict[d["images"]["480w_still"]["url"]] = {
-#             "source" : d["source"],
-#             "source_post_url" : d["source_post_url"],
-#             "source_tld" : d["source_tld"],
-#             "title" : d["title"],
-#             "improt_datetime" : d["import_datetime"] ,
-#             "tags" : [keyword],
-#         }
-
-#     print(gif_dict[d["images"]["480w_still"]["url"]])
-#     print("")
