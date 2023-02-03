@@ -65,6 +65,7 @@ public class Member implements UserDetails {
 
     //댓글
     @OneToMany (mappedBy = "member" ,cascade = CascadeType.ALL)
+    @Builder.Default
     private List<Comment> coments = new ArrayList<>();
 
 
@@ -74,6 +75,7 @@ public class Member implements UserDetails {
 
     // 보드 OneToMany
     @OneToMany(mappedBy = "member")
+    @Builder.Default
     private List<Board> boards = new ArrayList<Board>();
 
     @Override

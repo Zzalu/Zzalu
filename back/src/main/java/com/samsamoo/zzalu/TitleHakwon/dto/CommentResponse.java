@@ -2,59 +2,67 @@ package com.samsamoo.zzalu.TitleHakwon.dto;
 
 
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
-import com.samsamoo.zzalu.TitleHakwon.entity.DeleteCommentStatus;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Data
+
 @NoArgsConstructor
+@Getter
 public class CommentResponse {
 
-    /** 댓글 **/
-    private Long id;
-
+    /** 댓글 ID **/
+    private Long commentId;
     /** 내용 **/
     private String content;
 
-    private String memberId;
+    /** 사용자 아이디 **/
+    private String username;
+    /** 사용자 닉네임 **/
     private String nickname;
-
+    /** 대댓글 개수 **/
     private int replyCommentsSize;
-
+    /** 좋아요 개수 **/
     private int likeNumber;
 
+    /** 작성 시간 **/
+    private String createdTime;
 
-    public CommentResponse(Long id, String content, String memberId, String nickname,int replyCommentsSize, int likeNumber) {
-        this.id = id;
-        this.content = content;
-        this.memberId = memberId;
-        this.nickname = nickname;
-        this.replyCommentsSize = replyCommentsSize;
-        this.likeNumber = likeNumber;
-    }
-    public static CommentResponse convertCommentToDto(Comment comment) {
-        if(comment.getReplyCommentList()==null){
-            System.out.println("리스트없음");
-        }
-        //삭제된 댓글이라면 삭제 된 댓글이라고 알려준다.
-        return comment.getIsDeleted() == DeleteCommentStatus.Y ?
-                new CommentResponse(comment.getId(), "삭제된 댓글입니다.", null, null,0,0) :
-                new CommentResponse(comment.getId(), comment.getCotent(), comment.getMember().getUsername(), comment.getMember().getNickname(),comment.getReplyCommentList().size(),comment.getLikeNum());
+    /** 수정 여부 **/
+    private boolean isUpdated;
+
+    /** 좋아요 기록 **/
+    private boolean isPressed =false;
+
+
+
+    /** 응답 Dto로 변환 **/
+    public CommentResponse(Comment comment) {
+        this.commentId = comment.getId();
+        this.content = comment.getContent();
+        this.username = comment.getMember().getUsername();
+        this.nickname = comment.getMember().getNickname();
+        this.replyCommentsSize = comment.getReplyCommentList().size();
+        this.likeNumber = comment.getLikeNum();
+        this.createdTime =  comment.getCreatedDate();
+        this.isUpdated = comment.isUpdated();
     }
 
+    /** 응답 Dto List로 변환 **/
     public static List<CommentResponse> convertCommentToDtoList(List<Comment> commentList) {
 
         List<CommentResponse> commentResponseList = new ArrayList<>();
 
         for (Comment comment : commentList) {
-            commentResponseList.add(convertCommentToDto(comment));
+            commentResponseList.add(new CommentResponse(comment));
         }
 
-
         return commentResponseList;
+    }
+
+    public void updateIsPressed(){
+        this.isPressed = true;
     }
 }

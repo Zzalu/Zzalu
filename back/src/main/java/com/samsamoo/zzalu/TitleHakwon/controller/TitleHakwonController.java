@@ -23,11 +23,11 @@ public class TitleHakwonController {
     private final S3Uploader s3Uploader;
     private  final TitleHackwonRepository titleHackwonDao;
 
-   private final TitleHakwonService titleHakwonService;
+    private final TitleHakwonService titleHakwonService;
 
 
 
-        //data로 넘어오는 MultipartFile을 S3Uploader로 전달
+    //data로 넘어오는 MultipartFile을 S3Uploader로 전달
     @PostMapping("/uploadToAmazon")
     public String upload(@RequestParam("data") MultipartFile multipartFile) throws IOException {
 
@@ -41,7 +41,7 @@ public class TitleHakwonController {
             titleHakwon.setZzulUrl(url);
             titleHackwonDao.save(titleHakwon);
 
-           return url;
+            return url;
         }
 
 
@@ -80,13 +80,8 @@ public class TitleHakwonController {
                 "");
 
 
-       // System.out.println(openDate.get("openDate"));
         return new ResponseEntity<>(titleHakwonService.getTitleHakwonInfo(openDate), HttpStatus.OK);
     }
 
-
-
-
-
-
 }
+

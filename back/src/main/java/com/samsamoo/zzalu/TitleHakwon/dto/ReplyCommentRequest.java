@@ -5,13 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
-@Setter
-@Data
 public class ReplyCommentRequest {
 
-    //댓글 달때 아이디는 안넘겨줘도됨 (auto_increment)
     /** 사용자 ID **/
-    private String memberId;
+    private String username;
     /** 댓글 내용 **/
     private String content;
 

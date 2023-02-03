@@ -36,6 +36,7 @@ public class Board {
     private Member member;
 
     @ManyToMany
+    @Builder.Default
     @JoinTable(name = "BOARD_GIF", joinColumns = @JoinColumn(name = "BOARD_ID"), inverseJoinColumns = @JoinColumn(name = "GIF_ID"))
     private List<Gifs> gifs = new ArrayList<Gifs>();
 
