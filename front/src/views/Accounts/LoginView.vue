@@ -10,14 +10,22 @@
     <!-- 아이디 비번 입력창 -->
     <h2 class="input-title">아이디</h2>
     <div>
-      <font-awesome-icon icon="fa-solid fa-user" class='icon-aligned-left'/>
-      <input type="text" class="account-input" placeholder="아이디를 입력하세요"/>
+      <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
+      <input
+        type="text"
+        class="account-input"
+        placeholder="아이디를 입력하세요"
+      />
     </div>
     <h2 class="input-title">비밀번호</h2>
     <div>
-      <font-awesome-icon icon="fa-solid fa-lock" class='icon-aligned-left'/>
-      <input type="text" class="account-input" placeholder="비밀번호를 입력하세요"/>
-      <font-awesome-icon icon="fa-solid fa-eye" class='icon-aligned-right'/>
+      <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
+      <input
+        type="text"
+        class="account-input"
+        placeholder="비밀번호를 입력하세요"
+      />
+      <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
     <!-- 아이디 비번찾기 -->
@@ -31,30 +39,55 @@
       <div class="or-start-with">Or Start With</div>
     </div>
   </div>
-  <div class='center-containers'>
-    <img src="./assets/naver_icon.png" class='login-icon' alt="">
-    <img src="./assets/kakao_icon.png" class='login-icon' alt="">
+  <div class="center-containers">
+    <img src="./assets/naver_icon.png" class="login-icon" alt="" />
+    <img src="./assets/kakao_icon.png" class="login-icon" alt="" />
   </div>
   <!-- 로그인 버튼 -->
-  <div class='center-containers'>
-    <button class='submit-button'>로그인</button>
+  <div class="center-containers">
+    <button class="submit-button" @click="onSubmit">로그인</button>
   </div>
   <sign-up-bottom-nav></sign-up-bottom-nav>
 </template>
 
 <script>
 import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue'
+import useVuelidate from "@vuelidate/core";
+// import { required } from "@vuelidate/validators";
 
 export default {
   name: "LoginView",
   components: {
     SignUpBottomNav,
+  },
+  data() {
+    return {
+      v$: useVuelidate(),
+      // 아이디: { required },
+      // 비번: { required },
+    };
+  },
+  methods: {
+    onSubmit() {
+      this.v$.$touch();
+      if (!this.v$.$error) {
+        // if ANY fail validation
+        alert('백에 정보 보내고 다음 라우터로 ㄱㄱ.')
+      } else {
+        alert('모든 필드에 입력 해주세요')
+      }
+    }
+  },
+  validations() {
+    return {
+      // 아이디: { required },
+      // 비번: { required },
+      }
   }
-};
+}
 </script>
 
 <style scoped lang="postcss">
-
 .find-id {
   @apply mx-1;
 }
@@ -73,9 +106,6 @@ export default {
 }
 
 .login-icon {
-  @apply w-12 mx-2 border-8 border-gray-100 bg-gray-100 rounded-full
+  @apply w-12 mx-2 border-8 border-gray-100 bg-gray-100 rounded-full;
 }
 </style>
-
-
-
