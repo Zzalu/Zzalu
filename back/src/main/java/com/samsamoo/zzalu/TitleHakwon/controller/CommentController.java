@@ -165,8 +165,9 @@ public class CommentController {
 
     /**
      * [GET]
-     * 댓글 최신순 조회
+     * 상위 좋아요 50개 댓글
      */
+
 
 
     /**
