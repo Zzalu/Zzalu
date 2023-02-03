@@ -1,12 +1,15 @@
 package com.samsamoo.zzalu.member.entity;
 
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
+import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.board.entity.Board;
+import com.samsamoo.zzalu.member.dto.UpdateMember;
 import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.persistence.*;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member implements UserDetails {
+
     @Id
     @Column(name = "MEMBER_ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -122,10 +126,20 @@ public class Member implements UserDetails {
         }
     }
 
-    public void update(UpdateMemberRequest request) {
-        this.profilePath = request.getProfilePath();
-        this.nickname = request.getNickname();
-        this.profileMessage = request.getProfileMessage();
+    public void update(UpdateMember updateMember) {
+
+        if (updateMember.getProfilePath() != null) {
+
+            this.profilePath = updateMember.getProfilePath();
+        }
+        if (updateMember.getNickname() != null) {
+
+            this.nickname = updateMember.getNickname();
+        }
+        if (updateMember.getProfileMessage() != null) {
+            this.profileMessage = updateMember.getProfileMessage();
+        }
+
     }
 
     public void changePass(String newPass) {

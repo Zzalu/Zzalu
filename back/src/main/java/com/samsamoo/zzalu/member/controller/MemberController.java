@@ -5,16 +5,20 @@ import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.net.URI;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/members")
+@CrossOrigin("*")
+@Slf4j
 public class MemberController {
     private final MemberService memberService;
 
@@ -65,10 +69,10 @@ public class MemberController {
 
     //--------------------------------------회원 정보 수정-------------------------------------------
     @PatchMapping
-    public ResponseEntity updateMember(@RequestHeader(value = "Authorization") String bearerToken, @RequestBody UpdateMemberRequest request) {
+    public ResponseEntity<UpdateMember> updateMember(@RequestHeader(value = "Authorization") String bearerToken, @ModelAttribute UpdateMemberRequest request) throws IOException {
         String token = bearerToken.substring(7);
-        memberService.updateMember(token, request);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        UpdateMember response = memberService.updateMember(token, request);
+        return ResponseEntity.ok().body(response);
     }
     //--------------------------------------회원 탈퇴-------------------------------------------
     @DeleteMapping
