@@ -9,33 +9,20 @@
 
 <script>
 import NestedCommentListItem from './item/NestedCommentListItem.vue';
+import { useStore } from 'vuex';
 export default {
   components: { NestedCommentListItem },
+  name: 'NestedCommentList',
   setup() {
-    const nested_comments = [
-      {
-        nested_comment_id: 1,
-        nickname: '대댓글조아',
-        content: '댓글보다 웃긴 대댓글',
-        comment_id: 1,
-        profile_image: 'profile.jpg',
-        time: '12시간 전',
-        like_cnt: 231,
-        modified: false,
-      },
-      {
-        nested_comment_id: 2,
-        nickname: '그저웃기만',
-        content: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        comment_id: 1,
-        profile_image: 'profile.jpg',
-        time: '11시간 전',
-        like_cnt: 2,
-        modified: false,
-      },
-    ];
+    const store = useStore();
+    let nested_comments = store.state.titleCompetitionStore.nested_comments;
+
+    const roadMoreNestedComments = () => {
+      store.dispatch('titleCompetitionStore/getNestedCommentList', 1);
+    };
     return {
       nested_comments,
+      roadMoreNestedComments,
     };
   },
 };
