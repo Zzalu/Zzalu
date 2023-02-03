@@ -11,7 +11,6 @@ const titleCompetitionStore = {
     last_comment_id: Number.MAX_SAFE_INTEGER,
     // 대댓글
     nested_comments: {},
-    last_nested_comment_id: Number.MAX_SAFE_INTEGER,
     parent_comment_id: 0,
   }),
   getters: {
@@ -32,13 +31,16 @@ const titleCompetitionStore = {
       state.title_competition_id = id;
     },
     // 대댓글
-    ADD_NESTED_COMMENT_ID(state, parent_comment_id, new_nested_comments) {
-      // 댓글 창을 눌렀던 상태
-      if (parent_comment_id in state.nested_comments) {
-        console.log('hi');
-      } else {
-        console.log('bye');
+    ADD_NESTED_COMMENT_ID(state, parent_comment_id, new_nested_comments, total_size, size) {
+      // 댓글 창을 안 누른 상태면 만들어준다.
+      if (!(parent_comment_id in state.nested_comments)) {
+        state.nested_comments[parent_comment_id] = {
+          nested_comments: [],
+          last_nested_comment_id: total_size - size,
+        };
       }
+      state.nested_comments[parent_comment_id].nested_comments.push(...new_nested_comments);
+      state.nested_comments[parent_comment_id].last_nested_comment_id -= size;
       console.log(new_nested_comments);
     },
   },
@@ -64,7 +66,7 @@ const titleCompetitionStore = {
       commit('SET_TITLE_COMPETITION_ID', id);
     },
     // 대댓글
-    getNestedCommentList({ commit, state }, size) {
+    /* getNestedCommentList({ commit, state }, size) {
       const param = {
         lastCommentId: state.last_nested_comment_id,
         parentCommentId: state.parent_comment_id,
@@ -76,6 +78,22 @@ const titleCompetitionStore = {
         ({ data }) => {
           console.log(data);
           commit('ADD_NESTED_COMMENTS', data);
+        },
+        (error) => console.log(error),
+      );
+    }, */
+    getNestedCommentList({ state }, size) {
+      const param = {
+        lastCommentId: state.last_nested_comment_id,
+        parentCommentId: state.parent_comment_id,
+        size: size,
+      };
+      console.log(param);
+      getNestedComments(
+        param,
+        ({ data }) => {
+          console.log(data);
+          return data;
         },
         (error) => console.log(error),
       );

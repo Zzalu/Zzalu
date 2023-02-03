@@ -35,7 +35,7 @@ import { reactive, toRefs } from '@vue/reactivity';
 export default {
   name: 'NestedCommentListItem',
   props: {
-    comment: Object,
+    nested_comment: Object,
   },
   setup(props) {
     console.log(props);

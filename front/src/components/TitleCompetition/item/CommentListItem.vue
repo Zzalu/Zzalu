@@ -44,7 +44,6 @@ export default {
     comment: Object,
   },
   setup(props) {
-    // console.log(props);
     const comment_data = reactive({
       profile_image: 'profile.jpg',
       id: props.comment.id,
@@ -56,9 +55,7 @@ export default {
       nested_active: false,
       like_cnt: props.comment.likeNumber,
     });
-
-    // console.log(comment_data);
-
+    // 대댓글 클릭을 하면
     return {
       ...toRefs(comment_data),
     };
