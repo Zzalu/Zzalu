@@ -1,5 +1,3 @@
-server:
-  port: 8090
 jwt:
   token:
     secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
@@ -43,11 +41,11 @@ spring:
       max-request-size: 10MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: zzalu_c109!
-    url: jdbc:mysql://127.0.0.1:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
-    username: zzalu
+    password: c109
+    url: jdbc:mysql://localhost:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
   kafka:
-    bootstrap-servers: 127.0.0.1:9092
+    bootstrap-servers: localhost:9092
   #    consumer:
   #      auto-offset-reset: earliest
   #      bootstrap-servers: localhost:9092

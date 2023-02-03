@@ -133,8 +133,8 @@ public class MemberService {
     }
 
 
-    public ProfileDTO getProfile(Long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public ProfileDTO getProfile(String username) {
+        Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new MemberNotFoundException());
         ProfileDTO profile = new ProfileDTO(member);
         return profile;

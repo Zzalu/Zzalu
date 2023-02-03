@@ -60,10 +60,10 @@ public class MemberController {
     }
 
     //--------------------------------------다른 사람 프로필 확인-------------------------------------------
-    @GetMapping("/{memberId}")
-    public ResponseEntity<ProfileDTO> getProfile(@PathVariable Long memberId) {
+    @GetMapping("/{username}")
+    public ResponseEntity<ProfileDTO> getProfile(@PathVariable String username) {
 
-        ProfileDTO profile = memberService.getProfile(memberId);
+        ProfileDTO profile = memberService.getProfile(username);
         return ResponseEntity.ok().body(profile);
     }
 
