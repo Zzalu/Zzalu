@@ -77,9 +77,9 @@ export default {
       this.v$.$touch();
       if (!this.v$.$error) {
         // if ANY fail validation
-        alert('Form successfully submitted.')
+        alert('백에 정보 보내고 다음 라우터로 ㄱㄱ.')
       } else {
-        alert('Form failed validation')
+        alert('모든 필드에 입력 해주세요')
       }
     }
     },
@@ -93,21 +93,6 @@ export default {
       },
     }
   },
-  // },
-  // validators: {
-    // username: function (value) {
-    //     return Validator.value(value).required()
-    // },
-    // nickname: function (value) {
-    //     return Validator.value(value).required()
-    // },
-    // password: function (value) {
-    //     return Validator.value(value).required()
-    // },
-    // passwordCheck: function (value) {
-    //     return Validator.value(value).required()
-    // },
-  // },
 };
 </script>
 
