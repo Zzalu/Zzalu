@@ -33,7 +33,6 @@
     </div>
     <div class="h-4"></div>
     <div v-if="tmpisLogin">
-      <SearchView />
       <MainBottomNav />
     </div>
   </div>
@@ -47,7 +46,6 @@ import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModa
 import QuietChatData from "./QuietChatListData.js";
 import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
-import SearchView from "../SearchView";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 
@@ -87,7 +85,6 @@ export default {
     ChatInfoModal,
     ChatSearchTopNav,
     MainBottomNav,
-    SearchView,
   },
   data() {
     return {

@@ -1,14 +1,16 @@
 <template>
   <!-- 로그인 후 nav -->
+  <SearchView/>
   <div
     class="
       h-nav-height
       fixed
-      box-border
+      border
       inset-x-0
       bottom-0
       border-t-2 border-zz-light-div
       z-50
+      dark:border-zz-dark-div
     "
   >
     <div
@@ -44,9 +46,13 @@
 <script>
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
+import SearchView from "../../../views/SearchView"
 
 export default {
   name: "MainBottomNavBar",
+  components : {
+    SearchView
+  },
   setup() {
     const store = useStore();
 
@@ -91,7 +97,7 @@ span {
   display: inline-block;
 }
 .nav_list {
-  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-black;
+  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-zz-bd;
 }
 .nav_item {
   @apply flex-1 cursor-pointer text-center dark:text-white;
