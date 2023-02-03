@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.gifs.service;
 
-import com.samsamoo.zzalu.gifs.entity.GiphyGifs;
-import com.samsamoo.zzalu.gifs.repository.GiphyGifsRepository;
+import com.samsamoo.zzalu.gifs.entity.Gifs;
+import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +10,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class GiphyGifsService {
+public class GifsService {
 
-    private final GiphyGifsRepository giphyGifRepository;
+    private final GifsRepository giphyGifRepository;
 
-    public List<GiphyGifs> findAllGif() {
+    public List<Gifs> findAllGif() {
         return giphyGifRepository.findAll();
     }
 
-    public Optional<GiphyGifs> findById(Long id) {
+    public Optional<Gifs> findById(Long id) {
         return giphyGifRepository.findById(id);
     }
 
-    public List<GiphyGifs> findTop90() {
+    public List<Gifs> findTop90() {
         return giphyGifRepository.findTop90ByOrderByLikeCountDesc();
     }
 

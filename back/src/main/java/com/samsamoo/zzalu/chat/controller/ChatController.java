@@ -19,7 +19,6 @@ public class ChatController {
 
     private final RedisPublisher redisPublisher;
     private final ChatRoomRepository chatRoomRepository;
-
     private final KafkaProducer kafkaProducer;
 
     @MessageMapping("/chat/message")
@@ -28,11 +27,7 @@ public class ChatController {
         System.out.println("ChatController - ChatMessage : " + message);
         if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
             chatRoomRepository.enterChatRoom(message.getRoomId());
-            chatRoomRepository.findAllChatMessage(message.getRoomId());
-            List<ChatMessage> chatMessages = chatRoomRepository.findAllChatMessage(message.getRoomId());
-            for(ChatMessage cm : chatMessages) {
-                System.out.println(cm.getSender() + " : " + cm.getMessage());
-            }
+
 //            System.out.println("ChatController - if(ENTER) - findAllChatMessage : " + chatRoomRepository.findAllChatMessage(message.getRoomId()));
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
 
@@ -46,7 +41,14 @@ public class ChatController {
         if(!ChatMessage.MessageType.ENTER.equals(message.getType())) {
             chatRoomRepository.setChatMessage(message);
         }
-
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
+
+    @GetMapping("/chat/messages")
+    public List<ChatMessage> getAllChatMessages(String roomId) {
+        return chatRoomRepository.findAllChatMessage(roomId);
+    }
+
+
+
 }

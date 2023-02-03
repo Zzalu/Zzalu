@@ -1,13 +1,13 @@
 package com.samsamoo.zzalu.gifs.dto;
 
-import com.samsamoo.zzalu.gifs.entity.GiphyGifs;
+import com.samsamoo.zzalu.gifs.entity.Gifs;
 import lombok.Getter;
 import lombok.Setter;
 
 
 @Getter
 @Setter
-public class GiphyGifsDto {
+public class GifsDto {
 
     private Long id;
 
@@ -35,7 +35,7 @@ public class GiphyGifsDto {
 
     private long scrapCount;
 
-    public GiphyGifsDto(GiphyGifs giphyGif) {
+    public GifsDto(Gifs giphyGif) {
         this.id = giphyGif.getId();
         this.gifPath = giphyGif.getGifPath();
         this.useCount = giphyGif.getUseCount();
