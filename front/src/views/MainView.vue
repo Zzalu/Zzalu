@@ -1,5 +1,5 @@
 <template>
-  <div class="not-scroll dark:bg-zz-bd">
+  <div class="dark:bg-zz-bd">
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
     <OnlyBigLogoTopNav class="z-30" />
     <AcademyList />
@@ -76,18 +76,17 @@ export default {
       this.close_chat_info();
     },
   },
-  watch: {
-    // 외부 스크롤 막기
-    open_chat_info: function (value) {
-      value
-        ? (document.body.style.overflow = "hidden")
-        : document.body.style.removeProperty("overflow");
-    },
+  get watch() {
+    return this._watch;
+  },
+  set watch(value) {
+    this._watch=value;
   },
 };
 </script>
 
 <style scoped lang="postcss">
+
 .bg-negative {
   @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0 z-40;
 }

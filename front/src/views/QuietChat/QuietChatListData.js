@@ -24,7 +24,7 @@ export default [
     {
         id : 3,
         name : '뉴진스 고독방',
-        content : '훌쩍 커버렸어 함께한 기억처럼 널 보는 내 마음은 어느새 여름 지나 가을 기다렸지 all this time Do you want somebody',
+        content : '훌쩍 커버렸어 함께한 기억처럼 널 보는 내 마음은 어느새 여름 지나 가을 기다렸지 all this time Do you want somebody 노래가 끝나지 않아 버리는걸 끝나지 않는 MT',
         hashtag : ['#해린','#민지','#혜인','#다니엘','#하니','#내가만든쿠키','#Ditto'],
         master : 'NewJeans',
         Image : './assets/Newjeans.jpg',
@@ -34,7 +34,7 @@ export default [
     },
     {
         id : 4,
-        name : '도라에몽 고독방인데 이름이 굉장히 길어져버린 고독방',
+        name : '도라에몽 고독방인데 이름이 굉장히 길어져버린 고독방 근데 더더 길다면',
         content : '진구야아앙~~~',
         hashtag : ['#도라에몽','#친구'],
         master : '김지오',

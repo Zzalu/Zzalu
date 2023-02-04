@@ -1,6 +1,5 @@
 <template>
   <!-- 로그인 후 nav -->
-
   <SearchView />
   <div
     class="
@@ -26,18 +25,19 @@
     ></div>
 
     <ul class="nav_list">
-      <router-link to="/main" class="nav_item">
+      
+      <button class="nav_item" @click="GoToMain">
         <font-awesome-icon icon="fa-solid fa-house" />
-      </router-link>
+      </button>
 
-      <router-link to="/chat-list" class="nav_item">
+      <button class="nav_item" @click="GoToChatList">
         <font-awesome-icon icon="fa-regular fa-comment-dots" />
-      </router-link>
-      <li class="nav_item" @click="open_modal">
+      </button>
+      <button class="nav_item" @click="open_modal">
         <span class="search"
           ><font-awesome-icon icon="fa-solid fa-magnifying-glass"
         /></span>
-      </li>
+      </button>
       <router-link to="/title-competition/1" class="nav_item">
         <font-awesome-icon icon="fa-regular fa-lightbulb" />
         <i class="fa-solid fa-chevron-left"></i
@@ -63,6 +63,9 @@ export default {
   setup() {
     const store = useStore();
 
+    const open_chat_info = computed(
+      () => store.state.quietChatStore.open_chat_info
+    );
     const check_search_modal = computed(
       () => store.state.searchModalStore.open_search_modal
     );
@@ -76,6 +79,7 @@ export default {
       open_modal,
       close_search_modal,
       check_search_modal,
+      open_chat_info,
     };
   },
   methods: {
@@ -84,9 +88,21 @@ export default {
         this.close_search_modal();
       }
     },
+    GoToMain() {
+      this.$router.push(`/main`);
+    },
+    GoToChatList() {
+      this.$router.push(`/chat-list`);
+    },
   },
   watch: {
+    // 외부 스크롤 막기
     check_search_modal: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
+    open_chat_info: function (value) {
       value
         ? (document.body.style.overflow = "hidden")
         : document.body.style.removeProperty("overflow");

@@ -1,12 +1,12 @@
 <template>
   <div class="modal">
     <div class="modal-title-box">
+      <p class="modal-title">{{ info_data.name }}</p>
       <font-awesome-icon
         @click="close_modal"
         class="modal-icon"
         icon="fa-solid fa-xmark"
       />
-      <p class="modal-title">{{ info_data.name }}</p>
     </div>
     <div class="img-container">
       <img
@@ -77,16 +77,20 @@ export default {
 /* 모달 타이틀 */
 .modal {
   min-height: 24rem;
-  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-9/12 h-96 text-center bg-zz-p dark:bg-zz-dark-s;
+  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-72 h-96 text-center bg-zz-p dark:bg-zz-dark-s;
 }
 .modal-title-box {
-  @apply bg-zz-p rounded-t-xl border-zz-p dark:bg-zz-dark-s;
+  /* font-size:1rem; */
+  @apply bg-zz-p rounded-t-xl border-zz-p dark:bg-zz-dark-s font-spoq font-bold w-full h-12 relative; 
 }
 .modal-title {
-  @apply text-xl font-bold font-carter ml-8 line-clamp-1 pt-3 pb-3 text-white;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:100%;
+  @apply text-white absolute inset-x-0 mr-12 pl-12 line-clamp-2;
 }
 .modal-icon {
-  @apply float-right text-3xl mr-3 cursor-pointer mt-2 dark:text-white;
+  @apply absolute right-0 text-3xl mr-3 cursor-pointer mt-2 dark:text-white;
 }
 /* 모달 이미지 */
 

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div v-if="img_select" class="select-jjal-box">
+    <!-- v-touch:press="LongClickStart" v-touch:release="LongClickEnd" -->
+    <div v-if="img_select" class="select-jjal-box"
+    @click="route"
+    >
       <div>
         <div class="view-content">
           <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
@@ -11,6 +14,7 @@
             class="scrap-icon"
             icon="fa-regular fa-star"
             @click="open_list_modal"
+            @click.stop="''"
           />
         </div>
         <img
@@ -20,7 +24,8 @@
       </div>
     </div>
     <div v-else class="jjal-box">
-      <div v-touch:press="LongClickStart" v-touch:release="LongClickEnd"
+      <div
+      v-touch:longtap="long_click"
       @click="route"
       >
         <img
@@ -44,12 +49,17 @@ export default {
     const open_list_modal = () => {
       store.commit("searchModalStore/open_list_modal");
     };
+    const close_search_modal = () => {
+      store.commit("searchModalStore/open_search_modal");
+    };
     const select_jjal_num = computed(
       () => store.state.searchModalStore.select_jjal_num
     );
     return {
       open_list_modal,
+      close_search_modal,
       select_jjal_num,
+
     };
   },
   data() {
@@ -70,17 +80,12 @@ export default {
     i: Number,
   },
   methods: {
-    LongClickStart() {
-      this.start_time = Date.now();
-    },
-    LongClickEnd() {
-      let result = Date.now() - this.start_time;
-      if (result > 500) {
-        this.$emit("select_id", this.i);
-      }
-    },
     route() {
       this.$router.push(`/zzal/${this.i}`);
+      this.close_search_modal();
+    },
+    long_click() {
+      this.$emit("select_id", this.i);
     }
   },
 };

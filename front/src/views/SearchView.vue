@@ -8,8 +8,9 @@
             <div class="modal">
               <div class="modal-items">
                 <SearchBar />
-                <div v-for="(a, i) in 120" :key="i">
-                  <JjalListItem :i="i" @select_id="select_id" />
+                <div v-for="(a, i) in 30" :key="i">
+                  <JjalListItem :i="i" @select_id="select_id" 
+                  />
                 </div>
               </div>
             </div>
@@ -27,7 +28,6 @@
 </template>
 
 <script>
-
 import SearchBar from "../components/Search/SearchBar";
 import JjalListItem from "../components/Search/Item/JjalListItem";
 import StoreList from "../components/Search/StoreList";
@@ -69,6 +69,7 @@ export default {
 </script>
 
 <style scoped lang="postcss">
+/* 모달창 애니메이션 */
 .fade-enter-active {
   transform: translateY(90vh);
   position: fixed;
@@ -82,29 +83,13 @@ export default {
   transition: all 0.2s ease-out;
   @apply inset-0;
 }
-
 .fade-leave-to {
-  /* transform: translateY(-10px); */
   opacity: 0;
 }
 .fade-enter-to {
   transform: translateY(0px);
   position: fixed;
   opacity: 1;
-}
-.slide-fade-enter {
-  transform: translateY(10px);
-  opacity: 0;
-}
-
-.slide-fade-enter-active,
-.slide-fade-leave-active {
-  transition: all 1s ease;
-}
-
-.slide-fade-leave-to {
-  transform: translateX(-10px);
-  opacity: 0;
 }
 /* 보관함 모달창 전체 */
 .list-view {
@@ -123,7 +108,11 @@ export default {
 }
 /* 짤 리스트 */
 .modal-items {
-  @apply flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full;
+  @apply flex flex-wrap justify-center fixed overflow-y-scroll top-40 h-full pb-24;
+}
+
+.modal-items::-webkit-scrollbar {
+  display:none;
 }
 /* 보관함 선택시 어두워지는 범위 */
 .hide-modal-items {

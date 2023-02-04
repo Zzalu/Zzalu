@@ -13,7 +13,8 @@ const quietChatStore = {
       state.open_chat_info = true
     },
     close_chat_info(state) {
-      state.open_chat_info = false
+      state.open_chat_info = false,
+      state.open_chat_id = null
     },
     open_chat_id(state, id) {
       state.open_chat_id = id
