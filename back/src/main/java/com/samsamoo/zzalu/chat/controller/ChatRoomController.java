@@ -26,8 +26,14 @@ public class ChatRoomController {
 
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> room() {
+    public List<ChatRoom> rooms() {
         return chatRoomRepository.findAllRoom();
+    }
+
+    @GetMapping("/rooms-top10")
+    @ResponseBody
+    public List<ChatRoom> roomsLikeTop10() {
+        return chatRoomRepository.findTop10LikeCountRoom();
     }
 
     @PostMapping("/room")
@@ -36,7 +42,6 @@ public class ChatRoomController {
         System.out.println("chatroomenroll");
         System.out.println(chatRoomEnroll.toString());
         return chatRoomRepository.createChatRoom(chatRoomEnroll.getUserName(), chatRoomEnroll.getMemberId(), chatRoomEnroll.getRoomName(), chatRoomEnroll.getImagePath());
-
     }
 
 //    @GetMapping("/room/enter/{roomId}")
