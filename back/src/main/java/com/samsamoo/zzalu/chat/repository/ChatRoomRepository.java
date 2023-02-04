@@ -15,6 +15,8 @@ import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -62,6 +64,26 @@ public class ChatRoomRepository {
 
     public List<ChatRoom> findAllRoom() {
         return opsHashChatRoom.values(CHAT_ROOMS);
+    }
+
+    public List<ChatRoom> findTop10LikeCountRoom() {
+
+        List<ChatRoom> chatRoomList = findAllRoom();
+        chatRoomList.sort(new Comparator<ChatRoom>() {
+            @Override
+            public int compare(ChatRoom o1, ChatRoom o2) {
+                if (o1.getLikeCount().equals(o2.getLikeCount()))
+                    return 0;
+                else return (o1.getLikeCount() < o2.getLikeCount() ? -1 : 1);
+            }
+        });
+
+        if (chatRoomList.size() < 10) {
+            return chatRoomList;
+        }
+        else {
+            return chatRoomList.subList(0, 10);
+        }
     }
 
     public ChatRoom findRoomById(String id) {
