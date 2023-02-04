@@ -10,7 +10,7 @@
         <!-- <p v-if="modified" class="text-xs">(수정됨)</p> -->
       </div>
       <p class="text-base mb-1">{{ content }}</p>
-      <div class="flex flex-row">
+      <div class="flex flex-row mb-2">
         <div class="w-full">
           <button class="text-xs mr-2">답글쓰기</button>
           <button v-if="nested_comment_cnt > 0 && !nested_active" class="text-xs">
@@ -33,7 +33,14 @@
         </div>
       </div>
       <!-- 대댓글 -->
-      <nested-comment-list v-if="nested_active" :comment_id="comment_id" :nested_comment_cnt="nested_comment_cnt" />
+      <div class="w-full flex justify-end">
+        <nested-comment-list
+          v-if="nested_active"
+          :comment_id="comment_id"
+          :nested_comment_cnt="nested_comment_cnt"
+          class="w-11/12"
+        />
+      </div>
     </div>
   </li>
 </template>

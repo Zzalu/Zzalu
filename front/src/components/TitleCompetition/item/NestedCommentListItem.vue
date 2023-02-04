@@ -22,7 +22,6 @@ export default {
     nested_comment: Object,
   },
   setup(props) {
-    console.log(props);
     const nested_comment_data = reactive({
       profile_image: 'profile.jpg',
       id: props.nested_comment.id,

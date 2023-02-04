@@ -10,8 +10,7 @@ const titleCompetitionStore = {
     comments: [],
     last_comment_id: Number.MAX_SAFE_INTEGER,
     // 대댓글
-    nested_comments: {},
-    parent_comment_id: 0,
+
     new_nested_comments: [],
   }),
   getters: {
@@ -33,6 +32,9 @@ const titleCompetitionStore = {
     },
     SET_NEW_NESTED_COMMENTS(state, new_nested_comments) {
       state.new_nested_comments = new_nested_comments;
+    },
+    SET_NEW_NESTED_COMMENTS_EMPTY(state) {
+      state.new_nested_comments.splice(0);
     },
   },
   actions: {
@@ -56,15 +58,25 @@ const titleCompetitionStore = {
     },
     // 대댓글
     getNestedCommentList({ commit }, param) {
-      // console.log(param);
-      getNestedComments(
-        param,
-        ({ data }) => {
-          // console.log(data);
-          commit('SET_NEW_NESTED_COMMENTS', data);
-        },
-        (error) => console.log(error),
-      );
+      return new Promise((resolve, reject) => {
+        getNestedComments(
+          param,
+          ({ data }) => {
+            commit('SET_NEW_NESTED_COMMENTS', data);
+            resolve();
+          },
+          (error) => {
+            console.log(error);
+            reject();
+          },
+        );
+      });
+    },
+    setNestedCommentList({ commit }) {
+      return new Promise((resolve) => {
+        commit('SET_NEW_NESTED_COMMENTS_EMPTY');
+        resolve();
+      });
     },
   },
 };
