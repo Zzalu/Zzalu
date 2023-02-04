@@ -13,9 +13,15 @@
       <div class="flex flex-row">
         <div class="w-full">
           <button class="text-xs mr-2">답글쓰기</button>
-          <button v-if="reply_cnt > 0" class="text-xs">
+          <button v-if="nested_comment_cnt > 0 && !nested_active" class="text-xs">
             <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
-            <span class="text-center" @click="nested_active = !nested_active">{{ reply_cnt }}개의 답글보기</span>
+            <span class="text-center" @click="nested_active = !nested_active"
+              >{{ nested_comment_cnt }}개의 답글보기</span
+            >
+          </button>
+          <button v-if="nested_comment_cnt > 0 && nested_active" class="text-xs">
+            <font-awesome-icon icon="fa-solid fa-chevron-up" class="mr-1 text-xs" />
+            <span class="text-center" @click="nested_active = !nested_active">답글 접기</span>
           </button>
         </div>
 
@@ -27,16 +33,14 @@
         </div>
       </div>
       <!-- 대댓글 -->
-      <div v-if="nested_active">
-        <nested-comment-list />
-      </div>
+      <nested-comment-list v-if="nested_active" :comment_id="comment_id" :nested_comment_cnt="nested_comment_cnt" />
     </div>
   </li>
 </template>
 
 <script>
 import { reactive, toRefs } from '@vue/reactivity';
-import NestedCommentList from '../NestedCommentList.vue';
+import NestedCommentList from '@/components/TitleCompetition/NestedCommentList.vue';
 export default {
   components: { NestedCommentList },
   name: 'CommentListItem',
@@ -46,16 +50,16 @@ export default {
   setup(props) {
     const comment_data = reactive({
       profile_image: 'profile.jpg',
-      id: props.comment.id,
+      comment_id: props.comment.id,
       nickname: props.comment.nickname,
       time: '13시간 전',
       content: props.comment.content,
-      reply_cnt: props.comment.replyCommentsSize,
+      nested_comment_cnt: props.comment.replyCommentsSize,
       modified: false,
       nested_active: false,
       like_cnt: props.comment.likeNumber,
     });
-    // 대댓글 클릭을 하면
+
     return {
       ...toRefs(comment_data),
     };

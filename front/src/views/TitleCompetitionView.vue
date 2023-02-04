@@ -66,7 +66,7 @@ export default {
     const comment_count = store.state.titleCompetitionStore.comment_count; // 댓글 개수
     const titleCompetition_id = route.params.id;
     const scrollTest = ref(null);
-    console.log(titleCompetition_id);
+    // console.log(titleCompetition_id);
     store.dispatch('titleCompetitionStore/setTitleCompetitionId', titleCompetition_id);
     store.dispatch('titleCompetitionStore/getCommentList', 3);
 

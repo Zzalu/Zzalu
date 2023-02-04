@@ -21,7 +21,7 @@ export default {
     const commentListComponent = ref(null);
     let comments = store.state.titleCompetitionStore.comments;
 
-    const roadMoreComments = () => {
+    const loadMoreComments = () => {
       store.dispatch('titleCompetitionStore/getCommentList', 1);
     };
 
@@ -31,13 +31,13 @@ export default {
     const handleScroll = () => {
       let element = commentListComponent.value;
       if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        roadMoreComments();
+        loadMoreComments();
       }
     };
 
     return {
       comments,
-      roadMoreComments,
+      loadMoreComments,
       commentListComponent,
     };
   },
