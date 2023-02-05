@@ -1,13 +1,15 @@
 <template>
   <div>
     <p class="focus-text">요새 핫한 고독방</p>
-    <hr class="mb-5 border-0 bg-zz-light-input h-1 dark:bg-zz-dark-div" />
-    <div class="flex overflow-x-auto">
-      <div v-for="(data,b) in room_data" :key="b">
-        <HotChattingRoomListItem 
-        :room_data="data"
-        @click="chat_data(b)"
-        />
+    <hr class="mb-3 border-0 bg-zz-light-input h-1 dark:bg-zz-dark-div" />
+    <div class="items">
+      <div v-for="(data, b) in room_data" :key="b">
+          <HotChattingRoomListItem
+            :room_data="data"
+            :b="b"
+            @click="chat_data(b)"
+            class="hot-chatting"
+          />
       </div>
     </div>
   </div>
@@ -24,32 +26,45 @@ export default {
     const store = useStore();
 
     const send_chat_data = (e) => {
-      store.commit("quietChatStore/open_chat_info")
-      store.commit("quietChatStore/open_chat_id",e)
+      store.commit("quietChatStore/open_chat_id", e);
+      setTimeout(function() {
+        store.commit("quietChatStore/open_chat_info");
+      }, 200)
     };
-
     return {
-      send_chat_data
-    }
+      send_chat_data,
+    };
   },
   data() {
     return {
-      room_data : HotCahttingRoomData
-    }
+      room_data: HotCahttingRoomData,
+    };
   },
   components: {
     HotChattingRoomListItem,
   },
-  methods : {
+  methods: {
     chat_data(b) {
-      this.send_chat_data(b)
-    }
-  }
+      this.send_chat_data(b);
+    },
+  },
 };
 </script>
 
 <style scoped lang="postcss">
+
 .focus-text {
   @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
+}
+
+.items {
+  @apply flex overflow-x-auto;
+}
+.items::-webkit-scrollbar {
+  display: none;
+}
+.hot-chatting {
+  box-shadow: 0 0 7px black;
+  @apply mt-2;
 }
 </style>
