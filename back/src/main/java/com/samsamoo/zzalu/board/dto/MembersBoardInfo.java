@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardInfo {
+public class MembersBoardInfo {
     private Long id;
     private String boardName;
-    private Boolean gifContainState;
-
+    private String thumbnailPath;
 }

@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.advice;
 
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,5 +51,16 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException e) {
         return ResponseEntity.internalServerError().body(new ErrorResponse(500,"서버에 알 수 없는 문제가 발생했습니다." + e.getMessage()));
     }
+//    @ExceptionHandler(ExpiredJwtException.class)
+//    public ResponseEntity<ErrorResponse> handleExpiredJwtException(ExpiredJwtException e) {
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(403, "토큰이 만료되었습니다. 다시 로그인해주세요."));
+//
+//    }
+//
+//    @ExceptionHandler(JwtException.class)
+//    public ResponseEntity<ErrorResponse> handleJwtException(JwtException e) {
+//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorResponse(403, "토큰이 변조되었습니다. 다시 로그인해주세요."));
+//
+//    }
 
 }

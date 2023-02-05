@@ -113,10 +113,6 @@ public class JwtTokenProvider {
     public Member getMember(String token) {
         Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
         String username = String.valueOf(claims.getBody().get("username"));
-        log.info("username = {}", username); // nanamoon
-        Optional<Member> member = memberRepository.findByUsername(username);
-        log.info("member = {}", member);
-
         return memberRepository.findByUsername(username)
                 .orElseThrow(() -> new MemberNotFoundException("로그인된 사용자를 찾을 수 없습니다."));
     }
