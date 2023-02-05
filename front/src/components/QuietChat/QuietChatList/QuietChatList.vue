@@ -38,7 +38,8 @@ export default {
 
 <style scoped lang="postcss">
 .card-container {
-  @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq dark:border-zz-dark-div;
+  box-shadow:0 0 7px black;
+  @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq rounded-lg dark:border-zz-dark-div;
 }
 .card-img-contanier {
   background-image: url(./assets/nyang.gif);

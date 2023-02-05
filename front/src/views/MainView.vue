@@ -45,8 +45,11 @@ export default {
     };
     onBeforeMount(() => {
       // axios 요청
-      // store.dispatch("quietChatStore/getQuietList"),
-      //   store.dispatch("quietChatStore/getGIFList");
+      store.dispatch("quietChatStore/getQuietList");
+      if(open_chat_id==true) {
+        store.dispatch("zzalListStore/getPopularGIFList");
+        store.dispatch("zzalListStore/getRecommendGIFList")
+      }
     });
     return {
       open_chat_info,

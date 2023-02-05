@@ -3,8 +3,10 @@
     <p class="focus-text">user.id님을 위한 추천 짤</p>
     <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
     <div class="items">
-      <div v-for="b in 30" :key="b">
-        <RecommendedJjalListItem/>
+      <div v-for="(RecommendJjal,i) in RecommendJjalListData" :key="i">
+        <RecommendedJjalListItem
+        :RecommendJjal="RecommendJjal"
+        />
       </div>
     </div>
   </div>
@@ -12,9 +14,21 @@
 
 <script>
 import RecommendedJjalListItem from "../Main/Item/RecommendedJjalListItem"
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "RecommendedJjalList",
+  setup() {
+    const store = useStore();
+
+    const RecommendJjalListData = computed(
+      () => store.state.zzalListStore.recommend_gif_data
+    );
+    return {
+      RecommendJjalListData
+    }
+  },
   components : {
     RecommendedJjalListItem
   }
