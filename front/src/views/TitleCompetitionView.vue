@@ -40,9 +40,9 @@
         <!-- 댓글 리스트 -->
         <comment-list class="mb-10"></comment-list>
       </div>
+      <!-- 댓글 input -->
       <comment-input></comment-input>
     </div>
-    <!-- 댓글 input -->
     <main-bottom-nav />
   </div>
 </template>

@@ -13,4 +13,15 @@ function getComments(params, success, fail) {
 function getNestedComments(params, success, fail) {
   api.get(`/comment/reply`, { params: params }).then(success).catch(fail);
 }
-export { getComments, getNestedComments, getTitleCompetition };
+
+// 댓글 입력하기
+function addComment(comment_data, success, fail) {
+  api.get(`/comment`, comment_data).then(success).catch(fail);
+}
+
+// 대댓글 입력하기
+function addNestedComment(nested_comment_data, success, fail) {
+  api.get(`/comment/reply`, nested_comment_data).then(success).catch(fail);
+}
+
+export { getComments, getNestedComments, getTitleCompetition, addComment, addNestedComment };
