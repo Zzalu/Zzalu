@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.TitleHakwon.service;
 
+import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonResponse;
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +13,14 @@ public class TitleHakwonService {
     private final TitleHackwonRepository titleHackwonRepository;
 
 
-    public TitleHakwon getTitleHakwonInfo(String openDate){
+    public TitleHakwonResponse getTitleHakwonInfo(String openDate){
         if(titleHackwonRepository.findTitleHakwonByOpenDate(openDate)==null){
 
         }
-       return titleHackwonRepository.findTitleHakwonByOpenDate(openDate);
+
+
+
+       return new TitleHakwonResponse(titleHackwonRepository.findTitleHakwonByOpenDate(openDate));
 
     }
 
