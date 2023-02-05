@@ -17,10 +17,8 @@
 <script>
 import NestedCommentListItem from './item/NestedCommentListItem.vue';
 import { useStore } from 'vuex';
-// import { onMounted } from 'vue';
-// import { ref, computed, onBeforeMount } from 'vue';
-// import { onBeforeMount } from 'vue';
-// import { ref } from 'vue';
+import { reactive, toRefs } from 'vue-demi';
+
 export default {
   components: { NestedCommentListItem },
   name: 'NestedCommentList',
@@ -32,42 +30,34 @@ export default {
     console.log(props.nested_comment_cnt);
     const store = useStore();
     const size = 3;
-    // let nested_comments = store.state.titleCompetitionStore.nested_comments;
-    let nested_comments = [];
-    let last_nested_comment_id = Number.MAX_SAFE_INTEGER;
-    // console.log(last_nested_comment_id.value);
-
+    const state = reactive({
+      nested_comments: [],
+      last_nested_comment_id: Number.MAX_SAFE_INTEGER,
+    });
     const pushNestedComments = async () => {
       return new Promise((resolve) => {
-        nested_comments.push(...store.state.titleCompetitionStore.new_nested_comments);
+        state.nested_comments.push(...store.state.titleCompetitionStore.new_nested_comments);
         resolve();
       });
     };
     // 답글 읽기
     const loadMoreNestedComments = async () => {
-      console.log(last_nested_comment_id);
+      console.log(state.last_nested_comment_id);
       await store.dispatch('titleCompetitionStore/getNestedCommentList', {
-        lastCommentId: last_nested_comment_id,
+        lastCommentId: state.last_nested_comment_id,
         parentCommentId: props.comment_id,
         size: size,
       });
-      // nested_comments.push(...store.state.titleCompetitionStore.new_nested_comments);
       await pushNestedComments();
-      console.log(nested_comments);
-      last_nested_comment_id = nested_comments[nested_comments.length - 1].id;
-      console.log(`last_nested_comment_id: ${last_nested_comment_id}`);
-      // await store.dispatch('titleCompetitionStore/setNestedCommentList');
+      console.log(state.nested_comments);
+      state.last_nested_comment_id = state.nested_comments[state.nested_comments.length - 1].id;
+      console.log(`last_nested_comment_id: ${state.last_nested_comment_id}`);
     };
-
-    // onBeforeMount(() => {
-    //   loadMoreNestedComments();
-    // });
 
     loadMoreNestedComments();
     return {
-      nested_comments,
+      ...toRefs(state),
       loadMoreNestedComments,
-      last_nested_comment_id,
     };
   },
 };
