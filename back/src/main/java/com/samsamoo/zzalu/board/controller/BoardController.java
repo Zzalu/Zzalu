@@ -40,7 +40,7 @@ public class BoardController {
         MembersBoardList membersBoardList = boardService.getMembersBoard(username);
         return ResponseEntity.ok(membersBoardList);
     }
-    //---------------------------------------보드 상세 불러오기(짤들)---------------------------------------
+    //--------------------------------보드 상세 불러오기(짤들)------------------------------------
     @GetMapping("/{boardId}")
     public ResponseEntity<GifList> getGifs(@PathVariable Long boardId) {
         GifList gifList = boardService.getGifs(boardId);
@@ -56,7 +56,7 @@ public class BoardController {
     }
 
     //---------------------------------보드에서 짤 삭제-------------------------------------
-    @DeleteMapping("/{boardId}")
+    @DeleteMapping("/gif/{boardId}")
     public ResponseEntity deleteGifFromBoard(@PathVariable Long boardId, @RequestBody GifIdList request) {
         // 토큰은 SecuityConfig에서 처리
         boardService.deleteGifFromBoard(boardId, request.getGifIdList());
@@ -70,6 +70,22 @@ public class BoardController {
         String token = bearerToken.substring(7);
         boardService.insertGifFromBoard(token, boardId, request.getGifIdList());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    //---------------------------------보드 이름 수정-------------------------------------
+    @PutMapping ("/{boardId}")
+    public ResponseEntity updateBoardName(@RequestHeader(value = "Authorization")String bearerToken, @PathVariable Long boardId, @RequestBody Map<String, String> request) {
+        // 토큰은 SecuityConfig에서 처리
+        String token = bearerToken.substring(7);
+        boardService.updateBoardName(token, boardId, request.get("newBoardName"));
+        return ResponseEntity.ok(Map.of("result", "ok"));
+    }
+    //---------------------------------보드 삭제-------------------------------------
+    @DeleteMapping ("/{boardId}")
+    public ResponseEntity deleteBoard(@RequestHeader(value = "Authorization")String bearerToken, @PathVariable Long boardId) {
+        // 토큰은 SecuityConfig에서 처리
+        String token = bearerToken.substring(7);
+        boardService.deleteBoard(token, boardId);
+        return ResponseEntity.ok(Map.of("result", "ok"));
     }
 
 }

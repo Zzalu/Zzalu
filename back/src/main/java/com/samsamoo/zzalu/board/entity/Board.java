@@ -40,4 +40,7 @@ public class Board {
     @JoinTable(name = "BOARD_GIF", joinColumns = @JoinColumn(name = "BOARD_ID"), inverseJoinColumns = @JoinColumn(name = "GIF_ID"))
     private List<Gifs> gifs = new ArrayList<Gifs>();
 
+    public void updateBoardName(String newBoardName) {
+        this.boardName = newBoardName;
+    }
 }

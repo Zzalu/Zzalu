@@ -204,4 +204,38 @@ public class BoardService {
 
         }
     }
+
+    public void updateBoardName(String token, Long boardId, String newBoardName) {
+        Board board = boardRepository.findBoardById(boardId)
+                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        // 본인 보드인지 확인 and
+        // 보드 이름 중복인지 검증
+        Member member = jwtTokenProvider.getMember(token);
+        List<Board> myBoards = member.getBoards();
+        if (!myBoards.contains(board)) {
+            throw new NotMatchException("수정하려는 보드는 회원님의 보드가 아닙니다.");
+        }
+        for (Board existBoard : myBoards) {
+            if (existBoard.getBoardName() == newBoardName) {
+                throw new NotMatchException("보드 이름이 중복입니다.");
+            }
+        }
+        board.updateBoardName(newBoardName);
+        boardRepository.save(board);
+    }
+
+    public void deleteBoard(String token, Long boardId) {
+        Board board = boardRepository.findBoardById(boardId)
+                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        Member member = jwtTokenProvider.getMember(token);
+        List<Board> myBoards = member.getBoards();
+
+        // 본인 보드인지 확인 and
+        if (!myBoards.contains(board)) {
+            throw new NotMatchException("삭제하려는 보드는 회원님의 보드가 아닙니다.");
+        } else {
+            boardRepository.delete(board);
+        }
+
+    }
 }
