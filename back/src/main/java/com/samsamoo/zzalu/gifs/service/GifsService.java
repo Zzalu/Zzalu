@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.gifs.service;
 
+import com.samsamoo.zzalu.gifs.dto.GifsUpdateDto;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,28 +13,45 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GifsService {
 
-    private final GifsRepository GifRepository;
+    private final GifsRepository gifRepository;
 
     public List<Gifs> findAllGif() {
-        return GifRepository.findAll();
+        return gifRepository.findAll();
     }
 
     public Optional<Gifs> findById(Long id) {
-        return GifRepository.findById(id);
+        return gifRepository.findById(id);
     }
 
     public List<Gifs> findTop90() {
-        return GifRepository.findTop90ByOrderByLikeCountDesc();
+        return gifRepository.findTop90ByOrderByLikeCountDesc();
     }
 
-    public List<Gifs> findByTags(String searchKeyword) { return GifRepository.findByTagsContains(searchKeyword); }
+    public List<Gifs> findByTags(String searchKeyword) { return gifRepository.findByTagsContains(searchKeyword); }
 
     public Long counyBy(){
-        return GifRepository.countBy();
+        return gifRepository.countBy();
     }
 
     public List<Gifs> findByIdIn(List<Long> gifIds) {
-        return GifRepository.findByIdIn(gifIds);
+        return gifRepository.findByIdIn(gifIds);
+    }
+
+    public Gifs gifDetailUpdate(GifsUpdateDto gifsUpdateDto){
+        Optional<Gifs> optionalGifs = findById(gifsUpdateDto.getId());
+        if(optionalGifs.isPresent()) {
+            Gifs gifs = optionalGifs.get();
+            gifs.setTags(gifsUpdateDto.getTags());
+            gifs.setSources(gifsUpdateDto.getSources());
+            gifs.setSourcesPostUrl(gifsUpdateDto.getSourcesPostUrl());
+            gifs.setSourcesTld(gifsUpdateDto.getSourcesTld());
+            gifs.setRelationsVideo(gifsUpdateDto.getRelationsVideo());
+            gifs.setDescription(gifsUpdateDto.getDescription());
+            gifRepository.save(gifs);
+            return gifs;
+        } else {
+            return null;
+        }
     }
 }
 
