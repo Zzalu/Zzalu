@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.TitleHakwon.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -33,8 +34,12 @@ public class TitleHakwon  {
     private String zzulUrl;
 
 
-
+    @Column(nullable = false, unique = true)
     private String openDate;
+
+
+
+    private boolean isOver = false;
 
 
     @PrePersist
