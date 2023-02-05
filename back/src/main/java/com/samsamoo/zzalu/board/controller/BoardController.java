@@ -33,7 +33,6 @@ public class BoardController {
         GifsBoardList gifsBoardList = boardService.getGifsBoard(token, gifId);
         return ResponseEntity.ok(gifsBoardList);
     }
-
     //-----------------------------------사용자의 보드 불러오기----------------------------------
 
     @GetMapping(params = "username")
@@ -56,11 +55,20 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //---------------------------------보드에서 짤 삭제--------------------------------
+    //---------------------------------보드에서 짤 삭제-------------------------------------
     @DeleteMapping("/{boardId}")
-    public ResponseEntity deleteGifFromBoard(@PathVariable Long boardId, @RequestBody DeleteList gifList) {
+    public ResponseEntity deleteGifFromBoard(@PathVariable Long boardId, @RequestBody GifIdList request) {
         // 토큰은 SecuityConfig에서 처리
-        boardService.deleteGifFromBoard(boardId, gifList.getGifList());
+        boardService.deleteGifFromBoard(boardId, request.getGifIdList());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    //---------------------------------보드에서 짤 삭제-------------------------------------
+    @PostMapping ("/{boardId}")
+    public ResponseEntity insertGifFromBoard(@RequestHeader(value = "Authorization")String bearerToken, @PathVariable Long boardId, @RequestBody GifIdList request) {
+        // 토큰은 SecuityConfig에서 처리
+        String token = bearerToken.substring(7);
+        boardService.insertGifFromBoard(token, boardId, request.getGifIdList());
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

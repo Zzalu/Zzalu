@@ -158,7 +158,7 @@ public class BoardService {
 
     private void insertGif(Board board, Gifs gif, Member member) {
         // member 회원 통계 로직 추가
-        board.getGifs().add(gif);
+        board.getGifs().add(0, gif);
         boardRepository.save(board);
     }
 
@@ -178,6 +178,30 @@ public class BoardService {
                 throw new NotMatchException(gif.getId().toString() + "번 gif는 board에 담겨있지 않습니다.");
             }
             deleteGif(board, gif);
+        }
+    }
+
+    public void insertGifFromBoard(String token, Long boardId, List<Long> gifIdList) {
+        Member member = jwtTokenProvider.getMember(token);
+
+        // 매서드로 분리
+        if (gifIdList.size() == 0) {
+            throw new NotMatchException("gif 리스트가 비었습니다.");
+        }
+        // 매서드로 분리
+        Board board = boardRepository.findBoardById(boardId)
+                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+
+        for (Long gifId : gifIdList) {
+            Gifs gif = gifsRepository.findById(gifId)
+                    .orElseThrow(() -> new NotFoundException(gifId.toString() +"번 gif를 찾을 수 없습니다."));
+
+            // 이미 담겨있으면 삭제 후 저장
+            if (board.getGifs().contains(gif)) {
+                deleteGif(board, gif);
+            }
+            insertGif(board,gif, member);
+
         }
     }
 }
