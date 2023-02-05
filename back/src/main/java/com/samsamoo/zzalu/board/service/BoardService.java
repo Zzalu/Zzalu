@@ -1,21 +1,20 @@
 package com.samsamoo.zzalu.board.service;
 
 import com.samsamoo.zzalu.advice.BadRequestException;
+import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
-import com.samsamoo.zzalu.board.dto.BoardGifs;
-import com.samsamoo.zzalu.board.dto.BoardInfo;
-import com.samsamoo.zzalu.board.dto.CreateBoardResposne;
+import com.samsamoo.zzalu.board.dto.*;
 import com.samsamoo.zzalu.board.entity.Board;
 import com.samsamoo.zzalu.board.repo.BoardRepository;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
 import com.samsamoo.zzalu.member.exception.NotMatchException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -66,7 +65,7 @@ public class BoardService {
         return new CreateBoardResposne(board);
     }
 
-    public BoardGifs getGifsBoard(String token, Long gifId) {
+    public GifsBoardList getGifsBoard(String token, Long gifId) {
         // 토큰 검증
         memberService.checkToken(token);
         // user 반환
@@ -76,7 +75,7 @@ public class BoardService {
         List<Board> boards = requestMember.getBoards();
 
         // new list 만들기
-        List<BoardInfo> boardInfos = new ArrayList<>();
+        List<GifsBoardInfo> gifsBoardInfos = new ArrayList<>();
 
         Gifs gif = gifsRepository.findById(gifId)
                 .orElseThrow(() -> new BadRequestException("짤이 존재하지 않습니다."));
@@ -84,11 +83,101 @@ public class BoardService {
         // for문 돌면서 gif 포함 여부와 id를 dto에 넣기
         for(Board board : boards) {
             Boolean gifContainState = board.getGifs().contains(gif);
-            BoardInfo boardInfo = new BoardInfo(board.getId(), board.getBoardName(), gifContainState);
-            boardInfos.add(boardInfo);
+            GifsBoardInfo gifsBoardInfo = new GifsBoardInfo(board.getId(), board.getBoardName(), gifContainState);
+            gifsBoardInfos.add(gifsBoardInfo);
         }
         // return dto (list)
-        return new BoardGifs(boardInfos);
+        return new GifsBoardList(gifsBoardInfos);
 
+    }
+
+    public MembersBoardList getMembersBoard(String username) {
+        // user 반환
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException());
+
+        // user의 board 불러오기
+        List<Board> boards = member.getBoards();
+
+        // 새 리스트 만들기
+        List<MembersBoardInfo> membersBoardInfos = new ArrayList<>();
+
+        // for문 돌면서 info dto에 add
+        for(Board board : boards) {
+            String thumbnailPath = null;
+            if (board.getGifs().size() >= 1) {
+                thumbnailPath = board.getGifs().get(0).getGifPath();
+            }
+            MembersBoardInfo boardInfo = new MembersBoardInfo(board.getId(), board.getBoardName(), thumbnailPath);
+            membersBoardInfos.add(boardInfo);
+        }
+        // 생성된 리스트를 list dto의 생성자로 넘김
+        return new MembersBoardList(membersBoardInfos);
+
+    }
+
+    public GifList getGifs(Long boardId) {
+        // 보드에 포함된 애들 return
+        Board board = boardRepository.findBoardById(boardId)
+                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        List<GifInfo> gifInfos = new ArrayList<>();
+        for(Gifs gif: board.getGifs()) {
+            gifInfos.add(new GifInfo(gif.getId(), gif.getGifPath()));
+        }
+        return new GifList(gifInfos);
+    }
+
+    public void updateBoard(String token, Long gifId, GifsBoardList gifsBoardList) {
+        Member member = jwtTokenProvider.getMember(token);
+
+        List<GifsBoardInfo> boardInfoList = gifsBoardList.getBoards();
+        Gifs gif = gifsRepository.findById(gifId)
+                .orElseThrow(()-> new NotFoundException("gif를 찾을 수 없습니다."));
+
+        for (GifsBoardInfo boardInfo : boardInfoList) {
+            Board repoBoard = boardRepository.findBoardById(boardInfo.getId())
+                    .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+
+            // 요청의 gif state와 저장된 gif state가 다르면 상태를 저장 or 삭제
+            Boolean requestState = boardInfo.getGifContainState();
+            if (requestState != repoBoard.getGifs().contains(gif)) {
+                if (requestState == true) {
+                    insertGif(repoBoard, gif, member);
+                } else {
+                    deleteGif(repoBoard, gif);
+                }
+            }
+        }
+        // return
+    }
+
+    private void deleteGif(Board board, Gifs gif) {
+        board.getGifs().remove(gif);
+        boardRepository.save(board);
+    }
+
+    private void insertGif(Board board, Gifs gif, Member member) {
+        // member 회원 통계 로직 추가
+        board.getGifs().add(gif);
+        boardRepository.save(board);
+    }
+
+    public void deleteGifFromBoard(Long boardId, List<Long> gifList) {
+        if (gifList.size() == 0) {
+            throw new NotMatchException("gif 리스트가 비었습니다.");
+        }
+        Board board = boardRepository.findBoardById(boardId)
+                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+
+        for (Long gifId : gifList) {
+            Gifs gif = gifsRepository.findById(gifId)
+                    .orElseThrow(() -> new NotFoundException("gif를 찾을 수 없습니다."));
+
+            // real로 보드에 짤이 담겨있는지 확인
+            if (!board.getGifs().contains(gif)) {
+                throw new NotMatchException(gif.getId().toString() + "번 gif는 board에 담겨있지 않습니다.");
+            }
+            deleteGif(board, gif);
+        }
     }
 }

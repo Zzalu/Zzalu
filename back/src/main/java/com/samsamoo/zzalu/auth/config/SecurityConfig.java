@@ -46,6 +46,8 @@ public class SecurityConfig {
                 .antMatchers("/members/signup", "/members/login").permitAll()
                 .antMatchers(HttpMethod.POST,"/reviews/**").authenticated()
                 .antMatchers(HttpMethod.POST,"/members/signup/email").authenticated()
+                .antMatchers(HttpMethod.PUT,"/boards/gif/{gifId}").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/boards/{boardId}").authenticated()
                 .anyRequest().permitAll()
 //                .anyRequest().authenticated()
                 .and()
