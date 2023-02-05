@@ -27,7 +27,6 @@ export default {
     nested_comment_cnt: Number,
   },
   setup(props) {
-    console.log(props.nested_comment_cnt);
     const store = useStore();
     const size = 3;
     const state = reactive({
@@ -42,16 +41,13 @@ export default {
     };
     // 답글 읽기
     const loadMoreNestedComments = async () => {
-      console.log(state.last_nested_comment_id);
       await store.dispatch('titleCompetitionStore/getNestedCommentList', {
         lastCommentId: state.last_nested_comment_id,
         parentCommentId: props.comment_id,
         size: size,
       });
       await pushNestedComments();
-      console.log(state.nested_comments);
       state.last_nested_comment_id = state.nested_comments[state.nested_comments.length - 1].id;
-      console.log(`last_nested_comment_id: ${state.last_nested_comment_id}`);
     };
 
     loadMoreNestedComments();
