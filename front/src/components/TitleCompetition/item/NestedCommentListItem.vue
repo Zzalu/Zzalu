@@ -30,7 +30,6 @@ export default {
       content: props.nested_comment.content,
       modified: false,
     });
-    console.log(nested_comment_data);
 
     return {
       ...toRefs(nested_comment_data),

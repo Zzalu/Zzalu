@@ -10,7 +10,6 @@ const titleCompetitionStore = {
     comments: [],
     last_comment_id: Number.MAX_SAFE_INTEGER,
     // 대댓글
-
     new_nested_comments: [],
   }),
   getters: {
@@ -49,6 +48,7 @@ const titleCompetitionStore = {
         param,
         ({ data }) => {
           commit('ADD_COMMENTS', data);
+          commit('SET_LAST_COMMENT_ID', size);
         },
         (error) => console.log(error),
       );
