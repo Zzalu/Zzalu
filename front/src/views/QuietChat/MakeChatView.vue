@@ -3,7 +3,10 @@
     <KorGoBackTopNavBar/>
     <div v-if="createCheck" class="bg-negative"></div>
     <div v-if="createCheck">
-      <CannotEditModal @close-modal="createCheck = $event" />
+      <CannotEditModal @close-modal="createCheck = $event"
+      :roomName="roomName"
+      :description="description"
+      />
     </div>
 
     <div class="image-container">
@@ -14,10 +17,10 @@
     </div>
 
     <p class="guide">고독방 이름</p>
-    <input class="guideline" placeholder="고독방을 제외한 고독방 이름을 입력해주세요." />
+    <input class="guideline" placeholder="고독방을 제외한 고독방 이름을 입력해주세요." v-model="roomName"/>
     <p class="caution">고독방 이름에는 특수문자를 사용할 수 없습니다.</p>
     <p class="guide">고독방 한 줄 소개</p>
-    <input class="guideline" />
+    <input class="guideline" v-model="description"/>
     <p class="caution"></p>
     <p class="guide">해시태그</p>
     <div class="hashtag-contain">
@@ -50,6 +53,8 @@ export default {
       url: null,
       hashtags: ['고양이', '키보드', 'morehashtag1', 'morehashtag2'],
       createCheck: 0,
+      roomName : '',
+      description : '',
     };
   },
   components: {

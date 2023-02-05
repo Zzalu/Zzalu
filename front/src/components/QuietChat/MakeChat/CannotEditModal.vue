@@ -19,7 +19,9 @@
           취소
         </button>
         <button class="modal-create-btn">
-          <router-link to="/chat-list"> 만들기 </router-link>
+          <router-link to="/chat-list"
+          @click="CreateRoom"
+          > 만들기 </router-link>
         </button>
       </div>
     </div>
@@ -27,8 +29,36 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
 export default {
   name: "CannotEditModal",
+  setup() {
+    const store = useStore();
+
+    const create_quiet_room = (room_data) => {
+      store.dispatch("quietChatStore/create_quiet_room", room_data)
+    };
+    return {
+      create_quiet_room
+    }
+  },
+  props : {
+    roomName : String,
+    description : String,
+  },
+  methods: {
+    CreateRoom() {
+      let room_data = {
+        "userName" : null,
+        "memberId" : null,
+        "imagePath" : null,
+        "tags" : "aaa,bbb",
+        "roomName" : this.roomName,
+        "description" : this.description
+      }
+      this.create_quiet_room(room_data)
+    }
+  }
 };
 </script>
 
