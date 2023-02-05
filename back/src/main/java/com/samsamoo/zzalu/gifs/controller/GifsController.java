@@ -6,31 +6,63 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/gif")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class GifsController {
 
-    private final GifsService giphyGifService;
+    private final GifsService gifsService;
 
     @GetMapping("/gifs")
     public ResponseEntity<List<Gifs>> mainPage() {
-        List<Gifs> giphyGifList = giphyGifService.findAllGif();
+        List<Gifs> giphyGifList = gifsService.findAllGif();
         return ResponseEntity.ok().body(giphyGifList);
     }
 
-    @PostMapping("/gif")
+    @GetMapping("/gif")
     public ResponseEntity<Optional<Gifs>> findById(@RequestParam("gifId") Long gifId) {
-        Optional<Gifs> giphyGifList = giphyGifService.findById(gifId);
-        return ResponseEntity.ok().body(giphyGifList);
+        Optional<Gifs> gif = gifsService.findById(gifId);
+        return ResponseEntity.ok().body(gif);
     }
 
     @GetMapping("/main/gifs")
     public ResponseEntity<List<Gifs>> findTop90() {
-        return ResponseEntity.ok().body(giphyGifService.findTop90());
+        return ResponseEntity.ok().body(gifsService.findTop90());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Gifs>> findByTags(@RequestParam("searchKeyword") String searchKeyword) {
+        return ResponseEntity.ok().body(gifsService.findByTags(searchKeyword));
+    }
+
+    @GetMapping("/randoms")
+    public ResponseEntity<List<Gifs>> randomGifs(@RequestParam("exceptIds") List<Long> exceptIds) {
+        Long columnCount = gifsService.counyBy();
+
+        HashMap<Long, Boolean> duplicateCheck = new HashMap<>();
+        HashMap<Long, Boolean> randomGifIds = new HashMap<>();
+
+        for (long index = 0; index < exceptIds.size(); ++index) {
+            duplicateCheck.put(exceptIds.get((int) index), true);
+        }
+
+        while (randomGifIds.size() < 30) {
+            long randomId = (long) (Math.random() * columnCount + 1);
+            if(!duplicateCheck.containsKey(randomId))
+                randomGifIds.put(randomId, true);
+        }
+
+        List<Long> gifIds = new ArrayList<>(randomGifIds.keySet());
+        List<Gifs> gifsList = gifsService.findByIdIn(gifIds);
+        System.out.println("gifList : " + gifsList);
+        return ResponseEntity.ok().body(gifsList);
     }
 
 }
+

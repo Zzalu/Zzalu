@@ -25,16 +25,20 @@ public class ChatRoom  implements Serializable {
 
     private List<ChatMessage> chatMessages;
     private String imagePath;
+    private String description;
+    private String tags;
     private LocalDateTime enrollDate;
     private LocalDateTime lastActivation;
 
-    public static ChatRoom create(String userNmae, Long memberId, String name, String imagePath) {
+    public static ChatRoom create(ChatRoomEnroll chatRoomEnroll) {
         ChatRoom chatRoom = new ChatRoom();
         chatRoom.roomId = UUID.randomUUID().toString();
-        chatRoom.userNmae = userNmae;
-        chatRoom.memberId = memberId;
-        chatRoom.roomName = name;
-        chatRoom.imagePath = imagePath;
+        chatRoom.userNmae = chatRoomEnroll.getUserName();
+        chatRoom.memberId = chatRoomEnroll.getMemberId();
+        chatRoom.roomName = chatRoomEnroll.getRoomName();
+        chatRoom.imagePath = chatRoomEnroll.getImagePath();
+        chatRoom.description = chatRoomEnroll.getDescription();
+        chatRoom.tags = chatRoomEnroll.getTags();
         chatRoom.likeCount = 0L;
         chatRoom.enrollDate = LocalDateTime.now();
         chatRoom.lastActivation = LocalDateTime.now();

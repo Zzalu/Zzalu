@@ -13,5 +13,7 @@ public class ChatRoomEnroll {
     private Long memberId;
     private String roomName;
     private String imagePath;
+    private String description;
+    private String tags;
 
 }

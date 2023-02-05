@@ -41,7 +41,7 @@ public class ChatRoomController {
     public ChatRoom createRoom(@RequestBody ChatRoomEnroll chatRoomEnroll) {
         System.out.println("chatroomenroll");
         System.out.println(chatRoomEnroll.toString());
-        return chatRoomRepository.createChatRoom(chatRoomEnroll.getUserName(), chatRoomEnroll.getMemberId(), chatRoomEnroll.getRoomName(), chatRoomEnroll.getImagePath());
+        return chatRoomRepository.createChatRoom(chatRoomEnroll);
     }
 
 //    @GetMapping("/room/enter/{roomId}")

@@ -12,18 +12,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class GifsService {
 
-    private final GifsRepository giphyGifRepository;
+    private final GifsRepository GifRepository;
 
     public List<Gifs> findAllGif() {
-        return giphyGifRepository.findAll();
+        return GifRepository.findAll();
     }
 
     public Optional<Gifs> findById(Long id) {
-        return giphyGifRepository.findById(id);
+        return GifRepository.findById(id);
     }
 
     public List<Gifs> findTop90() {
-        return giphyGifRepository.findTop90ByOrderByLikeCountDesc();
+        return GifRepository.findTop90ByOrderByLikeCountDesc();
     }
 
+    public List<Gifs> findByTags(String searchKeyword) { return GifRepository.findByTagsContains(searchKeyword); }
+
+    public Long counyBy(){
+        return GifRepository.countBy();
+    }
+
+    public List<Gifs> findByIdIn(List<Long> gifIds) {
+        return GifRepository.findByIdIn(gifIds);
+    }
 }
+

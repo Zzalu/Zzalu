@@ -5,10 +5,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
-
+@Repository
 public interface GifsRepository extends JpaRepository<Gifs, Long> {
     List<Gifs> findTop90ByOrderByLikeCountDesc();
-    Optional<Gifs> findById(Long id);
+    List<Gifs> findByTagsContains(String searcKeyword);
+    Long countBy();
+    List<Gifs> findByIdIn(List<Long> gifIds);
+
 }
+
