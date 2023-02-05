@@ -5,7 +5,7 @@ import lombok.Getter;
 import java.util.List;
 
 @Getter
-public class DeleteList {
-    List<Long> gifList;
+public class GifIdList {
+    List<Long> gifIdList;
 
 }
