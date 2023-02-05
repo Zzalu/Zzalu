@@ -1,39 +1,39 @@
 <template>
   <div>
+    <only-go-back-top-nav></only-go-back-top-nav>
     <img
       alt="ZZalu Light logo"
       class="logo"
       src="../../assets/zzalu_logo_light.png"
+      v-if="isDark==false"
+    />
+    <img
+      alt="ZZalu Dark logo"
+      class="logo"
+      src="../../assets/zzalu_logo_dark.png"
+      v-if="isDark==true"
     />
     <h1 class="account-title mb-10">Sign Up</h1>
     <router-view></router-view>
-    <!-- <input-user-info></input-user-info> -->
-    <!-- <input-email v-if="second"></input-email> -->
-    <!-- <input-code-form v-if="three"></input-code-form> -->
-    <!-- <welcome-to-zzalu v-if="four"></welcome-to-zzalu> -->
-
-
   </div>
 </template>
 
 <script> 
-// import InputUserInfo from '../../components/Accounts/SignUp/InputUserInfo.vue'
-// import InputEmail from '../../components/Accounts/InputEmail.vue'
-// import InputCodeForm from '../../components/Accounts/InputCodeForm.vue'
-// import WelcomeToZzalu from '../../components/Accounts/SignUp/WelcomeToZzalu.vue'
-
-
+import { useDark } from '@vueuse/core';
+import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
+const isDark = useDark();
 export default {
   name: 'SignUpView',
   components: {
-    // InputUserInfo,
-    // InputEmail,
-    // InputCodeForm,
-    // WelcomeToZzalu
-  }
+    OnlyGoBackTopNav
+  },
+  data() {
+    return {
+      isDark,
+    };
+  },
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="postcss">
 </style>

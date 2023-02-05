@@ -1,14 +1,17 @@
 <template>
   <!-- 로그인 후 nav -->
+
+  <SearchView />
   <div
     class="
       h-nav-height
       fixed
-      box-border
+      border
       inset-x-0
       bottom-0
       border-t-2 border-zz-light-div
       z-50
+      dark:border-zz-dark-div
     "
   >
     <div
@@ -16,6 +19,12 @@
       v-if="check_search_modal"
       @click="close_modal"
     ></div>
+    <div
+      class="close-modals"
+      v-if="check_search_modal"
+      @click="close_modal"
+    ></div>
+
     <ul class="nav_list">
       <router-link to="/main" class="nav_item">
         <font-awesome-icon icon="fa-solid fa-house" />
@@ -29,7 +38,7 @@
           ><font-awesome-icon icon="fa-solid fa-magnifying-glass"
         /></span>
       </li>
-      <router-link to="/title-competition" class="nav_item">
+      <router-link to="/title-competition/1" class="nav_item">
         <font-awesome-icon icon="fa-regular fa-lightbulb" />
         <i class="fa-solid fa-chevron-left"></i
       ></router-link>
@@ -44,9 +53,13 @@
 <script>
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
+import SearchView from "../../../views/SearchView";
 
 export default {
   name: "MainBottomNavBar",
+  components: {
+    SearchView,
+  },
   setup() {
     const store = useStore();
 
@@ -84,14 +97,18 @@ export default {
 
 <style scoped lang="postcss">
 .close-modal {
-  height: 4rem;
+  height: 5rem;
   @apply fixed inset-x-0 top-0 z-40;
+}
+.close-modals {
+  height: 3.2rem;
+  @apply absolute inset-x-0 bottom-0 top-0 z-50;
 }
 span {
   display: inline-block;
 }
 .nav_list {
-  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-black;
+  @apply flex flex-wrap h-nav-height content-center place-items-center bg-white dark:bg-zz-bd;
 }
 .nav_item {
   @apply flex-1 cursor-pointer text-center dark:text-white;

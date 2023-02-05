@@ -27,6 +27,7 @@
 </template>
 
 <script>
+
 import SearchBar from "../components/Search/SearchBar";
 import JjalListItem from "../components/Search/Item/JjalListItem";
 import StoreList from "../components/Search/StoreList";

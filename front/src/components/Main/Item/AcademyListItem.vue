@@ -1,5 +1,5 @@
 <template>
-  <div class="title-competition-card-container">
+  <div class="title-competition-card-container relative">
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
       <div class="absolute z-10">
@@ -15,8 +15,9 @@
         alt=""
       />
     </div>
-    <div class="flex">
-      <div>
+    <div class="border-l-2 border-b-2 border-r-2 h-20 rounded-b-2xl border-white dark:border-zz-dark-div">
+      <div class="flex">
+      <div >
         <!-- 컨텐트 -->
         <div class="title-competition-content-profile">
           <img
@@ -40,6 +41,7 @@
       잠깐만요. 불공평한거 같은데요. 이 펜싱 대회 만약 더 길다면
     </p>
   </div>
+  </div>
 </template>
 
 <script>
@@ -53,7 +55,7 @@ export default {
 
 .title-competition-card-container {
   box-shadow:0 0 5px black;
-  @apply border w-36 h-48 rounded-2xl ml-3 mr-2 mb-1 dark:border-zz-dark-div;
+  @apply w-36 h-48 rounded-2xl ml-3 mr-2 mb-1;
 }
 .title-competiton-img-container {
   @apply relative;
@@ -74,7 +76,8 @@ export default {
   @apply font-bhs text-white;
 }
 .title-competiton-img {
-  @apply h-28 w-36 rounded-t-xl;
+  overflow: hidden;
+  @apply h-28 w-36 rounded-t-xl border-2 dark:border-zz-dark-div;
 }
 .title-competition-content-profile {
   @apply flex items-center mt-2;
@@ -83,11 +86,11 @@ export default {
   @apply rounded-full w-4 mx-1;
 }
 .title-competiton-content-text {
-  font-size: 0.2rem;
+  font-size: 0.4rem;
   @apply font-spoq line-clamp-1 dark:text-white;
 }
 .title-competiton-button-contain {
-  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 ;
+  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 absolute right-1 h-4 dark:border-zz-dark-div;
 }
 .title-competiton-button-icon {
   font-size: 0.6rem;

@@ -7,17 +7,47 @@
         type="text"
         class="account-input"
         placeholder="이메일을 입력하세요"
+        v-model = "credentials.email"
       />
       <!-- <div class="error-msg text-sm">아이디중복이세요;</div> -->
     <div class="flex float-right mt-10">
-      <button class="go-next-button">다음</button>
+      <button class="go-next-button" @click.prevent="onSubmit">다음</button>
     </div>
   </div>
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import { required, email } from "@vuelidate/validators";
 export default {
-  name: 'InputEmail'
+  name: 'InputEmail',
+  data() {
+    return {
+      v$: useVuelidate(),
+      // 회원 정보
+      credentials: {
+        email: '',
+      }
+    };
+  },
+  validations() {
+    return {
+      credentials: {
+        email: { required, email },
+      },
+    }
+  },
+  methods: {
+    onSubmit() {
+      this.v$.$touch();
+      if (!this.v$.$error) {
+        // if ANY fail validation
+        alert('다음~~')
+      } else {
+        alert('이메일 형식으로 입력해주세요')
+      }
+    }
+  }
 }
 </script>
 

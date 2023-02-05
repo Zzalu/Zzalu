@@ -11,14 +11,12 @@
     <div v-if="open_chat_info">
       <ChatInfoModal :info_data="chat_data[open_chat_id]" class="z-50" />
     </div>
-    <SearchView />
     <div class="h-5"></div>
     <MainBottomNav />
   </div>
 </template>
 
 <script>
-import SearchView from "./SearchView";
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav";
 import OnlyBigLogoTopNav from "../components/Common/NavBar/OnlyBigLogoTopNav";
 import AcademyList from "../components/Main/AcademyList";
@@ -57,7 +55,6 @@ export default {
     };
   },
   components: {
-    SearchView,
     MainBottomNav,
     OnlyBigLogoTopNav,
     AcademyList,

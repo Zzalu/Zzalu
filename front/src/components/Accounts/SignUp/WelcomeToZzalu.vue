@@ -14,7 +14,11 @@
 
       <div class="error-content-bold">RIGHTID님, 회원가입을 진심으로 환영합니다.</div>
       <div class="error-content-bold">짤루에서의 새로운 닉네임은 RIGHTNICKN입니다.</div>
-      <button class="submit-button">로그인 하러 가기</button>
+      <button class="submit-button">
+        <router-link to="/login">
+          로그인 하러 가기
+        </router-link>
+      </button>
     </div>
   </div>
 </template>
