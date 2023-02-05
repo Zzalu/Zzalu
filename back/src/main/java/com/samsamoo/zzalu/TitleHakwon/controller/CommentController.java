@@ -140,6 +140,7 @@ public class CommentController {
             return new ResponseEntity<>("이미존재함",HttpStatus.FORBIDDEN);
         }else{
             //그렇지 않은 경우는 좋아요 가능
+            //없는회원이면,,,, -> 예외처리하자  좋아요 완료로뜬다.
             commentService.clickCommentLikes(commentId,username);
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
         }
