@@ -26,7 +26,7 @@ public class AwardRecordService {
     /** 제목 학원이 끝나고 상위 3명을 수상한다. **/
 
     /** 매일 오후 10시 에 종료 **/
-    @Scheduled(cron = "0 3 21 * * *")
+   /* @Scheduled(cron = "0 3 21 * * *")*/
     public  void setRank (){
         //오늘 날짜를 알아야함
 
