@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.TitleHakwon.controller;
 
 
+import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonResponse;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
 import com.samsamoo.zzalu.TitleHakwon.service.TitleHakwonService;
@@ -75,7 +76,7 @@ public class TitleHakwonController {
      */
 
     @GetMapping()
-    public ResponseEntity<TitleHakwon> getTitlehakwonInfo(@RequestParam String openDate){
+    public ResponseEntity<TitleHakwonResponse> getTitlehakwonInfo(@RequestParam String openDate){
         System.out.println(openDate+"날짜" +
                 "");
 
