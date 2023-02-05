@@ -63,14 +63,14 @@ for search in search_dict:
                 search_tag_list.append(keyword)
 
             # 기존에 keyword 추가
-            if(d["images"]["480w_still"]["url"] in gif_dict) : 
-                if(keyword not in gif_dict[d["images"]["480w_still"]["url"]]["tags"]):    # keyworkd 있는지 확인
-                    gif_dict[d["images"]["480w_still"]["url"]]["tags"].append(keyword)
+            if(d["images"]["original"]["url"] in gif_dict) : 
+                if(keyword not in gif_dict[d["images"]["original"]["url"]]["tags"]):    # keyworkd 있는지 확인
+                    gif_dict[d["images"]["original"]["url"]]["tags"].append(keyword)
 
             # gif_dict 추가
             else :
-                gif_dict[d["images"]["480w_still"]["url"]] = {
-                    "gif_path": d["images"]["480w_still"]["url"],
+                gif_dict[d["images"]["original"]["url"]] = {
+                    "gif_path": d["images"]["original"]["url"],
                     "source" : d["source"],
                     "source_post_url" : d["source_post_url"],
                     "source_tld" : d["source_tld"],
@@ -79,7 +79,7 @@ for search in search_dict:
                     "tags" : search_tag_list,
                 }
 
-            print(gif_dict[d["images"]["480w_still"]["url"]])
+            print(gif_dict[d["images"]["original"]["url"]])
             print("")
 
             exists_sql = ""
@@ -87,20 +87,20 @@ for search in search_dict:
             update_sql = ""
             select_sql = ""
             try:
-                if("'" not in d):
-                    exists_sql = "SELECT EXISTS (SELECT * FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "') AS SUCCESS"
+                if("'" not in d["source"]):
+                    exists_sql = "SELECT EXISTS (SELECT * FROM GIFS WHERE GIF_PATH='" + d["images"]["original"]["url"]  + "') AS SUCCESS"
                     cur.execute(exists_sql)
                     exists_sql_return = cur.fetchone()[0]
 
                     if(exists_sql_return == 1):    # 이미 존재하는 경우
-                        select_sql = "SELECT TAGS FROM GIFS WHERE GIF_PATH='" + d["images"]["480w_still"]["url"]  + "'"
+                        select_sql = "SELECT TAGS FROM GIFS WHERE GIF_PATH='" + d["images"]["original"]["url"]  + "'"
                         cur.execute(select_sql)
                         get_tags = cur.fetchone()[0]
                         get_tags_list = list(set(get_tags.split(",") + search_tag_list))
                         update_sql = "UPDATE GIFS SET TAGS='" + ",".join(s for s in get_tags_list) + "'"
 
                     else:
-                        insert_sql = "INSERT INTO GIFS (GIF_PATH, TAGS, SORUCES, SORUCES_POST_URL, SORUCES_TLD, IMPORT_DATETIME, SOURCE_TYPE) VALUES('" + d["images"]["480w_still"]["url"] + "','" + ','.join(s for s in gif_dict[d["images"]["480w_still"]["url"]]["tags"]) + "','" + d["source"] + "','" + d["source_post_url"] + "','" +  d["source_tld"]+ "','" +  d["import_datetime"] + "'," + "2" + ")"
+                        insert_sql = "INSERT INTO GIFS (GIF_PATH, TAGS, SORUCES, SORUCES_POST_URL, SORUCES_TLD, IMPORT_DATETIME, SOURCE_TYPE) VALUES(\"" + d["images"]["original"]["url"] + "\",\"" + ','.join(s for s in gif_dict[d["images"]["original"]["url"]]["tags"]) + "\",\"" + d["source"] + "\",\"" + d["source_post_url"] + "\",\"" +  d["source_tld"]+ "\",\"" +  d["import_datetime"] + "\"," + "2" + ")"
                         print(insert_sql)
                         cur.execute(insert_sql);
             except pymysql.err.InternalError as e:

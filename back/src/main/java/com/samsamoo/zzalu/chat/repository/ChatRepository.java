@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.chat.repository;
 
 import com.samsamoo.zzalu.chat.dto.ChatRoom;
+import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
@@ -25,8 +26,8 @@ public class ChatRepository {
         return chatRoomMap.get(Id);
     }
 
-    public ChatRoom createChatRoom(String usernmae, Long memberId, String name, String imagePath) {
-        ChatRoom chatRoom = ChatRoom.create(usernmae, memberId, name, imagePath);
+    public ChatRoom createChatRoom(ChatRoomEnroll chatRoomEnroll) {
+        ChatRoom chatRoom = ChatRoom.create(chatRoomEnroll);
         chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
         return chatRoom;
     }

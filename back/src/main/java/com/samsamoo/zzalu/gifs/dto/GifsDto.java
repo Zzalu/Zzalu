@@ -31,6 +31,8 @@ public class GifsDto {
 
     private String relationsVideo;
 
+    private String description;
+
     private long visitedCount;
 
     private long scrapCount;
@@ -50,4 +52,5 @@ public class GifsDto {
         this.visitedCount = giphyGif.getVisitedCount();
         this.scrapCount = giphyGif.getScrapCount();
     }
+
 }

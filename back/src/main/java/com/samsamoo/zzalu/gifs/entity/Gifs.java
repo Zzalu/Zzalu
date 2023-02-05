@@ -74,5 +74,8 @@ public class Gifs {
     @ColumnDefault("0")
     @Builder.Default
     @NotNull
-    private  int sourceType = 0;
+    private int sourceType = 0;
+
+    @Column(name="DESCRIPTION")
+    private String description;
 }

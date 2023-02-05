@@ -1,15 +1,13 @@
 package com.samsamoo.zzalu.chat.dto;
 
+import com.samsamoo.zzalu.member.entity.Member;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.redis.core.RedisHash;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -24,6 +22,7 @@ public class ChatRoom  implements Serializable {
     private Long likeCount;
 
     private List<ChatMessage> chatMessages;
+    private HashMap<Member, Boolean> likeMembers;
     private String imagePath;
     private String description;
     private String tags;
@@ -39,6 +38,8 @@ public class ChatRoom  implements Serializable {
         chatRoom.imagePath = chatRoomEnroll.getImagePath();
         chatRoom.description = chatRoomEnroll.getDescription();
         chatRoom.tags = chatRoomEnroll.getTags();
+        chatRoom.chatMessages = new LinkedList<ChatMessage>();
+        chatRoom.likeMembers = new HashMap<Member, Boolean>();
         chatRoom.likeCount = 0L;
         chatRoom.enrollDate = LocalDateTime.now();
         chatRoom.lastActivation = LocalDateTime.now();
