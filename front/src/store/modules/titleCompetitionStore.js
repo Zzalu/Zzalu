@@ -11,6 +11,11 @@ const titleCompetitionStore = {
     last_comment_id: Number.MAX_SAFE_INTEGER,
     // 대댓글
     new_nested_comments: [],
+    isNested: false,
+    comment_writer: {
+      id: '',
+      nickname: '',
+    },
   }),
   getters: {
     getDate: (state) => state.date,
@@ -35,6 +40,19 @@ const titleCompetitionStore = {
     SET_NEW_NESTED_COMMENTS_EMPTY(state) {
       state.new_nested_comments.splice(0);
     },
+
+    // 대댓글 작성 관련
+    SET_COMMENT_WRITER(state, comment_writer) {
+      state.comment_writer.id = comment_writer.id;
+      state.comment_writer.nickname = comment_writer.nickname;
+      state.isNested = true;
+    },
+
+    DELETE_COMMENT_WRITER(state) {
+      state.comment_writer.id = '';
+      state.comment_writer.nickname = '';
+      state.isNested = false;
+    },
   },
   actions: {
     // 댓글
@@ -56,6 +74,7 @@ const titleCompetitionStore = {
     setTitleCompetitionId({ commit }, id) {
       commit('SET_TITLE_COMPETITION_ID', id);
     },
+
     // 대댓글
     getNestedCommentList({ commit }, param) {
       return new Promise((resolve, reject) => {
@@ -77,6 +96,17 @@ const titleCompetitionStore = {
         commit('SET_NEW_NESTED_COMMENTS_EMPTY');
         resolve();
       });
+    },
+
+    // 작성 관련
+
+    // 대댓글 작성
+    writeNestedComment({ commit }, comment_writer) {
+      commit('SET_COMMENT_WRITER', comment_writer);
+    },
+    // 대댓글 작성 취소
+    deleteCommentWriter({ commit }) {
+      commit('DELETE_COMMENT_WRITER');
     },
   },
 };

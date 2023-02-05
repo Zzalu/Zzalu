@@ -12,7 +12,7 @@
       <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row mb-2">
         <div class="w-full">
-          <button class="text-xs mr-2">답글쓰기</button>
+          <button @click="writeNestedComment" class="text-xs mr-2">답글쓰기</button>
           <button v-if="nested_comment_cnt > 0 && !nested_active" class="text-xs">
             <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
             <span class="text-center" @click="nested_active = !nested_active"
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
 import { reactive, toRefs } from '@vue/reactivity';
 import NestedCommentList from '@/components/TitleCompetition/NestedCommentList.vue';
 export default {
@@ -55,6 +56,7 @@ export default {
     comment: Object,
   },
   setup(props) {
+    const store = useStore();
     const comment_data = reactive({
       profile_image: 'profile.jpg',
       comment_id: props.comment.id,
@@ -67,8 +69,17 @@ export default {
       like_cnt: props.comment.likeNumber,
     });
 
+    const writeNestedComment = () => {
+      const comment_writer = {
+        id: comment_data.comment_id,
+        nickname: comment_data.nickname,
+      };
+      store.dispatch('titleCompetitionStore/writeNestedComment', comment_writer);
+    };
+
     return {
       ...toRefs(comment_data),
+      writeNestedComment,
     };
   },
 };
