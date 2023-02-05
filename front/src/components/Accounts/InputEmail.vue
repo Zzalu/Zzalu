@@ -1,5 +1,6 @@
 <template>
   <h1 class="account-title mb-10" v-if="$route.name == 'signup'">Sign Up</h1>
+  
   <div class="mt-20">
     <h2 class="find-id-input-title" v-if="$route.name == 'find-id'">아이디 찾기</h2>
     <font-awesome-icon icon="fa-solid fa-envelope" class='icon-aligned-left'/>
@@ -9,7 +10,7 @@
         placeholder="이메일을 입력하세요"
         v-model = "credentials.email"
       />
-      <!-- <div class="error-msg text-sm">아이디중복이세요;</div> -->
+      <div class="error-msg text-sm" v-if= 'v$.credentials.email.$error'>이메일 형식으로 입력해주세요.</div>
     <div class="flex float-right mt-10">
       <button class="go-next-button" @click.prevent="onSubmit">다음</button>
     </div>
@@ -27,7 +28,7 @@ export default {
       // 회원 정보
       credentials: {
         email: '',
-      }
+      },
     };
   },
   validations() {
@@ -40,12 +41,10 @@ export default {
   methods: {
     onSubmit() {
       this.v$.$touch();
-      if (!this.v$.$error) {
-        // if ANY fail validation
-        alert('다음~~')
-      } else {
-        alert('이메일 형식으로 입력해주세요')
+      if (this.v$.$error) {
+        return true
       }
+      this.$router.push({name: 'input-code'})
     }
   }
 }

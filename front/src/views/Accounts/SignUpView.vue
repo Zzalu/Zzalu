@@ -21,6 +21,7 @@
 <script> 
 import { useDark } from '@vueuse/core';
 import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
+
 const isDark = useDark();
 export default {
   name: 'SignUpView',
