@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.TitleHakwon.controller;
 
 
 import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonResponse;
+import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
 import com.samsamoo.zzalu.TitleHakwon.service.TitleHakwonService;
@@ -16,7 +17,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/TitleHakwon")
+@RequestMapping("/title-hakwon")
 @CrossOrigin("*")
 public class TitleHakwonController {
 
@@ -40,6 +41,10 @@ public class TitleHakwonController {
             //타이틀 학원을 등록한다.
             TitleHakwon titleHakwon = new TitleHakwon();
             titleHakwon.setZzulUrl(url);
+            titleHakwon.setState(TitleHakwonState.NOT_OPEN);
+            System.out.println("생성");
+            System.out.println(TitleHakwonState.NOT_OPEN+"@@@@");
+            System.out.println(TitleHakwonState.NOT_OPEN+"@@@@");
             titleHackwonDao.save(titleHakwon);
 
             return url;
@@ -52,7 +57,7 @@ public class TitleHakwonController {
     // (will) 지금은 url을 직접 입력해야 하지만 , s3에 저장하고 url을 리턴받아 저장할 계획
 
     @PostMapping("/upload")
-    public  ResponseEntity<String>   uploadTitleHakwon(@RequestParam("zzalUrl") String url) throws IOException{
+    public  ResponseEntity<String>   uploadTitleHakwon(@RequestParam ("zzalUrl") String url) throws IOException{
 
         ResponseEntity response = null;
 
@@ -63,6 +68,7 @@ public class TitleHakwonController {
             //타이틀 학원을 등록한다.
             TitleHakwon titleHakwon = new TitleHakwon();
             titleHakwon.setZzulUrl(url);
+            titleHakwon.setState(TitleHakwonState.NOT_OPEN);
             titleHackwonDao.save(titleHakwon);
 
             return new ResponseEntity<String>("sucess", HttpStatus.OK);
@@ -75,11 +81,8 @@ public class TitleHakwonController {
      * 오늘의 제목학원 정보 얻어오기
      */
 
-    @GetMapping()
-    public ResponseEntity<TitleHakwonResponse> getTitlehakwonInfo(@RequestParam String openDate){
-        System.out.println(openDate+"날짜" +
-                "");
-
+    @GetMapping(value = "/{openDate}")
+    public ResponseEntity<TitleHakwonResponse> getTitlehakwonInfo(@PathVariable String openDate){
 
         return new ResponseEntity<>(titleHakwonService.getTitleHakwonInfo(openDate), HttpStatus.OK);
     }

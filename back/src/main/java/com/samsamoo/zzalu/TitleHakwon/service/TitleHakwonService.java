@@ -19,10 +19,6 @@ import java.util.List;
 @Repository
 public class TitleHakwonService {
     private final TitleHackwonRepository titleHackwonRepository;
-    private final CommentRepository commentRepository;
-
-    private final AwardRecordRepository awardRecordRepository;
-
 
     public TitleHakwonResponse getTitleHakwonInfo(String openDate){
         if(titleHackwonRepository.findTitleHakwonByOpenDate(openDate)==null){

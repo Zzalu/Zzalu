@@ -13,7 +13,7 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/title-hakwon")
 @CrossOrigin("*")
 public class CommentController {
 
@@ -23,7 +23,7 @@ public class CommentController {
      * [CREATE]
      * 댓글 저장하기
      */
-    @PostMapping
+    @PostMapping("/comment")
     public ResponseEntity<CommentResponse> addComent(@RequestBody CommentRequest requestComent){
 
         return ResponseEntity.status(HttpStatus.OK).body(commentService.addComment(requestComent));
@@ -35,7 +35,7 @@ public class CommentController {
      * 대댓글 저장하기
      */
 
-    @PostMapping(value = "/reply")
+    @PostMapping(value = "/reply-comment")
     public ResponseEntity<ReplyCommentResponse> addReplyComent(@RequestBody ReplyCommentRequest replyCommentRequest){
 
         return ResponseEntity.status(HttpStatus.OK).body(commentService.addReplyComment(replyCommentRequest));
@@ -43,28 +43,28 @@ public class CommentController {
     }
 
     /**
-     * [GET]
+     * [POST]
      * 댓글 가져오기
      * Cursor 기반 페이징
      */
 
-    @GetMapping()
-    public  ResponseEntity<List<CommentResponse>> getRecentCommentList (@RequestBody SearchCommentRequest searchCommentRequest){
+    @GetMapping("/comments")
+    public  ResponseEntity<List<CommentResponse>> getRecentCommentList (@RequestParam Long lastCommentId , @RequestParam Long titleHakwonId , @RequestParam int size){
 
-        List<CommentResponse> commentResponseList = commentService.getRecentCommentList(searchCommentRequest);
+        List<CommentResponse> commentResponseList = commentService.getRecentCommentList(lastCommentId,titleHakwonId,size,null);
         return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
     }
 
     /**
-     * [GET]
+     * [Post]
      * 대댓글 가져오기
      * Cursor 기반 페이징
      */
 
-    @GetMapping(value = "/reply")
-    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@RequestBody SearchReplyCommentRequest searchReplyCommentRequest){
+    @GetMapping(value = "/reply-comment")
+    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@RequestParam Long lastCommentId , @RequestParam Long parentId , @RequestParam int size){
 
-        List<ReplyCommentResponse> replyCommentResponseList = commentService.getReplyCommentList(searchReplyCommentRequest);
+        List<ReplyCommentResponse> replyCommentResponseList = commentService.getReplyCommentList( lastCommentId ,  parentId ,   size , null);
         return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
     }
 
@@ -119,11 +119,11 @@ public class CommentController {
      */
 
     @DeleteMapping(value = "/reply")
-    public  ResponseEntity<String> deleteReplyComment(@RequestParam Long replyCommentId){
+    public  ResponseEntity deleteReplyComment(@RequestParam Long replyCommentId){
 
 
        commentService.deleteReplyCommnete(replyCommentId);
-        return new ResponseEntity<>("삭제완료",HttpStatus.OK);
+        return new ResponseEntity(HttpStatus.OK);
 
     }
 

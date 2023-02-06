@@ -1,6 +1,8 @@
 package com.samsamoo.zzalu.TitleHakwon.entity;
 
 
+import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
+import com.samsamoo.zzalu.TitleHakwon.enums.converter.TitleHakwonConverter;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
@@ -39,7 +41,8 @@ public class TitleHakwon  {
 
 
 
-    private boolean isOver = false;
+   @Convert(converter =  TitleHakwonConverter.class)
+    private TitleHakwonState state ;
 
 
     @PrePersist
