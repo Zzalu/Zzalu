@@ -10,12 +10,12 @@
         <p class="title-p">{{ room_data.roomName }} 고독방</p>
         <p class="content-p">{{ room_data.description }}</p>
         <div class="hashtag-div">
-          <p v-for="(hashtags, i) in room_data.tags" :key="i" class="hashtag-p">
-            {{ hashtags }}
-          </p>
+          <div v-for="(hashtags, j) in hash" :key="j" class="hashtag-p">
+            <div v-if="hashtags"># {{ hashtags }}</div>
+          </div>
         </div>
         <div class="last-lane">
-          <p class="updated-p">최근대화시간 : {{ room_data.lastActivation }}</p>
+          <p class="updated-p">최근대화시간 : {{ date }}</p>
           <p class="like-p">
             <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s" />
             {{ room_data.likeCount }}
@@ -27,18 +27,45 @@
 </template>
 
 <script>
-
 export default {
   name: "QuietChatList",
+  data() {
+    return {
+      hash: [],
+      date: "",
+    };
+  },
   props: {
-    room_data : Object
-  }
+    room_data: Object,
+    hashtag: String,
+  },
+  created() {
+    this.hash = this.hashtag.split(",");
+
+    let date1 = new Date(this.room_data.lastActivation);
+    const betweenTime =
+      Math.floor((new Date().getTime() - date1.getTime()) / 1000 / 60) - 540;
+    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    const betweenTimeHour = Math.floor(betweenTime / 60);
+
+    if (betweenTime < 1) {
+      this.date = "방금 전";
+    } else if (betweenTime < 60) {
+      this.date = `${betweenTime}분전`;
+    } else if (betweenTime < 1440) {
+      this.date = `${betweenTimeHour}시간 전`;
+    } else if (betweenTimeDay < 525600) {
+      this.date = `${betweenTimeDay}일전`;
+    } else {
+      this.date = `${Math.floor(betweenTimeDay / 365)}년전`;
+    }
+  },
 };
 </script>
 
 <style scoped lang="postcss">
 .card-container {
-  box-shadow:0 0 7px black;
+  box-shadow: 0 0 7px black;
   @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq rounded-lg dark:border-zz-dark-div;
 }
 .card-img-contanier {

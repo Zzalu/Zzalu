@@ -19,10 +19,10 @@
     </div>
 
     <p class="guide">고독방 이름</p>
-    <input class="guideline" placeholder="고독방을 제외한 고독방 이름을 입력해주세요." v-model="room_name_input" @blur="this.title_input_err=false"/>
+    <input class="guideline dark:text-white" placeholder="고독방을 제외한 고독방 이름을 입력해주세요." v-model="room_name_input" @blur="this.title_input_err=false"/>
     <p v-if="title_input_err" class="caution">고독방 이름에는 띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.</p>
     <p class="guide">고독방 한 줄 소개</p>
-    <input class="guideline" v-model="description_input" @blur="this.description_input_err=false"/>
+    <input class="guideline dark:text-white" v-model="description_input" @blur="this.description_input_err=false"/>
     <p v-if="description_input_err" class="caution">고독방 소개는 50자를 넘을 수 없습니다.</p>
     <p class="caution"></p>
     <p class="guide">해시태그</p>
@@ -192,7 +192,7 @@ export default {
 }
 .input_value {
   width: 5.3rem;
-  @apply align-middle h-6
+  @apply align-middle h-6 bg-transparent dark:text-white
 }
 .hashtag-btn {
   @apply text-zz-p;

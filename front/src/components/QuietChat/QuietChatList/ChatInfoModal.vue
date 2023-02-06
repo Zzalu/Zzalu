@@ -21,24 +21,27 @@
           <p class="first-line-content">{{ room_data.userName }}</p>
         </div>
         <div class="group">
-          <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s dark:text-zz-p" />
+          <font-awesome-icon
+            icon="fa-solid fa-heart"
+            class="text-zz-s dark:text-zz-p"
+          />
           <p class="first-line-content">{{ room_data.likeCount }}</p>
         </div>
       </div>
-      <p v-if="room_data.description" class="modal-content">{{ room_data.description }}</p>
+      <p v-if="room_data.description" class="modal-content">
+        {{ room_data.description }}
+      </p>
       <p v-else class="modal-content">등록된 고독방 한 줄 소개가 없습니다.</p>
       <div class="hashtag-div">
-        <p
-          v-for="(hashtags, j) in room_data.tags"
-          :key="j"
-          class="hashtag-p"
-        >
-          {{ hashtags }}
-        </p>
+        <div v-for="(hashtags, j) in hash" :key="j" class="hashtag-p">
+          <div v-if="hashtags">
+            # {{ hashtags }}
+          </div>
+        </div>
       </div>
     </div>
     <div class="flex place-content-evenly">
-      <button class="modal-create-btn ">
+      <button class="modal-create-btn">
         <router-link to="/chat/0"> 입장하기 </router-link>
       </button>
     </div>
@@ -61,12 +64,17 @@ export default {
       close_chat_info,
     };
   },
+  data() {
+    return {
+      hash : [],
+    }
+  },
   props: {
     room_data: Object,
+    hashtag: String,
   },
   created() {
-    console.log(this.room_data.lastActivation);
-    
+    this.hash = this.hashtag.split(",");
   },
   unmounted() {
     this.close_chat_info();
@@ -87,12 +95,12 @@ export default {
 }
 .modal-title-box {
   /* font-size:1rem; */
-  @apply bg-zz-p rounded-t-xl border-zz-p dark:bg-zz-dark-s font-spoq font-bold w-full h-12 relative; 
+  @apply bg-zz-p rounded-t-xl border-zz-p dark:bg-zz-dark-s font-spoq font-bold w-full h-12 relative;
 }
 .modal-title {
-  top:50%;
-  transform:translateY(-50%);
-  font-size:100%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 100%;
   @apply text-white absolute inset-x-0 mr-12 pl-12 line-clamp-2;
 }
 .modal-icon {

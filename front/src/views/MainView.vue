@@ -9,7 +9,10 @@
     <HotChattingRoomList />
 
     <div v-if="open_chat_info">
-      <ChatInfoModal :room_data="quiet_chat_data[open_chat_id]" class="z-50" />
+      <ChatInfoModal 
+      :room_data="quiet_chat_data[open_chat_id]"
+      :hashtag="quiet_chat_data[open_chat_id].tags"
+      class="z-50" />
     </div>
     <div class="h-5"></div>
     <MainBottomNav />
