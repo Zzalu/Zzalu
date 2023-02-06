@@ -40,7 +40,7 @@ public class FollowService {
 
     }
 
-    public UnfollowResponse unfollow(String token, Long memberId) {
+    public void unfollow(String token, Long memberId) {
         // 토큰 검증
         checkToken(token);
 
@@ -54,7 +54,6 @@ public class FollowService {
         me.unfollowMember(you);
         memberRepository.save(me);
         memberRepository.save(you);
-        return new UnfollowResponse(me.getId(), you.getId());
 
     }
 
@@ -158,6 +157,9 @@ public class FollowService {
 
         // 팔로우 상태 확인
         Member me = jwtTokenProvider.getMember(token);
+        if (me.getId().equals(memberId)) {
+            throw new NotMatchException("자신과의 팔로우 상태는 확인할 수 없습니다.");
+        }
         Member you = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException());
 
