@@ -52,12 +52,10 @@ public class MemberController {
     }
 
     //--------------------------------------나의 프로필 확인-------------------------------------------
-//    @GetMapping(value = "/my-profile")
-//    public ResponseEntity<ProfileDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
-//        String token = bearerToken.substring(7);
-//        ProfileDTO myProfile = memberService.getMyProfile(token);
-//        return ResponseEntity.ok().body(myProfile);
-//    }
+    @GetMapping(value = "/my-profile")
+    public ResponseEntity getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
+        return ResponseEntity.ok().body("OK");
+    }
 
     //--------------------------------------프로필 확인-------------------------------------------
     @GetMapping("/{username}")
