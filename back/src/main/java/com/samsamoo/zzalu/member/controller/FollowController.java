@@ -15,6 +15,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class FollowController {
     private final FollowService followService;
