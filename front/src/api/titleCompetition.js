@@ -26,12 +26,23 @@ function addNestedComment(nested_comment_data, success, fail) {
 }
 
 // 좋아요 누르기
-function plusLike(params, success, fail) {
-  api.post(`/comment/plus/like`, { params: params }).then(success).catch(fail);
+function plusLike(comment_id, params, success, fail) {
+  api.post(`/comment/plus/${comment_id}/like`, { params: params }).then(success).catch(fail);
 }
 
-function minusLike(params, success, fail) {
-  api.post(`/comment/minus/like`, { params: params }).then(success).catch(fail);
+// 좋아요 취소하기
+function minusLike(comment_id, params, success, fail) {
+  api.delete(`/comment/minus/${comment_id}/like`, { params: params }).then(success).catch(fail);
+}
+
+// 댓글 삭제하기
+function deleteComment(comment_id, success, fail) {
+  api.delete(`/comment/${comment_id}`).then(success).catch(fail);
+}
+
+// 대댓글 삭제하기
+function deleteNestedComment(nested_comment_id, success, fail) {
+  api.delete(`/comment/reply/${nested_comment_id}`).then(success).catch(fail);
 }
 
 export {
