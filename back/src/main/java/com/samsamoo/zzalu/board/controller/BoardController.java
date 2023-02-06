@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.board.controller;
 
 import com.samsamoo.zzalu.board.dto.*;
 import com.samsamoo.zzalu.board.service.BoardService;
+import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,7 @@ import java.util.Map;
 @Slf4j
 public class BoardController {
     private final BoardService boardService;
+    private final MemberService memberService;
 
     //--------------------------------------보드 생성-----------------------------------------
     @PostMapping
@@ -33,14 +35,13 @@ public class BoardController {
         GifsBoardList gifsBoardList = boardService.getGifsBoard(token, gifId);
         return ResponseEntity.ok(gifsBoardList);
     }
-    //-----------------------------------사용자의 보드 불러오기----------------------------------
-
-    @GetMapping(params = "username")
-    public ResponseEntity<MembersBoardList> getMembersBoard(@RequestParam String username) {
-        MembersBoardList membersBoardList = boardService.getMembersBoard(username);
-        return ResponseEntity.ok(membersBoardList);
-    }
-    //--------------------------------보드 상세 불러오기(짤들)------------------------------------
+    //-----------------------------------사용자의 보드 불러오기-------------------------------------
+//    @GetMapping(params = "username")
+//    public ResponseEntity<MembersBoardList> getMembersBoard(@RequestParam String username) {
+//        MembersBoardList membersBoardList = memberService.getMembersBoard(username);
+//        return ResponseEntity.ok(membersBoardList);
+//    }
+    //--------------------------------보드 상세 불러오기(짤들)--------------------------------------
     @GetMapping("/{boardId}")
     public ResponseEntity<GifList> getGifs(@PathVariable Long boardId) {
         GifList gifList = boardService.getGifs(boardId);
@@ -52,7 +53,7 @@ public class BoardController {
     public ResponseEntity updateBoard(@RequestHeader(value = "Authorization")String bearerToken, @PathVariable Long gifId, @RequestBody GifsBoardList gifsBoardList) {
         String token = bearerToken.substring(7);
         boardService.updateBoard(token, gifId, gifsBoardList);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //---------------------------------보드에서 짤 삭제-------------------------------------
@@ -63,13 +64,13 @@ public class BoardController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    //---------------------------------보드에서 짤 삭제-------------------------------------
+    //---------------------------------보드에서 짤 삽입-------------------------------------
     @PostMapping ("/{boardId}")
     public ResponseEntity insertGifFromBoard(@RequestHeader(value = "Authorization")String bearerToken, @PathVariable Long boardId, @RequestBody GifIdList request) {
         // 토큰은 SecuityConfig에서 처리
         String token = bearerToken.substring(7);
         boardService.insertGifFromBoard(token, boardId, request.getGifIdList());
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     //---------------------------------보드 이름 수정-------------------------------------
     @PutMapping ("/{boardId}")
@@ -77,7 +78,8 @@ public class BoardController {
         // 토큰은 SecuityConfig에서 처리
         String token = bearerToken.substring(7);
         boardService.updateBoardName(token, boardId, request.get("newBoardName"));
-        return ResponseEntity.ok(Map.of("result", "ok"));
+//        return ResponseEntity.ok(Map.of("result", "ok"));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     //---------------------------------보드 삭제-------------------------------------
     @DeleteMapping ("/{boardId}")
@@ -85,7 +87,7 @@ public class BoardController {
         // 토큰은 SecuityConfig에서 처리
         String token = bearerToken.substring(7);
         boardService.deleteBoard(token, boardId);
-        return ResponseEntity.ok(Map.of("result", "ok"));
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

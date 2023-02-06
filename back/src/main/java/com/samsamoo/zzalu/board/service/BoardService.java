@@ -91,30 +91,30 @@ public class BoardService {
 
     }
 
-    public MembersBoardList getMembersBoard(String username) {
-        // user 반환
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new MemberNotFoundException());
-
-        // user의 board 불러오기
-        List<Board> boards = member.getBoards();
-
-        // 새 리스트 만들기
-        List<MembersBoardInfo> membersBoardInfos = new ArrayList<>();
-
-        // for문 돌면서 info dto에 add
-        for(Board board : boards) {
-            String thumbnailPath = null;
-            if (board.getGifs().size() >= 1) {
-                thumbnailPath = board.getGifs().get(0).getGifPath();
-            }
-            MembersBoardInfo boardInfo = new MembersBoardInfo(board.getId(), board.getBoardName(), thumbnailPath);
-            membersBoardInfos.add(boardInfo);
-        }
-        // 생성된 리스트를 list dto의 생성자로 넘김
-        return new MembersBoardList(membersBoardInfos);
-
-    }
+//    public MembersBoardList getMembersBoard(String username) {
+//        // user 반환
+//        Member member = memberRepository.findByUsername(username)
+//                .orElseThrow(() -> new MemberNotFoundException());
+//
+//        // user의 board 불러오기
+//        List<Board> boards = member.getBoards();
+//
+//        // 새 리스트 만들기
+//        List<MembersBoardInfo> membersBoardInfos = new ArrayList<>();
+//
+//        // for문 돌면서 info dto에 add
+//        for(Board board : boards) {
+//            String thumbnailPath = null;
+//            if (board.getGifs().size() >= 1) {
+//                thumbnailPath = board.getGifs().get(0).getGifPath();
+//            }
+//            MembersBoardInfo boardInfo = new MembersBoardInfo(board.getId(), board.getBoardName(), thumbnailPath);
+//            membersBoardInfos.add(boardInfo);
+//        }
+//        // 생성된 리스트를 list dto의 생성자로 넘김
+//        return new MembersBoardList(membersBoardInfos);
+//
+//    }
 
     public GifList getGifs(Long boardId) {
         // 보드에 포함된 애들 return
