@@ -9,7 +9,7 @@
     <HotChattingRoomList />
 
     <div v-if="open_chat_info">
-      <ChatInfoModal :info_data="chat_data[open_chat_id]" class="z-50" />
+      <ChatInfoModal :room_data="quiet_chat_data[open_chat_id]" class="z-50" />
     </div>
     <div class="h-5"></div>
     <MainBottomNav />
@@ -40,6 +40,9 @@ export default {
     const open_chat_id = computed(
       () => store.state.quietChatStore.open_chat_id
     );
+    const quiet_chat_data = computed(
+      () => store.state.quietChatStore.quiet_list
+    )
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
     };
@@ -52,6 +55,7 @@ export default {
     return {
       open_chat_info,
       open_chat_id,
+      quiet_chat_data,
       close_chat_info,
     };
   },

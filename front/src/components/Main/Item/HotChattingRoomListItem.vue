@@ -12,7 +12,7 @@
       <p class="quiet-chat-like-text">{{ room_data.likeCount }}</p>
     </div>
     <div class="quiet-chat-box">
-      <div class="quiet-chat-title">{{ room_data.roomName }}</div>
+      <div class="quiet-chat-title">{{ room_data.roomName }} 고독방</div>
     </div>
   </div>
 </template>

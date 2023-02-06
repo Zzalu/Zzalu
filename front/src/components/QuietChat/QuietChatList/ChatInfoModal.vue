@@ -1,7 +1,7 @@
 <template>
   <div class="modal">
     <div class="modal-title-box">
-      <p class="modal-title">{{ info_data.name }}</p>
+      <p class="modal-title">{{ room_data.roomName }} 고독방</p>
       <font-awesome-icon
         @click="close_modal"
         class="modal-icon"
@@ -18,17 +18,18 @@
       <div class="modal-first-line">
         <div class="group">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="first-line-content">{{ info_data.master }}</p>
+          <p class="first-line-content">{{ room_data.userName }}</p>
         </div>
         <div class="group">
           <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s dark:text-zz-p" />
-          <p class="first-line-content">{{ info_data.like }}</p>
+          <p class="first-line-content">{{ room_data.likeCount }}</p>
         </div>
       </div>
-      <p class="modal-content">{{ info_data.content }}</p>
+      <p v-if="room_data.description" class="modal-content">{{ room_data.description }}</p>
+      <p v-else class="modal-content">등록된 고독방 한 줄 소개가 없습니다.</p>
       <div class="hashtag-div">
         <p
-          v-for="(hashtags, j) in info_data.hashtag"
+          v-for="(hashtags, j) in room_data.tags"
           :key="j"
           class="hashtag-p"
         >
@@ -45,6 +46,7 @@
 </template>
 
 <script>
+
 import { useStore } from "vuex";
 
 export default {
@@ -60,7 +62,11 @@ export default {
     };
   },
   props: {
-    info_data: Object,
+    room_data: Object,
+  },
+  created() {
+    console.log(this.room_data.lastActivation);
+    
   },
   unmounted() {
     this.close_chat_info();
@@ -77,7 +83,7 @@ export default {
 /* 모달 타이틀 */
 .modal {
   min-height: 24rem;
-  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-72 h-96 text-center bg-zz-p dark:bg-zz-dark-s;
+  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-72 h-96 text-center bg-zz-p dark:bg-zz-dark-s z-50;
 }
 .modal-title-box {
   /* font-size:1rem; */
