@@ -17,7 +17,7 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/members")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
