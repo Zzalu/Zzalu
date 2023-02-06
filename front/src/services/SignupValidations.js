@@ -1,11 +1,12 @@
 import Validations from './Validations'
 
 export default class SignupValidations {
-    constructor(username, nickname, password, passwordCheck) {
+    constructor(username, nickname, password, passwordCheck, email) {
         this.username = username;
         this.nickname = nickname;
         this.password = password;
         this.passwordCheck = passwordCheck;
+        this.email = email;
     }
 
     checkValidations() {
@@ -31,18 +32,14 @@ export default class SignupValidations {
             errors['passwordCheck'] = '두 비밀번호는 같아야 합니다.'
         }
 
+        // 이메일 네이밍 규칙
+        if (!Validations.emailNaming(this.email) ) {
+            errors['email'] = '이메일 형식으로 입력해주세요.'
+        }
+
         return errors;
     }
 }
 
 
 
-// function ValidateEmail(mail) 
-// {
-//  if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(myForm.emailAddr.value))
-//   {
-//     return (true)
-//   }
-//     alert("You have entered an invalid email address!")
-//     return (false)
-// }

@@ -31,5 +31,13 @@ export default class Validations {
     return true
   }
 
+  static emailNaming(name) {
+    const emailRule = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i
+    if (!name.match(emailRule)) {
+      return false;
+    }
+    return true
+  }
+
 
 }
