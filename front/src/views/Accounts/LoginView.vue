@@ -8,6 +8,7 @@
     />
     <h1 class="account-title">Login</h1>
     <!-- 아이디 비번 입력창 -->
+    
     <h2 class="input-title">아이디</h2>
     <div>
       <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
@@ -15,8 +16,10 @@
         type="text"
         class="account-input"
         placeholder="아이디를 입력하세요"
+        v-model="username"
       />
     </div>
+    <div class="error" v-if = "errors.username"> {{ errors.username }} </div>
     <h2 class="input-title">비밀번호</h2>
     <div>
       <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
@@ -24,10 +27,14 @@
         type="text"
         class="account-input"
         placeholder="비밀번호를 입력하세요"
+        v-model='password'
       />
       <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
+    <div class="error" v-if = "errors.password"> {{ errors.password }} </div>
+    <!-- <h1 :error="error">{{error}}</h1> -->
+
     <!-- 아이디 비번찾기 -->
     <div class="redir-accounts">
       <router-link to="/find-id" class="find-id">아이디 |</router-link>
@@ -45,15 +52,14 @@
   </div>
   <!-- 로그인 버튼 -->
   <div class="center-containers">
-    <button class="submit-button" @click="onSubmit">로그인</button>
+    <button class="submit-button">로그인</button>
   </div>
   <sign-up-bottom-nav></sign-up-bottom-nav>
 </template>
 
 <script>
 import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue'
-import useVuelidate from "@vuelidate/core";
-// import { required } from "@vuelidate/validators";
+// import LoginValidations from '../../services/LoginValidations'
 
 export default {
   name: "LoginView",
@@ -62,28 +68,22 @@ export default {
   },
   data() {
     return {
-      v$: useVuelidate(),
-      // 아이디: { required },
-      // 비번: { required },
+      username: "",
+      password: "",
     };
   },
   methods: {
     onSubmit() {
-      this.v$.$touch();
-      if (!this.v$.$error) {
-        // if ANY fail validation
-        alert('백에 정보 보내고 다음 라우터로 ㄱㄱ.')
-      } else {
-        alert('모든 필드에 입력 해주세요')
+      const username = this.username
+      const password = this.password
+
+      const payload = {
+        username: username,
+        password: password,
       }
+      this.$store.dispatch('logIn', payload)
     }
   },
-  validations() {
-    return {
-      // 아이디: { required },
-      // 비번: { required },
-      }
-  }
 }
 </script>
 
