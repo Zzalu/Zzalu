@@ -7,29 +7,20 @@
     <!-- 고독방이 있다면 -->
     <div v-if="quiet_chat_data.length >= 1">
       <div v-for="(datas, i) in quiet_chat_data" :key="i">
-        <QuietChatList :room_data="datas" @click="chat_data(i)" />
+        <QuietChatList :room_data="datas"
+        :hashtag="datas.tags"
+        @click="chat_data(i)" />
       </div>
     </div>
     <!-- 필터로 걸러진 고독방이 없다면 -->
     <div v-else>
-      <div class="text-center-container">
-        <div class="error-title-container">
-          <div class="oops">OOPS</div>
-          <div class="sad-face">:(</div>
-          <div class="resting-face">:|</div>
-        </div>
-        <div class="mt-52">
-          <div class="error-content">
-            찾으시려는 페이지의 주소를 잘못 입력 되었거나,
-          </div>
-          <div class="error-content">
-            주소의 변경 혹은 삭제로인해 현재 사용하실 수 없습니다.
-          </div>
-        </div>
-      </div>
+      <NoResult/>
     </div>
     <div v-if="open_chat_info">
-      <ChatInfoModal :room_data="quiet_chat_data[open_chat_id]"/>
+      <ChatInfoModal
+        :room_data="quiet_chat_data[open_chat_id]"
+        :hashtag="quiet_chat_data[open_chat_id].tags"
+      />
     </div>
     <div class="h-4"></div>
     <div v-if="tmpisLogin">
@@ -43,6 +34,7 @@ import ChatFilter from "../../components/QuietChat/QuietChatList/ChatFilter";
 import MakeChatButton from "../../components/QuietChat/QuietChatList/MakeChatButton";
 import QuietChatList from "../../components/QuietChat/QuietChatList/QuietChatList.vue";
 import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModal";
+import NoResult from "../../components/QuietChat/QuietChatList/NoResult"
 import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
 import { useStore } from "vuex";
@@ -64,7 +56,7 @@ export default {
     );
     const quiet_chat_data = computed(
       () => store.state.quietChatStore.quiet_list
-    )
+    );
     const send_chat_data = (e) => {
       store.commit("quietChatStore/open_chat_info");
       store.commit("quietChatStore/open_chat_id", e);
@@ -85,6 +77,7 @@ export default {
     ChatFilter,
     MakeChatButton,
     QuietChatList,
+    NoResult,
     ChatInfoModal,
     ChatSearchTopNav,
     MainBottomNav,
@@ -126,20 +119,4 @@ export default {
   @apply h-full
 } */
 
-/* OOPS */
-.oops {
-  @apply mt-16 text-8xl font-carter text-zz-s;
-}
-.sad-face {
-  transform: rotate(90deg);
-  right: 6rem;
-  @apply relative mt-12 font-pop text-4xl dark:text-white;
-}
-
-.resting-face {
-  transform: rotate(90deg);
-  right: 1rem;
-  bottom: 1.5rem;
-  @apply relative font-pop text-4xl dark:text-white;
-}
 </style>
