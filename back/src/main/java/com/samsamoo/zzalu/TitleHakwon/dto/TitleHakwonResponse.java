@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.TitleHakwon.dto;
 
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
+import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,10 +19,14 @@ public class TitleHakwonResponse {
     /** 해당 제목학원의 총 댓글 개수 (대댓글 개수 포함x) **/
     private int totalComment;
 
+    /** 제목 학원 상태 **/
+    private TitleHakwonState state;
+
 
     public TitleHakwonResponse(TitleHakwon titleHakwon) {
         this.titleHakwonId = titleHakwon.getId();
         this.zzalUrl = titleHakwon.getZzulUrl();
+        this.state = titleHakwon.getState();
         this.totalComment = titleHakwon.getComments().size();
     }
 }

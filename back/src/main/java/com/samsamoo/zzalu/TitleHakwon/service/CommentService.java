@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +83,11 @@ public class CommentService {
      * 무한 스크롤 / 커서 기반 페이지 네이션
      */
 
-    public List<CommentResponse> getRecentCommentList (SearchCommentRequest searchCommentRequest){
+    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
 
-        Page<Comment> comments = fetchCommentPages(searchCommentRequest.getLastCommentId(),searchCommentRequest.getTitleHakwonId(), searchCommentRequest.getSize());
+        Page<Comment> comments = fetchCommentPages(lastCommentId ,titleHakwonId,limit);
 
-        return getCommentList(comments.getContent(),searchCommentRequest.getUsername());
+        return getCommentList(comments.getContent(),username);
         }
 
 
@@ -116,6 +117,8 @@ public class CommentService {
         }
     }
 
+
+
     private Page<Comment> fetchCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
         PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
         return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
@@ -126,9 +129,9 @@ public class CommentService {
      * 커서 기반 페이지 네이션
      */
 
-    public List<ReplyCommentResponse> getReplyCommentList (SearchReplyCommentRequest sr){
+    public List<ReplyCommentResponse> getReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
 
-        Page<ReplyComment> replyComments = fetchReplyCommentPages(sr.getLastCommentId(),sr.getParentCommentId(),sr.getSize());
+        Page<ReplyComment> replyComments = fetchReplyCommentPages(lastCommentId,parentId,size);
 
         return ReplyCommentResponse.convertReplyCommentToDtoList(replyComments.getContent());
     }
@@ -269,7 +272,7 @@ public class CommentService {
      * 상위 50개 댓글 가져오기
      */
 
-    public List<CommentResponse> getBest50CommentList (Long titleHakwonId ,String username){
+    public List<CommentResponse> getBest50CommentList (int limit , Long titleHakwonId ,String username){
 
         List<Comment> commentList = commentRepository.findTop50ByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(titleHakwonId,0);
 
