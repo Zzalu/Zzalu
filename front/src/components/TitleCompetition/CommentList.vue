@@ -9,7 +9,6 @@
 
 <script>
 import CommentListItem from './item/CommentListItem.vue';
-// import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { onMounted, ref } from 'vue';
 
