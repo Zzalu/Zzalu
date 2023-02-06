@@ -42,7 +42,7 @@ public class TitleHakwon  {
 
 
    @Convert(converter =  TitleHakwonConverter.class)
-    private TitleHakwonState state ;
+    private TitleHakwonState state  =TitleHakwonState.NOT_OPEN;
 
 
     @PrePersist
