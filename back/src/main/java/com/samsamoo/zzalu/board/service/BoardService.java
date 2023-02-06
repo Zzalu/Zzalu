@@ -75,7 +75,7 @@ public class BoardService {
         List<GifsBoardInfo> gifsBoardInfos = new ArrayList<>();
 
         Gifs gif = gifsRepository.findById(gifId)
-                .orElseThrow(() -> new BadRequestException("짤이 존재하지 않습니다."));
+                .orElseThrow(() -> new NotFoundException("짤이 존재하지 않습니다.")); //>>>>>
 
         // for문 돌면서 gif 포함 여부와 id를 dto에 넣기
         for(Board board : boards) {
@@ -113,10 +113,27 @@ public class BoardService {
 //
 //    }
 
-    public GifList getGifs(Long boardId) {
-        // 보드에 포함된 애들 return
+    public Board getBoardById(Long boardId) {
         Board board = boardRepository.findBoardById(boardId)
                 .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        return board;
+    }
+    public Gifs getGifById(Long gifId) {
+        Gifs gif = gifsRepository.findById(gifId)
+                .orElseThrow(() -> new NotFoundException(gifId.toString() +"번 gif를 찾을 수 없습니다."));
+        return gif;
+    }
+    public void checkGifListEmpty(List<Long> gifList) {
+        if (gifList.size() == 0) {
+            throw new NotMatchException("gif 리스트가 비었습니다.");  //>>>>>
+        }
+    }
+
+
+    public GifList getGifs(Long boardId) {
+        // 보드에 포함된 애들 return
+        Board board = getBoardById(boardId);
+
         List<GifInfo> gifInfos = new ArrayList<>();
         for(Gifs gif: board.getGifs()) {
             gifInfos.add(new GifInfo(gif.getId(), gif.getGifPath()));
@@ -128,12 +145,10 @@ public class BoardService {
         Member member = jwtTokenProvider.getMember(token);
 
         List<GifsBoardInfo> boardInfoList = gifsBoardList.getBoards();
-        Gifs gif = gifsRepository.findById(gifId)
-                .orElseThrow(()-> new NotFoundException("gif를 찾을 수 없습니다."));
+        Gifs gif = getGifById(gifId);
 
         for (GifsBoardInfo boardInfo : boardInfoList) {
-            Board repoBoard = boardRepository.findBoardById(boardInfo.getId())
-                    .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+            Board repoBoard = getBoardById(boardInfo.getId());
 
             // 요청의 gif state와 저장된 gif state가 다르면 상태를 저장 or 삭제
             Boolean requestState = boardInfo.getGifContainState();
@@ -160,15 +175,12 @@ public class BoardService {
     }
 
     public void deleteGifFromBoard(Long boardId, List<Long> gifList) {
-        if (gifList.size() == 0) {
-            throw new NotMatchException("gif 리스트가 비었습니다.");
-        }
-        Board board = boardRepository.findBoardById(boardId)
-                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        checkGifListEmpty(gifList);
+
+        Board board = getBoardById(boardId);  //>>>>>
 
         for (Long gifId : gifList) {
-            Gifs gif = gifsRepository.findById(gifId)
-                    .orElseThrow(() -> new NotFoundException("gif를 찾을 수 없습니다."));
+            Gifs gif = getGifById(gifId);   //>>>>>
 
             // real로 보드에 짤이 담겨있는지 확인
             if (!board.getGifs().contains(gif)) {
@@ -182,16 +194,12 @@ public class BoardService {
         Member member = jwtTokenProvider.getMember(token);
 
         // 매서드로 분리
-        if (gifIdList.size() == 0) {
-            throw new NotMatchException("gif 리스트가 비었습니다.");
-        }
+        checkGifListEmpty(gifIdList);
         // 매서드로 분리
-        Board board = boardRepository.findBoardById(boardId)
-                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        Board board = getBoardById(boardId); //>>>>>
 
         for (Long gifId : gifIdList) {
-            Gifs gif = gifsRepository.findById(gifId)
-                    .orElseThrow(() -> new NotFoundException(gifId.toString() +"번 gif를 찾을 수 없습니다."));
+            Gifs gif = getGifById(gifId);  //>>>>>
 
             // 이미 담겨있으면 삭제 후 저장
             if (board.getGifs().contains(gif)) {
@@ -203,8 +211,7 @@ public class BoardService {
     }
 
     public void updateBoardName(String token, Long boardId, String newBoardName) {
-        Board board = boardRepository.findBoardById(boardId)
-                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        Board board = getBoardById(boardId);  //>>>>>
         // 본인 보드인지 확인 and
         // 보드 이름 중복인지 검증
         Member member = jwtTokenProvider.getMember(token);
@@ -213,7 +220,7 @@ public class BoardService {
             throw new NotMatchException("수정하려는 보드는 회원님의 보드가 아닙니다.");
         }
         for (Board existBoard : myBoards) {
-            if (existBoard.getBoardName() == newBoardName) {
+            if (existBoard.getBoardName().equals(newBoardName)) {
                 throw new NotMatchException("보드 이름이 중복입니다.");
             }
         }
@@ -222,8 +229,7 @@ public class BoardService {
     }
 
     public void deleteBoard(String token, Long boardId) {
-        Board board = boardRepository.findBoardById(boardId)
-                .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
+        Board board = getBoardById(boardId);  //>>>>>
         Member member = jwtTokenProvider.getMember(token);
         List<Board> myBoards = member.getBoards();
 
@@ -235,4 +241,6 @@ public class BoardService {
         }
 
     }
+
+
 }
