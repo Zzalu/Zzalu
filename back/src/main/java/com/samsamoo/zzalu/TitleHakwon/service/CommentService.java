@@ -83,9 +83,9 @@ public class CommentService {
      * 무한 스크롤 / 커서 기반 페이지 네이션
      */
 
-    public List<CommentResponse> getRecentCommentList (Long lastCommentId ,  Long titleHakwonId , int size ,String username){
+    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
 
-        Page<Comment> comments = fetchCommentPages(lastCommentId , titleHakwonId , size );
+        Page<Comment> comments = fetchCommentPages(lastCommentId ,titleHakwonId,limit);
 
         return getCommentList(comments.getContent(),username);
         }
@@ -272,7 +272,7 @@ public class CommentService {
      * 상위 50개 댓글 가져오기
      */
 
-    public List<CommentResponse> getBest50CommentList (Long titleHakwonId ,String username){
+    public List<CommentResponse> getBest50CommentList (int limit , Long titleHakwonId ,String username){
 
         List<Comment> commentList = commentRepository.findTop50ByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(titleHakwonId,0);
 
