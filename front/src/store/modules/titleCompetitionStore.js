@@ -30,6 +30,7 @@ const titleCompetitionStore = {
     SET_TITLE_COMPETITION(state, title_competition_data) {
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
+      state.last_comment_id = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
     },
 
