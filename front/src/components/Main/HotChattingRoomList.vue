@@ -3,9 +3,9 @@
     <p class="focus-text">요새 핫한 고독방</p>
     <hr class="mb-3 border-0 bg-zz-light-input h-1 dark:bg-zz-dark-div" />
     <div class="items">
-      <div v-for="(data, b) in room_data" :key="b">
+      <div v-for="(room_data, b) in quiet_chat_data" :key="b">
           <HotChattingRoomListItem
-            :room_data="data"
+            :room_data="room_data"
             :b="b"
             @click="chat_data(b)"
             class="hot-chatting"
@@ -17,8 +17,8 @@
 
 <script>
 import HotChattingRoomListItem from "../Main/Item/HotChattingRoomListItem";
-import HotCahttingRoomData from "../../views/QuietChat/QuietChatListData.js";
 import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "HotChattingRoomList",
@@ -31,13 +31,12 @@ export default {
         store.commit("quietChatStore/open_chat_info");
       }, 200)
     };
+    const quiet_chat_data = computed(
+      () => store.state.quietChatStore.quiet_list
+    )
     return {
       send_chat_data,
-    };
-  },
-  data() {
-    return {
-      room_data: HotCahttingRoomData,
+      quiet_chat_data
     };
   },
   components: {

@@ -19,7 +19,7 @@ const quietChatStore = {
       state.open_chat_id = id
     },
     GET_QUIET_CHAT(state, quietChatList) {
-      state.quiet_list = quietChatList
+      state.quiet_list = quietChatList.data
     },
   },
   actions: {

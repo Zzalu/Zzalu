@@ -43,17 +43,30 @@ export default {
     }
   },
   props : {
-    roomName : String,
+    room_name : String,
     description : String,
+    hashtags : Array,
+  },
+  data() {
+    return {
+      tags : ''
+    }
   },
   methods: {
     CreateRoom() {
+      for (let i=0; i<this.hashtags.length; i++) {
+        this.tags += this.hashtags[i]
+        if (i == this.hashtags.length-1) {
+            break
+        }
+        this.tags += ','
+      }
       let room_data = {
         "userName" : null,
         "memberId" : null,
         "imagePath" : null,
-        "tags" : "aaa,bbb",
-        "roomName" : this.roomName,
+        "tags" : this.tags,
+        "roomName" : this.room_name,
         "description" : this.description
       }
       this.create_quiet_room(room_data)

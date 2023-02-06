@@ -46,10 +46,8 @@ export default {
     onBeforeMount(() => {
       // axios 요청
       store.dispatch("quietChatStore/getQuietList");
-      if(open_chat_id==true) {
-        store.dispatch("zzalListStore/getPopularGIFList");
-        store.dispatch("zzalListStore/getRecommendGIFList")
-      }
+      store.dispatch("zzalListStore/getPopularGIFList");
+      store.dispatch("zzalListStore/getRecommendGIFList");
     });
     return {
       open_chat_info,
@@ -83,13 +81,12 @@ export default {
     return this._watch;
   },
   set watch(value) {
-    this._watch=value;
+    this._watch = value;
   },
 };
 </script>
 
 <style scoped lang="postcss">
-
 .bg-negative {
   @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0 z-40;
 }
