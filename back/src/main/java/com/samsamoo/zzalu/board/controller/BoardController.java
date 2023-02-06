@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.board.controller;
 
 import com.samsamoo.zzalu.board.dto.*;
 import com.samsamoo.zzalu.board.service.BoardService;
+import com.samsamoo.zzalu.member.exception.NotMatchException;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,12 +19,14 @@ import java.util.Map;
 @Slf4j
 public class BoardController {
     private final BoardService boardService;
-    private final MemberService memberService;
 
     //--------------------------------------보드 생성-----------------------------------------
     @PostMapping
     public ResponseEntity<CreateBoardResposne> createBoard(@RequestHeader(value = "Authorization")String bearerToken, @RequestBody Map<String, String> request) {
         String token = bearerToken.substring(7);
+        if (request.get("boardName").isBlank()) {
+            throw new NotMatchException("보드 이름을 입력해주세요.");
+        }
         CreateBoardResposne response = boardService.createBoard(token, request.get("boardName"));
         return ResponseEntity.created(URI.create("/boards/" + response.getId())).body(response);
     }
