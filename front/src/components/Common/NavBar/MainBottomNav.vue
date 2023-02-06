@@ -1,31 +1,11 @@
 <template>
   <!-- 로그인 후 nav -->
   <SearchView />
-  <div
-    class="
-      h-nav-height
-      fixed
-      border
-      inset-x-0
-      bottom-0
-      border-t-2 border-zz-light-div
-      z-50
-      dark:border-zz-dark-div
-    "
-  >
-    <div
-      class="close-modal"
-      v-if="check_search_modal"
-      @click="close_modal"
-    ></div>
-    <div
-      class="close-modals"
-      v-if="check_search_modal"
-      @click="close_modal"
-    ></div>
+  <div class="h-nav-height fixed border inset-x-0 bottom-0 border-t-2 border-zz-light-div z-50 dark:border-zz-dark-div">
+    <div class="close-modal" v-if="check_search_modal" @click="close_modal"></div>
+    <div class="close-modals" v-if="check_search_modal" @click="close_modal"></div>
 
     <ul class="nav_list">
-      
       <button class="nav_item" @click="GoToMain">
         <font-awesome-icon icon="fa-solid fa-house" />
       </button>
@@ -34,46 +14,38 @@
         <font-awesome-icon icon="fa-regular fa-comment-dots" />
       </button>
       <button class="nav_item" @click="open_modal">
-        <span class="search"
-          ><font-awesome-icon icon="fa-solid fa-magnifying-glass"
-        /></span>
+        <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
       </button>
-      <router-link to="/title-competition/1" class="nav_item">
+      <router-link to="/title-competition/2023-02-06" class="nav_item">
         <font-awesome-icon icon="fa-regular fa-lightbulb" />
         <i class="fa-solid fa-chevron-left"></i
       ></router-link>
 
-      <router-link to="/profile" class="nav_item"
-        ><font-awesome-icon icon="fa-regular fa-user"
-      /></router-link>
+      <router-link to="/profile" class="nav_item"><font-awesome-icon icon="fa-regular fa-user" /></router-link>
     </ul>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
-import SearchView from "../../../views/SearchView";
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
+import SearchView from '../../../views/SearchView';
 
 export default {
-  name: "MainBottomNavBar",
+  name: 'MainBottomNavBar',
   components: {
     SearchView,
   },
   setup() {
     const store = useStore();
 
-    const open_chat_info = computed(
-      () => store.state.quietChatStore.open_chat_info
-    );
-    const check_search_modal = computed(
-      () => store.state.searchModalStore.open_search_modal
-    );
+    const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
+    const check_search_modal = computed(() => store.state.searchModalStore.open_search_modal);
     const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal");
+      store.commit('searchModalStore/open_search_modal');
     };
     const open_modal = () => {
-      store.commit("searchModalStore/open_search_modal");
+      store.commit('searchModalStore/open_search_modal');
     };
     return {
       open_modal,
@@ -98,14 +70,10 @@ export default {
   watch: {
     // 외부 스크롤 막기
     check_search_modal: function (value) {
-      value
-        ? (document.body.style.overflow = "hidden")
-        : document.body.style.removeProperty("overflow");
+      value ? (document.body.style.overflow = 'hidden') : document.body.style.removeProperty('overflow');
     },
     open_chat_info: function (value) {
-      value
-        ? (document.body.style.overflow = "hidden")
-        : document.body.style.removeProperty("overflow");
+      value ? (document.body.style.overflow = 'hidden') : document.body.style.removeProperty('overflow');
     },
   },
 };
