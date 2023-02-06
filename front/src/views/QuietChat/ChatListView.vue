@@ -5,9 +5,9 @@
     <ChatFilter />
     <MakeChatButton />
     <!-- 고독방이 있다면 -->
-    <div v-if="data.length >= 1">
-      <div v-for="(datas, i) in data" :key="i">
-        <QuietChatList :datas="datas" @click="chat_data(i)" />
+    <div v-if="quiet_chat_data.length >= 1">
+      <div v-for="(datas, i) in quiet_chat_data" :key="i">
+        <QuietChatList :room_data="datas" @click="chat_data(i)" />
       </div>
     </div>
     <!-- 필터로 걸러진 고독방이 없다면 -->
@@ -29,7 +29,7 @@
       </div>
     </div>
     <div v-if="open_chat_info">
-      <ChatInfoModal :info_data="data[open_chat_id]" />
+      <ChatInfoModal :room_data="quiet_chat_data[open_chat_id]"/>
     </div>
     <div class="h-4"></div>
     <div v-if="tmpisLogin">
@@ -43,7 +43,6 @@ import ChatFilter from "../../components/QuietChat/QuietChatList/ChatFilter";
 import MakeChatButton from "../../components/QuietChat/QuietChatList/MakeChatButton";
 import QuietChatList from "../../components/QuietChat/QuietChatList/QuietChatList.vue";
 import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModal";
-import QuietChatData from "./QuietChatListData.js";
 import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
 import { useStore } from "vuex";
@@ -63,6 +62,9 @@ export default {
     const check_search_modal = computed(
       () => store.state.searchModalStore.open_search_modal
     );
+    const quiet_chat_data = computed(
+      () => store.state.quietChatStore.quiet_list
+    )
     const send_chat_data = (e) => {
       store.commit("quietChatStore/open_chat_info");
       store.commit("quietChatStore/open_chat_id", e);
@@ -74,6 +76,7 @@ export default {
       open_chat_info,
       open_chat_id,
       check_search_modal,
+      quiet_chat_data,
       send_chat_data,
       close_chat_info,
     };
@@ -88,7 +91,6 @@ export default {
   },
   data() {
     return {
-      data: QuietChatData,
       tmpisLogin: true,
     };
   },
@@ -117,7 +119,7 @@ export default {
 
 <style scoped lang="postcss">
 .bg-negative {
-  @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0;
+  @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0 z-10;
 }
 /* .test {
   min-height:84vh;

@@ -5,20 +5,20 @@
       <div class="card-content">
         <div class="flex">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="master-p">{{ datas.master }}</p>
+          <p class="master-p">{{ room_data.userName }}</p>
         </div>
-        <p class="title-p">{{ datas.name }}</p>
-        <p class="content-p">{{ datas.content }}</p>
+        <p class="title-p">{{ room_data.roomName }} 고독방</p>
+        <p class="content-p">{{ room_data.description }}</p>
         <div class="hashtag-div">
-          <p v-for="(hashtags, i) in datas.hashtag" :key="i" class="hashtag-p">
+          <p v-for="(hashtags, i) in room_data.tags" :key="i" class="hashtag-p">
             {{ hashtags }}
           </p>
         </div>
         <div class="last-lane">
-          <p class="updated-p">최근대화시간 : {{ datas.updatedAt }}</p>
+          <p class="updated-p">최근대화시간 : {{ room_data.lastActivation }}</p>
           <p class="like-p">
             <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s" />
-            {{ datas.like }}
+            {{ room_data.likeCount }}
           </p>
         </div>
       </div>
@@ -31,7 +31,7 @@
 export default {
   name: "QuietChatList",
   props: {
-    datas : Object
+    room_data : Object
   }
 };
 </script>
