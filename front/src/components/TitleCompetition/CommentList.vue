@@ -22,7 +22,7 @@ export default {
     let comments = store.state.titleCompetitionStore.comments;
 
     const loadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getCommentList', 1);
+      store.dispatch('titleCompetitionStore/getCommentList', 4);
     };
 
     onMounted(() => {
