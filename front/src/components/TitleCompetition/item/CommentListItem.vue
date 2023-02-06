@@ -29,7 +29,10 @@
           <span class="text-xs mr-1">
             {{ like_cnt }}
           </span>
-          <button class="my-auto"><font-awesome-icon icon="fa-regular fa-heart" class="text-xs" /></button>
+          <button class="my-auto" @click="clickLikeBtn">
+            <font-awesome-icon v-if="isLiked" icon="fa-regular fa-heart" class="text-xs" />
+            <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
+          </button>
         </div>
       </div>
       <!-- 대댓글 -->
@@ -49,6 +52,7 @@
 import { useStore } from 'vuex';
 import { reactive, toRefs } from '@vue/reactivity';
 import NestedCommentList from '@/components/TitleCompetition/NestedCommentList.vue';
+import { plusLike, minusLike } from '@/api/titleCompetition.js';
 export default {
   components: { NestedCommentList },
   name: 'CommentListItem',
@@ -67,8 +71,10 @@ export default {
       modified: false,
       nested_active: false,
       like_cnt: props.comment.likeNumber,
+      isLiked: false,
     });
 
+    // 답글쓰기 버튼 클릭
     const writeNestedComment = () => {
       const comment_writer = {
         id: comment_data.comment_id,
@@ -77,9 +83,43 @@ export default {
       store.dispatch('titleCompetitionStore/writeNestedComment', comment_writer);
     };
 
+    // 좋아요 버튼 클릭
+    const clickLikeBtn = () => {
+      console.log(`isLike 버튼 클릭 전: ${comment_data.isLiked}`);
+      const params = {
+        commentId: comment_data.comment_id,
+        username: comment_data.nickname,
+      };
+      if (comment_data.isLiked) {
+        minusLike(
+          params,
+          ({ data }) => {
+            console.log(data);
+            comment_data.isLiked = false;
+          },
+          (error) => {
+            console.log(error);
+          },
+        );
+      } else {
+        plusLike(
+          params,
+          ({ data }) => {
+            console.log(data);
+            comment_data.isLiked = true;
+          },
+          (error) => {
+            console.log(error);
+          },
+        );
+      }
+      console.log(`isLike 버튼 클릭 후: ${comment_data.isLiked}`);
+    };
+
     return {
       ...toRefs(comment_data),
       writeNestedComment,
+      clickLikeBtn,
     };
   },
 };
