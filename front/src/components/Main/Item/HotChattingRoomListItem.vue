@@ -9,10 +9,10 @@
         icon="fa-solid fa-heart"
         class="quiet-chat-like-icon"
       />
-      <p class="quiet-chat-like-text">{{ room_data.like }}</p>
+      <p class="quiet-chat-like-text">{{ room_data.likeCount }}</p>
     </div>
     <div class="quiet-chat-box">
-      <div class="quiet-chat-title">{{ room_data.name }}</div>
+      <div class="quiet-chat-title">{{ room_data.roomName }}</div>
     </div>
   </div>
 </template>
@@ -75,7 +75,7 @@ export default {
 }
 .quiet-chat-card-contain {
   box-shadow: 0 0 5px black;
-  background-image: url("../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg");
+  background-image: url("../../QuietChat/QuietChatList/assets/sad_man.gif");
   @apply border-2 h-48 w-36 bg-center bg-cover rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
 }
 
