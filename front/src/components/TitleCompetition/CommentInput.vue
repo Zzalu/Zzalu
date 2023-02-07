@@ -7,35 +7,79 @@
         <font-awesome-icon icon="fa-solid fa-circle-xmark" class="text-zz-light-p" />
       </button>
     </div>
-    <input v-model="content" type="text" class="comment_input" placeholder="글 남기기..." />
+    <input type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." />
 
-    <button class="comment_submit">등록</button>
+    <button class="comment_submit" @click="clicksubmitBtn">등록</button>
   </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
+import { addComment, addNestedComment } from '@/api/titleCompetition';
 export default {
   name: 'CommentInput',
   setup() {
     const store = useStore();
-
+    let content = '';
     let comment_writer_id = computed(() => ref(store.state.titleCompetitionStore.comment_writer.id));
     let comment_writer_nickname = computed(() => ref(store.state.titleCompetitionStore.comment_writer.nickname));
 
     let canWriteNested = computed(() => ref(store.state.titleCompetitionStore.isNested));
 
-    const undoWriteNestedComment = () => {
-      store.dispatch('titleCompetitionStore/deleteCommentWriter');
+    const undoWriteNestedComment = async () => {
+      await store.dispatch('titleCompetitionStore/deleteCommentWriter');
+    };
+
+    const changeInput = (e) => {
+      return (content = e.target.value);
+    };
+    // 등록버튼 눌렀을 때
+    const clicksubmitBtn = () => {
+      if (!canWriteNested.value.value) {
+        const comment_data = {
+          username: 'c109',
+          content: content,
+          titleHakwonId: store.state.titleCompetitionStore.title_competition_id,
+        };
+        addComment(
+          comment_data,
+          ({ data }) => {
+            console.log(data);
+          },
+          (error) => {
+            console.log(error);
+          },
+        );
+        console.log('댓글입니다');
+      } else {
+        const nested_comment_data = {
+          username: 'c109',
+          content: content,
+          parentCommentId: store.state.titleCompetitionStore.comment_writer.comment_id,
+        };
+        console.log(nested_comment_data);
+        addNestedComment(
+          nested_comment_data,
+          ({ data }) => {
+            console.log(data);
+          },
+          (error) => {
+            console.log(error);
+          },
+        );
+        console.log('답글입니다');
+      }
     };
 
     return {
       undoWriteNestedComment,
       comment_writer_id,
       comment_writer_nickname,
-      content: '',
+      content,
       canWriteNested,
+      clicksubmitBtn,
+      changeInput,
     };
   },
 };

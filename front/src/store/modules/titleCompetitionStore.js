@@ -1,4 +1,5 @@
-import { getComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
+import { getNewestComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
+
 const titleCompetitionStore = {
   namespaced: true,
   state: () => ({
@@ -11,11 +12,14 @@ const titleCompetitionStore = {
     // 댓글
     comments: [],
     last_comment_id: Number.MAX_SAFE_INTEGER,
+
     // 대댓글
     new_nested_comments: [],
+
+    // 대댓글 입력
     isNested: false,
     comment_writer: {
-      id: '',
+      comment_id: '',
       nickname: '',
     },
   }),
@@ -30,7 +34,6 @@ const titleCompetitionStore = {
     SET_TITLE_COMPETITION(state, title_competition_data) {
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
-      state.last_comment_id = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
     },
 
@@ -39,8 +42,9 @@ const titleCompetitionStore = {
       state.comments.push(...new_comments);
     },
 
-    SET_LAST_COMMENT_ID(state, size) {
-      state.last_comment_id = state.last_comment_id - size;
+    // 마지막으로 읽어온 댓글
+    SET_LAST_COMMENT_ID(state, last_comment_id) {
+      state.last_comment_id = last_comment_id;
     },
 
     // 대댓글
@@ -54,7 +58,7 @@ const titleCompetitionStore = {
 
     // 대댓글 작성 관련
     SET_COMMENT_WRITER(state, comment_writer) {
-      state.comment_writer.id = comment_writer.id;
+      state.comment_writer.comment_id = comment_writer.comment_id;
       state.comment_writer.nickname = comment_writer.nickname;
       state.isNested = true;
     },
@@ -68,12 +72,8 @@ const titleCompetitionStore = {
   actions: {
     // 제목학원 가져오기
     getTitleCompetition({ commit }, open_date) {
-      const param = {
-        openDate: open_date,
-      };
-      console.log(param);
       getTitleCompetition(
-        param,
+        open_date,
         ({ data }) => {
           console.log(data);
           commit('SET_TITLE_COMPETITION', data);
@@ -82,18 +82,21 @@ const titleCompetitionStore = {
       );
     },
     // 댓글
-    getCommentList({ commit, state }, size) {
-      const param = {
-        lastCommentId: state.last_comment_id,
-        titleHakwonId: state.title_competition_id,
-        size: size,
+    getNewestComments({ commit, state }, size) {
+      const params = {
+        lastCid: state.last_comment_id,
+        limit: size,
+        sort: 'LATEST',
+        username: 'c109',
       };
       return new Promise((resolve, reject) => {
-        getComments(
-          param,
+        getNewestComments(
+          state.title_competition_id,
+          params,
           ({ data }) => {
             commit('ADD_COMMENTS', data);
-            commit('SET_LAST_COMMENT_ID', size);
+            console.log(data);
+            commit('SET_LAST_COMMENT_ID', data[size - 1].commentId);
             resolve();
           },
           (error) => {
@@ -107,10 +110,19 @@ const titleCompetitionStore = {
     },
 
     // 대댓글
-    getNestedCommentList({ commit }, param) {
+    getNestedCommentList({ commit }, datas) {
+      console.log(datas);
+      const comment_id = datas.comment_id;
+      const params = {
+        lastCid: datas.lastCid,
+        limit: datas.limit,
+        sort: 'LATEST',
+        username: 'c109',
+      };
       return new Promise((resolve, reject) => {
         getNestedComments(
-          param,
+          comment_id,
+          params,
           ({ data }) => {
             commit('SET_NEW_NESTED_COMMENTS', data);
             resolve();
@@ -137,7 +149,10 @@ const titleCompetitionStore = {
     },
     // 대댓글 작성 취소
     deleteCommentWriter({ commit }) {
-      commit('DELETE_COMMENT_WRITER');
+      return new Promise((resolve) => {
+        commit('DELETE_COMMENT_WRITER');
+        resolve();
+      });
     },
   },
 };
