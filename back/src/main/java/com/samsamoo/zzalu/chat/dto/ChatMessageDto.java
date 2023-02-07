@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.chat.dto;
 
 import com.fasterxml.jackson.annotation.JsonEnumDefaultValue;
+import com.samsamoo.zzalu.chat.entity.ChatMessage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,4 +21,13 @@ public class ChatMessageDto implements Serializable {
     private String message;
     private LocalDateTime sendDate;
 
+    public ChatMessage toEntity(){
+        return ChatMessage.builder()
+                .type(type)
+                .roomId(roomId)
+                .sender(sender)
+                .message(message)
+                .sendDate(sendDate)
+                .build();
+    }
 }
