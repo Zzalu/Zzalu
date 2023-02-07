@@ -10,11 +10,12 @@ function getRecommendGIF(res,err) {
     .then(res).catch(err)
 }
 function getFirstRandomGIF(res,err) {
-    api.get(`/gif/randoms?exceptIds=`)
+    api.post(`/gif/randoms`,{ exceptIds : [] })
     .then(res).catch(err)
 }
 function getMoreRandomGIF(params,res,err) {
-    api.get(`/gif/randoms?exceptIds=`,params)
+    // console.log(params,'params') [1,2,3,4,5,68,8]
+    api.post(`/gif/randoms`,{ exceptIds : params})
     .then(res).catch(err)
 }
 
