@@ -56,6 +56,9 @@ import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
 
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
+
 export default {
   components: { OnlySmallLogoTopNav, CommentList, MainBottomNav, CommentInput },
   name: 'TitleCompetitionView',
@@ -93,13 +96,49 @@ export default {
       // console.log(isScrolled.value);
     }
 
+    let sock = new SockJS('http://localhost:8080/ws-stomp');
+    let ws = Stomp.over(sock);
+
+    function reciveMessage(recv) {
+      this.messages.unshift({
+        type: recv.type,
+        sender: recv.type == 'ENTER' ? '[알림]' : recv.sender,
+        message: recv.message,
+      });
+    }
+    function connect() {
+      let localWs = ws;
+      let localSock = sock;
+      let localReciveMessage = reciveMessage;
+      localWs.connect(
+        {},
+        function () {
+          localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
+            let recv = JSON.parse(message.body);
+            localReciveMessage(recv);
+          });
+        },
+        function () {
+          setTimeout(function () {
+            console.log('connection reconnect');
+            localSock = new SockJS('/ws-stomp');
+            localWs = Stomp.over(localSock);
+          }, 10 * 1000);
+        },
+      );
+    }
+
     return {
+      sock,
+      ws,
+      connect,
       open_date,
       total_comment_cnt,
       zzal_url,
       isScrolled,
       scrollTest,
       scroll,
+      reciveMessage,
     };
   },
 };
