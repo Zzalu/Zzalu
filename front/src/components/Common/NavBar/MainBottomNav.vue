@@ -42,7 +42,8 @@ export default {
     const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
     const check_search_modal = computed(() => store.state.searchModalStore.open_search_modal);
     const close_search_modal = () => {
-      store.commit('searchModalStore/open_search_modal');
+      store.commit('searchModalStore/open_search_modal')
+      store.dispatch("zzalListStore/getFirstRandomGIFList")
     };
     const open_modal = () => {
       store.commit('searchModalStore/open_search_modal');
