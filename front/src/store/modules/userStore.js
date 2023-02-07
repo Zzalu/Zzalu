@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -12,6 +12,8 @@ const userStore = {
       code: '',
     },
     user: null,
+    accessToken: "",
+    refreshToken: "",
     isLogin: false,
   }),
   mutations: {
@@ -25,6 +27,17 @@ const userStore = {
     SAVE_EMAIL_TEMP(state, credentialsEmailCode) {
       state.temp.email = credentialsEmailCode.email
       state.temp.code = credentialsEmailCode.code
+    },
+    SAVE_CURRENT_USER(state, loginData ) {
+      
+      console.log('지금 접속한 사람 저장')
+      console.log(loginData)
+      console.log(loginData.data)
+      state.user = loginData.data.username
+      state.accessToken = loginData.data.accessToken
+      state.refreshToken = loginData.data.refreshToken
+      console.log('지금 접속한 사람 출력', loginData.data.username)
+      console.log('지금 접속한 사람 출력', state.user)
     }
   },
   getters: {
@@ -33,9 +46,12 @@ const userStore = {
     //   return state.temp
     
     // },
-    signupTempInfoGet: (state) => state.temp
+    signupTempInfoGet: (state) => state.temp,
+    // return signupTempInfoGet
   },
   actions: {
+    // -------------------------------------------------------------------
+    // 회원가입
     // 아이디 중복확인
     uniqueUsernameAction: async (commit, username) => {
         // console.log(username);
@@ -76,8 +92,20 @@ const userStore = {
         console.log(signupUser)
         const response = await requestRegister(signupUser)
         return response
+    },
+    // -----------------------------------------------------------
+    // 로그인
+    loginAction: async (context, loginData ) => {
+      console.log("store잘 들어옴", loginData)
+      const response = await requestLogin(loginData)
+      console.log("store 다시 잘 들어옴", response)
+      context.commit('SAVE_CURRENT_USER', response)
+      console.log(response.data)
+      localStorage.setItem('id', response.data.username)
+      localStorage.setItem('token', response.data.accessToken)
+      console.log("지금 접속유저 저장 잘 됨", response)
+      return response
     }
-
 
     
   },

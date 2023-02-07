@@ -14,7 +14,7 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/Accounts/LoginView'),
+    component: () => import('@/views/Accounts/LoginView.vue'),
   },
   // 회원가입
   // SignUp

@@ -22,4 +22,10 @@ const requestRegister = (payload) => {
     return api.post(`members/signup`, payload)
 }
 
-export { checkUsername, checkNickname, checkEmail, requestRegister }
+const requestLogin = (payload, res, err) => {
+    console.log('api요청 할거임',payload)
+    return api.post(`members/login`, payload)
+    .then(res).catch(err)
+}
+
+export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin }

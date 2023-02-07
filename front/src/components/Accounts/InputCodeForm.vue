@@ -22,7 +22,7 @@
     <div class="didnt-get-mail">
       <div class="error-content">메일을 받지 못하셨나요?</div>
       <button class="send-again-button">인증 메일 재전송</button>
-      
+      {{ userInfo.code }}
     </div>
 
       <button class="submit-button" @click="signupFinal">인증하기</button>
@@ -31,25 +31,38 @@
 </template>
 
 <script>
-import { useStore} from 'vuex';
-import { computed } from '@vue/runtime-core'
+import { mapState } from 'vuex';
+// import { computed } from '@vue/runtime-core'
 export default {
   name: 'InputCodeForm',
+  computed: 
+    mapState({
+      userInfo: state => state.userStore.temp,
+    }),
+  // setup() {
+  //   const store = useStore();
 
-  setup() {
-    const store = useStore();
-    const signupUser = computed(() => (store.state.userStore.temp));
-    const asd = computed(() => (store.state.quietChatStore.open_chat_info));
-    const signupTempGet = computed(() => (store.getters.signupTempInfoGet))
-    const signupFinal = async function () {
-      console.log('함수시작', signupUser,'asd',asd)
-      console.log(signupTempGet)
-      const result = await store.dispatch('userStore/signupFinalAction', signupUser )
-    
+  // },
+  methods: {
+    signupFinal : async function () {
+      // const result = await store.dispatch('userStore/signupFinalAction', this.userInfo )
+      console.log(this.inputCode);
+      console.log('------------------')
+      console.log(this.userInfo.code);
       // console.log(result.data.authKey)
-      if (this.inputCode === signupUser.code) {
-        console.log(signupUser)
+      if (this.inputCode == this.userInfo.code) {
+        console.log(this.userInfo)
         console.log(this.inputCode)
+        // 여기까지는 잘 왔음
+        const userData = {
+            "username": this.userInfo.username,
+            "password": this.userInfo.password,
+            "passwordConfirmation": this.userInfo.passwordCheck,
+            "nickname": this.userInfo.nickname,
+            "userEmail": this.userInfo.email
+        }
+        const result = await this.$store.dispatch('userStore/signupFinalAction', userData )
+        console.log(result);
         if (result.response.status == 400) {
           alert("야 넌 회원가입 다시해라")
         } else {
@@ -59,12 +72,8 @@ export default {
         alert ("님 코드 틀렸음")
       }
     }
-    return {
-      signupFinal,
-      signupUser,
-      asd
-    }
   },
+
   data () {
     return {
       inputCode: '',
