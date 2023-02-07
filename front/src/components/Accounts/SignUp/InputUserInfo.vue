@@ -5,22 +5,22 @@
       type="text"
       class="account-input"
       placeholder="아이디를 입력하세요"
-      v-model="state.credentials.username.value"
+      v-model="state.credentials.username"
     />
     <button class="button-in-input" @click="uniqueUsername">중복확인</button>
   </div>
-  <div class="error" v-if="errors.username" > {{ errors.username }} </div>
+  <div class="error" v-if="errorMsgs.err.username" > {{ errorMsgs.err.username }} </div>
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
     <input
       type="text"
       class="account-input"
       placeholder="닉네임을 입력하세요"
-      v-model="state.credentials.nickname.value"
+      v-model="state.credentials.nickname"
     />
     <button class="button-in-input" @click="uniqueNickname" >중복확인</button>
   </div>
-  <div class="error" v-if="errors.nickname" > {{ errors.nickname }} </div>
+  <div class="error" v-if="errorMsgs.err.nickname" > {{ errorMsgs.err.nickname }} </div>
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
     <input
@@ -30,7 +30,7 @@
       v-model="state.credentials.password"
     />
   </div>
-  <div class="error" v-if="errors.password" > {{ errors.password }} </div>
+  <div class="error" v-if="errorMsgs.err.password" > {{ errorMsgs.err.password }} </div>
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
     <input
@@ -40,23 +40,23 @@
       v-model="state.credentials.passwordCheck"
     />
   </div>
-  <div class="error" v-if="errors.passwordCheck" > {{ errors.passwordCheck }} </div>
+  <div class="error" v-if="errorMsgs.err.passwordCheck" > {{ errorMsgs.err.passwordCheck }} </div>
   <div class="account-right">
     <div class="redir-accounts">
       <div>이미 계정이 있으신가요?</div>
       <router-link to="/login" class="redir-accounts-click">로그인</router-link>
     </div>
-    <button class="go-next-button" @click.prevent="[onSubmit(), sendSignupInfo()]">다음</button>
+    <button class="go-next-button" @click.prevent="[submitRules(), sendSignupInfo()]">다음</button>
   </div>
 </template>
 
 <script>
-import useVuelidate from "@vuelidate/core";
-import { required } from "@vuelidate/validators";
-import SignupValidations from '../../../services/SignupValidations'
+// import useVuelidate from "@vuelidate/core";
+// import { required } from "@vuelidate/validators";
+import SignupInfoValidations from '../../../services/SignupValidations'
 import { useStore } from 'vuex';
 import { reactive, watch } from 'vue'
-// import { useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 // import {mapActions} from 'vuex';
 
 
@@ -64,35 +64,48 @@ export default {
   name: "InputUserInfo",
   setup() {
     const store = useStore();
-
+    const router = useRouter();
     const state = reactive({
       credentials: {
-        password1: "",
-        password2: "",
-        username: { value: "", status: false },
-        nickname: { value: "", status: false },
+        password: "",
+        passwordCheck: "",
+        username: '',
+        nickname: '',
         email: "",
         code: '',
       },
+      nicknameState: false,
+      usernameState: false,
+    })
+    const errorMsgs = reactive({
+      err: {
+        password: "",
+        passwordCheck: "",
+        username: '',
+        nickname: '',
+        email: "",
+        code: '',
+      }
     })
     // 아이디 닉네임 바꾸는지 확인
-    watch(() => state.credentials.username.value, (newValue, oldValue) => {
-      state.credentials.username.status = false
-      console.log('변화 감지', {newValue, oldValue})
+    watch(() => state.credentials.username, (newValue, oldValue) => {
+      if (newValue != oldValue) {state.usernameState = false}
+      // console.log('변화 감지', {newValue, oldValue})
     })
-    watch(() => state.credentials.nickname.value, (newValue, oldValue) => {
-      state.credentials.nickname.status = false
-      console.log('변화 감지', {newValue, oldValue})
+    watch(() => state.credentials.nickname, (newValue, oldValue) => {
+      if (newValue != oldValue) {state.nicknameState = false}
+      // console.log('변화 감지', {newValue, oldValue})
     })
     // 아이디 중복확인
     const uniqueUsername = async function () {
+      // console.log('아이디 중복확인 함수 잘 들어옴, 이제 스토어에 디스패치 간다')
       const result = await store.dispatch('userStore/uniqueUsernameAction', state.credentials.username )
       if (result.data.unique == true) {
-        state.credentials.username.status = true
-        console.log('중복이 아니군여')
+        state.usernameState = true
+        // console.log('중복이 아니군여')
       } else {
-        console.log('중복이군여')
-        state.credentials.username.status = false
+        // console.log('중복이군여')
+        state.usernameState = false
         alert("아이디가 중복이에...")
       } 
     }
@@ -100,95 +113,82 @@ export default {
     const uniqueNickname = async function () {
       const result = await store.dispatch('userStore/uniqueNicknameAction', state.credentials.nickname )
       if (result.data.unique==true) {
-        state.credentials.nickname.status = true
+        state.nicknameState = true
         alert("닉 사용가능.")
       } else {
-        state.credentials.nickname.status = false
+        state.nicknameState = false
         alert("이미 사용 중인 닉입니다.")
       }
     }
 
-    const sendSignupInfo = function () {
+    // 네이밍규칙
+    const submitRules = function () {
+      const validations = new SignupInfoValidations(
+        state.credentials.username, 
+        state.credentials.nickname, 
+        state.credentials.password,
+        state.credentials.passwordCheck,
+        );
+      // console.log(validations.checkValidations())
+      const errors = validations.checkValidations();
+      
+      if ('username' in errors) {
+        errorMsgs.err.username = errors['username']
+      } 
+      if ('nickname' in errors) {
+        errorMsgs.err.nickname = errors['nickname']
+      }
+      if ('password' in errors) {
+        errorMsgs.err.password = errors['password']
+      }
+      if ('passwordCheck' in errors) {
+        errorMsgs.err.passwordCheck = errors['passwordCheck']
+      }
+    }
+    
+
+
+    // 가입요청1
+    const sendSignupInfo = async function () {
           // 아이디 닉네임 중복확인 다 했는지 확인
-      if (!state.credentials.username.status){
-        alert("이메일 중복확인이 필요합니다.")
+      if (!state.usernameState){
+        alert("아이디 중복확인이 필요합니다.")
         return
-      } else if (!state.credentials.nickname.status){
+      } else if (!state.nicknameState){
         alert("닉네임 중복확인이 필요합니다.")
         return
       } else {
         const credentialsData = {
-          username: state.credentials.username.value,
-          nickname: state.credentials.nickname.value,
+          username: state.credentials.username,
+          nickname: state.credentials.nickname,
           password: state.credentials.password,
           passwordCheck: state.credentials.passwordCheck,
           email: state.credentials.email,
           code: state.credentials.code,
         }
       // 회원가입 등록
-      this.$store.dispatch('userStore/signupFirstAction', credentialsData)
-      console.log("회원가입 요청 1 잘 갔음")
-      this.$router.push({name: 'input-email'})
+      const res = await store.dispatch('userStore/signupFirstAction', credentialsData)
+      if (res) {
+        console.log("회원가입 요청 1 잘 갔음")
+        router.push({name: 'input-email'})
+      }
       }
     }
   
   return {
+    
     state,
+    errorMsgs,
     uniqueUsername,
     uniqueNickname,
+    submitRules,
     sendSignupInfo,
   }
   },
   data() {
     return {
-      v$: useVuelidate(),
-      // 회원 정보
-      username: { value: "", status: false },
-      nickname: { value: "", status: false },
-      password: "",
-      passwordCheck: "",
-      email: "",
       // 에러
       errors: [],
-    };
-  },
-  computed: {
-
-  },
-  methods: {
-    onSubmit() {
-      this.v$.$touch();
-      const validations = new SignupValidations(
-        this.username.value, 
-        this.nickname.value, 
-        this.password,
-        this.passwordCheck,
-        );
-      this.errors = validations.checkValidations();
-
-      // 인풋값 다 입력했는지 확인
-      if (!this.v$.$error) {
-        console.log("모든 인풋값 입력 완료")
-      } else {
-        alert("모든 필드에 값을 입력 해주세요");
-      }
-
-      if ('username' in this.errors || 'nickname' in this.errors || 'password' in this.errors|| 'passwordCheck' in this.errors) {
-        return false;
-      }
-
-
-    }
-  
-    
-
-  },
-  validations() {
-    return {
-      username: { required },
-      nickname: { required },
-      password: { required },
-      passwordCheck: { required },
     };
   },
 };

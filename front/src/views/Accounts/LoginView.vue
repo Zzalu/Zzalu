@@ -16,23 +16,23 @@
         type="text"
         class="account-input"
         placeholder="아이디를 입력하세요"
-        v-model="username"
+        v-model="state.creds.username"
       />
     </div>
-    <div class="error" v-if = "errors.username"> {{ errors.username }} </div>
+    <!-- <div class="error" v-if = "errors.username"> {{ errors.username }} </div> -->
     <h2 class="input-title">비밀번호</h2>
     <div>
       <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
       <input
-        type="text"
+        type="password"
         class="account-input"
         placeholder="비밀번호를 입력하세요"
-        v-model='password'
+        v-model='state.creds.password'
       />
       <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
-    <div class="error" v-if = "errors.password"> {{ errors.password }} </div>
+    <!-- <div class="error" v-if = "errors.password"> {{ errors.password }} </div> -->
     <!-- <h1 :error="error">{{error}}</h1> -->
 
     <!-- 아이디 비번찾기 -->
@@ -52,7 +52,7 @@
   </div>
   <!-- 로그인 버튼 -->
   <div class="center-containers">
-    <button class="submit-button">로그인</button>
+    <button class="submit-button" @click="loginSubmit">로그인</button>
   </div>
   <sign-up-bottom-nav></sign-up-bottom-nav>
 </template>
@@ -60,28 +60,44 @@
 <script>
 import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue'
 // import LoginValidations from '../../services/LoginValidations'
+import { useStore } from 'vuex';
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router';
+
 
 export default {
   name: "LoginView",
   components: {
     SignUpBottomNav,
   },
-  data() {
-    return {
-      username: "",
-      password: "",
-    };
-  },
-  methods: {
-    onSubmit() {
-      const username = this.username
-      const password = this.password
-
-      const payload = {
-        username: username,
-        password: password,
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const state = reactive({
+      creds: {
+        username: '',
+        password: '',
       }
-      this.$store.dispatch('logIn', payload)
+
+    })
+
+    const loginSubmit = async function () {
+        const loginData = {
+          username: state.creds.username,
+          password: state.creds.password,
+        }
+      console.log('로그인 데이터', loginData)
+      const res = await store.dispatch('userStore/loginAction', loginData)
+      if (res) {
+        console.log("로그인 요청 잘 갔음")
+        router.push({name: 'main'})
+      }
+      
+    }
+
+    return {
+      state,
+      loginSubmit,
     }
   },
 }

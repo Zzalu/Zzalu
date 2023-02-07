@@ -7,7 +7,7 @@
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ time }}</p>
-        <p v-if="canDelete" class="text-xs" @click="deleteComment">삭제</p>
+        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
     </li>
@@ -28,18 +28,18 @@ export default {
     // TODO: time ~~전으로 출력하기
     const nested_comment_data = reactive({
       profile_image: 'profile.jpg',
-      username: props.nested_comment_data.username,
-      nested_comment_id: props.nested_comment.id,
+      username: props.nested_comment.username,
+      nested_comment_id: props.nested_comment.replyCommentId,
       nickname: props.nested_comment.nickname,
-      time: props.comment.createdTime,
+      time: props.nested_comment.createdTime,
       content: props.nested_comment.content,
       // modified: false,
     });
 
     // TODO: 나중에 로그인 기능 완성되면 username 수정하기
-    const username = 'c109';
     const canDelete = computed(() => {
-      return username != nested_comment_data.username;
+      console.log(nested_comment_data.username);
+      return (nested_comment_data.username = 'c109');
     });
 
     const clickDeleteBtn = () => {

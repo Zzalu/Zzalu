@@ -5,76 +5,85 @@
     <div class="almost-done">
       <div class="error-sub-title" v-if="$route.name == 'signup'">거의 다 끝났습니다!</div>
       <div class="error-sub-title">이메일로 전송된 인증코드를 입력해주세요.</div>
-      <div class="time-remain" :timerStr="timerStr">{{ timerStr }}</div>
+      <div class="time-remain" >3:00</div>
     </div>
   </div>
-  <div class="flex justify-center">
+  <!-- <div class="flex justify-center">
     <input type="text" class="input-code">
     <input type="text" class="input-code">
     <input type="text" class="input-code">
     <input type="text" class="input-code">
-  </div>
+  </div> -->
+  <input type="text" placeholder="{{ inputCode }}" v-model="inputCode">
+  <h1>{{inputCode}}</h1>
+  <!-- <input type="text" v-model="signupUser" placeholder="{{ inputCode }}" > -->
+  <button @click="checkCode">입력하기</button>
   <div class="text-center-container">
     <div class="didnt-get-mail">
       <div class="error-content">메일을 받지 못하셨나요?</div>
       <button class="send-again-button">인증 메일 재전송</button>
-      
+      {{ userInfo.code }}
     </div>
 
-      <button class="submit-button" @click = "signupFinal">인증하기</button>
+      <button class="submit-button" @click="signupFinal">인증하기</button>
 
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+// import { computed } from '@vue/runtime-core'
 export default {
   name: 'InputCodeForm',
-  data: function() {
+  computed: 
+    mapState({
+      userInfo: state => state.userStore.temp,
+    }),
+  // setup() {
+  //   const store = useStore();
+
+  // },
+  methods: {
+    signupFinal : async function () {
+      // const result = await store.dispatch('userStore/signupFinalAction', this.userInfo )
+      console.log(this.inputCode);
+      console.log('------------------')
+      console.log(this.userInfo.code);
+      // console.log(result.data.authKey)
+      if (this.inputCode == this.userInfo.code) {
+        console.log(this.userInfo)
+        console.log(this.inputCode)
+        // 여기까지는 잘 왔음
+        const userData = {
+            "username": this.userInfo.username,
+            "password": this.userInfo.password,
+            "passwordConfirmation": this.userInfo.passwordCheck,
+            "nickname": this.userInfo.nickname,
+            "userEmail": this.userInfo.email
+        }
+        const result = await this.$store.dispatch('userStore/signupFinalAction', userData )
+        console.log(result);
+        if (result.response.status == 400) {
+          alert("야 넌 회원가입 다시해라")
+        } else {
+          this.$router.push({name: 'complete'})
+        }
+      } else {
+        alert ("님 코드 틀렸음")
+      }
+    }
+  },
+
+  data () {
     return {
-      timer: null,
-      timeCounter: 180,
-      timerStr: "03:00"
+      inputCode: '',
     }
+    
   },
-  mounted: function() {
-    if(this.Timer != null){
-      this.timerStop(this.Timer);
-        this.Timer = null;
-    }
-    this.Timer = this.timerStart();
-  },
-  methods : {
-    timerStart: function() {
-      // 1초에 한번씩 start 호출
-      this.TimeCounter = 180;
-      var interval = setInterval(() => {
-        this.TimeCounter--; //1초씩 감소
-        this.TimerStr = this.prettyTime();
-        if (this.TimeCounter <= 0) this.timerStop(interval);
-      }, 1000);
-      return interval;
-    },
-    timerStop: function(Timer) {
-      clearInterval(Timer);
-      this.TimeCounter = 0;
-    },
-    prettyTime: function() {
-      // 시간 형식으로 변환 리턴
-      let time = this.TimeCounter / 60;
-      let minutes = parseInt(time);
-      let secondes = Math.round((time - minutes) * 60);
-      return (
-        minutes.toString().padStart(2, "0") +
-        ":" +
-        secondes.toString().padStart(2, "0")
-      );
-    },
-    // 최종 회원가입 요청
-    signupFinal() {
-      
-    }
   }
-}
+
+  
+
 </script>
 
 <style>
