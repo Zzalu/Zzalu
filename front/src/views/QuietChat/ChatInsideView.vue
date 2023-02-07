@@ -1,23 +1,22 @@
 <template>
   <div>
-    <h1>채팅방안</h1>
-    <button v-touch:longtap="hi">ㅇㅇㅇㅇㅇㅇㅇ인사봇</button>
+    <ChatRoomTopNav
+    :room_name="this.$route.query.room_name"
+    />
+    <h1>{{ this.$route.query.name }}</h1>
     <MainBottomNav />
   </div>
 </template>
 
 <script>
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
+import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav"
 export default {
   name: "ChatInsideView",
   components: {
     MainBottomNav,
+    ChatRoomTopNav
   },
-  methods: {
-    hi() {
-      console.log("인사합니다");
-    }
-  }
 };
 </script>
 
