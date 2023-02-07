@@ -6,10 +6,18 @@
           <div :class="open_list_modal ? 'hide-modal-items' : null"></div>
           <div class="dark:border-zz-dark-div">
             <div class="modal">
-              <div class="modal-items">
+              <div
+              class="modal-items"
+              ref="notification-list"
+              @scroll="handleNotificationListScroll"
+              >
+              <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
                 <SearchBar />
-                <div v-for="(a, i) in 30" :key="i">
-                  <JjalListItem :i="i" @select_id="select_id" 
+                <div v-for="(zzal_info, i) in random_gif_data" :key="i">
+                  <JjalListItem
+                    :zzal_info="zzal_info"
+                    :i="i"
+                    @select_id="select_id"
                   />
                 </div>
               </div>
@@ -32,8 +40,7 @@ import SearchBar from "../components/Search/SearchBar";
 import JjalListItem from "../components/Search/Item/JjalListItem";
 import StoreList from "../components/Search/StoreList";
 import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
-
+import { computed, onBeforeMount } from "@vue/runtime-core";
 export default {
   name: "SearchView",
   setup() {
@@ -45,14 +52,28 @@ export default {
     const open_list_modal = computed(
       () => store.state.searchModalStore.open_list_modal
     );
+    const random_gif_data = computed(
+      () => store.state.zzalListStore.random_gif_data
+    );
 
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
+
+    onBeforeMount(() => {
+      store.dispatch("zzalListStore/getFirstRandomGIFList");
+    });
+
+    function MoreRandomGIF(gif_data) {
+      store.dispatch("zzalListStore/getMoreRandomGIFLIST",[...gif_data])
+    }
+
     return {
       open_search_modal,
       open_list_modal,
+      random_gif_data,
       send_select_jjal_num,
+      MoreRandomGIF,
     };
   },
   components: {
@@ -60,15 +81,78 @@ export default {
     JjalListItem,
     StoreList,
   },
+  data() {
+    return {
+      gif_data: [],
+      load_state : false,
+    };
+  },
   methods: {
     select_id(e) {
       this.send_select_jjal_num(e);
+    },
+    handleNotificationListScroll(e) {
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      // 일정 한도 밑으로 내려오면 함수 실행
+      if (isAtTheBottom) {
+        this.load_state = true;
+        setTimeout(() => {
+          this.MoreRandomGIF(this.gif_data)
+          this.load_state = false
+        }, 1000);
+      }
+    },
+  },
+  watch: {
+    random_gif_data(nv) {
+      let gif_id = [];
+      for (let i = 0; i < nv.length; i++) {
+        gif_id.push(parseInt(nv[i].id));
+      }
+      this.gif_data = gif_id;
     },
   },
 };
 </script>
 
 <style scoped lang="postcss">
+/* 로딩 애니메이션 */
+@import url(https://fonts.googleapis.com/css?family=Roboto:100);
+
+body {
+  margin-top: 100px;
+  background-color: #137b85;
+  color: #fff;
+  text-align: center;
+}
+
+h1 {
+  font: 2em "Roboto", sans-serif;
+  margin-bottom: 40px;
+}
+
+#loading {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #fff;
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes spin {
+  to {
+    -webkit-transform: rotate(360deg);
+  }
+}
 /* 모달창 애니메이션 */
 .fade-enter-active {
   transform: translateY(90vh);
@@ -112,7 +196,7 @@ export default {
 }
 
 .modal-items::-webkit-scrollbar {
-  display:none;
+  display: none;
 }
 /* 보관함 선택시 어두워지는 범위 */
 .hide-modal-items {

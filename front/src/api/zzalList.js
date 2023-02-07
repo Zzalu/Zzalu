@@ -9,5 +9,13 @@ function getRecommendGIF(res,err) {
     api.get(`/gif/user`)
     .then(res).catch(err)
 }
+function getFirstRandomGIF(res,err) {
+    api.get(`/gif/randoms?exceptIds=`)
+    .then(res).catch(err)
+}
+function getMoreRandomGIF(params,res,err) {
+    api.get(`/gif/randoms?exceptIds=`,params)
+    .then(res).catch(err)
+}
 
-export { getPopularGIF,getRecommendGIF }
+export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF }
