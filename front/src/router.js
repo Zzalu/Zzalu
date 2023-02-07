@@ -101,8 +101,8 @@ const routes = [
   // PROFILE
   // 프로필 메인
   {
-    // path: "/profile/:user_id",
-    path: '/profile',
+    path: "/profile/:user_id",
+    // path: '/profile',
     name: 'profile',
     component: () => import('@/views/Profile/ProfileView'),
   },
@@ -142,10 +142,10 @@ const routes = [
   // ----------------------------------------------------------------
   // ERROR
   // 에러404 페이지X
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/error-404',
-  },
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   redirect: '/error-404',
+  // },
   {
     path: '/error-404',
     name: 'error-404',
