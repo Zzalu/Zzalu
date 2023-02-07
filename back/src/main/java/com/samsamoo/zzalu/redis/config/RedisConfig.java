@@ -1,7 +1,8 @@
 package com.samsamoo.zzalu.redis.config;
 
 
-import com.samsamoo.zzalu.chat.dto.ChatMessage;
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -22,6 +24,15 @@ import java.time.Duration;
 @Configuration
 @EnableCaching
 public class RedisConfig {
+
+    @Value("${spring.redis.host}")
+    private String redisHostName;
+
+    @Value("${spring.redis.password}")
+    private String redisPassword;
+
+    @Value("${spring.redis.port}")
+    private int redisPort;
 
     /**
      * redis pub/sub 메시지를 처리하는 listener 설정
@@ -54,11 +65,11 @@ public class RedisConfig {
     }
 
     @Bean
-    public RedisTemplate<String, ChatMessage> redisChatMessageTemplate(RedisConnectionFactory connectionFactory) {
-        RedisTemplate<String, ChatMessage> redisTemplate = new RedisTemplate<>();
+    public RedisTemplate<String, ChatMessageDto> redisChatMessageTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, ChatMessageDto> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(connectionFactory);
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessage.class));
+        redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(ChatMessageDto.class));
         return redisTemplate;
     }
 
@@ -74,7 +85,10 @@ public class RedisConfig {
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory() {
-        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory();
+        RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
+        redisStandaloneConfiguration.setPassword(redisPassword);
+        LettuceConnectionFactory lettuceConnectionFactory = new LettuceConnectionFactory(redisStandaloneConfiguration);
+
         return lettuceConnectionFactory;
     }
 //
