@@ -24,7 +24,7 @@
     </div>
   </div>
   <div class="logout">
-    <router-link to="login">로그아웃하기</router-link>
+    <button @click="logoutSubmit">로그아웃하기</button>
   </div>
   
   <main-bottom-nav></main-bottom-nav>
@@ -37,6 +37,8 @@ import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue"
 import { useDark, useToggle } from "@vueuse/core";
 
 const isDark = useDark();
+import { useStore } from "vuex";
+import { useRouter } from 'vue-router';
 const toggleDark = useToggle(isDark);
 
 export default {
@@ -51,7 +53,17 @@ export default {
       toggleDark,
     };
   },
-  methods: {
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const logoutSubmit = async function() {
+      await store.dispatch('userStore/logoutAction')
+      router.push({name: 'main'})
+    }
+
+    return {
+      logoutSubmit
+    }
   }
 }
 </script>

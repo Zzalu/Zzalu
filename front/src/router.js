@@ -101,8 +101,8 @@ const routes = [
   // PROFILE
   // 프로필 메인
   {
-    // path: "/profile/:user_id",
-    path: '/profile',
+    path: "/profile/:user_id",
+    // path: '/profile',
     name: 'profile',
     component: () => import('@/views/Profile/ProfileView'),
   },
