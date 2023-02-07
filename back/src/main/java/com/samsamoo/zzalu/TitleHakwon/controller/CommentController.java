@@ -1,7 +1,9 @@
 package com.samsamoo.zzalu.TitleHakwon.controller;
 
 import com.samsamoo.zzalu.TitleHakwon.dto.*;
+import com.samsamoo.zzalu.TitleHakwon.repository.RedisCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.service.CommentService;
+import com.samsamoo.zzalu.redis.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +19,13 @@ import java.util.Objects;
 @CrossOrigin("*")
 public class CommentController {
 
+
+    private final RedisPublisher redisPublisher;
     private final CommentService commentService;
+
+    private final RedisCommentRepository redisCommentRepository;
+
+
 
     /**
      * [POST]
@@ -26,9 +34,14 @@ public class CommentController {
     @PostMapping()
     public ResponseEntity<CommentResponse> addComent(@RequestBody CommentRequest requestComent){
 
+        // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
+        //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
 
+        CommentResponse commentResponse = commentService.addComment(requestComent);
+        System.out.println("@@redis");
+        redisPublisher.publishTitleHakwon( redisCommentRepository.getTopic("comments"),commentResponse);
         //201리턴
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.addComment(requestComent));
+        return ResponseEntity.status(HttpStatus.OK).body(commentResponse);
 
     }
 
@@ -125,6 +138,11 @@ public class CommentController {
             //그렇지 않은 경우는 좋아요 가능
             //없는회원이면,,,, -> 예외처리하자  좋아요 완료로뜬다.
             commentService.clickCommentLikes(commentId,username);
+
+   /*         // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
+            //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
+            redisPublisher.publish("title-Hakwon",);*/
+
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
         }
     }

@@ -34,12 +34,7 @@ public class AwardRecordService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = current.format(formatter);
 
-        System.out.println(date + "오늘 날짜 ");
-
-
-
-
-        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate("2023-02-02");
+        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate(date);
 
 
         //상위 3개의 댓글 가져오기
@@ -52,12 +47,15 @@ public class AwardRecordService {
                     .titleHakwon(comments.get(i).getTitleHakwon())
                     .rank(i+1)
                     .build();
-
-
             awardRecordRepository.save(awardRecord);
 
         }
 
 
     }
+
+
+    /** 매일 아침 10시 오늘의 제목학원 open **/
+
+
 }

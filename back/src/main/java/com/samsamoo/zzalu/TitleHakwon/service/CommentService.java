@@ -233,17 +233,17 @@ public class CommentService {
      * 1. 댓글 좋아요 기록에 추가
      * 2. 댓글 좋아요 +1
      */
-    public void clickCommentLikes(Long commentId , String memberId){
+    public Integer clickCommentLikes(Long commentId , String memberId){
 
         //존재하지 않은 댓글이였다면?
         Optional<Comment> comment = commentRepository.findById(commentId);
         Optional<Member> member = memberRepository.findByUsername(memberId);
 
         if(!comment.isPresent()){
-            return;
+            return null;
         }
         if(!member.isPresent()){
-                return;
+                return null;
         }
         //존재하지 않는 멤버였다면?
 
@@ -257,6 +257,10 @@ public class CommentService {
         //해당 댓글의 좋아요 +1을 증가시킨다.
         comment.get().plusLikeNum();
         commentRepository.save(comment.get());
+
+
+
+        return Integer.valueOf(comment.get().getLikeNum());
 
     }
 

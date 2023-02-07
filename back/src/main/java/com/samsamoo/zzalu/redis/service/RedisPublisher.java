@@ -2,8 +2,9 @@ package com.samsamoo.zzalu.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
-import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
+import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
+import com.samsamoo.zzalu.chat.dto.ChatMessage;
+import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -26,5 +27,11 @@ public class RedisPublisher {
 
     public void publish(ChannelTopic topic, ChatMessageDto message) {
         redisTemplate.convertAndSend(topic.getTopic(), message);
+    }
+
+    public void publishTitleHakwon(ChannelTopic topic, CommentResponse commentResponse) {
+        System.out.println("[publishTItlehakwon]"+ topic.getTopic());
+        System.out.println(commentResponse.getContent()+"댓글 정보");
+        redisTemplate.convertAndSend(topic.getTopic(), commentResponse);
     }
 }
