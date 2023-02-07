@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.chat.repository;
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
+import com.samsamoo.zzalu.chat.entity.ChatMessage;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
@@ -44,6 +46,7 @@ public class ChatRoomRedisRepository {
     private ListOperations<String, ChatMessageDto> opsListChatMessage;
 
     private final ChatRoomRepository chatRoomRepository;
+    private final ChatRepository chatRepository;
 
     @PostConstruct
     private void init() {
@@ -110,7 +113,19 @@ public class ChatRoomRedisRepository {
         message.setSendDate(sendDate);
         ChatRoomDto chatRoomDto = findRoomById(message.getRoomId());
         chatRoomDto.setLastActivation(sendDate);
+        // Redis에 저장
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
+        // DB에 저장
+        ChatRoom chatRoom = chatRoomRepository.findByRoomId(chatRoomDto.getRoomId());
+        if(chatRoom != null) {
+            ChatMessage chatMessage = message.toEntity();
+            chatMessage.setChatRoom(chatRoom);
+            chatRoom.addChatMessage(chatMessage);
+            chatRepository.save(chatMessage);
+            chatRoomRepository.save(chatRoom);
+        } else {
+            System.out.println("need chat room not found exception throw");
+        }
     }
 
     /**
