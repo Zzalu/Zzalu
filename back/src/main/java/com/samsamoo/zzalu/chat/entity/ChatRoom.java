@@ -39,6 +39,7 @@ public class ChatRoom {
     private Long likeCount;
 
     @OneToMany(mappedBy = "chatRoom")
+    @Builder.Default
     private List<ChatMessage> chatMessages  = new LinkedList<>();
 
     @Column(name = "LIKE_MEMBERS")
