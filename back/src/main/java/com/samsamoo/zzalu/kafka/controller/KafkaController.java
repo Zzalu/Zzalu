@@ -1,6 +1,5 @@
 package com.samsamoo.zzalu.kafka.controller;
 
-import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.kafka.service.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
