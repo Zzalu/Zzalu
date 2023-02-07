@@ -44,7 +44,7 @@ public class GifsController {
     }
 
     @GetMapping("/randoms")
-    public ResponseEntity<List<Gifs>> randomGifs(@RequestParam("exceptIds") List<Long> exceptIds) {
+    public ResponseEntity<List<Gifs>> randomGifs(@RequestBody List<Long> exceptIds) {
         Long columnCount = gifsService.counyBy();
 
         HashMap<Long, Boolean> duplicateCheck = new HashMap<>();
