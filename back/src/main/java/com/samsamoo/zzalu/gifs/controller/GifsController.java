@@ -1,36 +1,94 @@
 package com.samsamoo.zzalu.gifs.controller;
 
-import com.samsamoo.zzalu.gifs.entity.GiphyGifs;
-import com.samsamoo.zzalu.gifs.service.GiphyGifsService;
+import com.samsamoo.zzalu.gifs.dto.GifsUpdateDto;
+import com.samsamoo.zzalu.gifs.entity.Gifs;
+import com.samsamoo.zzalu.gifs.service.GifsService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/giphy")
+@RequestMapping("/gif")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class GifsController {
 
-    private final GiphyGifsService giphyGifService;
+    private final GifsService gifsService;
 
     @GetMapping("/gifs")
-    public ResponseEntity<List<GiphyGifs>> mainPage() {
-        List<GiphyGifs> giphyGifList = giphyGifService.findAllGif();
+    public ResponseEntity<List<Gifs>> mainPage() {
+        List<Gifs> giphyGifList = gifsService.findAllGif();
         return ResponseEntity.ok().body(giphyGifList);
     }
 
-    @PostMapping("/gif")
-    public ResponseEntity<Optional<GiphyGifs>> findById(@RequestParam("gifId") Long gifId) {
-        Optional<GiphyGifs> giphyGifList = giphyGifService.findById(gifId);
-        return ResponseEntity.ok().body(giphyGifList);
+    @GetMapping("/gif")
+    public ResponseEntity<Optional<Gifs>> findById(@RequestParam("gifId") Long gifId) {
+        Optional<Gifs> gif = gifsService.findById(gifId);
+        return ResponseEntity.ok().body(gif);
     }
 
     @GetMapping("/main/gifs")
-    public ResponseEntity<List<GiphyGifs>> findTop90() {
-        return ResponseEntity.ok().body(giphyGifService.findTop90());
+    public ResponseEntity<List<Gifs>> findTop90() {
+        return ResponseEntity.ok().body(gifsService.findTop90());
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Gifs>> findByTags(@RequestParam("searchKeyword") String searchKeyword) {
+        return ResponseEntity.ok().body(gifsService.findByTags(searchKeyword));
+    }
+
+    @GetMapping("/randoms")
+    public ResponseEntity<List<Gifs>> randomGifs(@RequestBody List<Long> exceptIds) {
+        Long columnCount = gifsService.counyBy();
+
+        HashMap<Long, Boolean> duplicateCheck = new HashMap<>();
+        HashMap<Long, Boolean> randomGifIds = new HashMap<>();
+
+        for (long index = 0; index < exceptIds.size(); ++index) {
+            duplicateCheck.put(exceptIds.get((int) index), true);
+        }
+
+        while (randomGifIds.size() < 30) {
+            long randomId = (long) (Math.random() * columnCount + 1);
+            if(!duplicateCheck.containsKey(randomId))
+                randomGifIds.put(randomId, true);
+        }
+
+        List<Long> gifIds = new ArrayList<>(randomGifIds.keySet());
+        List<Gifs> gifsList = gifsService.findByIdIn(gifIds);
+        System.out.println("gifList : " + gifsList);
+        return ResponseEntity.ok().body(gifsList);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<List<Gifs>> userGifs() {
+        Long columnCount = gifsService.counyBy();
+
+        HashMap<Long, Boolean> randomGifIds = new HashMap<>();
+
+        while (randomGifIds.size() < 90) {
+            long randomId = (long) (Math.random() * columnCount + 1);
+            randomGifIds.put(randomId, true);
+        }
+
+        List<Long> gifIds = new ArrayList<>(randomGifIds.keySet());
+        List<Gifs> gifsList = gifsService.findByIdIn(gifIds);
+        System.out.println("gifList : " + gifsList);
+        return ResponseEntity.ok().body(gifsList);
+    }
+
+    @PutMapping("/gif")
+    public ResponseEntity<Gifs> updateGifs(@RequestBody GifsUpdateDto gifsUpdateDto) {
+        System.out.println(gifsUpdateDto.toString());
+        Gifs gifs = gifsService.gifDetailUpdate(gifsUpdateDto);
+        return ResponseEntity.ok().body(gifs);
     }
 
 }
+

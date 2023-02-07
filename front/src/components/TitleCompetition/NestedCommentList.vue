@@ -1,41 +1,63 @@
 <template>
-  <ol>
-    <li v-for="nested_comment in nested_comments" :key="nested_comment.nested_comment_id" class="mb-1">
-      <nested-comment-list-item :comment="nested_comment" />
-      <span class="w-full h-divider-height bg-zz-light-div"></span>
-    </li>
-  </ol>
+  <div>
+    <ol>
+      <li v-for="nested_comment in nested_comments" :key="nested_comment.nested_comment_id" class="mb-1">
+        <nested-comment-list-item :nested_comment="nested_comment" />
+        <span class="w-full h-divider-height bg-zz-light-div"></span>
+      </li>
+    </ol>
+    <div @click="loadMoreNestedComments">
+      <button v-if="nested_comment_cnt - nested_comments.length > 0" class="text-xs text-zz-negative ml-6">
+        - {{ nested_comment_cnt - nested_comments.length }}개의 답글 더보기
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>
 import NestedCommentListItem from './item/NestedCommentListItem.vue';
+import { useStore } from 'vuex';
+import { reactive, toRefs } from 'vue-demi';
+
 export default {
   components: { NestedCommentListItem },
-  setup() {
-    const nested_comments = [
-      {
-        nested_comment_id: 1,
-        nickname: '대댓글조아',
-        content: '댓글보다 웃긴 대댓글',
-        comment_id: 1,
-        profile_image: 'profile.jpg',
-        time: '12시간 전',
-        like_cnt: 231,
-        modified: false,
-      },
-      {
-        nested_comment_id: 2,
-        nickname: '그저웃기만',
-        content: 'ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ',
-        comment_id: 1,
-        profile_image: 'profile.jpg',
-        time: '11시간 전',
-        like_cnt: 2,
-        modified: false,
-      },
-    ];
+  name: 'NestedCommentList',
+  props: {
+    comment_id: Number,
+    nested_comment_cnt: Number,
+  },
+  setup(props) {
+    console.log(props);
+    const store = useStore();
+    const size = 3;
+    const state = reactive({
+      nested_comments: [],
+      last_nested_comment_id: Number.MAX_SAFE_INTEGER,
+    });
+    const pushNestedComments = async () => {
+      return new Promise((resolve) => {
+        state.nested_comments.push(...store.state.titleCompetitionStore.new_nested_comments);
+        resolve();
+      });
+    };
+    // 답글 읽기
+    const loadMoreNestedComments = async () => {
+      console.log(props);
+      await store.dispatch('titleCompetitionStore/getNestedCommentList', {
+        comment_id: props.comment_id,
+        lastCid: state.last_nested_comment_id,
+        limit: size,
+        sort: 'LATEST',
+      });
+      await pushNestedComments();
+      state.last_nested_comment_id = state.nested_comments[state.nested_comments.length - 1].replyCommentId;
+      console.log(state.last_nested_comment_id);
+    };
+
+    loadMoreNestedComments();
     return {
-      nested_comments,
+      ...toRefs(state),
+      loadMoreNestedComments,
     };
   },
 };

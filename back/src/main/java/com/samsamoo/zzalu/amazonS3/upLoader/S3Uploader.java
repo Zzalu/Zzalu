@@ -36,7 +36,6 @@ public class S3Uploader {
     private String bucket;
 
 
-
    //S3에 전달할 수 있도록 MultiPartFile 을 File로 전환한다.
     //S3에서 MultiPartFile 타입은 전송이 안된다.
     public String upload(MultipartFile multipartFile, String dirName) throws IOException {

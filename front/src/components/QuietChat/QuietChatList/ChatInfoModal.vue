@@ -1,12 +1,12 @@
 <template>
   <div class="modal">
     <div class="modal-title-box">
+      <p class="modal-title">{{ room_data.roomName }} 고독방</p>
       <font-awesome-icon
         @click="close_modal"
         class="modal-icon"
         icon="fa-solid fa-xmark"
       />
-      <p class="modal-title">{{ info_data.name }}</p>
     </div>
     <div class="img-container">
       <img
@@ -18,34 +18,38 @@
       <div class="modal-first-line">
         <div class="group">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="first-line-content">{{ info_data.master }}</p>
+          <p class="first-line-content">{{ room_data.userName }}</p>
         </div>
         <div class="group">
-          <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s" />
-          <p class="first-line-content">{{ info_data.like }}</p>
+          <font-awesome-icon
+            icon="fa-solid fa-heart"
+            class="text-zz-s dark:text-zz-p"
+          />
+          <p class="first-line-content">{{ room_data.likeCount }}</p>
         </div>
       </div>
-      <p class="modal-content">{{ info_data.content }}</p>
+      <p v-if="room_data.description" class="modal-content">
+        {{ room_data.description }}
+      </p>
+      <p v-else class="modal-content">등록된 고독방 한 줄 소개가 없습니다.</p>
       <div class="hashtag-div">
-        <p
-          v-for="(hashtags, j) in info_data.hashtag"
-          :key="j"
-          class="hashtag-p"
-        >
-          {{ hashtags }}
-        </p>
+        <div v-for="(hashtags, j) in hash" :key="j" class="hashtag-p">
+          <div v-if="hashtags">
+            # {{ hashtags }}
+          </div>
+        </div>
       </div>
     </div>
     <div class="flex place-content-evenly">
       <button class="modal-create-btn">
-        <router-link to="/chat/0"> 입장하기 </router-link>
+        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName }}"> 입장하기 </router-link>
       </button>
     </div>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex"
+import { useStore } from "vuex";
 
 export default {
   name: "ChatInfoModal",
@@ -56,20 +60,29 @@ export default {
       store.commit("quietChatStore/close_chat_info");
     };
     return {
-      close_chat_info
+      close_chat_info,
+    };
+  },
+  data() {
+    return {
+      hash : [],
     }
   },
   props: {
-    info_data: Object,
+    room_data: Object,
+    hashtag: String,
+  },
+  created() {
+    this.hash = this.hashtag.split(",");
   },
   unmounted() {
-    this.close_chat_info()
+    this.close_chat_info();
   },
   methods: {
     close_modal() {
-      this.close_chat_info()
-    }
-  }
+      this.close_chat_info();
+    },
+  },
 };
 </script>
 
@@ -77,32 +90,36 @@ export default {
 /* 모달 타이틀 */
 .modal {
   min-height: 24rem;
-  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-9/12 h-96 text-center bg-zz-p;
+  @apply fixed inset-0 m-auto border border-zz-p rounded-2xl w-72 h-96 text-center bg-zz-p dark:bg-zz-dark-s z-50;
 }
 .modal-title-box {
-  @apply bg-zz-p border-2 rounded-t-xl border-zz-p;
+  /* font-size:1rem; */
+  @apply bg-zz-p rounded-t-xl border-zz-p dark:bg-zz-dark-s font-spoq font-bold w-full h-12 relative;
 }
 .modal-title {
-  @apply text-xl font-bold font-carter ml-8 line-clamp-1 pt-3 pb-3 text-white;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 100%;
+  @apply text-white absolute inset-x-0 mr-12 pl-12 line-clamp-2;
 }
 .modal-icon {
-  @apply float-right text-3xl mr-3 cursor-pointer mt-2;
+  @apply absolute right-0 text-3xl mr-3 cursor-pointer mt-2 dark:text-white;
 }
 /* 모달 이미지 */
 
 .img-container {
-  @apply bg-white h-40 w-full flex justify-center items-center
+  @apply bg-white h-40 w-full flex justify-center items-center dark:bg-zz-bd;
 }
 .modal-img {
-  @apply h-32 w-40 
+  @apply h-32 w-40;
 }
 
 /* 모달 콘텐트 */
 .group {
-  @apply flex items-center
+  @apply flex items-center;
 }
 .master-icon {
-  @apply text-zz-s;
+  @apply text-zz-s dark:text-zz-p;
 }
 .modal-content-box {
   @apply text-xs font-spoq ml-4 mr-3;
@@ -125,6 +142,6 @@ export default {
   @apply ml-1;
 }
 .modal-create-btn {
-  @apply rounded-xl mt-3 w-32 h-8 bg-zz-s text-white;
+  @apply rounded-xl mt-3 w-32 h-8 bg-zz-s text-white dark:bg-zz-p;
 }
 </style>

@@ -1,8 +1,11 @@
 package com.samsamoo.zzalu.TitleHakwon.entity;
 
 
+import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
+import com.samsamoo.zzalu.TitleHakwon.enums.converter.TitleHakwonConverter;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -33,15 +36,19 @@ public class TitleHakwon  {
     private String zzulUrl;
 
 
-
+    @Column(nullable = false, unique = true)
     private String openDate;
+
+
+
+   @Convert(converter =  TitleHakwonConverter.class)
+    private TitleHakwonState state  =TitleHakwonState.NOT_OPEN;
 
 
     @PrePersist
     public void onPrePersist(){
         this.openDate = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
-
 
 
 

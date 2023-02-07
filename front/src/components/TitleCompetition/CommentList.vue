@@ -9,7 +9,6 @@
 
 <script>
 import CommentListItem from './item/CommentListItem.vue';
-// import { reactive, toRefs } from 'vue';
 import { useStore } from 'vuex';
 import { onMounted, ref } from 'vue';
 
@@ -20,30 +19,25 @@ export default {
     const store = useStore();
     const commentListComponent = ref(null);
     let comments = store.state.titleCompetitionStore.comments;
-
-    const roadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getCommentList', 1);
+    const loadMoreComments = () => {
+      store.dispatch('titleCompetitionStore/getNewestComments', 4);
     };
-    /* const roadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getCommentList', {
-        lastCommentId: Number.MAX_SAFE_INTEGER,
-        titleHakwonId: 1,
-        size: 5,
-      });
-    }; */
+
     onMounted(() => {
       window.addEventListener('scroll', handleScroll);
     });
     const handleScroll = () => {
       let element = commentListComponent.value;
+
+      // TODO: 댓글 스크롤 내리면 마지막이 계속 불러와지는 오류 고치기
       if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        roadMoreComments();
+        loadMoreComments();
       }
     };
 
     return {
       comments,
-      roadMoreComments,
+      loadMoreComments,
       commentListComponent,
     };
   },

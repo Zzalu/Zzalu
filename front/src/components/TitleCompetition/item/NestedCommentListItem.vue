@@ -1,61 +1,64 @@
 <template>
-  <li>
-    <div>
+  <div>
+    <li>
       <div class="flex items-center mb-2">
         <div class="w-3 h-3 rounded-full mr-2">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ time }}</p>
-        <p v-if="modified" class="text-xs">(수정됨)</p>
+        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
-      <div class="flex flex-row">
-        <div class="w-full">
-          <button class="text-xs mr-2">답글쓰기</button>
-          <button v-if="reply_cnt > 0" class="text-xs">
-            <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
-            <span class="text-center">{{ reply_cnt }}개의 답글보기</span>
-          </button>
-        </div>
-
-        <div class="flex items-center text-zz-p">
-          <span class="text-xs mr-1">
-            {{ like_cnt }}
-          </span>
-          <button class="my-auto"><font-awesome-icon icon="fa-regular fa-heart" class="text-xs" /></button>
-        </div>
-      </div>
-    </div>
-  </li>
+    </li>
+  </div>
 </template>
 
 <script>
-import { ref } from '@vue/reactivity';
+import { reactive, toRefs } from '@vue/reactivity';
+import { deleteNestedComment } from '@/api/titleCompetition.js';
+import { computed } from 'vue-demi';
+
 export default {
-  name: 'CommentListItem',
+  name: 'NestedCommentListItem',
   props: {
-    comment: Object,
+    nested_comment: Object,
   },
   setup(props) {
-    const profile_image = ref(props.comment.profile_image);
-    const nickname = ref(props.comment.nickname);
-    const time = ref(props.comment.time);
-    const content = ref(props.comment.content);
-    const reply_cnt = ref(props.comment.reply_cnt);
-    const like_cnt = ref(props.comment.like_cnt);
-    const modified = ref(props.comment.modified);
+    // TODO: time ~~전으로 출력하기
+    const nested_comment_data = reactive({
+      profile_image: 'profile.jpg',
+      username: props.nested_comment.username,
+      nested_comment_id: props.nested_comment.replyCommentId,
+      nickname: props.nested_comment.nickname,
+      time: props.nested_comment.createdTime,
+      content: props.nested_comment.content,
+      // modified: false,
+    });
 
-    console.log(props);
+    // TODO: 나중에 로그인 기능 완성되면 username 수정하기
+    const canDelete = computed(() => {
+      console.log(nested_comment_data.username);
+      return (nested_comment_data.username = 'c109');
+    });
+
+    const clickDeleteBtn = () => {
+      deleteNestedComment(
+        nested_comment_data.nested_comment_id,
+        (({ data }) => {
+          console.log(data);
+          //TODO: 데이터 삭제 후 부모의 nested comment 배열에서 삭제하기
+        },
+        (error) => {
+          console.log(error);
+        }),
+      );
+    };
 
     return {
-      profile_image,
-      nickname,
-      time,
-      content,
-      reply_cnt,
-      like_cnt,
-      modified,
+      ...toRefs(nested_comment_data),
+      canDelete,
+      clickDeleteBtn,
     };
   },
 };

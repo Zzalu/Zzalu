@@ -8,18 +8,33 @@
     />
     <h1 class="account-title">Login</h1>
     <!-- 아이디 비번 입력창 -->
+    
     <h2 class="input-title">아이디</h2>
     <div>
-      <font-awesome-icon icon="fa-solid fa-user" class='icon-aligned-left'/>
-      <input type="text" class="account-input" placeholder="아이디를 입력하세요"/>
+      <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
+      <input
+        type="text"
+        class="account-input"
+        placeholder="아이디를 입력하세요"
+        v-model="state.creds.username"
+      />
     </div>
+    <!-- <div class="error" v-if = "errors.username"> {{ errors.username }} </div> -->
     <h2 class="input-title">비밀번호</h2>
     <div>
-      <font-awesome-icon icon="fa-solid fa-lock" class='icon-aligned-left'/>
-      <input type="text" class="account-input" placeholder="비밀번호를 입력하세요"/>
-      <font-awesome-icon icon="fa-solid fa-eye" class='icon-aligned-right'/>
+      <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
+      <input
+        type="password"
+        class="account-input"
+        placeholder="비밀번호를 입력하세요"
+        v-model='state.creds.password'
+      />
+      <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
+    <!-- <div class="error" v-if = "errors.password"> {{ errors.password }} </div> -->
+    <!-- <h1 :error="error">{{error}}</h1> -->
+
     <!-- 아이디 비번찾기 -->
     <div class="redir-accounts">
       <router-link to="/find-id" class="find-id">아이디 |</router-link>
@@ -31,30 +46,64 @@
       <div class="or-start-with">Or Start With</div>
     </div>
   </div>
-  <div class='center-containers'>
-    <img src="./assets/naver_icon.png" class='login-icon' alt="">
-    <img src="./assets/kakao_icon.png" class='login-icon' alt="">
+  <div class="center-containers">
+    <img src="./assets/naver_icon.png" class="login-icon" alt="" />
+    <img src="./assets/kakao_icon.png" class="login-icon" alt="" />
   </div>
   <!-- 로그인 버튼 -->
-  <div class='center-containers'>
-    <button class='submit-button'>로그인</button>
+  <div class="center-containers">
+    <button class="submit-button" @click="loginSubmit">로그인</button>
   </div>
   <sign-up-bottom-nav></sign-up-bottom-nav>
 </template>
 
 <script>
 import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue'
+// import LoginValidations from '../../services/LoginValidations'
+import { useStore } from 'vuex';
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router';
+
 
 export default {
   name: "LoginView",
   components: {
     SignUpBottomNav,
-  }
-};
+  },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const state = reactive({
+      creds: {
+        username: '',
+        password: '',
+      }
+
+    })
+
+    const loginSubmit = async function () {
+        const loginData = {
+          username: state.creds.username,
+          password: state.creds.password,
+        }
+      console.log('로그인 데이터', loginData)
+      const res = await store.dispatch('userStore/loginAction', loginData)
+      if (res) {
+        console.log("로그인 요청 잘 갔음")
+        router.push({name: 'main'})
+      }
+      
+    }
+
+    return {
+      state,
+      loginSubmit,
+    }
+  },
+}
 </script>
 
 <style scoped lang="postcss">
-
 .find-id {
   @apply mx-1;
 }
@@ -73,9 +122,6 @@ export default {
 }
 
 .login-icon {
-  @apply w-12 mx-2 border-8 border-gray-100 bg-gray-100 rounded-full
+  @apply w-12 mx-2 border-8 border-gray-100 bg-gray-100 rounded-full;
 }
 </style>
-
-
-

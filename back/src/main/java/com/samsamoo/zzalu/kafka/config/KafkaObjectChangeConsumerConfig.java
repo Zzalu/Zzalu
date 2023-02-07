@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.kafka.config;
 
 
-import com.samsamoo.zzalu.chat.dto.ChatMessage;
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,7 +23,7 @@ public class KafkaObjectChangeConsumerConfig {
     private String bootstrapServers;
 
     @Bean
-    public ConsumerFactory<String, ChatMessage> stockChangeConsumer() {
+    public ConsumerFactory<String, ChatMessageDto> stockChangeConsumer() {
 
         Map<String, Object> configs = new HashMap<>();
         configs.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
@@ -32,13 +32,13 @@ public class KafkaObjectChangeConsumerConfig {
         return new DefaultKafkaConsumerFactory<>(
                 configs,
                 new StringDeserializer(),
-                new JsonDeserializer<>(ChatMessage.class)
+                new JsonDeserializer<>(ChatMessageDto.class)
         );
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, ChatMessage> stockChangeListener() {
-        ConcurrentKafkaListenerContainerFactory<String, ChatMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
+    public ConcurrentKafkaListenerContainerFactory<String, ChatMessageDto> stockChangeListener() {
+        ConcurrentKafkaListenerContainerFactory<String, ChatMessageDto> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(stockChangeConsumer());
         return factory;
     }

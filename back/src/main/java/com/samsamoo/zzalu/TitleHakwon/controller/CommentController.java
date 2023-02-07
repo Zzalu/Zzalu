@@ -1,82 +1,72 @@
 package com.samsamoo.zzalu.TitleHakwon.controller;
 
-import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
-import com.samsamoo.zzalu.TitleHakwon.dto.ReplyCommentRequest;
-import com.samsamoo.zzalu.TitleHakwon.dto.ReplyCommentResponse;
+import com.samsamoo.zzalu.TitleHakwon.dto.*;
+import com.samsamoo.zzalu.TitleHakwon.repository.RedisCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.service.CommentService;
-import com.samsamoo.zzalu.TitleHakwon.dto.CommentRequest;
+import com.samsamoo.zzalu.redis.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/comments")
 @CrossOrigin("*")
 public class CommentController {
 
+
+    private final RedisPublisher redisPublisher;
     private final CommentService commentService;
 
+    private final RedisCommentRepository redisCommentRepository;
+
+
+
     /**
-     * [CREATE]
+     * [POST]
      * 댓글 저장하기
      */
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<CommentResponse> addComent(@RequestBody CommentRequest requestComent){
 
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.addComment(requestComent));
+        // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
+        //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
+
+        CommentResponse commentResponse = commentService.addComment(requestComent);
+        System.out.println("@@redis");
+        redisPublisher.publishTitleHakwon( redisCommentRepository.getTopic("comments"),commentResponse);
+        //201리턴
+        return ResponseEntity.status(HttpStatus.OK).body(commentResponse);
 
     }
 
     /**
-     * [CREATE]
+     * [POST]
      * 대댓글 저장하기
      */
 
     @PostMapping(value = "/reply")
     public ResponseEntity<ReplyCommentResponse> addReplyComent(@RequestBody ReplyCommentRequest replyCommentRequest){
-
+//201리턴
         return ResponseEntity.status(HttpStatus.OK).body(commentService.addReplyComment(replyCommentRequest));
 
     }
 
-    /**
-     * [GET]
-     * 댓글 가져오기
-     * Cursor 기반 페이징
-     */
 
-    @GetMapping()
-    public  ResponseEntity<List<CommentResponse>> getCommentList (@RequestParam Long lastCommentId, @RequestParam Long titleHakwonId ,@RequestParam int size){
-
-        List<CommentResponse> commentResponseList = commentService.getCommentList(lastCommentId,titleHakwonId,size);
-        return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
-    }
-
-    /**
-     * [GET]
-     * 대댓글 가져오기
-     * Cursor 기반 페이징
-     */
-
-    @GetMapping(value = "/reply")
-    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@RequestParam Long lastCommentId, @RequestParam Long parentCommentId ,@RequestParam int size){
-
-        List<ReplyCommentResponse> replyCommentResponseList = commentService.getReplyCommentList(lastCommentId,parentCommentId,size);
-        return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
-    }
 
 
     /**
      * [UPDATE]
      * 댓글 수정
      */
-    @PutMapping()
-    public ResponseEntity<String> updateComment (@RequestParam Long id , @RequestBody CommentRequest commentRequest){
-        commentService.updateComment(id,commentRequest);
+    @PatchMapping("/comment")
+    public ResponseEntity<String> updateComment (@RequestBody UpdateCommentRequest commentRequest){
+        commentService.updateComment(commentRequest);
         return new ResponseEntity<>("댓글 변경완료",HttpStatus.OK);
     }
 
@@ -86,9 +76,9 @@ public class CommentController {
      * 대댓글  수정
      */
 
-    @PutMapping(value = "/reply")
-    public  ResponseEntity<String> updateReplyComent (@RequestParam Long id , @RequestBody ReplyCommentRequest replyCommentRequest){
-        commentService.updateReplyComment(id,replyCommentRequest);
+    @PatchMapping(value = "/reply-comment")
+    public  ResponseEntity<String> updateReplyComent (@RequestBody UpdateCommentRequest commentRequest){
+        commentService.updateReplyComment(commentRequest);
         return new ResponseEntity<>("대댓글 변경완료",HttpStatus.OK);
     }
 
@@ -99,8 +89,10 @@ public class CommentController {
      */
 
 
-    @DeleteMapping
-    public  ResponseEntity<String> deleteComment(@RequestParam Long commentId){
+    @DeleteMapping("/{commentId}")
+    public  ResponseEntity<String> deleteComment(@PathVariable Long commentId){
+
+        //delete status code =204
         System.out.println(commentId);
 
         if(commentService.deleteComment(commentId)==1){
@@ -119,63 +111,60 @@ public class CommentController {
      * 대댓글  삭제
      */
 
-    @DeleteMapping(value = "/reply")
-    public  ResponseEntity<String> deleteReplyComment(@RequestParam Long replyCommentId){
+    @DeleteMapping(value = "/reply/{replyCommentId}")
+    public  ResponseEntity deleteReplyComment(@PathVariable Long replyCommentId){
 
 
        commentService.deleteReplyCommnete(replyCommentId);
-        return new ResponseEntity<>("삭제완료",HttpStatus.OK);
+
+       System.out.println("[DELETE] 대댓글 삭제 완료");
+        return new ResponseEntity(HttpStatus.OK);
 
     }
 
 
     /**
-     * [UPDATE]
+     * [POST]
      * 댓글 좋아요 하기
      */
 
-    @PutMapping("/click")
-    public ResponseEntity<String> clickCommentLikes (@RequestParam Long commentId , @RequestParam String memberId){
+    @PostMapping("/{commentId}/likes")
+    public ResponseEntity<String> clickCommentLikes (@PathVariable Long commentId,  @RequestParam String username){
+        //201
         //좋아요를 할껀데 기존에 누른 기록이 있었으면 안됨
-        if(commentService.existCommentLike(commentId,memberId)){
+        if(commentService.existCommentLike(commentId,username)){
             return new ResponseEntity<>("이미존재함",HttpStatus.FORBIDDEN);
         }else{
             //그렇지 않은 경우는 좋아요 가능
-            commentService.clickCommentLikes(commentId,memberId);
+            //없는회원이면,,,, -> 예외처리하자  좋아요 완료로뜬다.
+            commentService.clickCommentLikes(commentId,username);
+
+   /*         // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
+            //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
+            redisPublisher.publish("title-Hakwon",);*/
+
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
         }
     }
 
 
     /**
-     * [UPDATE]
+     * [DELETE]
      * 댓글 좋아요 취소하기
      */
-    @PutMapping("/cancel")
-    public ResponseEntity<String> cancelCommentLikes (@RequestParam Long commentId ,@RequestParam String memberId){
+    @DeleteMapping("{commentId}/likes")
+    public ResponseEntity<String> cancelCommentLikes (@PathVariable Long commentId,  @RequestParam String username){
 
-        if(!commentService.existCommentLike(commentId,memberId)){
+
+        //200
+        if(!commentService.existCommentLike(commentId,username)){
             return new ResponseEntity<>("좋아요를 누른 기록이 없습니다.",HttpStatus.FORBIDDEN);
         }else{
             //그렇지 않은 경우는 좋아요 가능
-            commentService.cancelCommentLikes(commentId,memberId);
-            return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
+            commentService.cancelCommentLikes(commentId,username);
+            return new ResponseEntity<>("좋아요 취소 완료 ",HttpStatus.OK);
         }
     }
-
-    /**
-     * [GET]
-     * 댓글 최신순 조회
-     */
-
-
-    /**
-     * [GET]
-     * 대댓글 최신순 조회
-     */
-
-
-
 
 
 }

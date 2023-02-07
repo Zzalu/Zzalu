@@ -4,7 +4,9 @@ import Vuex from 'vuex';
 import userStore from '@/store/modules/userStore.js';
 import titleCompetitionStore from '@/store/modules/titleCompetitionStore.js';
 import searchModalStore from '@/store/modules/searchModalStore.js'
-import quietChatStore from '@/store/modules/quietChatStore'
+import quietChatStore from '@/store/modules/quietChatStore.js'
+import zzalListStore from '@/store/modules/zzalListStore.js'
+import followStore from './modules/followStore';
 
 const store = new Vuex.Store({
   modules: {
@@ -13,6 +15,8 @@ const store = new Vuex.Store({
     titleCompetitionStore,
     searchModalStore,
     quietChatStore,
+    zzalListStore,
+    followStore
   },
 });
 export default store;

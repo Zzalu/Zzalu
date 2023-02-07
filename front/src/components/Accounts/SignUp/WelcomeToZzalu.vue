@@ -1,5 +1,5 @@
 <template>
-  <div class="mt-10">
+  <div class="mt-10" id="WelcomeToZzalu">
     <div class="text-center-container">
       <div class="text-oneline">
         <div class="error-sub-title">환영합니다!</div>
@@ -12,18 +12,39 @@
           src="../../../assets/celebrate.gif"
         />
 
-      <div class="error-content-bold">RIGHTID님, 회원가입을 진심으로 환영합니다.</div>
-      <div class="error-content-bold">짤루에서의 새로운 닉네임은 RIGHTNICKN입니다.</div>
-      <button class="submit-button">로그인 하러 가기</button>
+      <div class="error-content-bold">{{ username }}님, 회원가입을 진심으로 환영합니다.</div>
+      <div class="error-content-bold">짤루에서의 새로운 닉네임은 {{ nickname }}입니다.</div>
+      <button class="submit-button">
+        <router-link to="/login">
+          로그인 하러 가기
+        </router-link>
+      </button>
     </div>
   </div>
 </template>
 
 <script>
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 
 export default {
-  name: 'WelcomeToZzalu'
+  name: 'WelcomeToZzalu',
+  setup () {
+    const store = useStore();
 
+    const username = computed(
+      () => store.state.userStore.temp.username
+    );
+    const nickname = computed(
+      () => store.state.userStore.temp.nickname
+    );
+
+    return{
+      username,
+      nickname
+
+    }
+  }
 }
 </script>
 

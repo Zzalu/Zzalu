@@ -5,27 +5,85 @@
     <div class="almost-done">
       <div class="error-sub-title" v-if="$route.name == 'signup'">거의 다 끝났습니다!</div>
       <div class="error-sub-title">이메일로 전송된 인증코드를 입력해주세요.</div>
-      <div class="time-remain">3:00</div>
+      <div class="time-remain" >3:00</div>
     </div>
   </div>
-  <div class="flex justify-center">
-    <div class="input-code"></div>
-    <div class="input-code"></div>
-    <div class="input-code"></div>
-    <div class="input-code"></div>
-  </div>
+  <!-- <div class="flex justify-center">
+    <input type="text" class="input-code">
+    <input type="text" class="input-code">
+    <input type="text" class="input-code">
+    <input type="text" class="input-code">
+  </div> -->
+  <input type="text" placeholder="{{ inputCode }}" v-model="inputCode">
+  <h1>{{inputCode}}</h1>
+  <!-- <input type="text" v-model="signupUser" placeholder="{{ inputCode }}" > -->
+  <button @click="checkCode">입력하기</button>
   <div class="text-center-container">
     <div class="didnt-get-mail">
       <div class="error-content">메일을 받지 못하셨나요?</div>
       <button class="send-again-button">인증 메일 재전송</button>
+      {{ userInfo.code }}
     </div>
+
+      <button class="submit-button" @click="signupFinal">인증하기</button>
+
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+// import { computed } from '@vue/runtime-core'
 export default {
   name: 'InputCodeForm',
-}
+  computed: 
+    mapState({
+      userInfo: state => state.userStore.temp,
+    }),
+  // setup() {
+  //   const store = useStore();
+
+  // },
+  methods: {
+    signupFinal : async function () {
+      // const result = await store.dispatch('userStore/signupFinalAction', this.userInfo )
+      console.log(this.inputCode);
+      console.log('------------------')
+      console.log(this.userInfo.code);
+      // console.log(result.data.authKey)
+      if (this.inputCode == this.userInfo.code) {
+        console.log(this.userInfo)
+        console.log(this.inputCode)
+        // 여기까지는 잘 왔음
+        const userData = {
+            "username": this.userInfo.username,
+            "password": this.userInfo.password,
+            "passwordConfirmation": this.userInfo.passwordCheck,
+            "nickname": this.userInfo.nickname,
+            "userEmail": this.userInfo.email
+        }
+        const result = await this.$store.dispatch('userStore/signupFinalAction', userData )
+        console.log(result);
+        if (result.response.status == 400) {
+          alert("야 넌 회원가입 다시해라")
+        } else {
+          this.$router.push({name: 'complete'})
+        }
+      } else {
+        alert ("님 코드 틀렸음")
+      }
+    }
+  },
+
+  data () {
+    return {
+      inputCode: '',
+    }
+    
+  },
+  }
+
+  
+
 </script>
 
 <style>

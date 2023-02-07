@@ -1,10 +1,10 @@
 <template>
   <div>
     <p class="focus-text">역대 제목학원 명예의 전당</p>
-    <hr class="mb-5"/>
-    <div class="flex overflow-x-auto">
+    <hr class="mb-3 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div"/>
+    <div class="items">
       <div v-for="a in 10" :key="a">
-        <AcademyListItem/>
+        <AcademyListItem class="academy-list"/>
       </div>
     </div>
   </div>
@@ -23,6 +23,16 @@ export default {
 
 <style scoped lang="postcss">
 .focus-text {
-  @apply font-bhs text-2xl line-clamp-1 mt-5;
+  @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
+}
+.items {
+  @apply flex overflow-x-auto
+}
+.items::-webkit-scrollbar {
+  display:none;
+}
+.academy-list {
+  box-shadow:0 0 7px black;
+  @apply mt-2
 }
 </style>

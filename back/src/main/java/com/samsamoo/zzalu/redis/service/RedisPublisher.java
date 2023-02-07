@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
 import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,23 +11,27 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Service
 public class RedisPublisher {
 
     private final RedisTemplate<String, Object> redisTemplate;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRedisRepository chatRoomRedisRepository;
 
     @KafkaListener(topics="exam", groupId = "foo")
     public void kafkaListener(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
-        ChatMessage chatMessage = objectMapper.readValue(message, ChatMessage.class);
-        redisTemplate.convertAndSend(((ChannelTopic) chatRoomRepository.getTopic(chatMessage.getRoomId())).getTopic(), chatMessage);
+        ChatMessageDto chatMessageDto = objectMapper.readValue(message, ChatMessageDto.class);
+        redisTemplate.convertAndSend(((ChannelTopic) chatRoomRedisRepository.getTopic(chatMessageDto.getRoomId())).getTopic(), chatMessageDto);
     }
 
-    public void publish(ChannelTopic topic, ChatMessage message) {
+    public void publish(ChannelTopic topic, ChatMessageDto message) {
         redisTemplate.convertAndSend(topic.getTopic(), message);
+    }
+
+    public void publishTitleHakwon(ChannelTopic topic, CommentResponse commentResponse) {
+        System.out.println("[publishTItlehakwon]"+ topic.getTopic());
+        System.out.println(commentResponse.getContent()+"댓글 정보");
+        redisTemplate.convertAndSend(topic.getTopic(), commentResponse);
     }
 }

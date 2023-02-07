@@ -1,18 +1,31 @@
 <template>
-  <div>
+  <div class="test">
     <ChatSearchTopNav />
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
     <ChatFilter />
     <MakeChatButton />
-    <div v-for="(datas, i) in data" :key="i">
-      <QuietChatList :datas="datas" @click="chat_data(i)" />
+    <!-- 고독방이 있다면 -->
+    <div v-if="quiet_chat_data.length >= 1">
+      <div v-for="(datas, i) in quiet_chat_data" :key="i">
+        <QuietChatList
+          :room_data="datas"
+          :hashtag="datas.tags"
+          @click="chat_data(i)"
+        />
+      </div>
+    </div>
+    <!-- 필터로 걸러진 고독방이 없다면 -->
+    <div v-else>
+      <NoResult />
     </div>
     <div v-if="open_chat_info">
-      <ChatInfoModal :info_data="data[open_chat_id]" />
+      <ChatInfoModal
+        :room_data="quiet_chat_data[open_chat_id]"
+        :hashtag="quiet_chat_data[open_chat_id].tags"
+      />
     </div>
     <div class="h-4"></div>
     <div v-if="tmpisLogin">
-      <SearchView />
       <MainBottomNav />
     </div>
   </div>
@@ -23,12 +36,12 @@ import ChatFilter from "../../components/QuietChat/QuietChatList/ChatFilter";
 import MakeChatButton from "../../components/QuietChat/QuietChatList/MakeChatButton";
 import QuietChatList from "../../components/QuietChat/QuietChatList/QuietChatList.vue";
 import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModal";
-import QuietChatData from "./QuietChatListData.js";
+import NoResult from "../../components/QuietChat/QuietChatList/NoResult"
 import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
-import SearchView from "../SearchView";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
+import { onBeforeMount } from "@vue/runtime-core";
 
 export default {
   name: "ChatListView",
@@ -44,6 +57,9 @@ export default {
     const check_search_modal = computed(
       () => store.state.searchModalStore.open_search_modal
     );
+    const quiet_chat_data = computed(
+      () => store.state.quietChatStore.quiet_list
+    );
     const send_chat_data = (e) => {
       store.commit("quietChatStore/open_chat_info");
       store.commit("quietChatStore/open_chat_id", e);
@@ -51,10 +67,15 @@ export default {
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
     };
+
+    onBeforeMount(() => {
+      store.dispatch("quietChatStore/getQuietList");
+    });
     return {
       open_chat_info,
       open_chat_id,
       check_search_modal,
+      quiet_chat_data,
       send_chat_data,
       close_chat_info,
     };
@@ -63,14 +84,13 @@ export default {
     ChatFilter,
     MakeChatButton,
     QuietChatList,
+    NoResult,
     ChatInfoModal,
     ChatSearchTopNav,
     MainBottomNav,
-    SearchView,
   },
   data() {
     return {
-      data: QuietChatData,
       tmpisLogin: true,
     };
   },
@@ -99,6 +119,10 @@ export default {
 
 <style scoped lang="postcss">
 .bg-negative {
-  @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0;
+  @apply fixed bg-zz-dark-input opacity-50 w-full h-full left-0 top-0 z-10;
 }
+/* .test {
+  min-height:84vh;
+  @apply h-full
+} */
 </style>

@@ -7,17 +7,95 @@
         type="text"
         class="account-input"
         placeholder="이메일을 입력하세요"
+        v-model="state.credentials.email"
       />
-      <!-- <div class="error-msg text-sm">아이디중복이세요;</div> -->
+      <div class="error" v-if="errorMsgs.err.email">{{ errorMsgs.err.email }}</div>
     <div class="flex float-right mt-10">
-      <button class="go-next-button">다음</button>
+      <button class="go-next-button" @click="[onSubmit(), sendEmailCode()]">다음</button>
     </div>
   </div>
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { reactive } from 'vue'
+import SignupEmailValidations from '../../services/SignupEmailValidations'
+
 export default {
-  name: 'InputEmail'
+  name: 'InputEmail',
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const state = reactive({
+      credentials: {
+        email: '',
+        code: ''
+      }
+    })
+
+    const errorMsgs = reactive({
+      err: {
+        email: "",
+      }
+    })
+    // 이메일 네이밍규칙
+    const onSubmit = () => {
+      const validations = new SignupEmailValidations(
+        state.credentials.email,
+        );
+      const errors = validations.checkValidations();
+      if ('email' in errors) {
+        errorMsgs.err.email = errors['email']
+      } else {
+        errorMsgs.err.email = null
+      }
+      console.log(errorMsgs.err.email)
+    }
+
+    // 이메일 중복확인 및 코드 요청 보내기
+    const sendEmailCode = async function () {
+      const result = await store.dispatch('userStore/sendEmailAction', state.credentials.email )
+      console.log(result.data.authKey)
+      console.log(result.status)
+      if (result.status == 400) {
+        alert("이메일이 중복이에...")
+      } else if (result.status == 200) {
+        console.log('이메일 중복 아님', state.credentials)
+        const credentialsEmailCode = {
+          email: state.credentials.email,
+          code: result.data.authKey,
+        }
+        console.log('넘겨줄 변수 정의',credentialsEmailCode)
+        // 회원가입 등록
+        const email_code = await store.dispatch('userStore/signupSecondAction', credentialsEmailCode)
+        console.log(email_code)
+        if (email_code) {
+          console.log("회원가입 요청 2 잘 갔음")
+          router.push({name: 'input-code'})
+        }
+      }
+
+    }
+    return {
+      state,
+      errorMsgs,
+      sendEmailCode,
+      onSubmit
+    }
+  },
+  data() {
+    return {
+      // 회원 정보
+      email: '',
+      // 에러
+      errors: [],
+    };
+  },
+
+  methods: {
+
+  }
 }
 </script>
 

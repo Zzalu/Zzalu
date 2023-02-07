@@ -1,33 +1,8 @@
 package com.samsamoo.zzalu.chat.repository;
 
-import com.samsamoo.zzalu.chat.dto.ChatRoom;
-import org.springframework.stereotype.Repository;
+import com.samsamoo.zzalu.chat.entity.ChatMessage;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.annotation.PostConstruct;
-import java.util.*;
+public interface ChatRepository extends JpaRepository<ChatMessage, Long> {
 
-@Repository
-public class ChatRepository {
-    private Map<String, ChatRoom> chatRoomMap;
-
-    @PostConstruct
-    private void init() {
-        chatRoomMap = new LinkedHashMap<>();
-    }
-
-    public List<ChatRoom> findAllRoom() {
-        List chatRooms = new ArrayList<>(chatRoomMap.values());
-        Collections.reverse(chatRooms);
-        return chatRooms;
-    }
-
-    public ChatRoom findRoomById(String Id) {
-        return chatRoomMap.get(Id);
-    }
-
-    public ChatRoom createChatRoom(String name, String imagePath) {
-        ChatRoom chatRoom = ChatRoom.create(name, imagePath);
-        chatRoomMap.put(chatRoom.getRoomId(), chatRoom);
-        return chatRoom;
-    }
 }
