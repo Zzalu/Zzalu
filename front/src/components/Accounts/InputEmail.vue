@@ -1,5 +1,4 @@
 <template>
-  <h1 class="account-title mb-10" v-if="$route.name == 'signup'">Sign Up</h1>
   <div class="mt-20">
     <h2 class="find-id-input-title" v-if="$route.name == 'find-id'">아이디 찾기</h2>
     <font-awesome-icon icon="fa-solid fa-envelope" class='icon-aligned-left'/>
@@ -10,10 +9,14 @@
         v-model="state.credentials.email"
       />
       <div class="error" v-if="errorMsgs.err.email">{{ errorMsgs.err.email }}</div>
-    <div class="flex float-right mt-10">
+    <div class="flex float-right mt-10" v-if="$route.name == 'input-signup-email'">
       <button class="go-next-button" @click="[onSubmit(), sendEmailCode()]">다음</button>
     </div>
+    <div class="flex float-right mt-10" v-if="$route.name == 'find-id-input-email'">
+      <button class="go-next-button" @click="sendUsername">다음</button>
+    </div>
   </div>
+  
 </template>
 
 <script>
@@ -55,6 +58,7 @@ export default {
 
     // 이메일 중복확인 및 코드 요청 보내기
     const sendEmailCode = async function () {
+      
       const result = await store.dispatch('userStore/sendEmailAction', state.credentials.email )
       console.log(result.data.authKey)
       console.log(result.status)
@@ -77,10 +81,20 @@ export default {
       }
 
     }
+
+    // 내가 잊은 아이디를 메일로 보내기
+    const sendUsername = async function () {
+      const result = await store.dispatch('userStore/sendUsernameAction', state.credentials.email )
+      console.log(result)
+      if (result.status == 200 ) {
+        router.push({name: 'check-email'})
+      }
+    }
     return {
       state,
       errorMsgs,
       sendEmailCode,
+      sendUsername,
       onSubmit
     }
   },

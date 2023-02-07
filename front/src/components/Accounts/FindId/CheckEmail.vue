@@ -11,7 +11,14 @@
       <div class="error-content">메일을 받지 못하셨나요?</div>
       <button class="send-again-button">인증 메일 재전송</button>
     </div>
-    <button class="submit-button">로그인 하러 가기</button>
+    
+      <button class="submit-button">
+        <router-link to="/login">
+          로그인 하러 가기
+          </router-link>
+        </button>
+    
+    
   </div>
 
 </template>

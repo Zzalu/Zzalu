@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -130,10 +130,16 @@ const userStore = {
       // return response
 
 
-    }
+    },
     // ----------------------------------------------------------
     // 아이디찾기
-    
+    sendUsernameAction: async (commit, email) => {
+      console.log(email);
+      const data = JSON.stringify({"userEmail": email})
+      const response = await requestUsername(data);
+      // console.log("이안에 코드있음",response)
+      return response
+    },
   },
 };
 

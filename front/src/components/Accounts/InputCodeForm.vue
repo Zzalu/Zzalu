@@ -8,12 +8,12 @@
       <div class="time-remain" >3:00</div>
     </div>
   </div>
-  <!-- <div class="flex justify-center">
+  <div class="flex justify-center">
     <input type="text" class="input-code">
     <input type="text" class="input-code">
     <input type="text" class="input-code">
     <input type="text" class="input-code">
-  </div> -->
+  </div>
   <input type="text" placeholder="{{ inputCode }}" v-model="inputCode">
   <h1>{{inputCode}}</h1>
   <!-- <input type="text" v-model="signupUser" placeholder="{{ inputCode }}" > -->
