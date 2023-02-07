@@ -16,7 +16,7 @@
         type="text"
         class="account-input"
         placeholder="아이디를 입력하세요"
-        v-model="username"
+        v-model.trim="username"
       />
     </div>
     <div class="error" v-if = "errors.username"> {{ errors.username }} </div>
@@ -27,7 +27,7 @@
         type="text"
         class="account-input"
         placeholder="비밀번호를 입력하세요"
-        v-model='password'
+        v-model.trim='password'
       />
       <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
@@ -52,7 +52,7 @@
   </div>
   <!-- 로그인 버튼 -->
   <div class="center-containers">
-    <button class="submit-button">로그인</button>
+    <button class="submit-button" @click.prevent="onSubmit">로그인</button>
   </div>
   <sign-up-bottom-nav></sign-up-bottom-nav>
 </template>
