@@ -51,7 +51,7 @@ const zzalListStore = {
           commit('GET_FIRST_RANDOM_GIF', data)
         },
         (err) => {
-          console.log(err, '실패');
+          console.log(err, '겟퍼스트실패');
         }
       )
     },
