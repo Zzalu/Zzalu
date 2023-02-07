@@ -1,5 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Signup from '@/views/Accounts/SignUpView';
+import FindId from '@/views/Accounts/FindIdView';
 
 const routes = [
   {
@@ -25,18 +26,18 @@ const routes = [
     children: [
       {
         path: '',
-        name: 'input-info',
+        name: 'input-signup-info',
         component: () => import('@/components/Accounts/SignUp/InputUserInfo.vue'),
       },
       {
         path: 'email',
-        name: 'input-email',
+        name: 'input-signup-email',
         component: () => import('@/components/Accounts/InputEmail.vue'),
         props: true,
       },
       {
-        path: 'input-code',
-        name: 'input-code',
+        path: 'code',
+        name: 'input-signup-code',
         component: () => import('@/components/Accounts/InputCodeForm.vue'),
       },
       {
@@ -50,7 +51,19 @@ const routes = [
   {
     path: '/find-id',
     name: 'find-id',
-    component: () => import('@/views/Accounts/FindIdView'),
+    component: FindId,
+    children: [
+      {
+        path: '',
+        name: 'find-id-input-email',
+        component: () => import('@/components/Accounts/InputEmail.vue'),
+      },
+      {
+        path: 'check-email',
+        name: 'check-email',
+        component: () => import('@/components/Accounts/FindId/CheckEmail.vue'),
+      },
+    ],
   },
   // 비번찾기(재설정)
   {
@@ -101,8 +114,8 @@ const routes = [
   // PROFILE
   // 프로필 메인
   {
-    path: "/profile/:user_id",
-    // path: '/profile',
+    // path: "/profile/:user_id",
+    path: '/profile',
     name: 'profile',
     component: () => import('@/views/Profile/ProfileView'),
   },

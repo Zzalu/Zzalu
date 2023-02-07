@@ -133,7 +133,7 @@
 
 /* 코드입력 */
 .input-code {
-  @apply mt-6 bg-zz-light-input rounded-sm text-sm mx-2 h-12 w-12
+  @apply mt-6 bg-zz-light-input rounded-sm text-sm mx-2 h-12 w-12 dark:bg-zz-dark-input
 }
 
 /* 전송코드입력 text */
