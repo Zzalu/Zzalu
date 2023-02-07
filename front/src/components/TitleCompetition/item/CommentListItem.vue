@@ -7,7 +7,7 @@
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ time }}</p>
-        <p v-if="canDelete" class="text-xs" @click="deleteComment">삭제</p>
+        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row mb-2">
@@ -29,8 +29,8 @@
           <span class="text-xs mr-1">
             {{ like_cnt }}
           </span>
-          <button class="my-auto" @click="clickDeleteBtn">
-            <font-awesome-icon v-if="is_liked" icon="fa-regular fa-heart" class="text-xs" />
+          <button class="my-auto" @click="clickLikeBtn">
+            <font-awesome-icon v-if="!is_liked" icon="fa-regular fa-heart" class="text-xs" />
             <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
           </button>
         </div>
@@ -61,12 +61,13 @@ export default {
     comment: Object,
   },
   setup(props) {
+    console.log(props);
     const store = useStore();
     // TODO: time ~~전으로 출력하기
     const comment_data = reactive({
       profile_image: 'profile.jpg',
       username: props.comment.username,
-      comment_id: props.comment.id,
+      comment_id: props.comment.commentId,
       nickname: props.comment.nickname,
       time: props.comment.createdTime,
       content: props.comment.content,
@@ -78,15 +79,15 @@ export default {
     });
 
     // TODO: 나중에 로그인 기능 완성되면 username 수정하기
-    const username = 'c109';
     const canDelete = computed(() => {
-      return username != comment_data.username;
+      console.log(comment_data.username);
+      return (comment_data.username = 'c109');
     });
 
     // 답글쓰기 버튼 클릭
     const writeNestedComment = () => {
       const comment_writer = {
-        id: comment_data.comment_id,
+        comment_id: comment_data.comment_id,
         nickname: comment_data.nickname,
       };
       store.dispatch('titleCompetitionStore/writeNestedComment', comment_writer);
@@ -95,13 +96,11 @@ export default {
     // 좋아요 버튼 클릭
     const clickLikeBtn = () => {
       console.log(`isLike 버튼 클릭 전: ${comment_data.is_liked}`);
-      const params = {
-        commentId: comment_data.comment_id,
-        username: comment_data.nickname,
-      };
+      const comment_id = comment_data.comment_id;
       if (comment_data.is_liked) {
+        console.log('음별로');
         minusLike(
-          params,
+          comment_id,
           ({ data }) => {
             console.log(data);
             comment_data.is_liked = false;
@@ -111,8 +110,9 @@ export default {
           },
         );
       } else {
+        console.log('좋아요!');
         plusLike(
-          params,
+          comment_id,
           ({ data }) => {
             console.log(data);
             comment_data.is_liked = true;

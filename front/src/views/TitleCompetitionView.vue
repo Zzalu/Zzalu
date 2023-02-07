@@ -72,7 +72,7 @@ export default {
     const zzal_url = store.state.titleCompetitionStore.zzal_url; // 짤
     console.log(zzal_url);
 
-    store.dispatch('titleCompetitionStore/getCommentList', 4);
+    store.dispatch('titleCompetitionStore/getNewestComments', 4);
     onMounted(() => {
       // console.log(scrollTest);
       window.addEventListener('scroll', scroll);

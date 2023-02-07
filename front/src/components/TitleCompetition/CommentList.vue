@@ -19,9 +19,8 @@ export default {
     const store = useStore();
     const commentListComponent = ref(null);
     let comments = store.state.titleCompetitionStore.comments;
-
     const loadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getCommentList', 4);
+      store.dispatch('titleCompetitionStore/getNewestComments', 4);
     };
 
     onMounted(() => {
@@ -29,6 +28,8 @@ export default {
     });
     const handleScroll = () => {
       let element = commentListComponent.value;
+
+      // TODO: 댓글 스크롤 내리면 마지막이 계속 불러와지는 오류 고치기
       if (element.getBoundingClientRect().bottom < window.innerHeight) {
         loadMoreComments();
       }
