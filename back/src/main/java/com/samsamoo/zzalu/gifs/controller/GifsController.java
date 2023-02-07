@@ -40,7 +40,7 @@ public class GifsController {
         return ResponseEntity.ok().body(gifsService.findByTags(searchKeyword));
     }
 
-    @GetMapping("/randoms")
+    @PostMapping("/randoms")
     public ResponseEntity<List<Gifs>> randomGifs(@RequestBody Map<String, List<Long>> map) {
         Long columnCount = gifsService.counyBy();
         List<Long> exceptIds = map.get("exceptIds");
