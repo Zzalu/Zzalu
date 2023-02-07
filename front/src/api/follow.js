@@ -2,13 +2,12 @@ import { apiInstance } from './index.js';
 const api = apiInstance();
 
 // 팔로우 요청 (헤더 필요)
-function follow(your_id, success, fail) {
-
-    api.put(`/follow/${your_id}` + your_id).then(success).catch(fail);
+function follow(params, your_id, success, fail) {
+    api.put(`/follow/${your_id}`).then(success).catch(fail);
 }
 
 // 언팔로우 요청 (헤더 필요)
-function unfollow(your_id, success, fail) {
+function unfollow(params, your_id, success, fail) {
     api.delete(`/follow/${your_id}`).then(success).catch(fail);
 }
 
