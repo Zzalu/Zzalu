@@ -69,27 +69,44 @@ public class CommentService {
                 .parentComment(commentRepository.findById(replyCommentRequest.getParentCommentId()).get())
                 .build();
 
-
-
       replyCommentRepository.save(replyComment);
 
         return new ReplyCommentResponse(replyComment);
-
-
     }
 
     /**
-     * 댓글 가져오기
+     * 댓글 최신순 조회하기
      * 무한 스크롤 / 커서 기반 페이지 네이션
      */
 
-    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
+    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username ){
 
-        Page<Comment> comments = fetchCommentPages(lastCommentId ,titleHakwonId,limit);
+        Page<Comment> comments = fetchRecentCommentPages(lastCommentId ,titleHakwonId,limit);
 
         return getCommentList(comments.getContent(),username);
         }
 
+    private Page<Comment> fetchRecentCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
+        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
+        return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
+    }
+
+    /**
+     * 댓글 과거순 조회하기
+     *
+     */
+    public List<CommentResponse> getPastCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
+
+        Page<Comment> comments = fetchPastCommentPages(lastCommentId ,titleHakwonId,limit);
+
+        return getCommentList(comments.getContent(),username);
+    }
+
+
+    private Page<Comment> fetchPastCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
+        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
+        return commentRepository.findByIdGreaterThanAndTitleHakwonId(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
+    }
 
 
     public List<CommentResponse> getCommentList (List<Comment>commentList ,String username){
@@ -118,28 +135,38 @@ public class CommentService {
     }
 
 
-
-    private Page<Comment> fetchCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
-        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
-        return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
-    }
-
     /**
-     * 대댓글 가져오기
+     * 대댓글 최신순 가져오기
      * 커서 기반 페이지 네이션
      */
 
-    public List<ReplyCommentResponse> getReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
+    public List<ReplyCommentResponse> getRecentReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
 
-        Page<ReplyComment> replyComments = fetchReplyCommentPages(lastCommentId,parentId,size);
+        Page<ReplyComment> replyComments = fetchRecentReplyCommentPages(lastCommentId,parentId,size);
+
+        return ReplyCommentResponse.convertReplyCommentToDtoList(replyComments.getContent());
+    }
+
+    public Page<ReplyComment> fetchRecentReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return  replyCommentRepository.findByIdLessThanAndParentCommentIdOrderByIdDesc(lastReplyCommentId,parentCommentId,pageRequest);
+    }
+    /**
+     * 대댓글 과거순 가져오기
+     * 커서 기반 페이지 네이션
+     */
+
+    public List<ReplyCommentResponse> getPastReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
+
+        Page<ReplyComment> replyComments = fetchPastReplyCommentPages(lastCommentId,parentId,size);
 
         return ReplyCommentResponse.convertReplyCommentToDtoList(replyComments.getContent());
     }
 
 
-    public Page<ReplyComment> fetchReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
+    public Page<ReplyComment> fetchPastReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
         PageRequest pageRequest = PageRequest.of(0, size);
-        return  replyCommentRepository.findByIdLessThanAndParentCommentIdOrderByIdDesc(lastReplyCommentId,parentCommentId,pageRequest);
+        return  replyCommentRepository.findByIdGreaterThanAndParentCommentId(lastReplyCommentId,parentCommentId,pageRequest);
     }
 
     /**

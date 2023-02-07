@@ -109,7 +109,7 @@ public class TitleHakwonController {
             commentResponseList = commentService.getRecentCommentList(titleHakwonId,lastCid,limit, username);
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
         } else if (sort.equals("CHRONOLOGICAL")) {
-            commentResponseList = commentService.getRecentCommentList(titleHakwonId,lastCid,limit, username);
+            commentResponseList = commentService.getPastCommentList(titleHakwonId,lastCid,limit, username);
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
         }else {
             return null;
@@ -120,7 +120,7 @@ public class TitleHakwonController {
 
     /**
      * [GET]
-     * 대댓글 가져오기
+     * 대댓글  최신순 가져오기
      * Cursor 기반 페이징
      */
 
@@ -131,11 +131,13 @@ public class TitleHakwonController {
         //status code =200
         List<ReplyCommentResponse> replyCommentResponseList;
         if(sort.equals("LATEST")){
-            replyCommentResponseList = commentService.getReplyCommentList( lastCid ,  parentId ,   limit , null);
+            replyCommentResponseList = commentService.getRecentReplyCommentList( lastCid ,  parentId ,   limit , null);
             return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
-        }else{
-            replyCommentResponseList = commentService.getReplyCommentList( lastCid ,  parentId ,   limit , null);
+        }else if (sort.equals("CHRONOLOGICAL")){
+            replyCommentResponseList = commentService.getPastReplyCommentList( lastCid ,  parentId ,   limit , null);
             return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
+        }else {
+            return null;
         }
 
     }
@@ -166,4 +168,3 @@ public class TitleHakwonController {
     }
 
 }
-
