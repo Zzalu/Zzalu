@@ -116,8 +116,9 @@ public class ChatRoomRedisRepository {
         // Redis에 저장
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
         // DB에 저장
-        ChatRoom chatRoom = chatRoomRepository.findByRoomId(chatRoomDto.getRoomId());
-        if(chatRoom != null) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomId(chatRoomDto.getRoomId());
+        if(optionalChatRoom.isPresent()) {
+            ChatRoom chatRoom = optionalChatRoom.get();
             ChatMessage chatMessage = message.toEntity();
             chatMessage.setChatRoom(chatRoom);
             chatRoom.addChatMessage(chatMessage);

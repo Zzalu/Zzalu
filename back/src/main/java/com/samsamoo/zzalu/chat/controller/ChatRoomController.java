@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -173,17 +174,17 @@ public class ChatRoomController {
 
         String roomId = map.get("roomId");
         System.out.println("RoomId : " + roomId);
-        ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
-        if(chatRoom != null) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomService.findByRoomId(roomId);
+        if(optionalChatRoom.isPresent()) {
+            ChatRoom chatRoom = optionalChatRoom.get();
+            System.out.println("chatRoom.getLikeMembers() : " + chatRoom.getLikeMembers());
             if(!chatRoom.getLikeMembers().contains(requestMember)) {
-                List<Member> members = chatRoom.getLikeMembers();
-                members.add(requestMember);
-                chatRoom.setLikeMembers(members);
+                requestMember.addLikeChatRoom(chatRoom);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() + 1);
-                chatRoomRepository.save(chatRoom);
+                chatRoomService.save(chatRoom);
                 return true;
             } else {
-                System.out.println("이미 클릭하 사용자 입니다. Error Exception 필요");
+                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
             }
         }

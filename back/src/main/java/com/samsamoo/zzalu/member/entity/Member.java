@@ -57,7 +57,7 @@ public class Member implements UserDetails {
     @ManyToMany
     @Builder.Default
     @JoinTable(name = "MEMBER_CHAT_ROOM", joinColumns = @JoinColumn(name = "MEMBER_ID"), inverseJoinColumns = @JoinColumn(name = "CHAT_ROOM_ID"))
-    private List<ChatRoom> likeChatRooms = new ArrayList<>();
+    private List<ChatRoom> likeChatRooms = new ArrayList<ChatRoom>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
@@ -158,5 +158,9 @@ public class Member implements UserDetails {
     public void createBoard(Board board) {
         this.getBoards().add(board);
 
+    }
+
+    public void addLikeChatRoom(ChatRoom chatRoom) {
+        likeChatRooms.add(chatRoom);
     }
 }
