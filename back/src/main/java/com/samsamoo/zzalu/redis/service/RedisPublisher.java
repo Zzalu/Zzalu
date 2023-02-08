@@ -4,8 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
 import com.samsamoo.zzalu.TitleHakwon.dto.LikeResponse;
-import com.samsamoo.zzalu.chat.dto.ChatMessage;
-import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
+
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
+import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;

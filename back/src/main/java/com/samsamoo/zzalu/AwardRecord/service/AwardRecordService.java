@@ -73,6 +73,14 @@ public class AwardRecordService {
     }
 
 
+    /** 해당 유저의 1/2/3 등 수상 개수 조회하기 **/
+    public  void getRankCount (){
+        int []  ranks = new int[3];
+
+
+    }
+
+
 
 
 }
