@@ -39,9 +39,11 @@ public class ChatRoom {
     private Long likeCount;
 
     @OneToMany(mappedBy = "chatRoom")
+    @Builder.Default
     private List<ChatMessage> chatMessages  = new LinkedList<>();
 
     @Column(name = "LIKE_MEMBERS")
+    // Member 다대다 적용
     private HashMap<Member, Boolean> likeMembers;
 
     @Column(name = "IMAGE_PATH")

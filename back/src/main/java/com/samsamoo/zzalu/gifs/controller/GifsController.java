@@ -8,10 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -43,9 +40,10 @@ public class GifsController {
         return ResponseEntity.ok().body(gifsService.findByTags(searchKeyword));
     }
 
-    @GetMapping("/randoms")
-    public ResponseEntity<List<Gifs>> randomGifs(@RequestParam("exceptIds") List<Long> exceptIds) {
+    @PostMapping("/randoms")
+    public ResponseEntity<List<Gifs>> randomGifs(@RequestBody Map<String, List<Long>> map) {
         Long columnCount = gifsService.counyBy();
+        List<Long> exceptIds = map.get("exceptIds");
 
         HashMap<Long, Boolean> duplicateCheck = new HashMap<>();
         HashMap<Long, Boolean> randomGifIds = new HashMap<>();
