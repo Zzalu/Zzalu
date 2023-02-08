@@ -1,10 +1,18 @@
-import { getStoreList, createBoard, putBoardData } from "@/api/boardList"
+import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard } from "@/api/boardList"
 
 const boardListStore = {
   namespaced: true,
   state: () => ({
+    // 나의 보관함 리스트
     user_store_list: null,
-    select_gif_id: null
+
+    select_gif_id: null,
+
+    // 유저의 보드 리스트
+    user_board_list: null,
+
+    // 보드 디테일 리스트
+    board_detail_list: null
   }),
   mutations: {
     GET_USER_STORE_LIST(state, user_store_data) {
@@ -13,6 +21,12 @@ const boardListStore = {
     SELECT_GIF(state, gif_id) {
       state.select_gif_id = gif_id
     },
+    GET_USER_BOARD(state, user_board) {
+      state.user_board_list = user_board.data
+    },
+    GET_BOARD(state, board_detail) {
+      state.board_detail_list = board_detail.data
+    }
   },
   actions: {
     getUserStoreList({ commit }, params, data) {
@@ -49,6 +63,30 @@ const boardListStore = {
         },
         (err) => {
           console.log(err, '보드 수정 실패');
+        }
+      )
+    },
+    getUserBoardList({ commit }, params) {
+      getUserBoard(
+        params,
+        (data) => {
+          console.log(data, '보드 요청 성공');
+          commit('GET_USER_BOARD', data)
+        },
+        (err) => {
+          console.log(err, '보드 요청 실패');
+        }
+      )
+    },
+    getBoardData({ commit }, params) {
+      getBoard(
+        params,
+        (data) => {
+          console.log(data, '보드 디테일 요청 성공');
+          commit('GET_BOARD', data)
+        },
+        (err) => {
+          console.log(err, '보드 디테일 요청 실패');
         }
       )
     }
