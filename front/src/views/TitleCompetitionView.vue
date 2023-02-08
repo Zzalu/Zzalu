@@ -73,7 +73,7 @@ export default {
 
     const total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt; // 댓글 개수
     const zzal_url = store.state.titleCompetitionStore.zzal_url; // 짤
-    console.log(zzal_url);
+    // console.log(zzal_url);
 
     store.dispatch('titleCompetitionStore/getNewestComments', 4);
     onMounted(() => {
@@ -99,23 +99,24 @@ export default {
     let sock = new SockJS('http://localhost:8080/ws-stomp');
     let ws = Stomp.over(sock);
 
-    function reciveMessage(recv) {
+    /*  function reciveMessage(recv) {
       this.messages.unshift({
         type: recv.type,
         sender: recv.type == 'ENTER' ? '[알림]' : recv.sender,
         message: recv.message,
       });
-    }
+    } */
     function connect() {
       let localWs = ws;
       let localSock = sock;
-      let localReciveMessage = reciveMessage;
+      // let localReciveMessage = reciveMessage;
       localWs.connect(
         {},
         function () {
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
-            let recv = JSON.parse(message.body);
-            localReciveMessage(recv);
+            console.log(message);
+            // let recv = JSON.parse(message.body);
+            // localReciveMessage(recv);
           });
         },
         function () {
@@ -128,6 +129,8 @@ export default {
       );
     }
 
+    connect();
+
     return {
       sock,
       ws,
@@ -138,7 +141,7 @@ export default {
       isScrolled,
       scrollTest,
       scroll,
-      reciveMessage,
+      // reciveMessage,
     };
   },
 };
