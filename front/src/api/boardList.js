@@ -5,16 +5,22 @@ import { authApiInstance } from './index.js';
 const authapi = authApiInstance();
 // const api = apiInstance();
 
-function getStoreList(params,data,res,err) {
+function getStoreList(params, data, res, err) {
     authapi.get(`/boards?gifId=${params}`)
-    .then(res).catch(err)
+        .then(res).catch(err)
 }
 
-function createBoard(params,datas,res,err) {
+function createBoard(params, datas, res, err) {
     // console.log(params,'dd',datas);
-    authapi.post(`/boards`,datas)
-    .then(res).catch(err)
+    authapi.post(`/boards`, datas)
+        .then(res).catch(err)
+}
+
+function putBoardData(params, datas, res, err) {
+    console.log(params,'dd',datas);
+    authapi.put(`/boards/gif/${datas[0]}`, datas[1])
+        .then(res).catch(err)
 }
 
 
-export { getStoreList, createBoard }
+export { getStoreList, createBoard, putBoardData }

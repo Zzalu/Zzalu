@@ -1,5 +1,7 @@
 <template>
   <div ref="List" class="dark:border-zz-dark-div">
+    <!-- 저장 모드 -->
+
     <div v-if="!creating">
       <div class="list-title">
         <p class="list-title-content">저장하기</p>
@@ -8,7 +10,6 @@
         </p>
       </div>
       <div class="list-items-contain">
-        <!-- <div v-if="user_store_list.boards.length >= 1"> -->
         <div v-if="user_store_list">
           <div
             v-for="(list, items) in user_store_list.boards"
@@ -16,7 +17,16 @@
             class="list-items"
           >
             <input
-              v-if="!creating"
+              v-if="list.gifContainState"
+              checked
+              name="checkcheckbox"
+              type="checkbox"
+              :id="'check' + items"
+              :value="list.boardName"
+            />
+            <input
+              v-else
+              name="checkcheckbox"
               type="checkbox"
               :id="'check' + items"
               :value="list.boardName"
@@ -27,13 +37,13 @@
             >
           </div>
         </div>
-        <!-- </div> -->
       </div>
       <div class="save-btn-contain">
         <button class="save-btn" @mouseup="SaveItem">저장</button>
       </div>
     </div>
-    <!-- 생성중 이라면 -->
+
+    <!-- 생성모드 -->
 
     <div v-else>
       <div class="list-title">
@@ -59,6 +69,8 @@
           </div>
         </div>
       </div>
+
+      <!-- 생성중 인풋 -->
 
       <p class="m-2 text-xs font-bhs dark:text-white">이름</p>
       <div class="creating-input-contain">
@@ -101,10 +113,14 @@ export default {
     const get_user_list = (data) => {
       store.dispatch("boardListStore/getUserStoreList", data);
     };
+    const put_boards_data = (data) => {
+      store.dispatch("boardListStore/putBoardData", data);
+    };
     return {
       close_list_modal,
       get_user_list,
       CreateBoard,
+      put_boards_data,
       open_list_modal,
       select_gif_id,
     };
@@ -119,7 +135,6 @@ export default {
     };
   },
   mounted() {
-    console.log("props", this.user_store_list, this.select_gif_id);
     this.get_user_list(this.select_gif_id);
     if (this.open_list_modal) {
       setTimeout(() => {
@@ -178,6 +193,22 @@ export default {
       }
     },
     SaveItem() {
+      let arr = document.getElementsByName("checkcheckbox");
+      let boards = [];
+      for (let i = 0; i < arr.length; i++) {
+        let tmp = {
+          id: this.user_store_list.boards[i].id,
+          boardName: this.user_store_list.boards[i].boardName,
+          gifContainState: arr[i].checked,
+        };
+        boards.push(tmp);
+      }
+      let data = { boards: boards };
+      console.log("요청할 데이터", data);
+      let datas = [];
+      datas.push(this.select_gif_id);
+      datas.push(data);
+      this.put_boards_data(datas);
       this.close_list_modal();
     },
     CancelCreateList() {
@@ -191,6 +222,7 @@ export default {
       let board_name = {
         boardName: this.input_store_title,
       };
+
       this.CreateBoard(board_name);
       this.get_user_list(this.select_gif_id);
     },

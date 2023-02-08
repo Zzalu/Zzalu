@@ -149,7 +149,7 @@ const routes = [
   // --------------------------------------------------------------------
   // 짤 디테일
   {
-    // path: "/zzal/:zzal_id",
+    path: "/zzal/:zzal_id",
     name: 'zzal',
     component: () => import('@/views/ZzalDetailView'),
   },
