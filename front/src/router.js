@@ -114,28 +114,27 @@ const routes = [
   // PROFILE
   // 프로필 메인
   {
-    // path: "/profile/:user_id",
-    path: '/profile',
+    path: "/profile/:username",
     name: 'profile',
     component: () => import('@/views/Profile/ProfileView'),
   },
   // 팔로우 팔로잉
   {
-    // path: '/profile/:user_id/follow',
+    // path: '/profile/:username/follow',
     path:"/profile/follow",
     name: 'follow',
     component: () => import('@/views/Profile/FollowView'),
   },
   // 설정 가는 페이지
   {
-    // path: "/:user_id/settings",
-    path: '/settings',
-    name: 'settings',
+    path: '/account/settings',
+    name: 'account-settings',
     component: () => import('@/views/Profile/UserSettingsView'),
   },
   // 프로필 정보 수정
   {
-    path: '/:user_id/edit-profile',
+    // path: '/:user_id/edit-profile',
+    path: '/profile/edit',
     name: 'edit-profile',
     component: () => import('@/views/Profile/EditProfileView'),
   },

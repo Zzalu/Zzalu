@@ -1,51 +1,64 @@
 <template>
-  <div class="mt-18 ml-4 flex">
-    <div class="bg-black w-32 h-32 rounded-full mr-6"></div>
-    <div class="mx-auto">
-      <div class="flex">
-        <div @click="[GetFollower(),goFollow()]" class="follower-and-following">
-          <div>10</div>
-          <div>팔로워</div>
+    <div class="ml-4 flex">
+      <div class="bg-black w-32 h-32 rounded-full mr-6"></div>
+      <div class="mx-auto">
+        <div class="flex">
+          <div
+            @click="[GetFollower(), goFollow()]"
+            class="follower-and-following"
+          >
+            <div>{{ this.profile_user_data.followerCnt }}</div>
+            <div>팔로워</div>
+          </div>
+          <div
+            @click="[GetFollowing(), goFollow()]"
+            class="follower-and-following"
+          >
+            <div>{{ this.profile_user_data.followingCnt }}</div>
+            <div>팔로잉</div>
+          </div>
         </div>
-        <div @click="[GetFollowing(),goFollow()]" class="follower-and-following">
-          <div>8</div>
-          <div>팔로잉</div>
-        </div>
+        <button
+          class="bg-zz-p mt-2 ml-4 text-white text-xl font-spoq px-5 py-1 rounded"
+          v-if="this.profile_user_data.username != this.me"
+        >
+          팔로우
+        </button>
       </div>
-      <button
-        class="bg-zz-p mt-2 ml-4 text-white text-xl font-spoq px-5 py-1 rounded"
-      >
-        팔로우
-      </button>
     </div>
-  </div>
-  <div class="mt-4 mb-4">
-    <div class="profile-title">닉네임</div>
-    <div class="text-zz-negative font-spoq text-xs my-auto">@아이디</div>
-    <div class="mt-2 line-clamp-2">
-      개발자입니다~~ 소개글이 엄청길다면????소개글이 엄청길다면????소개글이
-      엄청길다면????소개글이 엄청길다면????소개글이 엄청길다면????소개글이
-      엄청길다면????소개글이 엄청길다면????
+    <div class="mt-4 mb-4">
+      <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
+      <div class="text-zz-negative font-spoq text-xs my-auto">
+        @{{ this.profile_user_data.username }}
+      </div>
+      <div class="mt-2 line-clamp-2">
+        {{ this.profile_user_data.profileMessage }}
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-// import { computed } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "ProfileInfo",
+  data() {
+    return {
+      me: localStorage.getItem("id")
+      // myProfile: false,
+    };
+  },
   setup() {
     const store = useStore();
     const router = useRouter();
-
+    const profile_user_data = computed(
+      () => store.state.userStore.profile_user
+    );
     const get_follower = (member_id) => {
       console.log("member_id", member_id)
       store.dispatch("followStore/getFollowerList", member_id)
-      
-
     };
     
 
@@ -54,23 +67,25 @@ export default {
       store.dispatch("followStore/getFollowingList", member_id)
     
     };
-    const goFollow = function() {router.push('/profile/follow')}
+    const goFollow = function() {router.push({name: "follow", params: {username: this.profile_user_data.username}})}
 
     return {
-      get_follower, get_following, goFollow
+      get_follower, get_following, goFollow,
+      profile_user_data
     }
 
   },
   methods: {
     GetFollower() {
-      let member_id = 1
+      let member_id = this.profile_user_data.id
+      console.log(this.profile_user_data)
+      console.log(member_id, "멤버")
       this.get_follower(member_id)
       this.goFollow
-
       // console.log("followers=", this.followers) // undefined
     },
     GetFollowing() {
-      let member_id = 1
+      let member_id = this.profile_user_data.id
       this.get_following(member_id)
       this.goFollow
       // console.log("followings=", this.followings) // undefined
@@ -82,7 +97,8 @@ export default {
 
 <style scoped lang="postcss">
 .follower-and-following {
-  @apply mt-4 text-center mx-2 text-zz-s font-spoq;
+  @apply mt-10 text-center mx-2 text-zz-s font-spoq;
 }
 /* 내프로필이면 my-auto */
+
 </style>
