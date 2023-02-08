@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.TitleHakwon.service;
 
 import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
 import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
+import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonDetailResponse;
 import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonResponse;
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
@@ -29,11 +30,11 @@ public class TitleHakwonService {
      * 제목학원 정보 조회
      */
 
-    public TitleHakwonResponse getTitleHakwonInfo(String openDate){
+    public TitleHakwonDetailResponse getTitleHakwonInfo(String openDate){
         if(titleHackwonRepository.findTitleHakwonByOpenDate(openDate)==null){
 
         }
-       return new TitleHakwonResponse(titleHackwonRepository.findTitleHakwonByOpenDate(openDate));
+       return new TitleHakwonDetailResponse(titleHackwonRepository.findTitleHakwonByOpenDate(openDate));
 
     }
 
@@ -91,6 +92,15 @@ public class TitleHakwonService {
         }
 
 
+    }
+
+    /**
+     * 역대 제목학원 리스트 조회하기
+     */
+
+    public List<TitleHakwonResponse> getTitleHakwonList(){
+        List<TitleHakwon> titleHakwonList = titleHackwonRepository.findTitleHakwonByState(TitleHakwonState.DONE);
+        return TitleHakwonResponse.convertToDtoList(titleHakwonList);
     }
 
 
