@@ -1,15 +1,13 @@
 package com.samsamoo.zzalu.statistics.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Setter
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class GifStatistics {
@@ -18,12 +16,14 @@ public class GifStatistics {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "GIF_ID")
+    @Column(name = "GIF_ID", unique = true)
     private Long gifId;
 
     @Column(name = "USE_COUNT")
-    private Long useCount;
+    @Builder.Default
+    private Long useCount = 0L;
 
     @Column(name = "DOWNLOAD_COUNT")
-    private Long downloadCount;
+    @Builder.Default
+    private Long downloadCount = 0L;
 }

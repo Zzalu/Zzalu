@@ -31,8 +31,8 @@ public class GifsController {
     }
 
     @GetMapping("/main/gifs")
-    public ResponseEntity<List<Gifs>> findTop90() {
-        return ResponseEntity.ok().body(gifsService.findTop90());
+    public ResponseEntity<List<Gifs>> findTop30ByOrderByLikeCountDesc() {
+        return ResponseEntity.ok().body(gifsService.findTop30ByOrderByLikeCountDesc());
     }
 
     @GetMapping("/search")
