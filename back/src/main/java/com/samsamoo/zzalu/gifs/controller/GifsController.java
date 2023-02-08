@@ -88,5 +88,6 @@ public class GifsController {
         return ResponseEntity.ok().body(gifs);
     }
 
+
 }
 
