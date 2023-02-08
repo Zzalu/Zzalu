@@ -23,4 +23,7 @@ public class MemberTagStatisticsService {
         return memberTagStatisticsRepository.findAllByMemberId(memberId);
     }
 
+    public void save(MemberTagStatistics memberTagStatistics) {
+        memberTagStatisticsRepository.save(memberTagStatistics);
+    }
 }

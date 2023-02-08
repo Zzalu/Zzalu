@@ -3,14 +3,18 @@ package com.samsamoo.zzalu.statistics.controller;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
+import com.samsamoo.zzalu.gifs.service.GifsService;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.statistics.entity.GifStatistics;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
+import com.samsamoo.zzalu.statistics.repository.GifStatisticsRepository;
 import com.samsamoo.zzalu.statistics.repository.MemberTagStatisticsRepository;
+import com.samsamoo.zzalu.statistics.service.GifStatisticsService;
 import com.samsamoo.zzalu.statistics.service.MemberTagStatisticsService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +22,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/statistics")
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class MemberTagStatisticsController {
+public class StatisticsController {
 
-    private final GifsRepository gifsRepository;
+    private final GifsService gifsService;
+    private final GifStatisticsService gifStatisticsService;
     private final MemberTagStatisticsService memberTagStatisticsService;
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberTagStatisticsRepository memberTagStatisticsRepository;
@@ -32,8 +37,8 @@ public class MemberTagStatisticsController {
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
 
-        if(gifsRepository.findById(gifId).isPresent()){
-            Gifs gif = gifsRepository.findById(gifId).get();
+        if(gifsService.findById(gifId).isPresent()){
+            Gifs gif = gifsService.findById(gifId).get();
             String[] tags = gif.getTags().split(",");
 
             for(int index = 0; index < tags.length; ++index) {
@@ -42,14 +47,26 @@ public class MemberTagStatisticsController {
                 if(optionalMemberTagStatistics.isPresent()) {
                     MemberTagStatistics memberTagStatistics = optionalMemberTagStatistics.get();
                     memberTagStatistics.setCount(memberTagStatistics.getCount() + 1);
-                    memberTagStatisticsRepository.save(memberTagStatistics);
+                    memberTagStatisticsService.save(memberTagStatistics);
                 } else {
                     MemberTagStatistics newMemberTagStatistics = new MemberTagStatistics();
                     newMemberTagStatistics.setMemberId(requestMember.getId());
                     newMemberTagStatistics.setTag(tags[index]);
                     newMemberTagStatistics.setCount(1L);
-                    memberTagStatisticsRepository.save(newMemberTagStatistics);
+                    memberTagStatisticsService.save(newMemberTagStatistics);
                 }
+
+                Optional<GifStatistics> optionalGifStatistics = gifStatisticsService.findByGifId(gif.getId());
+                GifStatistics gifStatistics;
+                if(optionalGifStatistics.isPresent()) {
+                    gifStatistics = optionalGifStatistics.get();
+                    gifStatistics.setUseCount(gifStatistics.getUseCount() + 1);
+                } else {
+                    gifStatistics = new GifStatistics();
+                    gifStatistics.setUseCount(1L);
+                    gifStatistics.setGifId(gif.getId());
+                }
+                gifStatisticsService.save(gifStatistics);
             }
             return true;
         } else {
@@ -64,6 +81,14 @@ public class MemberTagStatisticsController {
     @ResponseBody
     public List<MemberTagStatistics> findAllByMemberId(@RequestParam("memberId") Long memberId){
         return memberTagStatisticsService.findAllByMemberId(memberId);
+    }
+
+    @GetMapping("/gif")
+    @ResponseBody
+    public GifStatistics findByGifId(@RequestParam("gifId") Long gifId){
+        System.out.println(gifId);
+        Optional<GifStatistics> optionalGifStatistics = gifStatisticsService.findByGifId(gifId);
+        return optionalGifStatistics.orElse(null);
     }
 
 }

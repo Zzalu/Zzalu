@@ -1,6 +1,7 @@
 import json
-import pymysql
 from urllib import parse, request
+
+import pymysql
 
 ############################ mariadb 연결
 conn = pymysql.connect(host="127.0.0.1", user="root", password="ssafy", db="ZZALU", charset="utf8")
