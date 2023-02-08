@@ -14,7 +14,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class ChangePassRequest {
     @NotNull(message = "회원의 id 숫자를 입력해주세요.")
-    private Long id;
+    private String username;
 
     @NotBlank(message = "비밀번호를 입력해주세요.")
     private String newPassword;
