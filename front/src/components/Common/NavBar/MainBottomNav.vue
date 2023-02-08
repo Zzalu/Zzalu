@@ -20,8 +20,12 @@
         <font-awesome-icon icon="fa-regular fa-lightbulb" />
         <i class="fa-solid fa-chevron-left"></i
       ></router-link>
-
-      <router-link to="/profile" class="nav_item"><font-awesome-icon icon="fa-regular fa-user" /></router-link>
+      <div v-if="user_is_logged_in==true" class="nav_item">
+        <router-link to="{ name: 'profile', params: { user_id: my_username }}"><font-awesome-icon icon="fa-regular fa-user" /></router-link>
+      </div>
+      <div v-if="user_is_logged_in==false" class="nav_item">
+        <router-link to="/login" ><font-awesome-icon icon="fa-regular fa-user" /></router-link>
+      </div>
     </ul>
   </div>
 </template>
@@ -41,8 +45,11 @@ export default {
 
     const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
     const check_search_modal = computed(() => store.state.searchModalStore.open_search_modal);
+    const user_is_logged_in = computed(() => store.state.userStore.isLogin);
+    const my_username = computed(() => store.state.userStore.username);
     const close_search_modal = () => {
-      store.commit('searchModalStore/open_search_modal');
+      store.commit('searchModalStore/open_search_modal')
+      store.dispatch("zzalListStore/getFirstRandomGIFList")
     };
     const open_modal = () => {
       store.commit('searchModalStore/open_search_modal');
@@ -52,6 +59,8 @@ export default {
       close_search_modal,
       check_search_modal,
       open_chat_info,
+      user_is_logged_in,
+      my_username
     };
   },
   methods: {

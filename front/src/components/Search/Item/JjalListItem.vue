@@ -1,13 +1,14 @@
 <template>
   <div>
     <!-- v-touch:press="LongClickStart" v-touch:release="LongClickEnd" -->
-    <div v-if="img_select" class="select-jjal-box"
-    @click="route"
-    >
-      <div>
+    <div v-if="img_select" class="select-jjal-box" @click="route">
+      <div
+        class="select-jjal-img"
+        :style="`background-image:url(${this.gifPath})`"
+      >
         <div class="view-content">
           <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
-          <p class="view-count">1100</p>
+          <p class="view-count">{{ zzal_info.visitedCount }}</p>
         </div>
         <div>
           <font-awesome-icon
@@ -17,22 +18,15 @@
             @click.stop="''"
           />
         </div>
-        <img
-          class="select-jjal-img"
-          src="../../QuietChat/QuietChatList/assets/rmfoTrnsk.gif"
-        />
       </div>
     </div>
     <div v-else class="jjal-box">
       <div
-      v-touch:longtap="long_click"
-      @click="route"
-      >
-        <img
-          class="jjal-img"
-          src="../../QuietChat/QuietChatList/assets/Infinite_Challenge.jpg"
-        />
-      </div>
+        v-touch:longtap="long_click"
+        @click="route"
+        class="jjal-img"
+        :style="`background-image:url(${this.gifPath})`"
+      ></div>
     </div>
   </div>
 </template>
@@ -50,7 +44,8 @@ export default {
       store.commit("searchModalStore/open_list_modal");
     };
     const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal");
+      store.commit("searchModalStore/open_search_modal")
+      store.dispatch("zzalListStore/getFirstRandomGIFLIST")
     };
     const select_jjal_num = computed(
       () => store.state.searchModalStore.select_jjal_num
@@ -59,12 +54,12 @@ export default {
       open_list_modal,
       close_search_modal,
       select_jjal_num,
-
     };
   },
   data() {
     return {
       start_time: null,
+      gifPath: this.zzal_info.gifPath,
     };
   },
   computed: {
@@ -78,15 +73,16 @@ export default {
   },
   props: {
     i: Number,
+    zzal_info: Object,
   },
   methods: {
     route() {
-      this.$router.push(`/zzal/${this.i}`);
+      this.$router.push(`/zzal/${this.zzal_info.id}`);
       this.close_search_modal();
     },
     long_click() {
       this.$emit("select_id", this.i);
-    }
+    },
   },
 };
 </script>
@@ -94,7 +90,7 @@ export default {
 <style scoped lang="postcss">
 .view-content {
   /* filter: opacity(1) drop-shadow(0 0 0 rgb(255, 255, 255)); */
-  @apply absolute flex text-white z-10 mt-2;
+  @apply absolute flex text-white z-20 mt-2;
 }
 .view-icon {
   @apply text-2xl ml-1;
@@ -103,12 +99,12 @@ export default {
   @apply text-sm ml-1;
 }
 .scrap-icon {
-  @apply absolute z-10 text-white mt-16 ml-1 text-3xl;
+  @apply absolute z-20 text-white mt-16 ml-1 text-3xl;
 }
 .select-jjal-box {
   overflow: hidden;
   /* filter: opacity(0.5) drop-shadow(0 0 0 rgb(0, 0, 0)); */
-  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center ;
+  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
 }
 
 .jjal-box {
@@ -118,9 +114,9 @@ export default {
 }
 .select-jjal-img {
   filter: opacity(0.5) drop-shadow(0 0 0 rgb(0, 0, 0));
-  @apply h-full w-full rounded-2xl;
+  @apply h-full w-full rounded-2xl bg-cover;
 }
 .jjal-img {
-  @apply h-full w-full rounded-2xl;
+  @apply h-full w-full rounded-2xl bg-cover;
 }
 </style>

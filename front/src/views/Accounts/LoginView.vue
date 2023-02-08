@@ -1,10 +1,18 @@
 <template>
   <div>
+    <only-go-back-top-nav></only-go-back-top-nav>>
     <!-- 로고랑 제목 -->
     <img
       alt="ZZalu Light logo"
       class="logo"
       src="../../assets/zzalu_logo_light.png"
+      v-if="isDark==false"
+    />
+    <img
+      alt="ZZalu Dark logo"
+      class="logo"
+      src="../../assets/zzalu_logo_dark.png"
+      v-if="isDark==true"
     />
     <h1 class="account-title">Login</h1>
     <!-- 아이디 비번 입력창 -->
@@ -58,16 +66,18 @@
 </template>
 
 <script>
-import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue'
-// import LoginValidations from '../../services/LoginValidations'
+import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue';
+import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
 import { useStore } from 'vuex';
+import { useDark } from '@vueuse/core';
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router';
 
-
+const isDark = useDark();
 export default {
   name: "LoginView",
   components: {
+    OnlyGoBackTopNav,
     SignUpBottomNav,
   },
   setup() {
@@ -75,8 +85,8 @@ export default {
     const router = useRouter();
     const state = reactive({
       creds: {
-        username: '',
-        password: '',
+        username: null,
+        password: null,
       }
 
     })
@@ -86,11 +96,16 @@ export default {
           username: state.creds.username,
           password: state.creds.password,
         }
+      
+      if (!loginData.username | !loginData.password) {
+        console.log("인풋값 입력 다 해야지;")
+      } else {
       console.log('로그인 데이터', loginData)
       const res = await store.dispatch('userStore/loginAction', loginData)
       if (res) {
         console.log("로그인 요청 잘 갔음")
         router.push({name: 'main'})
+      }
       }
       
     }
@@ -100,6 +115,11 @@ export default {
       loginSubmit,
     }
   },
+  data() {
+    return {
+      isDark,
+    };
+  }
 }
 </script>
 
@@ -118,10 +138,10 @@ export default {
 }
 
 .or-start-with {
-  @apply absolute px-3 text-sm -translate-x-1/2 bg-white font-spoq text-zz-darkgray;
+  @apply absolute px-3 text-sm -translate-x-1/2 bg-white font-spoq text-zz-darkgray dark:bg-zz-bd;
 }
 
 .login-icon {
-  @apply w-12 mx-2 border-8 border-gray-100 bg-gray-100 rounded-full;
+  @apply w-12 mx-2 border-8 border-gray-100 bg-gray-100 rounded-full dark:border-zz-darkgray;
 }
 </style>

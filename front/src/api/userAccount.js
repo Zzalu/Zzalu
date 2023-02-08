@@ -28,4 +28,10 @@ const requestLogin = (payload, res, err) => {
     .then(res).catch(err)
 }
 
-export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin }
+const requestUsername = (data,res,err) => {
+    // console.log('유저이메일 나와야됨',data)
+    return api.post(`mail/username`, data )
+    .then(res).catch(err)
+}
+
+export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername }

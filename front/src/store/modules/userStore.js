@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -29,15 +29,25 @@ const userStore = {
       state.temp.code = credentialsEmailCode.code
     },
     SAVE_CURRENT_USER(state, loginData ) {
-      
       console.log('지금 접속한 사람 저장')
       console.log(loginData)
       console.log(loginData.data)
       state.user = loginData.data.username
       state.accessToken = loginData.data.accessToken
       state.refreshToken = loginData.data.refreshToken
+      state.isLogin = true
+      localStorage.setItem('id', loginData.data.username)
+      localStorage.setItem('token', loginData.data.accessToken)
       console.log('지금 접속한 사람 출력', loginData.data.username)
       console.log('지금 접속한 사람 출력', state.user)
+    },
+    LOGOUT (state) {
+      localStorage.removeItem('id')
+      localStorage.removeItem('token')
+      state.user = null
+      state.accessToken = ''
+      state.refreshToken = ''
+      state.isLogin = false
     }
   },
   getters: {
@@ -101,13 +111,35 @@ const userStore = {
       console.log("store 다시 잘 들어옴", response)
       context.commit('SAVE_CURRENT_USER', response)
       console.log(response.data)
-      localStorage.setItem('id', response.data.username)
-      localStorage.setItem('token', response.data.accessToken)
+      // localStorage.setItem('id', response.data.username)
+      // localStorage.setItem('token', response.data.accessToken)
       console.log("지금 접속유저 저장 잘 됨", response)
       return response
-    }
+    },
 
-    
+    // 로그아웃
+    logoutAction: async (context) => {
+      // console.log("store잘 들어옴", loginData)
+      // const response = await requestLogin(loginData)
+      // console.log("store 다시 잘 들어옴", response)
+      context.commit('LOGOUT')
+      // console.log(response.data)
+      // localStorage.setItem('id', response.data.username)
+      // localStorage.setItem('token', response.data.accessToken)
+      // console.log("지금 접속유저 저장 잘 됨", response)
+      // return response
+
+
+    },
+    // ----------------------------------------------------------
+    // 아이디찾기
+    sendUsernameAction: async (commit, email) => {
+      console.log(email);
+      const data = JSON.stringify({"userEmail": email})
+      const response = await requestUsername(data);
+      // console.log("이안에 코드있음",response)
+      return response
+    },
   },
 };
 

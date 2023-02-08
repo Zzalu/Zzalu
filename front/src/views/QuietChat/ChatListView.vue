@@ -7,14 +7,16 @@
     <!-- 고독방이 있다면 -->
     <div v-if="quiet_chat_data.length >= 1">
       <div v-for="(datas, i) in quiet_chat_data" :key="i">
-        <QuietChatList :room_data="datas"
-        :hashtag="datas.tags"
-        @click="chat_data(i)" />
+        <QuietChatList
+          :room_data="datas"
+          :hashtag="datas.tags"
+          @click="chat_data(i)"
+        />
       </div>
     </div>
     <!-- 필터로 걸러진 고독방이 없다면 -->
     <div v-else>
-      <NoResult/>
+      <NoResult />
     </div>
     <div v-if="open_chat_info">
       <ChatInfoModal
@@ -39,6 +41,7 @@ import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
+import { onBeforeMount } from "@vue/runtime-core";
 
 export default {
   name: "ChatListView",
@@ -64,6 +67,10 @@ export default {
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
     };
+
+    onBeforeMount(() => {
+      store.dispatch("quietChatStore/getQuietList");
+    });
     return {
       open_chat_info,
       open_chat_id,
@@ -118,5 +125,4 @@ export default {
   min-height:84vh;
   @apply h-full
 } */
-
 </style>

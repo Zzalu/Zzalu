@@ -5,7 +5,7 @@
         icon="fa-solid fa-magnifying-glass"
         class="navbar-icon"
       />
-      <input type="text" placeholder="Search..." class="navbar-input" />
+      <input type="text" placeholder="Search..." class="navbar-input"/>
     </div>
   </div>
 </template>

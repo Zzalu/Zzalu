@@ -3,11 +3,11 @@
     <div class="bg-black w-32 h-32 rounded-full mr-6"></div>
     <div class="mx-auto">
       <div class="flex">
-        <div class="follower-and-following">
+        <div @click="[GetFollower(),goFollow()]" class="follower-and-following">
           <div>10</div>
           <div>팔로워</div>
         </div>
-        <div class="follower-and-following">
+        <div @click="[GetFollowing(),goFollow()]" class="follower-and-following">
           <div>8</div>
           <div>팔로잉</div>
         </div>
@@ -31,9 +31,53 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+// import { computed } from "@vue/runtime-core";
+
 export default {
   name: "ProfileInfo",
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+
+    const get_follower = (member_id) => {
+      console.log("member_id", member_id)
+      store.dispatch("followStore/getFollowerList", member_id)
+      
+
+    };
+    
+
+    const get_following = (member_id) => {
+      console.log("member_id", member_id)
+      store.dispatch("followStore/getFollowingList", member_id)
+    
+    };
+    const goFollow = function() {router.push('/profile/follow')}
+
+    return {
+      get_follower, get_following, goFollow
+    }
+
+  },
+  methods: {
+    GetFollower() {
+      let member_id = 1
+      this.get_follower(member_id)
+      this.goFollow
+
+      // console.log("followers=", this.followers) // undefined
+    },
+    GetFollowing() {
+      let member_id = 1
+      this.get_following(member_id)
+      this.goFollow
+      // console.log("followings=", this.followings) // undefined
+    }
+  }
 };
+
 </script>
 
 <style scoped lang="postcss">
