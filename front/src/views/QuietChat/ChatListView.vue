@@ -104,6 +104,7 @@ export default {
   },
   watch: {
     open_chat_info: function (value) {
+      console.log(value)
       value
         ? (document.body.style.overflow = "hidden")
         : document.body.style.removeProperty("overflow");
