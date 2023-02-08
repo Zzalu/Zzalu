@@ -118,6 +118,11 @@ export default {
             // let recv = JSON.parse(message.body);
             // localReciveMessage(recv);
           });
+          localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
+            console.log(message);
+            // let recv = JSON.parse(message.body);
+            // localReciveMessage(recv);
+          });
         },
         function () {
           setTimeout(function () {
