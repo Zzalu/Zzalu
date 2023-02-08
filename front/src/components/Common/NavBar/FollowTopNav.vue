@@ -2,7 +2,7 @@
   <!-- 채팅방 안 nav-->
   <div class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center justify-center">
     <span class="font-bold text-xl text-zz-s">
-      {{ user_id }}
+      {{ profile_user_data.nickname }}
     </span>
     <span class="inline-block px-4 absolute left-0">
       <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl" />
@@ -11,13 +11,23 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+// import { useRouter } from 'vue-router';
+import { computed } from "@vue/runtime-core";
+
 export default {
   name: 'ChatRoomTopNav',
-  data() {
+  setup() {
+    const store = useStore();
+    // const router = useRouter();
+    const profile_user_data = computed(
+      () => store.state.userStore.profile_user
+    );
+
     return {
-      user_id: 'namnam',
-    };
-  },
+      profile_user_data,
+    }
+  }
 };
 </script>
 

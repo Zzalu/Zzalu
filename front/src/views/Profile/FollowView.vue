@@ -22,6 +22,7 @@ import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue"
 import FollowingList from "@/components/Profile/FollowingList"
 import FollowerList from "@/components/Profile/FollowerList"
 
+
 export default {
   name: "FollowView",
   components: {

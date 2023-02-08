@@ -1,5 +1,6 @@
-import { apiInstance } from './index.js';
-const api = apiInstance();
+// import { apiInstance } from './index.js';
+import { authApiInstance } from './index.js';
+const api = authApiInstance();
 
 // 팔로우 요청 (헤더 필요)
 function follow(params, your_id, success, fail) {
@@ -18,6 +19,7 @@ function getFollowingList(member_id, success, fail) {
 
 // 팔로워 리스트 보기 (헤더 필요)
 function getFollowerList(member_id, success, fail) {
+    console.log(member_id)
     api.get(`/follower/${member_id}`).then(success).catch(fail);
 }
 

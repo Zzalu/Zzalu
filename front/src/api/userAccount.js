@@ -1,5 +1,7 @@
 import { apiInstance } from './index.js';
+// import { authApiInstance } from './index.js';
 const api = apiInstance();
+// const auth_api = authApiInstance();
 
 const checkUsername = (payload) => {
     // console.log(payload)
@@ -34,4 +36,8 @@ const requestUsername = (data,res,err) => {
     .then(res).catch(err)
 }
 
-export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername }
+const getProfileUser = (username, success, fail) => {
+    api.get(`/members/${username}`).then(success).catch(fail);
+}
+
+export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser }
