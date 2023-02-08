@@ -7,6 +7,7 @@ import searchModalStore from '@/store/modules/searchModalStore.js'
 import quietChatStore from '@/store/modules/quietChatStore.js'
 import zzalListStore from '@/store/modules/zzalListStore.js'
 import followStore from './modules/followStore';
+import boardListStore from '@/store/modules/boardListStore';
 
 const store = new Vuex.Store({
   modules: {
@@ -16,7 +17,8 @@ const store = new Vuex.Store({
     searchModalStore,
     quietChatStore,
     zzalListStore,
-    followStore
+    followStore,
+    boardListStore,
   },
 });
 export default store;

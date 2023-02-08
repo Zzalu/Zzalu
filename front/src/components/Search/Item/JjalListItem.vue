@@ -47,12 +47,16 @@ export default {
       store.commit("searchModalStore/open_search_modal")
       store.dispatch("zzalListStore/getFirstRandomGIFLIST")
     };
+    const send_select_gif_id_data = (data) => {
+      store.commit("boardListStore/SELECT_GIF",data)
+    }
     const select_jjal_num = computed(
       () => store.state.searchModalStore.select_jjal_num
     );
     return {
       open_list_modal,
       close_search_modal,
+      send_select_gif_id_data,
       select_jjal_num,
     };
   },
@@ -82,6 +86,7 @@ export default {
     },
     long_click() {
       this.$emit("select_id", this.i);
+      this.send_select_gif_id_data(this.zzal_info.id);
     },
   },
 };

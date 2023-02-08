@@ -7,11 +7,11 @@
           <div class="dark:border-zz-dark-div">
             <div class="modal">
               <div
-              class="modal-items"
-              ref="notification-list"
-              @scroll="handleNotificationListScroll"
+                class="modal-items"
+                ref="notification-list"
+                @scroll="handleNotificationListScroll"
               >
-              <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
+                <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
                 <SearchBar />
                 <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                   <JjalListItem
@@ -26,9 +26,11 @@
         </div>
       </transition>
       <!-- <transition name="slide-fade"> -->
+        
       <div v-if="open_list_modal">
         <div class="list-view-bg"></div>
-        <StoreList class="list-view" />
+        
+        <StoreList class="list-view" :user_store_list="user_store_list"/>
       </div>
     </div>
     <!-- </transition> -->
@@ -55,6 +57,9 @@ export default {
     const random_gif_data = computed(
       () => store.state.zzalListStore.random_gif_data
     );
+    const user_store_list = computed(
+      () => store.state.boardListStore.user_store_list
+    );
 
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
@@ -65,13 +70,14 @@ export default {
     });
 
     function MoreRandomGIF(gif_data) {
-      store.dispatch("zzalListStore/getMoreRandomGIFLIST",[...gif_data])
+      store.dispatch("zzalListStore/getMoreRandomGIFLIST", [...gif_data]);
     }
 
     return {
       open_search_modal,
       open_list_modal,
       random_gif_data,
+      user_store_list,
       send_select_jjal_num,
       MoreRandomGIF,
     };
@@ -84,12 +90,12 @@ export default {
   data() {
     return {
       gif_data: [],
-      load_state : false,
+      load_state: false,
     };
   },
   methods: {
-    select_id(e) {
-      this.send_select_jjal_num(e);
+    select_id(a) {
+      this.send_select_jjal_num(a);
     },
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
@@ -98,8 +104,8 @@ export default {
       if (isAtTheBottom) {
         this.load_state = true;
         setTimeout(() => {
-          this.MoreRandomGIF(this.gif_data)
-          this.load_state = false
+          this.MoreRandomGIF(this.gif_data);
+          this.load_state = false;
         }, 1000);
       }
     },
