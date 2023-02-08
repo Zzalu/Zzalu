@@ -153,6 +153,13 @@ const routes = [
     component: () => import('@/views/ZzalDetailView'),
   },
   // ----------------------------------------------------------------
+  // 보드 디테일
+  {
+    path: "/board/:board_id",
+    name: 'board',
+    component: () => import('@/views/BoardDetailView'),
+  },
+  // -------------------------------------------------------------------
   // ERROR
   // 에러404 페이지X
   // {
