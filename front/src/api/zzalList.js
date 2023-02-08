@@ -14,7 +14,6 @@ function getFirstRandomGIF(res,err) {
     .then(res).catch(err)
 }
 function getMoreRandomGIF(params,res,err) {
-    // console.log(params,'params') [1,2,3,4,5,68,8]
     api.post(`/gif/randoms`,{ exceptIds : params})
     .then(res).catch(err)
 }
