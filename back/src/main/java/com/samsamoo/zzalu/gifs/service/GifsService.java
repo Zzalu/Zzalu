@@ -23,8 +23,8 @@ public class GifsService {
         return gifRepository.findById(id);
     }
 
-    public List<Gifs> findTop90() {
-        return gifRepository.findTop90ByOrderByLikeCountDesc();
+    public List<Gifs> findTop30ByOrderByLikeCountDesc() {
+        return gifRepository.findTop30ByOrderByLikeCountDesc();
     }
 
     public List<Gifs> findByTags(String searchKeyword) { return gifRepository.findByTagsContains(searchKeyword); }
