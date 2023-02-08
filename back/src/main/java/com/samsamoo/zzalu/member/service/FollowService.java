@@ -87,26 +87,14 @@ public class FollowService {
 
         List<Object> followingList = new ArrayList<>();
 
-        // 둘이 일치할 경우 > MyFollowMemberDTO 사용
-        if(me.equals(target)) {
-            for (Iterator<Member> itr = targetFollowings.iterator(); itr.hasNext();) {
-                Member entity = itr.next();
-                // entity를 dto로 변환
-                MyFollowMemberDTO dto = new MyFollowMemberDTO(entity);
-                followingList.add(dto);
-            }
-
-        } else {
-            // 둘이 다를 경우 > FollowMemberDTO 사용
-            for (Iterator<Member> itr = targetFollowings.iterator(); itr.hasNext();) {
-                Member entity = itr.next();
-                // 내가 팔로우 하고 있는지 여부를 넣어줘야 한다.
-                List<Member> followers = entity.getFollower();
-                Boolean isFollowing = followers.contains(me);
-                // entity를 dto로 변환
-                FollowMemberDTO dto = new FollowMemberDTO(entity, isFollowing);
-                followingList.add(dto);
-            }
+        for (Iterator<Member> itr = targetFollowings.iterator(); itr.hasNext();) {
+            Member entity = itr.next();
+            // 내가 팔로우 하고 있는지 여부를 넣어줘야 한다.
+            List<Member> followers = entity.getFollower();
+            Boolean isFollowing = followers.contains(me);
+            // entity를 dto로 변환
+            FollowMemberDTO dto = new FollowMemberDTO(entity, isFollowing);
+            followingList.add(dto);
         }
         return followingList;
     }
@@ -127,26 +115,15 @@ public class FollowService {
 
         List<Object> followerList = new ArrayList<>();
 
-        // 둘이 일치할 경우 > MyFollowMemberDTO 사용
-        if(me.equals(target)) {
-            for (Iterator<Member> itr = targetFollowers.iterator(); itr.hasNext();) {
-                Member entity = itr.next();
-                // entity를 dto로 변환
-                MyFollowMemberDTO dto = new MyFollowMemberDTO(entity);
-                followerList.add(dto);
-            }
-
-        } else {
-            // 둘이 다를 경우 > FollowMemberDTO 사용
-            for (Iterator<Member> itr = targetFollowers.iterator(); itr.hasNext();) {
-                Member entity = itr.next();
-                // 내가 팔로우 하고 있는지 여부를 넣어줘야 한다.
-                List<Member> followers = entity.getFollower();
-                Boolean isFollowing = followers.contains(me);
-                // entity를 dto로 변환
-                FollowMemberDTO dto = new FollowMemberDTO(entity, isFollowing);
-                followerList.add(dto);
-            }
+        // 둘이 다를 경우 > FollowMemberDTO 사용
+        for (Iterator<Member> itr = targetFollowers.iterator(); itr.hasNext();) {
+            Member entity = itr.next();
+            // 내가 팔로우 하고 있는지 여부를 넣어줘야 한다.
+            List<Member> followers = entity.getFollower();
+            Boolean isFollowing = followers.contains(me);
+            // entity를 dto로 변환
+            FollowMemberDTO dto = new FollowMemberDTO(entity, isFollowing);
+            followerList.add(dto);
         }
         return followerList;
     }

@@ -217,7 +217,7 @@ public class MemberService {
 
     public void changePass(ChangePassRequest request) {
         // member 반환
-        Member member = memberRepository.findById(request.getId())
+        Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new MemberNotFoundException());
 
         // 비밀번호 확인과 일치하는지
