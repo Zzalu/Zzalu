@@ -1,4 +1,4 @@
-import { getStoreList, createBoard } from "@/api/boardList"
+import { getStoreList, createBoard, putBoardData } from "@/api/boardList"
 
 const boardListStore = {
   namespaced: true,
@@ -40,6 +40,18 @@ const boardListStore = {
         }
       )
     },
+    putBoardData(params, datas) {
+      putBoardData(
+        params,
+        datas,
+        (data) => {
+          console.log(data, '보드 수정 성공');
+        },
+        (err) => {
+          console.log(err, '보드 수정 실패');
+        }
+      )
+    }
   },
 
 }
