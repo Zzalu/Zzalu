@@ -1,7 +1,5 @@
 package com.samsamoo.zzalu.statistics.repository;
 
-import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.statistics.entity.MemberStatistics;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
