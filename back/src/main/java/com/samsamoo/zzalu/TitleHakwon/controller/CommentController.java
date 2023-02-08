@@ -137,11 +137,17 @@ public class CommentController {
         }else{
             //그렇지 않은 경우는 좋아요 가능
             //없는회원이면,,,, -> 예외처리하자  좋아요 완료로뜬다.
-            commentService.clickCommentLikes(commentId,username);
+           LikeResponse likeResponse = commentService.clickCommentLikes(commentId,username);
+           System.out.println(likeResponse+"@@@@");
 
    /*         // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
             //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
             redisPublisher.publish("title-Hakwon",);*/
+
+            /** 좋아요가 다 눌렷으면 redis pub 좋아요 +1 을 한다 */
+
+            redisPublisher.pubLikes(redisCommentRepository.getTopic("likes"),likeResponse);
+
 
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.OK);
         }
@@ -161,7 +167,11 @@ public class CommentController {
             return new ResponseEntity<>("좋아요를 누른 기록이 없습니다.",HttpStatus.FORBIDDEN);
         }else{
             //그렇지 않은 경우는 좋아요 가능
-            commentService.cancelCommentLikes(commentId,username);
+
+
+            LikeResponse likeResponse = commentService.cancelCommentLikes(commentId,username);
+            redisPublisher.pubLikes(redisCommentRepository.getTopic("likes"),likeResponse);
+
             return new ResponseEntity<>("좋아요 취소 완료 ",HttpStatus.OK);
         }
     }

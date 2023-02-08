@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.redis.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
+import com.samsamoo.zzalu.TitleHakwon.dto.LikeResponse;
 import com.samsamoo.zzalu.chat.dto.ChatMessage;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,11 @@ public class RedisPublisher {
         System.out.println("[publishTItlehakwon]"+ topic.getTopic());
         System.out.println(commentResponse.getContent()+"댓글 정보");
         redisTemplate.convertAndSend(topic.getTopic(), commentResponse);
+    }
+
+    public void pubLikes(ChannelTopic topic, LikeResponse likeResponse) {
+        System.out.println("[publish Likes]"+ topic.getTopic());
+        System.out.println(likeResponse.getLikeNum()+"좋아요 정보");
+        redisTemplate.convertAndSend(topic.getTopic(), likeResponse);
     }
 }

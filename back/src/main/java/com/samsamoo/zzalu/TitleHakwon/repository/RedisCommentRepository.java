@@ -27,9 +27,12 @@ public class RedisCommentRepository {
         // 좋아요 Topic
         titleTopics.put("likes",new ChannelTopic("likes"));
 
+
         //리스너 연결
         redisMessageListener.addMessageListener(redisSubscriber, titleTopics.get("comments"));
         redisMessageListener.addMessageListener(redisSubscriber, titleTopics.get("likes"));
+
+
     }
 
     public ChannelTopic getTopic (String topic){
