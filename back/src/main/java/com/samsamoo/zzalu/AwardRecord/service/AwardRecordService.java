@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.AwardRecord.service;
 
+import com.samsamoo.zzalu.AwardRecord.RankDtoInterface;
+
 import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
 import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
@@ -8,11 +10,11 @@ import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -70,14 +72,6 @@ public class AwardRecordService {
         titleHakwon.setState(TitleHakwonState.PROCEED);
 
         titleHackwonRepository.save(titleHakwon);
-    }
-
-
-    /** 해당 유저의 1/2/3 등 수상 개수 조회하기 **/
-    public  void getRankCount (){
-        int []  ranks = new int[3];
-
-
     }
 
 

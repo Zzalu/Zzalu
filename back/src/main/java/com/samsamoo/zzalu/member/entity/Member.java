@@ -78,6 +78,9 @@ public class Member implements UserDetails {
     @Builder.Default
     private List<Board> boards = new ArrayList<Board>();
 
+    // 수상 기록
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.roles.stream()
