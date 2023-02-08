@@ -5,12 +5,11 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
-public class ChatMessage implements Serializable {
+public class ChatMessageDto implements Serializable {
     public enum MessageType {
         ENTER, JOIN, TALK, @JsonEnumDefaultValue UNKNOWN;
     }

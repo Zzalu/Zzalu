@@ -1,8 +1,8 @@
 package com.samsamoo.zzalu.chat.controller;
 
 
-import com.samsamoo.zzalu.chat.dto.ChatMessage;
-import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
+import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import com.samsamoo.zzalu.kafka.service.KafkaProducer;
 import com.samsamoo.zzalu.redis.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
@@ -18,15 +18,15 @@ import java.util.List;
 public class ChatController {
 
     private final RedisPublisher redisPublisher;
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRedisRepository chatRoomRedisRepository;
     private final KafkaProducer kafkaProducer;
 
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message) {
+    public void message(ChatMessageDto message) {
         System.out.println(message.getClass().getName());
         System.out.println("ChatController - ChatMessage : " + message);
-        if (ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            chatRoomRepository.enterChatRoom(message.getRoomId());
+        if (ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
+            chatRoomRedisRepository.enterChatRoom(message.getRoomId());
 
 //            System.out.println("ChatController - if(ENTER) - findAllChatMessage : " + chatRoomRepository.findAllChatMessage(message.getRoomId()));
             message.setMessage(message.getSender() + "님이 입장하셨습니다.");
@@ -38,15 +38,15 @@ public class ChatController {
 
         // kafka topic 발행 정상 처리 이후 ChatMessage Redis에 저장
         // 입장 메시지 미저장 (입장이 아닐때만 저장)
-        if(!ChatMessage.MessageType.ENTER.equals(message.getType())) {
-            chatRoomRepository.setChatMessage(message);
+        if(!ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
+            chatRoomRedisRepository.setChatMessage(message);
         }
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
 
     @GetMapping("/chat/messages")
-    public List<ChatMessage> getAllChatMessages(String roomId) {
-        return chatRoomRepository.findAllChatMessage(roomId);
+    public List<ChatMessageDto> getAllChatMessages(String roomId) {
+        return chatRoomRedisRepository.findAllChatMessage(roomId);
     }
 
 
