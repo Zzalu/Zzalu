@@ -8,9 +8,10 @@
         placeholder="이메일을 입력하세요"
         v-model="state.credentials.email"
       />
+
       <div class="error" v-if="errorMsgs.err.email">{{ errorMsgs.err.email }}</div>
     <div class="flex float-right mt-10" v-if="$route.name == 'input-signup-email'">
-      <button class="go-next-button" @click="[onSubmit(), sendEmailCode()]">다음</button>
+      <button class="go-next-button" @click="[sendEmailCode(), loadingAni()]">다음</button>
     </div>
     <div class="flex float-right mt-10" v-if="$route.name == 'find-id-input-email'">
       <button class="go-next-button" @click="sendUsername">다음</button>
@@ -53,33 +54,38 @@ export default {
       } else {
         errorMsgs.err.email = null
       }
-      console.log(errorMsgs.err.email)
     }
 
     // 이메일 중복확인 및 코드 요청 보내기
     const sendEmailCode = async function () {
-      
-      const result = await store.dispatch('userStore/sendEmailAction', state.credentials.email )
-      console.log(result.data.authKey)
-      console.log(result.status)
-      if (result.status == 400) {
-        alert("이메일이 중복이에...")
-      } else if (result.status == 200) {
-        console.log('이메일 중복 아님', state.credentials)
-        const credentialsEmailCode = {
-          email: state.credentials.email,
-          code: result.data.authKey,
-        }
-        console.log('넘겨줄 변수 정의',credentialsEmailCode)
-        // 회원가입 등록
-        const email_code = await store.dispatch('userStore/signupSecondAction', credentialsEmailCode)
-        console.log(email_code)
-        if (email_code) {
-          console.log("회원가입 요청 2 잘 갔음")
-          router.push({name: 'input-code'})
+      const validations = new SignupEmailValidations(state.credentials.email);
+      const errors = validations.checkValidations();
+      if ('email' in errors) {
+        errorMsgs.err.email = errors['email']
+      } else {
+        const result = await store.dispatch('userStore/sendEmailAction', state.credentials.email )
+        if (result.status == 400) {
+          alert("이미 사용중인 이메일입니다.\n다른 이메일을 입력해주세요.")
+        } else if (result.status == 200) {
+          const credentialsEmailCode = {
+            email: state.credentials.email,
+            code: result.data.authKey,
+          }
+          // 회원가입 등록
+          const email_code = await store.dispatch('userStore/signupSecondAction', credentialsEmailCode)
+          if (email_code) {
+            router.push({name: 'input-signup-code'})
+          }
         }
       }
+    }
 
+    const loadingAni = () => {
+      if (this.errorMsgs.err.email) {
+        return true
+      } else {
+        return false
+      }
     }
 
     // 내가 잊은 아이디를 메일로 보내기
@@ -95,26 +101,20 @@ export default {
       errorMsgs,
       sendEmailCode,
       sendUsername,
-      onSubmit
+      onSubmit,
+      loadingAni
     }
   },
   data() {
     return {
       // 회원 정보
       email: '',
-      // 에러
-      errors: [],
     };
   },
-
-  methods: {
-
   }
-}
+// }
 </script>
 
 <style lang="postcss" scoped>
-  .find-id-input-title {
-    @apply font-spoq text-lg text-zz-darkgray mt-3 mb-1 mx-1
-  }
+
 </style>

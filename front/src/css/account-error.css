@@ -94,7 +94,7 @@
 
 /* 화면 제목 */
 .account-title {
-  @apply font-carter text-3xl text-center dark:text-white
+  @apply font-carter text-3xl text-center  dark:text-white
 }
 
 /* 인풋창 제목 */
@@ -104,7 +104,7 @@
 
 /* 인풋창 */
 .account-input {
-  @apply bg-zz-light-input rounded-sm w-full h-10 px-8 text-sm dark:bg-zz-dark-input
+  @apply bg-zz-light-input rounded-sm w-full text-zz-s h-10 px-8 text-sm dark:bg-zz-dark-input
 }
 
 .input-without-title {
