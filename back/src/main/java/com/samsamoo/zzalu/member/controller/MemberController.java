@@ -17,16 +17,16 @@ import java.net.URI;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/members")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class MemberController {
     private final MemberService memberService;
 
     //--------------------------------------회원가입-------------------------------------------
     @PostMapping("/signup")
-    public ResponseEntity<MemberDTO> signup(@Valid @RequestBody SignupRequest signupRequest) {
-        MemberDTO memberDTO = memberService.signup(signupRequest);
-        return ResponseEntity.created(URI.create("/members/" + memberDTO.getId())).body(memberDTO);
+    public ResponseEntity signup(@Valid @RequestBody SignupRequest signupRequest) {
+        memberService.signup(signupRequest);
+        return ResponseEntity.created(URI.create("/members/" + signupRequest.getUsername())).build();
     }
 
     //--------------------------------------아이디 중복 체크-------------------------------------------
@@ -53,16 +53,13 @@ public class MemberController {
 
     //--------------------------------------나의 프로필 확인-------------------------------------------
     @GetMapping(value = "/my-profile")
-    public ResponseEntity<ProfileDTO> getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
-        String token = bearerToken.substring(7);
-        ProfileDTO myProfile = memberService.getMyProfile(token);
-        return ResponseEntity.ok().body(myProfile);
+    public ResponseEntity getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
+        return ResponseEntity.ok().body("OK");
     }
 
-    //--------------------------------------다른 사람 프로필 확인-------------------------------------------
+    //--------------------------------------프로필 확인-------------------------------------------
     @GetMapping("/{username}")
     public ResponseEntity<ProfileDTO> getProfile(@PathVariable String username) {
-
         ProfileDTO profile = memberService.getProfile(username);
         return ResponseEntity.ok().body(profile);
     }

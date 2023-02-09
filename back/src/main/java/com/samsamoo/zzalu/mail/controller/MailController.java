@@ -7,16 +7,15 @@ import com.samsamoo.zzalu.mail.service.MailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/mail")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class MailController {
     private final MailService mailService;
 
@@ -36,10 +35,10 @@ public class MailController {
     }
     //--------------------------------------아이디 찾기(아이디 전송)-----------------------------------------
     @PostMapping("/username")
-    public ResponseEntity findUsername(@RequestBody @Valid EmailRequest emailRequest) {
+    public ResponseEntity<Map<String, String>> findUsername(@RequestBody @Valid EmailRequest emailRequest) {
 
         mailService.findUsername(emailRequest);
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok().body(Map.of("message", "success"));
     }
 
 }

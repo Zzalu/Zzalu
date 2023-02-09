@@ -1,8 +1,16 @@
 package com.samsamoo.zzalu.member.service;
 
+import com.samsamoo.zzalu.AwardRecord.RankDtoInterface;
+import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
+import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
+import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.board.dto.MembersBoardInfo;
+import com.samsamoo.zzalu.board.dto.MembersBoardList;
+import com.samsamoo.zzalu.board.entity.Board;
+import com.samsamoo.zzalu.board.service.BoardService;
 import com.samsamoo.zzalu.mail.service.MailService;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
@@ -21,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -39,13 +48,13 @@ public class MemberService {
     private final MailService mailService;
     private final S3Uploader s3Uploader;
 
-
+    private final AwardRecordRepository awardRecordRepository;
 
     @Value("${jwt.token.secret}")
     private String secretKey;
 
     @Transactional
-    public MemberDTO signup(SignupRequest signupRequest) {
+    public void signup(SignupRequest signupRequest) {
         // 아이디 중복
         if (!checkUniqueUsername(signupRequest.getUsername())) {
             throw new NotMatchException("이미 존재하는 아이디입니다.");
@@ -61,9 +70,8 @@ public class MemberService {
         String rawPassword = signupRequest.getPassword();
         String encPassword = passwordEncoder.encode(rawPassword);
         signupRequest.setPassword(encPassword);
-        Member savedMember = memberRepository.save(signupRequest.toEntity());
+        memberRepository.save(signupRequest.toEntity());
 
-        return new MemberDTO(savedMember);
     }
 
     // 수정
@@ -74,12 +82,10 @@ public class MemberService {
     }
     public Boolean checkUniqueUsername(String username) {
         return !memberRepository.existsMemberByUsername(username);
-
     }
 
     public Boolean checkUniqueNickname(String nickname) {
         return !memberRepository.existsMemberByNickname(nickname);
-
     }
 
     // 토큰 검증 실패 시 에외 발생
@@ -89,11 +95,9 @@ public class MemberService {
         }
     }
 
-
     public TokenInfo login(String username, String password) {
         // username 없을 때 리턴
-        Member selectedMember = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new MemberNotFoundException());
+        Member selectedMember = getMemberbyUsername(username);
 
         checkPasswordMatch(selectedMember, password);
 
@@ -102,12 +106,9 @@ public class MemberService {
         // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
 
-        log.info("{} 출력", authenticationToken.getCredentials().toString()); // 출력확인  123456ddhd!
-
         // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
         // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-        log.info("{} 출력", authentication);
 
         // 3. 인증 정보를 기반으로 JWT 토큰 생성
         TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
@@ -123,20 +124,60 @@ public class MemberService {
         }
     }
 
-    public ProfileDTO getMyProfile(String token) {
-        // 토큰 검증
-        checkToken(token);
-
-        Member me = jwtTokenProvider.getMember(token);
-        ProfileDTO myProfile = new ProfileDTO(me);
-        return myProfile;
+    private Member getMemberbyUsername(String username) {
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException());
+        return member;
     }
 
 
+    public MembersBoardList getMembersBoard(String username) {
+        // user 반환
+        Member member = getMemberbyUsername(username);
+
+        // user의 board 불러오기
+        List<Board> boards = member.getBoards();
+
+        // 새 리스트 만들기
+        List<MembersBoardInfo> membersBoardInfos = new ArrayList<>();
+
+        // for문 돌면서 info dto에 add
+        for(Board board : boards) {
+            String thumbnailPath = null;
+            if (board.getGifs().size() >= 1) {
+                thumbnailPath = board.getGifs().get(0).getGifPath();
+            }
+            MembersBoardInfo boardInfo = new MembersBoardInfo(board.getId(), board.getBoardName(), thumbnailPath);
+            membersBoardInfos.add(boardInfo);
+        }
+        // 생성된 리스트를 list dto의 생성자로 넘김
+        return new MembersBoardList(membersBoardInfos);
+
+    }
+
+    // ---------------------사용자 제목학원 수상 기록 반환 ---------------------------------
+    public AwardCountResponse getAwardRecord (String username){
+
+        Member member = getMemberbyUsername(username);
+
+        List<Integer> ranking = new ArrayList<>();
+
+
+        RankDtoInterface rankDtoInterface = awardRecordRepository.getAwardRecordByMemberId(member.getId());
+
+        AwardCountResponse awardCount = new AwardCountResponse(rankDtoInterface.get1st(),rankDtoInterface.get2nd(),rankDtoInterface.get3rd());
+
+        return awardCount;
+
+    }
+
+// ---------------------사용자 프로필 반환---------------------------------
     public ProfileDTO getProfile(String username) {
-        Member member = memberRepository.findByUsername(username)
-                .orElseThrow(() -> new MemberNotFoundException());
-        ProfileDTO profile = new ProfileDTO(member);
+        Member member = getMemberbyUsername(username);
+
+        MembersBoardList membersBoardList = getMembersBoard(username);
+        AwardCountResponse awardCount = getAwardRecord(username);
+        ProfileDTO profile = new ProfileDTO(member, membersBoardList ,awardCount);
         return profile;
     }
 
@@ -199,7 +240,7 @@ public class MemberService {
 
     public void changePass(ChangePassRequest request) {
         // member 반환
-        Member member = memberRepository.findById(request.getId())
+        Member member = memberRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new MemberNotFoundException());
 
         // 비밀번호 확인과 일치하는지

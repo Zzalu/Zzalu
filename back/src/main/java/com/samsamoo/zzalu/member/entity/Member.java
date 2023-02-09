@@ -6,6 +6,7 @@ import com.samsamoo.zzalu.board.entity.Board;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.member.dto.UpdateMember;
 import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
+import com.samsamoo.zzalu.notice.entity.Notice;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,47 +44,49 @@ public class Member implements UserDetails {
     private String profilePath = null;
     @Builder.Default
     private LocalDateTime enrollDate = LocalDateTime.now();
-
     @Builder.Default
     private boolean accountNonLocked = true; // 계정 공개 여부
-
     @Builder.Default
     private boolean enabled = true; // 계정 활성화 여부
-
     @Builder.Default
     private boolean accountNonExpired = true; // 계정 탈퇴 여부?
-
     @Column(name = "LIKE_CHAT_ROOMS")
     @ManyToMany
     @Builder.Default
     @JoinTable(name = "MEMBER_CHAT_ROOM", joinColumns = @JoinColumn(name = "MEMBER_ID"), inverseJoinColumns = @JoinColumn(name = "CHAT_ROOM_ID"))
-    private List<ChatRoom> likeChatRooms = new ArrayList<ChatRoom>();
-
+    private List<ChatRoom> likeChatRooms = new ArrayList<>();
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default
     private List<String> roles = new ArrayList<String>() {{
         add("USER");
     }};
-
     //팔로잉
     @Builder.Default
     @ManyToMany
     private List<Member> following = new ArrayList<>();
 
+    @Builder.Default
+    @ManyToMany(mappedBy = "following")
+    private List<Member> follower = new ArrayList<>();
     //댓글
     @OneToMany (mappedBy = "member" ,cascade = CascadeType.ALL)
     @Builder.Default
     private List<Comment> coments = new ArrayList<>();
 
-
-    @Builder.Default
-    @ManyToMany(mappedBy = "following")
-    private List<Member> follower = new ArrayList<>();
-
     // 보드 OneToMany
     @OneToMany(mappedBy = "member")
     @Builder.Default
     private List<Board> boards = new ArrayList<Board>();
+
+    @OneToMany(mappedBy = "member")
+    @Builder.Default
+    private List<Notice> notices = new ArrayList<Notice>();
+    @Builder.Default
+    private int permittedCount = 0;
+    @Builder.Default
+    private Boolean isManager = false;
+
+    //-------------------------------메소드---------------------------------
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

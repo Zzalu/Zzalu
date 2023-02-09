@@ -17,6 +17,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -68,27 +69,44 @@ public class CommentService {
                 .parentComment(commentRepository.findById(replyCommentRequest.getParentCommentId()).get())
                 .build();
 
-
-
       replyCommentRepository.save(replyComment);
 
         return new ReplyCommentResponse(replyComment);
-
-
     }
 
     /**
-     * 댓글 가져오기
+     * 댓글 최신순 조회하기
      * 무한 스크롤 / 커서 기반 페이지 네이션
      */
 
-    public List<CommentResponse> getRecentCommentList (SearchCommentRequest searchCommentRequest){
+    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username ){
 
-        Page<Comment> comments = fetchCommentPages(searchCommentRequest.getLastCommentId(),searchCommentRequest.getTitleHakwonId(), searchCommentRequest.getSize());
+        Page<Comment> comments = fetchRecentCommentPages(lastCommentId ,titleHakwonId,limit);
 
-        return getCommentList(comments.getContent(),searchCommentRequest.getUsername());
+        return getCommentList(comments.getContent(),username);
         }
 
+    private Page<Comment> fetchRecentCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
+        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
+        return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
+    }
+
+    /**
+     * 댓글 과거순 조회하기
+     *
+     */
+    public List<CommentResponse> getPastCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
+
+        Page<Comment> comments = fetchPastCommentPages(lastCommentId ,titleHakwonId,limit);
+
+        return getCommentList(comments.getContent(),username);
+    }
+
+
+    private Page<Comment> fetchPastCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
+        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
+        return commentRepository.findByIdGreaterThanAndTitleHakwonId(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
+    }
 
 
     public List<CommentResponse> getCommentList (List<Comment>commentList ,String username){
@@ -116,27 +134,39 @@ public class CommentService {
         }
     }
 
-    private Page<Comment> fetchCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
-        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
-        return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
-    }
 
     /**
-     * 대댓글 가져오기
+     * 대댓글 최신순 가져오기
      * 커서 기반 페이지 네이션
      */
 
-    public List<ReplyCommentResponse> getReplyCommentList (SearchReplyCommentRequest sr){
+    public List<ReplyCommentResponse> getRecentReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
 
-        Page<ReplyComment> replyComments = fetchReplyCommentPages(sr.getLastCommentId(),sr.getParentCommentId(),sr.getSize());
+        Page<ReplyComment> replyComments = fetchRecentReplyCommentPages(lastCommentId,parentId,size);
+
+        return ReplyCommentResponse.convertReplyCommentToDtoList(replyComments.getContent());
+    }
+
+    public Page<ReplyComment> fetchRecentReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return  replyCommentRepository.findByIdLessThanAndParentCommentIdOrderByIdDesc(lastReplyCommentId,parentCommentId,pageRequest);
+    }
+    /**
+     * 대댓글 과거순 가져오기
+     * 커서 기반 페이지 네이션
+     */
+
+    public List<ReplyCommentResponse> getPastReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
+
+        Page<ReplyComment> replyComments = fetchPastReplyCommentPages(lastCommentId,parentId,size);
 
         return ReplyCommentResponse.convertReplyCommentToDtoList(replyComments.getContent());
     }
 
 
-    public Page<ReplyComment> fetchReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
+    public Page<ReplyComment> fetchPastReplyCommentPages (Long lastReplyCommentId,Long parentCommentId, int size){
         PageRequest pageRequest = PageRequest.of(0, size);
-        return  replyCommentRepository.findByIdLessThanAndParentCommentIdOrderByIdDesc(lastReplyCommentId,parentCommentId,pageRequest);
+        return  replyCommentRepository.findByIdGreaterThanAndParentCommentId(lastReplyCommentId,parentCommentId,pageRequest);
     }
 
     /**
@@ -202,18 +232,22 @@ public class CommentService {
      *
      * 1. 댓글 좋아요 기록에 추가
      * 2. 댓글 좋아요 +1
+     *
+     *
+     * 할일 -> optional
+     *
      */
-    public void clickCommentLikes(Long commentId , String memberId){
+    public LikeResponse clickCommentLikes(Long commentId , String memberId){
 
         //존재하지 않은 댓글이였다면?
         Optional<Comment> comment = commentRepository.findById(commentId);
         Optional<Member> member = memberRepository.findByUsername(memberId);
 
         if(!comment.isPresent()){
-            return;
+            return null;
         }
         if(!member.isPresent()){
-                return;
+                return null;
         }
         //존재하지 않는 멤버였다면?
 
@@ -228,6 +262,11 @@ public class CommentService {
         comment.get().plusLikeNum();
         commentRepository.save(comment.get());
 
+
+
+
+        return new LikeResponse(commentId,comment.get().getLikeNum());
+
     }
 
     /**
@@ -237,21 +276,23 @@ public class CommentService {
      */
     @Transactional
 
-    public void cancelCommentLikes(Long commentId , String memberId){
+    public LikeResponse cancelCommentLikes(Long commentId , String memberId){
         Optional<Comment> comment = commentRepository.findById(commentId);
         Optional<Member> member = memberRepository.findByUsername(memberId);
 
         if(!comment.isPresent()){
-            return;
+            return null;
         }
         if(!member.isPresent()){
-            return;
+            return null;
         }
 
         commentLikeRepository.deleteByComment_IdAndMemberUsername(commentId,memberId);
 
         comment.get().minusLikeNum();
         commentRepository.save(comment.get());
+
+        return new LikeResponse(commentId,comment.get().getLikeNum());
 
     }
 
@@ -269,7 +310,7 @@ public class CommentService {
      * 상위 50개 댓글 가져오기
      */
 
-    public List<CommentResponse> getBest50CommentList (Long titleHakwonId ,String username){
+    public List<CommentResponse> getBest50CommentList (int limit , Long titleHakwonId ,String username){
 
         List<Comment> commentList = commentRepository.findTop50ByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(titleHakwonId,0);
 
