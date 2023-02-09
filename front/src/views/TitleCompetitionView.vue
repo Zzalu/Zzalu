@@ -14,19 +14,19 @@
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
-          <!-- <div ref="scrollTest" class="h-48"><img src="../assets/logo.png" alt="짤" /></div> -->
-          <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
-            <img class="title-image" :src="zzal_url" alt="짤" />
+          <div ref="zzalComponent" class="h-48"><img :src="zzal_url" alt="짤" /></div>
+          <!-- 댓글 스크롤 했을 때 짤fixed -->
+          <div v-if="isScrolled" class="zzal_fixed">
+            <img :src="zzal_url" alt="짤" />
           </div>
-          <!-- 댓글 스크롤 했을 때 짤fixed
-          <div v-if="isFixed" class="zzal_fixed">
-            <img src="../assets/logo.png" alt="짤" />
+          <!-- <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
+            <img class="title-image" :src="zzal_url" alt="짤" />
           </div> -->
         </header>
 
         <!-- TOP 5 -->
         <!-- 댓글 네브 -->
-        <nav ref="scrollTest" class="flex justify-between">
+        <nav class="flex justify-between">
           <div class="flex">
             <h2 class="text-xl text-zz-p">댓글</h2>
             <span class="text-base text-zz-p">{{ total_comment_cnt }}</span>
@@ -38,7 +38,7 @@
           </div>
         </nav>
         <!-- 댓글 리스트 -->
-        <comment-list class="mb-10"></comment-list>
+        <comment-list ref="commentListComponent" class="mb-10" @scroll="scroll"></comment-list>
       </div>
       <!-- 댓글 input -->
       <comment-input></comment-input>
@@ -50,54 +50,72 @@
 <script>
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+// import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
 
-import Stomp from 'webstomp-client';
-import SockJS from 'sockjs-client';
+// import Stomp from 'webstomp-client';
+// import SockJS from 'sockjs-client';
 
 export default {
   components: { OnlySmallLogoTopNav, CommentList, MainBottomNav, CommentInput },
   name: 'TitleCompetitionView',
   setup() {
+    console.log('create');
     const store = useStore();
     const route = useRoute();
     const open_date = route.params.open_date; // 제목학원 날짜
-    const scrollTest = ref(null);
+    const isScrolled = ref(null);
+    const zzalComponent = ref(null);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
+    let total_comment_cnt = null; // 댓글 개수
+    let zzal_url = null; // 짤
 
-    store.dispatch('titleCompetitionStore/getTitleCompetition', open_date);
+    /*    async function init() {
+      await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
+        if (result) {
+          store.dispatch('titleCompetitionStore/getNewestComments', 4);
+        }
+      });
+      total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt;
+      zzal_url = store.state.titleCompetitionStore.zzal_url;
 
-    const total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt; // 댓글 개수
-    const zzal_url = store.state.titleCompetitionStore.zzal_url; // 짤
-    // console.log(zzal_url);
-
-    store.dispatch('titleCompetitionStore/getNewestComments', 4);
-    onMounted(() => {
-      // console.log(scrollTest);
-      window.addEventListener('scroll', scroll);
-    });
-    onBeforeUnmount(() => {
-      window.removeEventListener('scroll', scroll);
-    });
-
-    let isScrolled = ref(false);
-
-    function scroll() {
-      if (window.scrollY > scrollTest.value.offsetTop) {
-        isScrolled.value = ref(true);
-      } else {
-        isScrolled.value = ref(false);
-      }
-      // console.log(window.scrollY);
-      // console.log(isScrolled.value);
+      console.log(total_comment_cnt);
+      console.log(zzal_url);
     }
+    init(); */
+    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
+    // store.dispatch('titleCompetitionStore/getNewestComments', 4);
+    function scroll(e) {
+      console.log('scroll 이벤트');
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      if (isAtTheBottom) {
+        setTimeout(() => {
+          loadMoreComments();
+        }, 1000);
+      }
+      // if (window.scrollY > zzalComponent.value.offsetTop) {
+      //   isScrolled.value = ref(true);
+      // } else {
+      //   isScrolled.value = ref(false);
+      // }
+    }
+    // onMounted(() => {
+    //   console.log(zzal_url);
+    //   loadMoreComments();
+    // });
 
-    let sock = new SockJS('http://localhost:8080/ws-stomp');
-    let ws = Stomp.over(sock);
+    const loadMoreComments = () => {
+      store.dispatch('titleCompetitionStore/getNewestComments', 4);
+    };
+
+    //! 소켓 관련
+    // let sock = new SockJS('http://localhost:8080/ws-stomp');
+    // let ws = Stomp.over(sock);
 
     /*  function reciveMessage(recv) {
       this.messages.unshift({
@@ -106,7 +124,7 @@ export default {
         message: recv.message,
       });
     } */
-    function connect() {
+    /*     function connect() {
       let localWs = ws;
       let localSock = sock;
       // let localReciveMessage = reciveMessage;
@@ -132,20 +150,20 @@ export default {
           }, 10 * 1000);
         },
       );
-    }
+    } */
 
-    connect();
+    // connect();
 
     return {
-      sock,
-      ws,
-      connect,
+      // sock,
+      // ws,
+      // connect,
       open_date,
       total_comment_cnt,
       zzal_url,
       isScrolled,
-      scrollTest,
       scroll,
+      zzalComponent,
       // reciveMessage,
     };
   },
