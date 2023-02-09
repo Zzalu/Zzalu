@@ -5,10 +5,14 @@ import com.samsamoo.zzalu.TitleHakwon.dto.*;
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
 import com.samsamoo.zzalu.TitleHakwon.entity.CommentLike;
 import com.samsamoo.zzalu.TitleHakwon.entity.ReplyComment;
+import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
+import com.samsamoo.zzalu.TitleHakwon.exception.TitleHakwonException;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentLikeRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.ReplyCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
+import com.samsamoo.zzalu.advice.BadRequestException;
+import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,21 +35,24 @@ public class CommentService {
     private final ReplyCommentRepository replyCommentRepository;
     private final MemberRepository memberRepository;
     private final TitleHackwonRepository titleHackwonRepository;
-
     private final CommentLikeRepository commentLikeRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     /**
      * 댓글 작성
      */
-    public CommentResponse addComment (CommentRequest requestComment){
+
+    public CommentResponse addComment (String token ,CommentRequest requestComment){
+
+        Member member = jwtTokenProvider.getMember(token);
+        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonById(requestComment.getTitleHakwonId()).orElseThrow(()-> new TitleHakwonException());
 
         Comment comment = Comment.builder()
-                .member(memberRepository.findByUsername(requestComment.getUsername()).get())
-                .titleHakwon(titleHackwonRepository.findTitleHakwonById(requestComment.getTitleHakwonId()))
+                .member(member)
+                .titleHakwon(titleHakwon)
                 .content(requestComment.getContent())
                 .replyCommentList(new ArrayList<>())
                 .build();
-
 
         commentRepository.save(comment);
 
@@ -57,14 +64,18 @@ public class CommentService {
     /**
      * 대댓글 작성
      */
-    public ReplyCommentResponse addReplyComment (ReplyCommentRequest replyCommentRequest){
+    public ReplyCommentResponse addReplyComment (String token ,ReplyCommentRequest replyCommentRequest){
 
-        /**
-         * 예외 처리 1 : 부모 댓글이 존재하지 않을경우  ( )
-         */
+
+
+        Member member = jwtTokenProvider.getMember(token);
+        Comment comment =  commentRepository.findById(replyCommentRequest.getParentCommentId()).orElseThrow(()->new BadRequestException("입력 형식~~"));
+
+
+
 
         ReplyComment replyComment = ReplyComment.builder()
-                .member(memberRepository.findByUsername(replyCommentRequest.getUsername()).get())
+                .member(member)
                 .content(replyCommentRequest.getContent())
                 .parentComment(commentRepository.findById(replyCommentRequest.getParentCommentId()).get())
                 .build();
@@ -93,7 +104,6 @@ public class CommentService {
 
     /**
      * 댓글 과거순 조회하기
-     *
      */
     public List<CommentResponse> getPastCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
 

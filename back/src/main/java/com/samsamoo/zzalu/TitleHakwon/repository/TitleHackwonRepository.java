@@ -5,11 +5,12 @@ import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface TitleHackwonRepository extends JpaRepository<TitleHakwon, String> {
 
 
-    TitleHakwon findTitleHakwonById(Long id);
+    Optional<TitleHakwon> findTitleHakwonById(Long id);
 
     TitleHakwon findTitleHakwonByOpenDate(String openDate);
 

@@ -21,13 +21,10 @@ import java.util.Objects;
 @CrossOrigin("*")
 public class CommentController {
 
-
     private final RedisPublisher redisPublisher;
     private final CommentService commentService;
-
     private final RedisCommentRepository redisCommentRepository;
 
-    private final AwardRecordService awardRecordService;
 
 
 
@@ -36,18 +33,15 @@ public class CommentController {
      * 댓글 저장하기
      */
     @PostMapping()
-    public ResponseEntity<CommentResponse> addComent(@RequestBody CommentRequest requestComent){
+    public ResponseEntity<CommentResponse> addComent(@RequestHeader(value = "Authorization") String bearerToken ,@RequestBody CommentRequest requestComent){
 
-        // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
-        //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
+        String token = bearerToken.substring(7);
+        CommentResponse cr = commentService.addComment(token ,requestComent);
 
 
-
-        CommentResponse commentResponse = commentService.addComment(requestComent);
-        System.out.println("@@redis");
-        redisPublisher.publishTitleHakwon( redisCommentRepository.getTopic("comments"),commentResponse);
+        redisPublisher.publishTitleHakwon(redisCommentRepository.getTopic("comments"),cr);
         //201리턴
-        return ResponseEntity.status(HttpStatus.OK).body(commentResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cr);
 
     }
 
@@ -57,9 +51,11 @@ public class CommentController {
      */
 
     @PostMapping(value = "/reply")
-    public ResponseEntity<ReplyCommentResponse> addReplyComent(@RequestBody ReplyCommentRequest replyCommentRequest){
+    public ResponseEntity<ReplyCommentResponse> addReplyComent(@RequestHeader(value = "Authorization") String bearerToken,@RequestBody ReplyCommentRequest replyCommentRequest){
 //201리턴
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.addReplyComment(replyCommentRequest));
+        String token = bearerToken.substring(7);
+        ReplyCommentResponse rp =  commentService.addReplyComment(token ,replyCommentRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(rp);
 
     }
 
