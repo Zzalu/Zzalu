@@ -13,7 +13,7 @@
       dark:bg-zz-bd
     "
   >
-    <span class="font-bold text-xl dark:text-white line-clamp-1">
+    <span class="font-bold text-lg dark:text-white line-clamp-2 w-full text-center mx-10 font-spoq">
       {{ room_name }} 고독방
     </span>
     <span class="inline-block px-4 absolute left-0">
