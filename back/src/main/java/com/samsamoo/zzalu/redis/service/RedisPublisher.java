@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
 import com.samsamoo.zzalu.TitleHakwon.dto.LikeResponse;
 
-
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import lombok.RequiredArgsConstructor;
