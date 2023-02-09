@@ -24,9 +24,9 @@ public class TempGifController {
 
     //--------------------------------모든 임시 게시물 조회---------------------------------
     @GetMapping("/all")
-    public ResponseEntity getAllTempGif(@RequestHeader(value = "Authorization") String bearerToken) {
-        String token = bearerToken.substring(7);
-        List<TempGif> tempGifList = tempGifService.getAllTempGif(token);
+    public ResponseEntity getAllTempGif() {
+        // 시큐리티에서 체크
+        List<TempGif> tempGifList = tempGifService.getAllTempGif();
         return new ResponseEntity<>(Map.of("tempGifList", tempGifList),HttpStatus.OK);
     }
     //--------------------------------임시 게시물 생성 요청---------------------------------
@@ -45,9 +45,8 @@ public class TempGifController {
     }
     //---------------------------------임시 게시물 삭제 요청--------------------------------
     @DeleteMapping ("/{tempId}")
-    public ResponseEntity deleteTempGif(@RequestHeader(value = "Authorization") String bearerToken, @PathVariable Long tempId) {
-        String token = bearerToken.substring(7);
-        tempGifService.deleteTempGif(token, tempId);
+    public ResponseEntity deleteTempGif(@PathVariable Long tempId) {
+        tempGifService.deleteTempGif(tempId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

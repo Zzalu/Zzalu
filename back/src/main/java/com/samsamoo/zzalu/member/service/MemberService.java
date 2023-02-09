@@ -278,4 +278,18 @@ public class MemberService {
         // member 저장
         memberRepository.save(member);
     }
+
+    public void requestManager(String token) {
+        Member member = jwtTokenProvider.getMember(token);
+        if(member.getPermittedCount() >= 5) {
+            if(!member.getRoles().contains("MANAGER")) {
+                member.makeManager();
+                memberRepository.save(member);
+            } else {
+                throw new RuntimeException("이미 매니저 권한이 있습니다.");// 수정 필요
+            }
+        } else {
+            throw new RuntimeException("짤 업로드 및 수정 허가 횟수가 5번 미만입니다.");// 수정 필요
+        }
+    }
 }

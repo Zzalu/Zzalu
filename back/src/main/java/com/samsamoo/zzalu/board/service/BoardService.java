@@ -88,31 +88,6 @@ public class BoardService {
 
     }
 
-//    public MembersBoardList getMembersBoard(String username) {
-//        // user 반환
-//        Member member = memberRepository.findByUsername(username)
-//                .orElseThrow(() -> new MemberNotFoundException());
-//
-//        // user의 board 불러오기
-//        List<Board> boards = member.getBoards();
-//
-//        // 새 리스트 만들기
-//        List<MembersBoardInfo> membersBoardInfos = new ArrayList<>();
-//
-//        // for문 돌면서 info dto에 add
-//        for(Board board : boards) {
-//            String thumbnailPath = null;
-//            if (board.getGifs().size() >= 1) {
-//                thumbnailPath = board.getGifs().get(0).getGifPath();
-//            }
-//            MembersBoardInfo boardInfo = new MembersBoardInfo(board.getId(), board.getBoardName(), thumbnailPath);
-//            membersBoardInfos.add(boardInfo);
-//        }
-//        // 생성된 리스트를 list dto의 생성자로 넘김
-//        return new MembersBoardList(membersBoardInfos);
-//
-//    }
-
     public Board getBoardById(Long boardId) {
         Board board = boardRepository.findBoardById(boardId)
                 .orElseThrow(() -> new NotFoundException("보드를 찾을 수 없습니다."));
@@ -158,6 +133,7 @@ public class BoardService {
                 } else {
                     deleteGif(repoBoard, gif);
                 }
+                gifsRepository.save(gif);
             }
         }
         // return
@@ -166,21 +142,23 @@ public class BoardService {
     private void deleteGif(Board board, Gifs gif) {
         board.getGifs().remove(gif);
         boardRepository.save(board);
+        gif.decreaseScrap();
     }
 
     private void insertGif(Board board, Gifs gif, Member member) {
         // member 회원 통계 로직 추가
         board.getGifs().add(0, gif);
         boardRepository.save(board);
+        gif.increaseScrap();
     }
 
     public void deleteGifFromBoard(Long boardId, List<Long> gifList) {
         checkGifListEmpty(gifList);
 
-        Board board = getBoardById(boardId);  //>>>>>
+        Board board = getBoardById(boardId);
 
         for (Long gifId : gifList) {
-            Gifs gif = getGifById(gifId);   //>>>>>
+            Gifs gif = getGifById(gifId);
 
             // real로 보드에 짤이 담겨있는지 확인
             if (!board.getGifs().contains(gif)) {
@@ -196,10 +174,10 @@ public class BoardService {
         // 매서드로 분리
         checkGifListEmpty(gifIdList);
         // 매서드로 분리
-        Board board = getBoardById(boardId); //>>>>>
+        Board board = getBoardById(boardId);
 
         for (Long gifId : gifIdList) {
-            Gifs gif = getGifById(gifId);  //>>>>>
+            Gifs gif = getGifById(gifId);
 
             // 이미 담겨있으면 삭제 후 저장
             if (board.getGifs().contains(gif)) {
@@ -211,7 +189,7 @@ public class BoardService {
     }
 
     public void updateBoardName(String token, Long boardId, String newBoardName) {
-        Board board = getBoardById(boardId);  //>>>>>
+        Board board = getBoardById(boardId);
         // 본인 보드인지 확인 and
         // 보드 이름 중복인지 검증
         Member member = jwtTokenProvider.getMember(token);

@@ -83,8 +83,8 @@ public class Member implements UserDetails {
     private List<Notice> notices = new ArrayList<Notice>();
     @Builder.Default
     private int permittedCount = 0;
-    @Builder.Default
-    private Boolean isManager = false;
+//    @Builder.Default
+//    private Boolean isManager = false;
 
     //-------------------------------메소드---------------------------------
 
@@ -168,5 +168,10 @@ public class Member implements UserDetails {
     }
     public void increaseCount() {
         this.permittedCount++;
+    }
+
+    public void makeManager() {
+//        this.isManager = true;
+        this.getRoles().add("MANAGER");
     }
 }

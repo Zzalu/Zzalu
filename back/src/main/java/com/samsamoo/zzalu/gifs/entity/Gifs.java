@@ -97,4 +97,12 @@ public class Gifs {
             this.relationsVideo = tempGif.getRelationsVideo();
         }
     }
+
+    public void increaseScrap() {
+        this.scrapCount++;
+    }
+
+    public void decreaseScrap() {
+        this.scrapCount--;
+    }
 }
