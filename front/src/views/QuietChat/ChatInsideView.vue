@@ -8,43 +8,43 @@
 </template>
 
 <script>
-// import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
-// import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav"
+import MainBottomNavInChat from "../../components/Common/NavBar/MainBottomNavInChat";
+import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav"
 // import Stomp from 'webstomp-client';
 // import SockJS from 'sockjs-client';
 // import {findQuiteChatRoom} from '@/api/quietChatList.js' 
 
-// export default {
-//   name: "ChatInsideView",
-//   setup() {
+export default {
+  name: "ChatInsideView",
+  // setup() {
 
-//   },
-//   created() {
-//     this.findQuiteChatList = findQuiteChatRoom;
-//     this.room_id = this.$route.params.room_id;
+  // },
+  // created() {
+  //   this.findQuiteChatList = findQuiteChatRoom;
+  //   this.room_id = this.$route.params.room_id;
     
-//     this.socket = new SockJS("/ws-stomp")
-//     this.web_stomp = Stomp.over(this.socket);
+  //   this.socket = new SockJS("/ws-stomp")
+  //   this.web_stomp = Stomp.over(this.socket);
 
-//     this.reconnect = 0;
-//     this.connect();
-//     console.log("created_end");
-//   },
-//   data() {
-//     return {
-//         findQuiteChatList : "",
-//         room_id : "71682114-325a-458c-85de-bb007a724546",
-//         access_token : "",
-//         test_tenmporal_member_id : 1,
-//         socket : "",
-//         web_stomp : "",
-//         reconnect : 0,
-//     }
-//   },
-//   methods: {
-//     findRoom() {
-//       this.findQuiteChatList(this.room_id);
-//     }, 
+  //   this.reconnect = 0;
+  //   this.connect();
+  //   console.log("created_end");
+  // },
+  // data() {
+  //   return {
+  //       findQuiteChatList : "",
+  //       room_id : "71682114-325a-458c-85de-bb007a724546",
+  //       access_token : "",
+  //       test_tenmporal_member_id : 1,
+  //       socket : "",
+  //       web_stomp : "",
+  //       reconnect : 0,
+  //   }
+  // },
+  // methods: {
+  //   findRoom() {
+  //     this.findQuiteChatList(this.room_id);
+  //   }, 
 //     connect() {
 //       let local_web_stomp =  this.web_stomp
 //       let local_recive_message = this.receive_message
@@ -82,11 +82,11 @@
 //       })
 //     }
 //   },
-//   components: {
-//     MainBottomNav,
-//     ChatRoomTopNav
-//   },
-// };
+  components: {
+    MainBottomNavInChat,
+    ChatRoomTopNav
+  },
+};
 </script>
 
 <style>

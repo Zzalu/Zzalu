@@ -1,5 +1,5 @@
 <template>
-  <div class="navbar-main">
+  <div class="navbar-main ">
     <div class="navbar-input-box">
       <font-awesome-icon
         icon="fa-solid fa-magnifying-glass"

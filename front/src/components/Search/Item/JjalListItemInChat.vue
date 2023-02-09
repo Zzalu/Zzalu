@@ -80,6 +80,7 @@ export default {
     send_message_select() {
       this.$emit("select_id", this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
+      this.$emit('path',this.zzal_info.gifPath)
     },
     send_message() {
 
