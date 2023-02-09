@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.AwardRecord.service;
 
 import com.samsamoo.zzalu.AwardRecord.RankDtoInterface;
 
+import com.samsamoo.zzalu.AwardRecord.dto.AwardResponse;
 import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
 import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
@@ -73,6 +74,9 @@ public class AwardRecordService {
 
         titleHackwonRepository.save(titleHakwon);
     }
+
+
+
 
 
 

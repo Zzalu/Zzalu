@@ -163,7 +163,7 @@ public class Member implements UserDetails {
 
     }
 
-    public void increaseCount() {
-        this.permittedCount++;
+    public void addLikeChatRoom(ChatRoom chatRoom) {
+        likeChatRooms.add(chatRoom);
     }
 }

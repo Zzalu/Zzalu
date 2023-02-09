@@ -6,13 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
-    public ChatRoom findByRoomId(String roomId){
+    public Optional<ChatRoom> findByRoomId(String roomId){
         return chatRoomRepository.findByRoomId(roomId);
     }
     public List<ChatRoom> findTop10ByOrderByLikeCountDesc() {
@@ -61,4 +62,7 @@ public class ChatRoomService {
     }
 
 
+    public void save(ChatRoom chatRoom) {
+        chatRoomRepository.save(chatRoom);
+    }
 }

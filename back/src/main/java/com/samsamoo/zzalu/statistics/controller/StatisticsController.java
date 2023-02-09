@@ -2,12 +2,10 @@ package com.samsamoo.zzalu.statistics.controller;
 
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
-import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.gifs.service.GifsService;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.statistics.entity.GifStatistics;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
-import com.samsamoo.zzalu.statistics.repository.GifStatisticsRepository;
 import com.samsamoo.zzalu.statistics.repository.MemberTagStatisticsRepository;
 import com.samsamoo.zzalu.statistics.service.GifStatisticsService;
 import com.samsamoo.zzalu.statistics.service.MemberTagStatisticsService;
