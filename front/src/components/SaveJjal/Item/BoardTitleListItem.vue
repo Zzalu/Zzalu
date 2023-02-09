@@ -1,11 +1,11 @@
 <template>
   <div>
     <div
-      class="h-40 w-40 bg-cover bg-center border-2 rounded-2xl m-2"
+      class="h-36 w-36 bg-cover bg-center border rounded-2xl m-2 dark:border-zz-dark-input"
       :style="`background-image:url(${board_list.thumbnailPath})`"
       @click="this.board_detail(board_list.id,board_list.boardName)"
     ></div>
-    <p class="text-center font-spoq">{{ board_list.boardName }}</p>
+    <p class="ml-2 text-center font-spoq dark:text-white w-36 text-sm">{{ board_list.boardName }}</p>
   </div>
 </template>
 
