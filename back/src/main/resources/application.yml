@@ -1,9 +1,6 @@
-server:
-  port: 8090
 jwt:
   token:
     secret: c3ByaW5nLWJvb3Qtc2VjdXJpdHktand0LXR1dG9yaWFsLWppd29vbi1zcHJpbmctYm9vdC1zZWN1cml0eS1qd3QtdHV0b3JpYWwK
-
 cloud:
   aws:
     region:
@@ -43,11 +40,11 @@ spring:
       max-request-size: 10MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: zzalu_c109!
-    url: jdbc:mysql://127.0.0.1:3306/ZZALUBE?useUnicode=true&serverTimezone=Asia/Seoul
-    username: zzalu
+    password: ssafy
+    url: jdbc:mysql://localhost:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
   kafka:
-    bootstrap-servers: 127.0.0.1:9092
+    bootstrap-servers: localhost:9092
   #    consumer:
   #      auto-offset-reset: earliest
   #      bootstrap-servers: localhost:9092
@@ -66,7 +63,7 @@ spring:
         min-idle: 2
     port: 6379
     host: 127.0.0.1
-    password: 'zzalu_c109!@'
+    password: '123456'
 
   devtools:
     livereload:
@@ -75,23 +72,3 @@ spring:
       enabled: false
   freemarker:
     cache: false
-
-
-
-## properties
-##h2 console ??? ? ?? ??
-#spring.h2.console.enabled=true
-#spring.h2.console.path=/h2-console
-#
-##h2 db ??
-#spring.datasource.url=jdbc:h2:~/test
-#spring.datasource.driverClassName=org.h2.Driver
-#spring.datasource.username=sa
-#spring.datasource.password=
-#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
-#
-##hibernate ??
-#spring.jpa.properties.hibernate.format_sql=true
-#spring.jpa.properties.hibernate.show_sql=true
-#spring.jpa.hibernate.ddl-auto=create
