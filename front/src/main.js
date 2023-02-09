@@ -3,7 +3,7 @@ import App from './App.vue';
 import './css/common.css';
 import router from './router.js';
 import store from '@/store';
-import Vue3TouchEvents from "vue3-touch-events"
+import Vue3TouchEvents from "vue3-touch-events";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 

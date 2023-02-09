@@ -1,16 +1,12 @@
 <template>
   <div>
-    <!-- v-touch:press="LongClickStart" v-touch:release="LongClickEnd" -->
-    <div v-if="img_select" class="select-jjal-box" @click="route">
-      <div class="view-content">
-        <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
-        <p class="view-count">{{ zzal_info.visitedCount }}</p>
-      </div>
+    <!-- 선택된 짤 -->
+    <div v-if="img_select" class="select-jjal-box">
       <div>
         <font-awesome-icon
           class="scrap-icon"
-          icon="fa-regular fa-star"
-          @click="open_list_modal"
+          icon="fa-solid fa-paper-plane"
+          @click="send_message"
           @click.stop="''"
         />
       </div>
@@ -20,10 +16,11 @@
       >
       </div>
     </div>
+
+    <!-- 선택안된 짤 -->
     <div v-else class="jjal-box">
       <div
-        v-touch:longtap="long_click"
-        @click="route"
+        @click="send_message_select"
         class="jjal-img"
         :style="`background-image:url(${this.gifPath})`"
       ></div>
@@ -80,14 +77,13 @@ export default {
     zzal_info: Object,
   },
   methods: {
-    route() {
-      this.$router.push(`/zzal/${this.zzal_info.id}`);
-      this.close_search_modal();
-    },
-    long_click() {
+    send_message_select() {
       this.$emit("select_id", this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
     },
+    send_message() {
+
+    }
   },
 };
 </script>
@@ -105,8 +101,8 @@ export default {
   @apply text-sm ml-1;
 }
 .scrap-icon {
-  transform: translate(0px, 0.5rem);
-  @apply absolute z-20 text-white ml-1 text-3xl;
+  transform: translate(2.4rem, -1rem);
+  @apply absolute z-20 text-white ml-1 text-4xl;
 }
 .select-jjal-box {
   overflow: hidden;
