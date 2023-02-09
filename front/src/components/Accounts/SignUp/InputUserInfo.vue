@@ -93,23 +93,19 @@ export default {
     // 아이디 닉네임 바꾸는지 확인
     watch(() => state.credentials.username, (newValue, oldValue) => {
       if (newValue != oldValue) {state.usernameState = false}
-      // console.log('변화 감지', {newValue, oldValue})
     })
     watch(() => state.credentials.nickname, (newValue, oldValue) => {
       if (newValue != oldValue) {state.nicknameState = false}
-      // console.log('변화 감지', {newValue, oldValue})
     })
     // 아이디 중복확인
     const uniqueUsername = async function () {
-      // console.log('아이디 중복확인 함수 잘 들어옴, 이제 스토어에 디스패치 간다')
       const result = await store.dispatch('userStore/uniqueUsernameAction', state.credentials.username )
       if (result.data.unique == true) {
         state.usernameState = true
-        // console.log('중복이 아니군여')
+        alert("사용 가능한 아이디입니다.")
       } else {
-        // console.log('중복이군여')
         state.usernameState = false
-        alert("사용 중인 아이디입니다. |n 다른 아이디를 등록해주세요.")
+        alert("사용 중인 아이디입니다. \n다른 아이디를 등록해주세요.")
       } 
     }
     // 닉네임 중복확인
@@ -117,10 +113,10 @@ export default {
       const result = await store.dispatch('userStore/uniqueNicknameAction', state.credentials.nickname )
       if (result.data.unique==true) {
         state.nicknameState = true
-        alert("닉 사용가능.")
+        alert("사용 가능한 닉네임입니다.")
       } else {
         state.nicknameState = false
-        alert("이미 사용 중인 닉입니다.")
+        alert("이미 사용 중인 닉네임입니다. \n다른 닉네임을 등록해주세요.")
       }
     }
 
@@ -153,7 +149,7 @@ export default {
 
     // 가입요청1
     const sendSignupInfo = async function () {
-          // 아이디 닉네임 중복확인 다 했는지 확인
+      // 아이디 닉네임 중복확인 다 했는지 확인
       if (!state.usernameState){
         alert("아이디 중복확인이 필요합니다.")
         return
@@ -173,7 +169,7 @@ export default {
       const res = await store.dispatch('userStore/signupFirstAction', credentialsData)
       if (res) {
         console.log("회원가입 요청 1 잘 갔음")
-        router.push({name: 'input-email'})
+        router.push({name: 'input-signup-email'})
       }
       }
     }

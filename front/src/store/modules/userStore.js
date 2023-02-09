@@ -1,4 +1,5 @@
 import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser } from "@/api/userAccount";
+import createPersistedState from "vuex-persistedstate";
 
 const userStore = {
   namespaced: true,
@@ -106,27 +107,41 @@ const userStore = {
     },
     // 이메일 중복확인
     sendEmailAction: async (commit, email) => {
-      console.log(email);
       const data = JSON.stringify({"userEmail": email})
-      const response = await checkEmail(data);
-      console.log("이안에 코드있음",response)
+      const response = await checkEmail(
+        data,
+        (res) => {
+          return res
+        },
+        (err) => {
+          return err.response
+      }
+        );
+      // console.log("이안에 코드있음",response)
       return response
     },
     // 회원정보 잠시 세이브
     signupFirstAction(context, credentialsData) {
-      console.log(credentialsData)
+      // console.log(credentialsData)
       context.commit('SAVE_USER_TEMP', credentialsData)
       return true
     },
     // 회원정보 세이브 2
     signupSecondAction: async (context, credentialsEmailCode) => {
-      console.log("두번째 요청까지는 잘 들어옴")
+      console.log(credentialsEmailCode)
       context.commit('SAVE_EMAIL_TEMP', credentialsEmailCode)
       return true
     },
     signupFinalAction: async (context, signupUser ) => {
         console.log(signupUser)
-        const response = await requestRegister(signupUser)
+        const response = await requestRegister(
+          signupUser,
+          (res) => {
+            return res
+          },
+          (err) => {
+            return err.response
+        })
         return response
     },
     // -----------------------------------------------------------
@@ -179,6 +194,11 @@ const userStore = {
       );
     },
   },
+  plugins: [
+    createPersistedState({
+      paths: ['temp'],
+    })
+  ],
 };
 
 export default userStore;

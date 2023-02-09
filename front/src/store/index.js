@@ -8,8 +8,12 @@ import quietChatStore from '@/store/modules/quietChatStore.js'
 import zzalListStore from '@/store/modules/zzalListStore.js'
 import followStore from './modules/followStore';
 import boardListStore from '@/store/modules/boardListStore';
+import createPersistedState from 'vuex-persistedstate';
+
+
 
 const store = new Vuex.Store({
+
   modules: {
     // 키 : 값 형태로 저장됨
     userStore,
@@ -20,5 +24,9 @@ const store = new Vuex.Store({
     followStore,
     boardListStore,
   },
-});
+    //vuex plugin 명시
+    plugins: [createPersistedState({
+      paths: ["userStore.temp"]
+  })]
+})
 export default store;

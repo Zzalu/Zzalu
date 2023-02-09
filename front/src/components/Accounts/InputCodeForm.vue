@@ -9,10 +9,10 @@
     </div>
   </div>
   <div class="flex justify-center">
-    <input type="text" class="input-code">
-    <input type="text" class="input-code">
-    <input type="text" class="input-code">
-    <input type="text" class="input-code">
+    <input type="text" class="input-code" v-model="inputCode.first">
+    <input type="text" class="input-code" v-model="inputCode.second">
+    <input type="text" class="input-code" v-model="inputCode.third">
+    <input type="text" class="input-code" v-model="inputCode.fourth">
   </div>
   <input type="text" placeholder="{{ inputCode }}" v-model="inputCode">
   <h1>{{inputCode}}</h1>
@@ -39,20 +39,19 @@ export default {
     mapState({
       userInfo: state => state.userStore.temp,
     }),
-  // setup() {
-  //   const store = useStore();
-
-  // },
   methods: {
     signupFinal : async function () {
+      const code_try = this.inputCode.first+this.inputCode.second+this.inputCode.third+this.inputCode.fourth
       // const result = await store.dispatch('userStore/signupFinalAction', this.userInfo )
-      console.log(this.inputCode);
+      console.log(code_try);
+      console.log(typeof(code_try))
       console.log('------------------')
       console.log(this.userInfo.code);
+      console.log(typeof(this.userInfo.code))
       // console.log(result.data.authKey)
-      if (this.inputCode == this.userInfo.code) {
+      if (code_try == this.userInfo.code) {
         console.log(this.userInfo)
-        console.log(this.inputCode)
+        console.log(code_try)
         // 여기까지는 잘 왔음
         const userData = {
             "username": this.userInfo.username,
@@ -63,7 +62,7 @@ export default {
         }
         const result = await this.$store.dispatch('userStore/signupFinalAction', userData )
         console.log(result);
-        if (result.response.status == 400) {
+        if (result.status == 400) {
           alert("야 넌 회원가입 다시해라")
         } else {
           this.$router.push({name: 'complete'})
@@ -76,7 +75,12 @@ export default {
 
   data () {
     return {
-      inputCode: '',
+      inputCode: {
+        first: '',
+        second:'',
+        third: '',
+        fourth:''
+      },
     }
     
   },
