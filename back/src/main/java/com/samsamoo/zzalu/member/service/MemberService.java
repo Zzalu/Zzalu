@@ -209,6 +209,7 @@ public class MemberService {
         // s3로 프로필 이미지 업로드 및 반환
         if (request.getProfileMultipartFile() != null) {
             String returnUrl =  s3Uploader.upload(request.getProfileMultipartFile(), "MemberProfile");
+            log.info("returnUrl=", returnUrl);
             updateMember.setProfilePath(returnUrl);
         }
         if (request.getNickname() != null) {

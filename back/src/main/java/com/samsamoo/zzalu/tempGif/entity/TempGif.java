@@ -19,7 +19,7 @@ public class TempGif {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="TEMP_GIF_ID")
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(unique = true)
     private String gifPath;
     @Column(nullable = false)
     private String tags;
@@ -32,4 +32,8 @@ public class TempGif {
     private RequestType requestType;
     @Builder.Default
     private Long originGifsId = null;
+
+    public void increseCount(int permittedCount) {
+        this.permittedCount = permittedCount;
+    }
 }
