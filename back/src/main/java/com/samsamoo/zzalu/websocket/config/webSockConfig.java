@@ -3,11 +3,13 @@ package com.samsamoo.zzalu.websocket.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.config.annotation.*;
 
 
 @Configuration
 @EnableWebSocketMessageBroker
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class webSockConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
