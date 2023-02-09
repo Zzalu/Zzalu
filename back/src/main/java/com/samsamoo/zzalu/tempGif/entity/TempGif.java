@@ -1,5 +1,9 @@
-package com.samsamoo.zzalu.gifs.entity;
+package com.samsamoo.zzalu.tempGif.entity;
 
+import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
+import com.samsamoo.zzalu.TitleHakwon.enums.converter.TitleHakwonConverter;
+import com.samsamoo.zzalu.tempGif.enums.RequestType;
+import com.samsamoo.zzalu.tempGif.enums.RequestTypeConverter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,11 +23,13 @@ public class TempGif {
     private String gifPath;
     @Column(nullable = false)
     private String tags;
-    private String importDatetime; // api에서 가져온 것들
     private String relationsVideo;
     private String description;
     private String writerUsername;
     @Builder.Default
-    private Long permittedCount = 0l;
-    private Enum requestType;
+    private int permittedCount = 0;
+    @Convert(converter =  RequestTypeConverter.class)
+    private RequestType requestType;
+    @Builder.Default
+    private Long originGifsId = null;
 }
