@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.member.entity;
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.board.entity.Board;
+import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.member.dto.UpdateMember;
 import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import lombok.*;
@@ -51,6 +52,12 @@ public class Member implements UserDetails {
 
     @Builder.Default
     private boolean accountNonExpired = true; // 계정 탈퇴 여부?
+
+    @Column(name = "LIKE_CHAT_ROOMS")
+    @ManyToMany
+    @Builder.Default
+    @JoinTable(name = "MEMBER_CHAT_ROOM", joinColumns = @JoinColumn(name = "MEMBER_ID"), inverseJoinColumns = @JoinColumn(name = "CHAT_ROOM_ID"))
+    private List<ChatRoom> likeChatRooms = new ArrayList<>();
 
     @ElementCollection(fetch = FetchType.EAGER)
     @Builder.Default

@@ -10,6 +10,7 @@ import java.util.Optional;
 @Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     ChatRoom findByRoomId(String roomId);
+    List<ChatRoom> findTop10ByOrderByLikeCountDesc();
     List<ChatRoom> findByTagsContainsOrRoomNameContains(String keyword1, String keyword2);
     List<ChatRoom> findByTagsContains(String keyword1);
     List<ChatRoom> findByRoomNameContains(String keyword1);

@@ -19,6 +19,7 @@ import java.util.Map;
 @Slf4j
 public class BoardController {
     private final BoardService boardService;
+    private final MemberService memberService;
 
     //--------------------------------------보드 생성-----------------------------------------
     @PostMapping
@@ -39,11 +40,11 @@ public class BoardController {
         return ResponseEntity.ok(gifsBoardList);
     }
     //-----------------------------------사용자의 보드 불러오기-------------------------------------
-//    @GetMapping(params = "username")
-//    public ResponseEntity<MembersBoardList> getMembersBoard(@RequestParam String username) {
-//        MembersBoardList membersBoardList = memberService.getMembersBoard(username);
-//        return ResponseEntity.ok(membersBoardList);
-//    }
+    @GetMapping(params = "username")
+    public ResponseEntity<MembersBoardList> getMembersBoard(@RequestParam String username) {
+        MembersBoardList membersBoardList = memberService.getMembersBoard(username);
+        return ResponseEntity.ok(membersBoardList);
+    }
     //--------------------------------보드 상세 불러오기(짤들)--------------------------------------
     @GetMapping("/{boardId}")
     public ResponseEntity<GifList> getGifs(@PathVariable Long boardId) {
