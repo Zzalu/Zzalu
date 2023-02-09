@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.TitleHakwon.controller;
 
+import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
+import com.samsamoo.zzalu.AwardRecord.service.AwardRecordService;
 import com.samsamoo.zzalu.TitleHakwon.dto.*;
 import com.samsamoo.zzalu.TitleHakwon.repository.RedisCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.service.CommentService;
@@ -25,6 +27,8 @@ public class CommentController {
 
     private final RedisCommentRepository redisCommentRepository;
 
+    private final AwardRecordService awardRecordService;
+
 
 
     /**
@@ -36,6 +40,8 @@ public class CommentController {
 
         // 좋아요가 반영이 되었다면 redis 를 통해 pub한다
         //채팅서버가 여러개일 경우 websokect으로는 모든 클라이언트에게 똑같이 반영할 수 없기 때문
+
+
 
         CommentResponse commentResponse = commentService.addComment(requestComent);
         System.out.println("@@redis");
