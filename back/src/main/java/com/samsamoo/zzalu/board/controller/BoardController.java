@@ -16,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/boards")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @Slf4j
 public class BoardController {
     private final BoardService boardService;
