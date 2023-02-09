@@ -9,7 +9,9 @@
       @click="this.$router.go(-1)"
       />
     </span>
-    <div class="absolute right-0">
+    <div class="absolute right-0"
+    @click="this.$emit('EditMode')"
+    >
       <font-awesome-icon icon="fa-solid fa-pencil" class="text-zz-p text-xs mr-1" />
       <span class="inline-block pr-4 text-zz-p dark:text-zz-p text-xs"> 수정하기 </span>
     </div>
