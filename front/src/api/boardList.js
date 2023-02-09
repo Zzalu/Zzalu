@@ -33,7 +33,6 @@ function getBoard(params, res, err) {
 }
 
 function nameChange(datas, res, err) {
-    console.log(datas,'파람ㅋ');
     authapi.put(`/boards/${datas[0]}`, datas[1])
         .then(res).catch(err)
 }

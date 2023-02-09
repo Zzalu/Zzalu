@@ -3,7 +3,7 @@
     <ChatRoomTopNav
     :room_name="this.$route.query.room_name"
     />
-    <MainBottomNav />
+    <MainBottomNavInChat />
   </div>
 </template>
 
