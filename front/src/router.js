@@ -114,14 +114,14 @@ const routes = [
   // PROFILE
   // 프로필 메인
   {
-    path: "/profile/:username",
+    path: '/profile/:username',
     name: 'profile',
     component: () => import('@/views/Profile/ProfileView'),
   },
   // 팔로우 팔로잉
   {
     // path: '/profile/:username/follow',
-    path:"/profile/follow",
+    path: '/profile/follow',
     name: 'follow',
     component: () => import('@/views/Profile/FollowView'),
   },
@@ -146,16 +146,23 @@ const routes = [
     component: () => import('@/views/TitleCompetitionView'),
   },
   // --------------------------------------------------------------------
+  // 수상기록
+  {
+    path: '/award-record/:username',
+    name: 'award-record',
+    component: () => import('@/views/AwardRecordView'),
+  },
+  // --------------------------------------------------------------------
   // 짤 디테일
   {
-    path: "/zzal/:zzal_id",
+    path: '/zzal/:zzal_id',
     name: 'zzal',
     component: () => import('@/views/ZzalDetailView'),
   },
   // ----------------------------------------------------------------
   // 보드 디테일
   {
-    path: "/board/:board_id",
+    path: '/board/:board_id',
     name: 'board',
     component: () => import('@/views/BoardDetailView'),
   },
