@@ -2,39 +2,39 @@ import { apiInstance } from '@/api/index.js';
 const api = apiInstance();
 
 // 제목학원 가져오기
-function getTitleCompetition(open_date, success, fail) {
-  api.get(`/title-hakwon/${open_date}`).then(success).catch(fail);
+async function getTitleCompetition(open_date, success, fail) {
+  console.log('api: getTitleCompetition');
+  await api.get(`/title-hakwon/${open_date}`).then(success).catch(fail);
 }
 // 댓글 최신순 조회하기
-function getNewestComments(title_competition_id, params, success, fail) {
-  console.log(title_competition_id);
-  console.log(params);
-  api.get(`/title-hakwon/${title_competition_id}/comments`, { params: params }).then(success).catch(fail);
+async function getNewestComments(title_competition_id, params, success, fail) {
+  console.log('api: getNewestComments');
+  await api.get(`/title-hakwon/${title_competition_id}/comments`, { params: params }).then(success).catch(fail);
 }
 
 // 상위 50개 좋아요 순 댓글
-function getBestComments(title_competition_id, params, success, fail) {
-  api.get(`/title-hakwon/${title_competition_id}/comments/best`, { params: params }).then(success).catch(fail);
+async function getBestComments(title_competition_id, params, success, fail) {
+  await api.get(`/title-hakwon/${title_competition_id}/comments/best`, { params: params }).then(success).catch(fail);
 }
 
 // 대댓글 최신순 조회하기
-function getNestedComments(comment_id, params, success, fail) {
-  api.get(`title-hakwon/comments/${comment_id}/reply`, { params: params }).then(success).catch(fail);
+async function getNestedComments(comment_id, params, success, fail) {
+  await api.get(`title-hakwon/comments/${comment_id}/reply`, { params: params }).then(success).catch(fail);
 }
 
 // 댓글 등록하기
-function addComment(comment_data, success, fail) {
-  api.post(`/comments`, comment_data).then(success).catch(fail);
+async function addComment(comment_data, success, fail) {
+  await api.post(`/comments`, comment_data).then(success).catch(fail);
 }
 
 // 대댓글 등록하기
-function addNestedComment(nested_comment_data, success, fail) {
-  api.post(`/comments/reply`, nested_comment_data).then(success).catch(fail);
+async function addNestedComment(nested_comment_data, success, fail) {
+  await api.post(`/comments/reply`, nested_comment_data).then(success).catch(fail);
 }
 
 // 좋아요 누르기
-function plusLike(comment_id, success, fail) {
-  api.post(`/comments/${comment_id}/likes?username=c109`).then(success).catch(fail);
+async function plusLike(comment_id, success, fail) {
+  await api.post(`/comments/${comment_id}/likes?username=c109`).then(success).catch(fail);
 }
 
 // 좋아요 취소하기

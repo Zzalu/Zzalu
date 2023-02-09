@@ -15,14 +15,14 @@ export default {
   name: 'OnlyGoBackTopNavBar',
   data() {
     return {
-      isDark
-    }
+      isDark,
+    };
   },
   methods: {
-    goBack () {
-      this.$router.go(-1)
-    }
-  }
+    goBack() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
 

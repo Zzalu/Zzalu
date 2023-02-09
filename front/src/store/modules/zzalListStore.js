@@ -1,4 +1,4 @@
-import { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF } from "@/api/zzalList"
+import { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal } from "@/api/zzalList"
 
 const zzalListStore = {
   namespaced: true,
@@ -19,6 +19,9 @@ const zzalListStore = {
     },
     GET_MORE_RANDOM_GIF(state, RandomMoreGIFdata) {
       state.random_gif_data = [...state.random_gif_data, ...RandomMoreGIFdata.data]
+    },
+    GET_SEARCH_JJAL(state, SearchJjal) {
+      state.random_gif_data = SearchJjal.data
     }
   },
   actions: {
@@ -66,6 +69,19 @@ const zzalListStore = {
           console.log(err, '모얼실패');
         }
       )
+    },
+    getSearchZzalData({ commit },params) {
+      getSearchZzal(
+        params,
+        (data) => {
+          console.log(data, '짤 검색 성공')
+          commit('GET_SEARCH_JJAL',data)
+        },
+        (err) => {
+          console.log(err, '짤 검색 실패');
+        }
+      )
+
     }
   }
 }

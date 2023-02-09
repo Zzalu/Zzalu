@@ -24,7 +24,7 @@
         :hashtag="quiet_chat_data[open_chat_id].tags"
       />
     </div>
-    <div class="h-4"></div>
+    <div class="pb-16"></div>
     <div v-if="tmpisLogin">
       <MainBottomNav />
     </div>
