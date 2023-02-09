@@ -10,7 +10,8 @@
             @click="chat_data(b)"
             class="hot-chatting"
           />
-      </div>
+          <div class="h-12"></div>
+        </div>
     </div>
   </div>
 </template>
