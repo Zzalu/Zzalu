@@ -7,11 +7,11 @@
       <div class="resting-face">:|</div>
     </div>
     <!-- 해당페이지는 로그인 후 이용하실 수 있어요 -->
-    <div class="text-oneline">
+    <div class="text-oneline" @click="toLogin">
       <div class="page-sub-title-black">해당 페이지는</div>
-      <router-link to="/login" class="page-sub-title-primary">
+      <div class="page-sub-title-primary">
         로그인
-      </router-link>
+      </div>
       <div class="page-sub-title-black">후 이용하실 수 있어요</div>
     </div>
     <!-- 아직 회원이 아니신가요? 회원가입 -->
@@ -52,21 +52,21 @@ export default {
 .sad-face {
   transform: rotate(90deg);
   right: 6rem;
-  @apply relative mt-12 font-pop text-4xl;
+  @apply relative mt-12 font-pop text-4xl dark:text-white;
 }
 
 .resting-face {
   transform: rotate(90deg);
   right: 1rem;
   bottom: 1.5rem;
-  @apply relative font-pop text-4xl;
+  @apply relative font-pop text-4xl dark:text-white;
 }
 
 .page-sub-title-black {
-  @apply mt-60 mx-1 font-spoq font-bold;
+  @apply mt-60 mx-1 font-spoq font-bold dark:text-zz-p;
 }
 
 .page-sub-title-primary {
-  @apply mt-60 font-spoq font-bold text-zz-p;
+  @apply mt-60 font-spoq font-bold text-zz-p dark:text-white;
 }
 </style>
