@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.member.controller;
 
+import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
+import com.samsamoo.zzalu.AwardRecord.dto.AwardResponse;
 import com.samsamoo.zzalu.auth.dto.LoginRequest;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.member.dto.*;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -84,4 +87,20 @@ public class MemberController {
         memberService.changePass(request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    //-------------------------------------- 수상 횟수(실제 불리진 않음)-------------------------------------------
+    @GetMapping("/awards-count/{username}")
+    public ResponseEntity<AwardCountResponse> getAwardCount (@PathVariable String username){
+        AwardCountResponse awardCountResponse = memberService.getAwardCountRecord(username);
+        return  ResponseEntity.ok().body(awardCountResponse);
+    }
+
+    //-------------------------------------- 전체 수상 내역 조회-------------------------------------
+
+    @GetMapping("/awards/{username}")
+    public ResponseEntity<List<AwardResponse>> getAwardList (@PathVariable String username , @RequestParam String sort){
+       List<AwardResponse> awardResponseList = memberService.getAwardRecordList(username,sort);
+        return ResponseEntity.ok().body(awardResponseList);
+    }
+
 }
