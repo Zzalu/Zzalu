@@ -8,7 +8,6 @@ public enum TitleHakwonState {
     /** 오픈 되지 않음 (Not Open) **/
    DONE("D"),PROCEED("P"),NOT_OPEN("N");
 
-
     private String code;
 
     private TitleHakwonState(String code) {

@@ -1,10 +1,12 @@
 package com.samsamoo.zzalu.gifs.entity;
 
+import com.samsamoo.zzalu.member.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -78,4 +80,7 @@ public class Gifs {
 
     @Column(name="DESCRIPTION")
     private String description;
+    @Builder.Default
+    private LocalDateTime lastUpdateTime = LocalDateTime.now();
+    private String lastUpdateUsername;
 }

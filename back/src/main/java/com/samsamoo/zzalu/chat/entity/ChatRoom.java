@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,6 +68,10 @@ public class ChatRoom {
         if(chatMessage.getChatRoom() != this) {
             chatMessage.setChatRoom(this);
         }
+    }
+
+    public void addLikeMembers(Member member) {
+        likeMembers.add(member);
     }
 
 }

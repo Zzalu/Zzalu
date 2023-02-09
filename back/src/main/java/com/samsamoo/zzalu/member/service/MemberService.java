@@ -1,5 +1,9 @@
 package com.samsamoo.zzalu.member.service;
 
+import com.samsamoo.zzalu.AwardRecord.RankDtoInterface;
+import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
+import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
+import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
@@ -43,6 +47,8 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MailService mailService;
     private final S3Uploader s3Uploader;
+
+    private final AwardRecordRepository awardRecordRepository;
 
     @Value("${jwt.token.secret}")
     private String secretKey;
@@ -149,12 +155,29 @@ public class MemberService {
 
     }
 
+    // ---------------------사용자 제목학원 수상 기록 반환 ---------------------------------
+    public AwardCountResponse getAwardRecord (String username){
+
+        Member member = getMemberbyUsername(username);
+
+        List<Integer> ranking = new ArrayList<>();
+
+
+        RankDtoInterface rankDtoInterface = awardRecordRepository.getAwardRecordByMemberId(member.getId());
+
+        AwardCountResponse awardCount = new AwardCountResponse(rankDtoInterface.get1st(),rankDtoInterface.get2nd(),rankDtoInterface.get3rd());
+
+        return awardCount;
+
+    }
+
 // ---------------------사용자 프로필 반환---------------------------------
     public ProfileDTO getProfile(String username) {
         Member member = getMemberbyUsername(username);
 
         MembersBoardList membersBoardList = getMembersBoard(username);
-        ProfileDTO profile = new ProfileDTO(member, membersBoardList);
+        AwardCountResponse awardCount = getAwardRecord(username);
+        ProfileDTO profile = new ProfileDTO(member, membersBoardList ,awardCount);
         return profile;
     }
 
