@@ -47,7 +47,7 @@ export default {
     this.room_id = this.$route.query.room_id;
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
     
-    this.socket = new SockJS(process.env.VUE_APP_API_BASE_URL + "/ws-stomp")
+    this.socket = new SockJS("http://i8c109.p.ssafy.io:8090" + "/ws-stomp")
     let options = {debug: false, protocols: Stomp.VERSIONS.supportedProtocols()};
     console.log(this.socket)
     this.web_stomp = Stomp.over(this.socket, options);
