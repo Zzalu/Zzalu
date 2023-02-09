@@ -22,15 +22,20 @@ function putBoardData(params, datas, res, err) {
         .then(res).catch(err)
 }
 
-function getUserBoard(params,res, err) {
+function getUserBoard(params, res, err) {
     api.get(`/boards?username=${params}`)
         .then(res).catch(err)
 }
 
-function getBoard(params,res,err) {
+function getBoard(params, res, err) {
     api.get(`/boards/${params}`)
-    .then(res).catch(err)
+        .then(res).catch(err)
+}
+
+function nameChange(params, res, err) {
+    authapi.put(`/boards/gif/${params[0]}`, params[1])
+        .then(res).catch(err)
 }
 
 
-export { getStoreList, createBoard, putBoardData, getUserBoard, getBoard }
+export { getStoreList, createBoard, putBoardData, getUserBoard, getBoard,nameChange }

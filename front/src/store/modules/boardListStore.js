@@ -1,4 +1,4 @@
-import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard } from "@/api/boardList"
+import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange } from "@/api/boardList"
 
 const boardListStore = {
   namespaced: true,
@@ -87,6 +87,18 @@ const boardListStore = {
         },
         (err) => {
           console.log(err, '보드 디테일 요청 실패');
+        }
+      )
+    },
+    boardNameChange({ commit }, params) {
+      nameChange(
+        params,
+        (data) => {
+          console.log(data, '보드 타이틀 변경 성공');
+          commit('NAME_CHANGE', data)
+        },
+        (err) => {
+          console.log(err, '보드 타이틀 변경 실패');
         }
       )
     }

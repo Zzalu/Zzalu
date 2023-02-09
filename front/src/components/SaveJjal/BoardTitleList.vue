@@ -2,7 +2,7 @@
   <div>
     <p> {{ user_id }}님의 보드</p>
     <div v-if="user_board_list"
-    class="flex flex-wrap"
+    class="flex flex-wrap justify-center"
     >
       <div v-for="(board_list, i) in user_board_list.boards" :key="i">
           <BoardTitleListItem :board_list="board_list" />

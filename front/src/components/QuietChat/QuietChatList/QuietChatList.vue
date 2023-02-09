@@ -11,7 +11,7 @@
         <p class="content-p">{{ room_data.description }}</p>
         <div class="hashtag-div">
           <div v-for="(hashtags, j) in hash" :key="j" class="hashtag-p">
-            <div v-if="hashtags"># {{ hashtags }}</div>
+            <div v-if="hashtags">#{{ hashtags }}</div>
           </div>
         </div>
         <div class="last-lane">
