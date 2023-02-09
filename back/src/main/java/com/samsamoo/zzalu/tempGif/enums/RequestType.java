@@ -4,7 +4,7 @@ public enum RequestType {
 
     /** 생성 요철 (CREATE) **/
     /** 업데이트 요청 (UPDATE) **/
-    CREATE("C"),UPDATE("P");
+    CREATE("C"),UPDATE("U");
 
 
     private String code;

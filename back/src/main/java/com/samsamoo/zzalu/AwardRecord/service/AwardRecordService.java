@@ -27,10 +27,10 @@ public class AwardRecordService {
 
     private final AwardRecordRepository awardRecordRepository;
 
-    /** 제목 학원이 끝나고 상위 3명을 수상한다. **/
+  /*  *//** 제목 학원이 끝나고 상위 3명을 수상한다. **//*
 
-    /** 매일 오후 10시 에 종료 **/
-   /* @Scheduled(cron = "0 3 21 * * *")*/
+    *//** 매일 오후 10시 에 종료 **//*
+   *//* @Scheduled(cron = "0 3 21 * * *")*//*
     public  void setRank (){
         //오늘 날짜를 알아야함
 
@@ -60,8 +60,8 @@ public class AwardRecordService {
     }
 
 
-    /** 매일 아침 10시 오늘의 제목학원 open **/
-    /* @Scheduled(cron = "0 0 7 * * *")*/
+    *//** 매일 아침 10시 오늘의 제목학원 open **//*
+    *//* @Scheduled(cron = "0 0 7 * * *")*//*
     public void openTitleHakwon(){
 
         LocalDateTime current = LocalDateTime.now();
@@ -76,7 +76,7 @@ public class AwardRecordService {
     }
 
 
-
+*/
 
 
 

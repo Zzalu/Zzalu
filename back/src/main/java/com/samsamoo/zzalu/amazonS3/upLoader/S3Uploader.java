@@ -53,6 +53,8 @@ public class S3Uploader {
         String fileName = dirName + "/" + UUID.randomUUID() + "-"+ uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
         removeNewFile(uploadFile);
+        System.out.println("확인");
+        System.out.println(uploadImageUrl);
         return uploadImageUrl;
     }
 

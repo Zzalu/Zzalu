@@ -48,7 +48,6 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MailService mailService;
     private final S3Uploader s3Uploader;
-
     private final AwardRecordRepository awardRecordRepository;
 
     @Value("${jwt.token.secret}")
@@ -209,6 +208,7 @@ public class MemberService {
         // s3로 프로필 이미지 업로드 및 반환
         if (request.getProfileMultipartFile() != null) {
             String returnUrl =  s3Uploader.upload(request.getProfileMultipartFile(), "MemberProfile");
+            log.info("returnUrl=", returnUrl);
             updateMember.setProfilePath(returnUrl);
         }
         if (request.getNickname() != null) {
@@ -276,5 +276,19 @@ public class MemberService {
 
         // member 저장
         memberRepository.save(member);
+    }
+
+    public void requestManager(String token) {
+        Member member = jwtTokenProvider.getMember(token);
+        if(member.getPermittedCount() >= 5) {
+            if(!member.getRoles().contains("MANAGER")) {
+                member.makeManager();
+                memberRepository.save(member);
+            } else {
+                throw new RuntimeException("이미 매니저 권한이 있습니다.");// 수정 필요
+            }
+        } else {
+            throw new RuntimeException("짤 업로드 및 수정 허가 횟수가 5번 미만입니다.");// 수정 필요
+        }
     }
 }

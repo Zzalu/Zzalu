@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.gifs.entity;
 
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.tempGif.entity.TempGif;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -83,4 +84,25 @@ public class Gifs {
     @Builder.Default
     private LocalDateTime lastUpdateTime = LocalDateTime.now();
     private String lastUpdateUsername;
+
+    public void update(TempGif tempGif) {
+        System.out.println(tempGif.toString());
+        if (tempGif.getDescription() != null) {
+            this.description = tempGif.getDescription();
+        }
+        if (tempGif.getTags() != null) {
+            this.tags = tempGif.getTags();
+        }
+        if (tempGif.getRelationsVideo() != null) {
+            this.relationsVideo = tempGif.getRelationsVideo();
+        }
+    }
+
+    public void increaseScrap() {
+        this.scrapCount++;
+    }
+
+    public void decreaseScrap() {
+        this.scrapCount--;
+    }
 }
