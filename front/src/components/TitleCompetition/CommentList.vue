@@ -2,7 +2,7 @@
   <ol ref="commentListComponent">
     <li v-for="comment in comments" :key="comment.id" :comment="comment" class="mb-1">
       <CommentListItem :comment="comment" />
-      <span class="w-full h-divider-height bg-zz-light-div"></span>
+      <span class="w-full h-divider-height bg-zz-light-div dark:border-b-zz-dark-div"></span>
     </li>
   </ol>
 </template>

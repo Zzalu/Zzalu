@@ -2,7 +2,7 @@
   <div>
     <only-small-logo-top-nav></only-small-logo-top-nav>
     <div class="flex flex-col items-center relative">
-      <div class="w-full">
+      <div class="w-full dark:text-white">
         <!-- 오늘의 제목학원 header -->
         <header class="relative w-full flex flex-col items-center">
           <div>

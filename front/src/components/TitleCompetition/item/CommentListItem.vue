@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div>
+    <div class="dark:text-white">
       <div class="flex items-center mb-2">
         <div class="w-3 h-3 rounded-full mr-2">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
