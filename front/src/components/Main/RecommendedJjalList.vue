@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <p class="focus-text">user.id님을 위한 추천 짤</p>
+  <div v-if="user_id">
+    <p class="focus-text">{{user_id}}님을 위한 추천 짤</p>
     <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
     <div class="items">
       <div v-for="(RecommendJjal,i) in RecommendJjalListData" :key="i">
@@ -20,13 +20,16 @@ import { computed } from "@vue/runtime-core";
 export default {
   name: "RecommendedJjalList",
   setup() {
+    const user_id = localStorage.getItem("id");
+
     const store = useStore();
 
     const RecommendJjalListData = computed(
       () => store.state.zzalListStore.recommend_gif_data
     );
     return {
-      RecommendJjalListData
+      RecommendJjalListData,
+      user_id
     }
   },
   components : {
@@ -46,9 +49,5 @@ export default {
 }
 .items::-webkit-scrollbar {
   display:none;
-}
-.recommend-img {
-  background-image: url(../QuietChat/QuietChatList/assets/goodgood.gif);
-  @apply w-28 h-36 rounded-2xl mr-2 border bg-cover bg-no-repeat bg-center;
 }
 </style>

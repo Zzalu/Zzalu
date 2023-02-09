@@ -50,6 +50,9 @@
   </div>
 </template>
 
+
+
+
 <script>
 // import useVuelidate from "@vuelidate/core";
 // import { required } from "@vuelidate/validators";
@@ -106,7 +109,7 @@ export default {
       } else {
         // console.log('중복이군여')
         state.usernameState = false
-        alert("아이디가 중복이에...")
+        alert("사용 중인 아이디입니다. |n 다른 아이디를 등록해주세요.")
       } 
     }
     // 닉네임 중복확인

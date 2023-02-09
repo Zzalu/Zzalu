@@ -12,6 +12,13 @@ import java.util.List;
 public class ChatRoomService {
     private final ChatRoomRepository chatRoomRepository;
 
+    public ChatRoom findByRoomId(String roomId){
+        return chatRoomRepository.findByRoomId(roomId);
+    }
+    public List<ChatRoom> findTop10ByOrderByLikeCountDesc() {
+        return chatRoomRepository.findTop10ByOrderByLikeCountDesc();
+    }
+
     public List<ChatRoom> findByTagsContainsOrRoomNameContains(String keyword) {
         return chatRoomRepository.findByTagsContainsOrRoomNameContains(keyword, keyword);
     }

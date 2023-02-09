@@ -4,7 +4,9 @@
   <div class="mt-6 dark:bg-zz-bd">
     <div class="flex">
       <font-awesome-icon icon="fa-solid fa-user" class='settings-icon-aligned-left'/>
-      <button class="settings-button">내 정보 수정</button>
+      <button class="settings-button" @click="goProfileEdit">
+          내 정보 수정
+      </button>
     </div >
     <div class="flex">
       <font-awesome-icon icon="fa-solid fa-lock" class='settings-icon-aligned-left'/>
@@ -60,9 +62,12 @@ export default {
       await store.dispatch('userStore/logoutAction')
       router.push({name: 'main'})
     }
+    const goProfileEdit = () => {
+      router.push({name: 'edit-profile'})
+    }
 
     return {
-      logoutSubmit
+      logoutSubmit,goProfileEdit
     }
   }
 }

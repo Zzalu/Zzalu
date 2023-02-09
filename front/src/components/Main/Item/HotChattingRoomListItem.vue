@@ -96,7 +96,7 @@ export default {
 .quiet-chat-box {
   height: 3rem;
   word-break: keep-all;
-  @apply border-t-2 border-white absolute bottom-0 inset-x-0 flex items-center justify-center bg-zz-p rounded-b-xl dark:border-zz-dark-div;
+  @apply border-t-2 border-white absolute bottom-0 inset-x-0 flex items-center justify-center bg-zz-p rounded-b-xl text-center dark:border-zz-dark-div;
 }
 
 .quiet-chat-title {

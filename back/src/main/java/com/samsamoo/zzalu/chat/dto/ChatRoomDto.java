@@ -23,7 +23,7 @@ public class ChatRoomDto implements Serializable {
     private Long likeCount;
 
     private List<ChatMessageDto> chatMessageDtos;
-    private HashMap<Member, Boolean> likeMembers;
+    private List<Member> likeMembers;
     private String imagePath;
     private String description;
     private String tags;
@@ -40,7 +40,7 @@ public class ChatRoomDto implements Serializable {
         chatRoomDto.description = chatRoomEnroll.getDescription();
         chatRoomDto.tags = chatRoomEnroll.getTags();
         chatRoomDto.chatMessageDtos = new LinkedList<ChatMessageDto>();
-        chatRoomDto.likeMembers = new HashMap<Member, Boolean>();
+        chatRoomDto.likeMembers = new ArrayList<>();
         chatRoomDto.likeCount = 0L;
         chatRoomDto.enrollDate = LocalDateTime.now();
         chatRoomDto.lastActivation = LocalDateTime.now();

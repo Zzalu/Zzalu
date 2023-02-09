@@ -1,5 +1,7 @@
 import { apiInstance } from './index.js';
+// import { authApiInstance } from './index.js';
 const api = apiInstance();
+// const auth_api = authApiInstance();
 
 const checkUsername = (payload) => {
     // console.log(payload)
@@ -28,4 +30,14 @@ const requestLogin = (payload, res, err) => {
     .then(res).catch(err)
 }
 
-export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin }
+const requestUsername = (data,res,err) => {
+    // console.log('유저이메일 나와야됨',data)
+    return api.post(`mail/username`, data )
+    .then(res).catch(err)
+}
+
+const getProfileUser = (username, success, fail) => {
+    api.get(`/members/${username}`).then(success).catch(fail);
+}
+
+export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser }

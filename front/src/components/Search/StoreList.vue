@@ -1,5 +1,7 @@
 <template>
   <div ref="List" class="dark:border-zz-dark-div">
+    <!-- 저장 모드 -->
+
     <div v-if="!creating">
       <div class="list-title">
         <p class="list-title-content">저장하기</p>
@@ -8,46 +10,80 @@
         </p>
       </div>
       <div class="list-items-contain">
-        <div v-for="(list, items) in list_name" :key="items" class="list-items">
-          <input type="checkbox" :id="'check' + items" :value="list" />
-          <label :for="'check' + items"> </label>
-          <label :for="'check' + items" class="cursor-pointer">
-            {{ list }}</label
+        <div v-if="user_store_list">
+          <div
+            v-for="(list, items) in user_store_list.boards"
+            :key="items"
+            class="list-items"
           >
+            <input
+              v-if="list.gifContainState"
+              checked
+              name="checkcheckbox"
+              type="checkbox"
+              :id="'check' + items"
+              :value="list.boardName"
+            />
+            <input
+              v-else
+              name="checkcheckbox"
+              type="checkbox"
+              :id="'check' + items"
+              :value="list.boardName"
+            />
+            <label :for="'check' + items"> </label>
+            <label :for="'check' + items" class="cursor-pointer">
+              {{ list.boardName }}</label
+            >
+          </div>
         </div>
       </div>
       <div class="save-btn-contain">
-        <button class="save-btn"
-        @mouseup="SaveItem"
-        >저장</button>
+        <button class="save-btn" @mouseup="SaveItem">저장</button>
       </div>
     </div>
-    <!-- 생성중 이라면 -->
+
+    <!-- 생성모드 -->
+
     <div v-else>
       <div class="list-title">
         <p class="list-title-content">저장하기</p>
       </div>
       <div class="creating-list-items-contain">
-        <div v-for="(list, items) in list_name" :key="items" class="list-items">
-          <input type="checkbox" :id="'check' + items" :value="list" />
-          <label :for="'check' + items"> </label>
-          <label :for="'check' + items" class="cursor-pointer">
-            {{ list }}</label
+        <div v-if="user_store_list">
+          <div
+            v-for="(list, items) in user_store_list.boards"
+            :key="items"
+            class="list-items"
           >
+            <input
+              type="checkbox"
+              :id="'check' + items"
+              :value="list"
+              disabled
+            />
+            <label :for="'check' + items"> </label>
+            <label :for="'check' + items" class="cursor-pointer">
+              {{ list.boardName }}</label
+            >
+          </div>
         </div>
       </div>
 
+      <!-- 생성중 인풋 -->
+
       <p class="m-2 text-xs font-bhs dark:text-white">이름</p>
       <div class="creating-input-contain">
-        <input placeholder="보관함 이름 입력.." class="font-spoq dark:text-white" style="background-color:transparent"/>
+        <input
+          placeholder="보관함 이름 입력.."
+          class="font-spoq dark:text-white"
+          style="background-color: transparent"
+          @input="input_store_title = $event.target.value"
+        />
       </div>
       <div class="creating-save-btn-contain" ref="tmp2">
-        <button class="cancel-btn"
-        @mouseup="CancelCreateList"
-        >취소</button>
-        <button class="save-btn"
-        @mouseup="CreateList"
-        >저장</button>
+        <button class="cancel-btn" @mouseup="CancelCreateList">취소</button>
+        <button class="save-btn" @mouseup="CreateList">저장</button>
       </div>
     </div>
   </div>
@@ -65,32 +101,41 @@ export default {
     const close_list_modal = () => {
       store.commit("searchModalStore/close_list_modal");
     };
+    const CreateBoard = (data) => {
+      store.dispatch("boardListStore/createStoreBoard", data);
+    };
     const open_list_modal = computed(
       () => store.state.searchModalStore.open_list_modal
     );
+    const select_gif_id = computed(
+      () => store.state.boardListStore.select_gif_id
+    );
+    const get_user_list = (data) => {
+      store.dispatch("boardListStore/getUserStoreList", data);
+    };
+    const put_boards_data = (data) => {
+      store.dispatch("boardListStore/putBoardData", data);
+    };
     return {
       close_list_modal,
+      get_user_list,
+      CreateBoard,
+      put_boards_data,
       open_list_modal,
+      select_gif_id,
     };
+  },
+  props: {
+    user_store_list: Object,
   },
   data() {
     return {
       creating: false,
-      list_name: [
-        "즐겨찾기",
-        "고양이",
-        "무한도전",
-        "리스트1리스트1리스트1리스트1",
-        "리스트2",
-        "리스트3",
-        "리스트4",
-        "리스트5",
-        "리스트6",
-        "리스트7",
-      ],
+      input_store_title: "",
     };
   },
   mounted() {
+    this.get_user_list(this.select_gif_id);
     if (this.open_list_modal) {
       setTimeout(() => {
         document.addEventListener("click", this.ListoutClick);
@@ -148,18 +193,42 @@ export default {
       }
     },
     SaveItem() {
+      let arr = document.getElementsByName("checkcheckbox");
+      let boards = [];
+      for (let i = 0; i < arr.length; i++) {
+        let tmp = {
+          id: this.user_store_list.boards[i].id,
+          boardName: this.user_store_list.boards[i].boardName,
+          gifContainState: arr[i].checked,
+        };
+        boards.push(tmp);
+      }
+      let data = { boards: boards };
+      console.log("요청할 데이터", data);
+      let datas = [];
+      datas.push(this.select_gif_id);
+      datas.push(data);
+      this.put_boards_data(datas);
       this.close_list_modal();
     },
     CancelCreateList() {
       this.creating = false;
     },
     CreateList() {
-      this.list_name.push("추가제목");
+      if (this.input_store_title == "") {
+        return;
+      }
       this.creating = false;
+      let board_name = {
+        boardName: this.input_store_title,
+      };
+
+      this.CreateBoard(board_name);
+      this.get_user_list(this.select_gif_id);
     },
     ChangeCreate() {
       this.creating = true;
-    }
+    },
   },
 };
 </script>

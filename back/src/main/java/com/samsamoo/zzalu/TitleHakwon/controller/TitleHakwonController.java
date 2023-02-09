@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.TitleHakwon.controller;
 
 import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
 import com.samsamoo.zzalu.TitleHakwon.dto.ReplyCommentResponse;
+import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonDetailResponse;
 import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonResponse;
 import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
@@ -86,7 +87,7 @@ public class TitleHakwonController {
      */
 
     @GetMapping(value = "/{openDate}")
-    public ResponseEntity<TitleHakwonResponse> getTitlehakwonInfo(@PathVariable String openDate){
+    public ResponseEntity<TitleHakwonDetailResponse> getTitlehakwonInfo(@PathVariable String openDate){
 
         return new ResponseEntity<>(titleHakwonService.getTitleHakwonInfo(openDate), HttpStatus.OK);
     }
@@ -165,6 +166,18 @@ public class TitleHakwonController {
 
 
        // return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
+    }
+
+    /**
+     * [GET]
+     역대 제목학원 리스트 조회하기
+     */
+
+    @GetMapping()
+    public ResponseEntity<List<TitleHakwonResponse>> getTitleHakwonList(){
+
+        List<TitleHakwonResponse> titleHakwonResponseList = titleHakwonService.getTitleHakwonList();
+        return new ResponseEntity<>(titleHakwonResponseList,HttpStatus.OK);
     }
 
 }

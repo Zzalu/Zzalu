@@ -18,6 +18,7 @@ import { fab } from '@fortawesome/free-brands-svg-icons';
 /* add icons to the library */
 // library.add(faHouse);
 
+
 library.add(fas);
 library.add(fab);
 import { far } from '@fortawesome/free-regular-svg-icons';

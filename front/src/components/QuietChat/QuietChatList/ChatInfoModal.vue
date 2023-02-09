@@ -35,7 +35,7 @@
       <div class="hashtag-div">
         <div v-for="(hashtags, j) in hash" :key="j" class="hashtag-p">
           <div v-if="hashtags">
-            # {{ hashtags }}
+            #{{ hashtags }}
           </div>
         </div>
       </div>

@@ -6,7 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,9 +41,11 @@ public class ChatRoom {
     @Builder.Default
     private List<ChatMessage> chatMessages  = new LinkedList<>();
 
-    @Column(name = "LIKE_MEMBERS")
+
     // Member 다대다 적용
-    private HashMap<Member, Boolean> likeMembers;
+    @ManyToMany(mappedBy = "likeChatRooms")
+    @Builder.Default
+    private List<Member> likeMembers = new ArrayList<>();
 
     @Column(name = "IMAGE_PATH")
     private String imagePath;

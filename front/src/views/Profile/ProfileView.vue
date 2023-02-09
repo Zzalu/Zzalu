@@ -1,6 +1,11 @@
 <template>
   <div>
-    <my-profile-top-nav></my-profile-top-nav>
+    <div v-if="this.current_user == this.userName">
+      <my-profile-top-nav></my-profile-top-nav>
+    </div>
+    <div v-if="this.current_user != this.userName">
+      <only-go-back-top-nav></only-go-back-top-nav>
+    </div>
     <profile-info></profile-info>
     <user-stats></user-stats>
     <user-award></user-award>
@@ -17,19 +22,43 @@ import ProfileInfo from "../../components/Profile/ProfileInfo.vue";
 import UserStats from "../../components/Profile/UserStats.vue";
 import UserAward from "../../components/Profile/UserAward.vue";
 import UserBoard from "../../components/Profile/UserBoard.vue";
+import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
+import { useStore } from "vuex";
+import { useRoute } from "vue-router";
+// import { computed } from "@vue/runtime-core";
 
 export default {
   name: "ProfileView",
   components: {
     MainBottomNav,
     MyProfileTopNav,
+    OnlyGoBackTopNav,
     ProfileInfo,
     UserStats,
     UserAward,
     UserBoard,
   },
+  data() {
+    return {
+      userName: this.$route.params.username,
+    };
+  },
+  setup() {
+    const store = useStore();
+    const route = useRoute();
+    const username = route.params.username;
+    store.dispatch("userStore/getProfileUser", username);
+    const current_user = localStorage.getItem("id");
+
+    return {
+      current_user,
+    };
+  },
 };
 </script>
 
-<style>
+<style lang="postcss" scoped>
+.follower-and-following {
+  @apply mt-4 text-center mx-2 text-zz-s font-spoq;
+}
 </style>

@@ -232,8 +232,12 @@ public class CommentService {
      *
      * 1. 댓글 좋아요 기록에 추가
      * 2. 댓글 좋아요 +1
+     *
+     *
+     * 할일 -> optional
+     *
      */
-    public Integer clickCommentLikes(Long commentId , String memberId){
+    public LikeResponse clickCommentLikes(Long commentId , String memberId){
 
         //존재하지 않은 댓글이였다면?
         Optional<Comment> comment = commentRepository.findById(commentId);
@@ -260,7 +264,8 @@ public class CommentService {
 
 
 
-        return Integer.valueOf(comment.get().getLikeNum());
+
+        return new LikeResponse(commentId,comment.get().getLikeNum());
 
     }
 
@@ -271,21 +276,23 @@ public class CommentService {
      */
     @Transactional
 
-    public void cancelCommentLikes(Long commentId , String memberId){
+    public LikeResponse cancelCommentLikes(Long commentId , String memberId){
         Optional<Comment> comment = commentRepository.findById(commentId);
         Optional<Member> member = memberRepository.findByUsername(memberId);
 
         if(!comment.isPresent()){
-            return;
+            return null;
         }
         if(!member.isPresent()){
-            return;
+            return null;
         }
 
         commentLikeRepository.deleteByComment_IdAndMemberUsername(commentId,memberId);
 
         comment.get().minusLikeNum();
         commentRepository.save(comment.get());
+
+        return new LikeResponse(commentId,comment.get().getLikeNum());
 
     }
 
