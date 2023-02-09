@@ -66,7 +66,9 @@ export default {
     };
 
     onBeforeMount(() => {
-      store.dispatch("zzalListStore/getFirstRandomGIFList");
+      if (random_gif_data==null) {
+        store.dispatch("zzalListStore/getFirstRandomGIFList");
+      }
     });
 
     function MoreRandomGIF(gif_data) {

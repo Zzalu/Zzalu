@@ -1,5 +1,5 @@
 <template >
-  <div>
+  <div class="main-bg">
     <div class="main-margin">
       <div>
         <router-view> </router-view>
@@ -37,6 +37,10 @@ export default {
 </script>
 
 <style scoped lang="postcss">
+.main-bg {
+  background-attachment: fixed;
+  @apply dark:bg-zz-bd w-screen h-screen
+}
 .main-margin {
   padding: 0 1.25rem;
   margin-bottom: 3.2rem;

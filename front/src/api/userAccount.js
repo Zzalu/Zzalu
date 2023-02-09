@@ -10,18 +10,18 @@ const checkUsername = (payload) => {
 }
 
 const checkNickname = (payload) => {
-    // console.log(payload)
     return api.get(`members/exists`, {params: payload})
 }
 
 const checkEmail = (data,res,err) => {
-    // console.log('유저이메일 나와야됨',data)
+    // console.log(data)
     return api.post(`mail/signup`, data )
     .then(res).catch(err)
 }
 
-const requestRegister = (payload) => {
+const requestRegister = (payload,res,err) => {
     return api.post(`members/signup`, payload)
+    .then(res).catch(err)
 }
 
 const requestLogin = (payload, res, err) => {

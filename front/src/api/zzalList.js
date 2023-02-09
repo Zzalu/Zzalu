@@ -17,5 +17,10 @@ function getMoreRandomGIF(params,res,err) {
     api.post(`/gif/randoms`,{ exceptIds : params})
     .then(res).catch(err)
 }
+function getSearchZzal(params,res,err) {
+    console.log(params,'검색키워드')
+    api.get(`gif/search?searchKeyword=${params}`)
+    .then(res).catch(err)
+}
 
-export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF }
+export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal }

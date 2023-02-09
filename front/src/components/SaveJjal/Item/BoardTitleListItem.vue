@@ -21,7 +21,7 @@ export default {
 
     const board_detail = (id,name) => {
       store.dispatch("boardListStore/getBoardData",id);
-      router.push({name: "board", params: {board_id: id}, query: {board_name: name, board_id: id}});
+      router.push({name: "board", params: {board_id: id}, query: {board_name: name}});
     };
 
     return {
