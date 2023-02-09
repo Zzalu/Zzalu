@@ -69,4 +69,8 @@ public class ChatRoom {
         }
     }
 
+    public void addLikeMembers(Member member) {
+        likeMembers.add(member);
+    }
+
 }

@@ -4,6 +4,7 @@ import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.chat.dto.ChatRoomDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
+import com.samsamoo.zzalu.chat.dto.ChatRoomListDto;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
@@ -13,8 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller
@@ -62,8 +65,14 @@ public class ChatRoomController {
 
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> findAll() {
-        return chatRoomService.findAll();
+    public List<ChatRoomListDto> findAll() {
+        List<ChatRoom> chatRoomList = chatRoomService.findAll();
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList){
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/rooms-top10")
@@ -173,17 +182,17 @@ public class ChatRoomController {
 
         String roomId = map.get("roomId");
         System.out.println("RoomId : " + roomId);
-        ChatRoom chatRoom = chatRoomService.findByRoomId(roomId);
-        if(chatRoom != null) {
+        Optional<ChatRoom> optionalChatRoom = chatRoomService.findByRoomId(roomId);
+        if(optionalChatRoom.isPresent()) {
+            ChatRoom chatRoom = optionalChatRoom.get();
+            System.out.println("chatRoom.getLikeMembers() : " + chatRoom.getLikeMembers());
             if(!chatRoom.getLikeMembers().contains(requestMember)) {
-                List<Member> members = chatRoom.getLikeMembers();
-                members.add(requestMember);
-                chatRoom.setLikeMembers(members);
+                requestMember.addLikeChatRoom(chatRoom);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() + 1);
-                chatRoomRepository.save(chatRoom);
+                chatRoomService.save(chatRoom);
                 return true;
             } else {
-                System.out.println("이미 클릭하 사용자 입니다. Error Exception 필요");
+                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
             }
         }

@@ -162,4 +162,8 @@ public class Member implements UserDetails {
         this.getBoards().add(board);
 
     }
+
+    public void addLikeChatRoom(ChatRoom chatRoom) {
+        likeChatRooms.add(chatRoom);
+    }
 }
