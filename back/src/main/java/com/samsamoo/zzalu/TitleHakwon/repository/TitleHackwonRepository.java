@@ -12,7 +12,7 @@ public interface TitleHackwonRepository extends JpaRepository<TitleHakwon, Strin
 
     Optional<TitleHakwon> findTitleHakwonById(Long id);
 
-    TitleHakwon findTitleHakwonByOpenDate(String openDate);
+    Optional<TitleHakwon> findTitleHakwonByOpenDate(String openDate);
 
     List<TitleHakwon> findTitleHakwonByState(TitleHakwonState status);
 }
