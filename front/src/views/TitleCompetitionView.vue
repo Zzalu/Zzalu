@@ -14,10 +14,10 @@
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
-          <div ref="zzal" class="h-48"><img src="../assets/logo.png" alt="짤" /></div>
+          <div ref="zzalComponent" class="h-48"><img :src="zzal_url" alt="짤" /></div>
           <!-- 댓글 스크롤 했을 때 짤fixed -->
           <div v-if="isScrolled" class="zzal_fixed">
-            <img src="../assets/logo.png" alt="짤" />
+            <img :src="zzal_url" alt="짤" />
           </div>
           <!-- <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
             <img class="title-image" :src="zzal_url" alt="짤" />
@@ -26,7 +26,7 @@
 
         <!-- TOP 5 -->
         <!-- 댓글 네브 -->
-        <nav ref="scrollTest" class="flex justify-between">
+        <nav class="flex justify-between">
           <div class="flex">
             <h2 class="text-xl text-zz-p">댓글</h2>
             <span class="text-base text-zz-p">{{ total_comment_cnt }}</span>
@@ -51,7 +51,7 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
@@ -64,30 +64,50 @@ export default {
   components: { OnlySmallLogoTopNav, CommentList, MainBottomNav, CommentInput },
   name: 'TitleCompetitionView',
   setup() {
+    console.log('create');
     const store = useStore();
     const route = useRoute();
     const open_date = route.params.open_date; // 제목학원 날짜
-    let isScrolled = ref(null);
-    let zzal = ref(null);
+    const isScrolled = ref(null);
+    const zzalComponent = ref(null);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
-    store.dispatch('titleCompetitionStore/getTitleCompetition', open_date);
-    const total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt; // 댓글 개수
-    const zzal_url = store.state.titleCompetitionStore.zzal_url; // 짤
-    store.dispatch('titleCompetitionStore/getNewestComments', 4);
+    let total_comment_cnt = null; // 댓글 개수
+    let zzal_url = null; // 짤
 
-    onMounted(() => {
-      console.log(zzal);
-      console.log(zzal.value.clientWidth);
-      loadMoreComments();
-    });
-    function scroll() {
-      console.log('hi');
-      if (window.scrollY > zzal.value.offsetTop) {
-        isScrolled.value = ref(true);
-      } else {
-        isScrolled.value = ref(false);
-      }
+    /*    async function init() {
+      await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
+        if (result) {
+          store.dispatch('titleCompetitionStore/getNewestComments', 4);
+        }
+      });
+      total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt;
+      zzal_url = store.state.titleCompetitionStore.zzal_url;
+
+      console.log(total_comment_cnt);
+      console.log(zzal_url);
     }
+    init(); */
+    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
+    // store.dispatch('titleCompetitionStore/getNewestComments', 4);
+    function scroll(e) {
+      console.log('scroll 이벤트');
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
+      if (isAtTheBottom) {
+        setTimeout(() => {
+          loadMoreComments();
+        }, 1000);
+      }
+      // if (window.scrollY > zzalComponent.value.offsetTop) {
+      //   isScrolled.value = ref(true);
+      // } else {
+      //   isScrolled.value = ref(false);
+      // }
+    }
+    // onMounted(() => {
+    //   console.log(zzal_url);
+    //   loadMoreComments();
+    // });
 
     const loadMoreComments = () => {
       store.dispatch('titleCompetitionStore/getNewestComments', 4);
@@ -143,6 +163,7 @@ export default {
       zzal_url,
       isScrolled,
       scroll,
+      zzalComponent,
       // reciveMessage,
     };
   },

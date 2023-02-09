@@ -1,7 +1,7 @@
 <template>
   <ol ref="commentListComponent">
     <li v-for="comment in comments" :key="comment.id" :comment="comment" class="mb-1">
-      <CommentListItem :comment="comment" @scroll="scrollHandle" />
+      <CommentListItem :comment="comment" />
       <span class="w-full h-divider-height bg-zz-light-div"></span>
     </li>
   </ol>
@@ -20,17 +20,12 @@ export default {
     const store = useStore();
     const commentListComponent = ref(null);
     let comments = store.state.titleCompetitionStore.comments;
-    const loadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getNewestComments', 4);
-    };
 
     /*  onMounted(() => {
       window.addEventListener('scroll', handleScroll);
     });
  */
-    const scrolllHandle = () => {
-      console.log('scrolll');
-    };
+
     /* const handleScroll = () => {
       let element = commentListComponent.value;
 
@@ -42,9 +37,7 @@ export default {
 
     return {
       comments,
-      loadMoreComments,
       commentListComponent,
-      scrolllHandle,
     };
   },
 };

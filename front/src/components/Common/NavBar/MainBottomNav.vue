@@ -16,10 +16,12 @@
       <button class="nav_item" @click="open_modal">
         <span class="search"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></span>
       </button>
-      <router-link to="/title-competition/2023-02-09" class="nav_item">
+      <button class="nav_item" @click="GoToTitleCompetition">
         <font-awesome-icon icon="fa-regular fa-lightbulb" />
-        <i class="fa-solid fa-chevron-left"></i
-      ></router-link>
+      </button>
+      <!--  <router-link to="/title-competition/2023-02-09" class="nav_item">
+        <font-awesome-icon icon="fa-regular fa-lightbulb" />
+      </router-link> -->
       <!-- <div v-if="user_is_logged_in==true" class="nav_item">
         <router-link to="{ name: 'profile'}"><font-awesome-icon icon="fa-regular fa-user" /></router-link>
       </div> -->
@@ -60,9 +62,9 @@ export default {
     };
 
     const today = new Date();
-    const dateString =
-      today.getFullYear + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
 
+    const dateString =
+      today.getFullYear() + '-' + ('0' + (today.getMonth() + 1)).slice(-2) + '-' + ('0' + today.getDate()).slice(-2);
     return {
       dateString,
       open_modal,
@@ -88,12 +90,16 @@ export default {
 
     GoToProfile() {
       if (this.logged_in != null) {
-        console.log('지금 접속했어요');
+        // console.log('지금 접속했어요');
         this.$router.push({ name: 'profile', params: { username: this.current_user } });
       } else {
-        console.log('지금 접속 안했어요', this.logged_in);
+        // console.log('지금 접속 안했어요', this.logged_in);
         this.$router.push({ name: 'login-required' });
       }
+    },
+
+    GoToTitleCompetition() {
+      this.$router.push({ name: 'title-competition', params: { open_date: this.dateString } });
     },
   },
   watch: {

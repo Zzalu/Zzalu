@@ -61,7 +61,6 @@ export default {
     comment: Object,
   },
   setup(props) {
-    console.log(props);
     const store = useStore();
     // TODO: time ~~전으로 출력하기
     const comment_data = reactive({
@@ -80,7 +79,6 @@ export default {
 
     // TODO: 나중에 로그인 기능 완성되면 username 수정하기
     const canDelete = computed(() => {
-      console.log(comment_data.username);
       return (comment_data.username = 'c109');
     });
 
