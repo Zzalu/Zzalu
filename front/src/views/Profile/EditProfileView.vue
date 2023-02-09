@@ -63,8 +63,8 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
+// import { useStore } from "vuex";
+// import { computed } from "@vue/runtime-core";
 // import ModifyProfileTopNav from "../../components/Common/NavBar/ModifyProfileTopNav.vue";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue";
 export default {
@@ -73,20 +73,22 @@ export default {
     // ModifyProfileTopNav,
     MainBottomNav,
   },
-  setup() {
-    const store = useStore();
-    const profile_user_data = computed(
-      () => store.state.userStore.profile_user
-    );
+  // setup() {
+  //   const me = localStorage.getItem("id");
+  //   const store = useStore();
+  //   const my_data= computed(
+  //     () => store.state.userStore.profile_user
+  //   );
 
-    const saveEditInfo = {};
-    return {
-      profile_user_data,
-      saveEditInfo,
-    };
+  //   const saveEditInfo = {};
+  //   return {
+  //     me,
+  //     my_data,
+  //     saveEditInfo,
+  //   };
 
 
-  },
+  // },
 };
 </script>
 
