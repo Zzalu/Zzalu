@@ -4,6 +4,7 @@ import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.chat.dto.ChatRoomDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
+import com.samsamoo.zzalu.chat.dto.ChatRoomListDto;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -63,8 +65,14 @@ public class ChatRoomController {
 
     @GetMapping("/rooms")
     @ResponseBody
-    public List<ChatRoom> findAll() {
-        return chatRoomService.findAll();
+    public List<ChatRoomListDto> findAll() {
+        List<ChatRoom> chatRoomList = chatRoomService.findAll();
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList){
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/rooms-top10")
