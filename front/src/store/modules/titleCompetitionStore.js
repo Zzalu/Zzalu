@@ -4,7 +4,7 @@ const titleCompetitionStore = {
   namespaced: true,
   state: () => ({
     // 제목학원
-    open_date: '2023-02-06',
+    open_date: '',
     total_comment_cnt: 0,
     title_competition_id: 0,
     zzal_url: '',
@@ -30,6 +30,10 @@ const titleCompetitionStore = {
     getLastCommentId: (state) => state.last_comment_id,
   },
   mutations: {
+    // 날짜 바꾸기
+    SET_OPEN_DATE(state, open_date) {
+      state.open_date = open_date;
+    },
     // 제목학원
     SET_TITLE_COMPETITION(state, title_competition_data) {
       state.title_competition_id = title_competition_data.titleHakwonId;
@@ -72,6 +76,7 @@ const titleCompetitionStore = {
   actions: {
     // 제목학원 가져오기
     getTitleCompetition({ commit }, open_date) {
+      commit('SET_OPEN_DATE', open_date);
       getTitleCompetition(
         open_date,
         ({ data }) => {

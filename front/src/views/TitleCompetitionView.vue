@@ -14,13 +14,13 @@
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
-          <!-- <div ref="scrollTest" class="h-48"><img src="../assets/logo.png" alt="짤" /></div> -->
-          <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
-            <img class="title-image" :src="zzal_url" alt="짤" />
-          </div>
-          <!-- 댓글 스크롤 했을 때 짤fixed
-          <div v-if="isFixed" class="zzal_fixed">
+          <div ref="zzal" class="h-48"><img src="../assets/logo.png" alt="짤" /></div>
+          <!-- 댓글 스크롤 했을 때 짤fixed -->
+          <div v-if="isScrolled" class="zzal_fixed">
             <img src="../assets/logo.png" alt="짤" />
+          </div>
+          <!-- <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
+            <img class="title-image" :src="zzal_url" alt="짤" />
           </div> -->
         </header>
 
@@ -38,7 +38,7 @@
           </div>
         </nav>
         <!-- 댓글 리스트 -->
-        <comment-list class="mb-10"></comment-list>
+        <comment-list ref="commentListComponent" class="mb-10" @scroll="scroll"></comment-list>
       </div>
       <!-- 댓글 input -->
       <comment-input></comment-input>
@@ -50,14 +50,15 @@
 <script>
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
-import { onBeforeUnmount, onMounted, ref } from 'vue';
+// import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
 
-import Stomp from 'webstomp-client';
-import SockJS from 'sockjs-client';
+// import Stomp from 'webstomp-client';
+// import SockJS from 'sockjs-client';
 
 export default {
   components: { OnlySmallLogoTopNav, CommentList, MainBottomNav, CommentInput },
@@ -66,38 +67,35 @@ export default {
     const store = useStore();
     const route = useRoute();
     const open_date = route.params.open_date; // 제목학원 날짜
-    const scrollTest = ref(null);
+    let isScrolled = ref(null);
+    let zzal = ref(null);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
-
     store.dispatch('titleCompetitionStore/getTitleCompetition', open_date);
-
     const total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt; // 댓글 개수
     const zzal_url = store.state.titleCompetitionStore.zzal_url; // 짤
-    // console.log(zzal_url);
-
     store.dispatch('titleCompetitionStore/getNewestComments', 4);
+
     onMounted(() => {
-      // console.log(scrollTest);
-      window.addEventListener('scroll', scroll);
+      console.log(zzal);
+      console.log(zzal.value.clientWidth);
+      loadMoreComments();
     });
-    onBeforeUnmount(() => {
-      window.removeEventListener('scroll', scroll);
-    });
-
-    let isScrolled = ref(false);
-
     function scroll() {
-      if (window.scrollY > scrollTest.value.offsetTop) {
+      console.log('hi');
+      if (window.scrollY > zzal.value.offsetTop) {
         isScrolled.value = ref(true);
       } else {
         isScrolled.value = ref(false);
       }
-      // console.log(window.scrollY);
-      // console.log(isScrolled.value);
     }
 
-    let sock = new SockJS('http://localhost:8080/ws-stomp');
-    let ws = Stomp.over(sock);
+    const loadMoreComments = () => {
+      store.dispatch('titleCompetitionStore/getNewestComments', 4);
+    };
+
+    //! 소켓 관련
+    // let sock = new SockJS('http://localhost:8080/ws-stomp');
+    // let ws = Stomp.over(sock);
 
     /*  function reciveMessage(recv) {
       this.messages.unshift({
@@ -106,7 +104,7 @@ export default {
         message: recv.message,
       });
     } */
-    function connect() {
+    /*     function connect() {
       let localWs = ws;
       let localSock = sock;
       // let localReciveMessage = reciveMessage;
@@ -132,19 +130,18 @@ export default {
           }, 10 * 1000);
         },
       );
-    }
+    } */
 
-    connect();
+    // connect();
 
     return {
-      sock,
-      ws,
-      connect,
+      // sock,
+      // ws,
+      // connect,
       open_date,
       total_comment_cnt,
       zzal_url,
       isScrolled,
-      scrollTest,
       scroll,
       // reciveMessage,
     };
