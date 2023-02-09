@@ -17,6 +17,10 @@ public interface AwardRecordRepository  extends JpaRepository<AwardRecord , Long
     RankDtoInterface getAwardRecordByMemberId(Long id);
 
 
+    List<AwardRecord> findByMember_IdOrderByIdDesc(Long memberId);
+    List<AwardRecord> findByMember_IdOrderById(Long memberId);
+
+
 }
 
 
