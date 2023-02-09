@@ -51,6 +51,8 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE,"/boards/{boardId}").authenticated()
                 .antMatchers(HttpMethod.POST,"/boards/{boardId}").authenticated()
                 .antMatchers(HttpMethod.PUT,"/boards/{boardId}").authenticated()
+                .antMatchers(HttpMethod.POST, "/comments/**").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/comments/**").authenticated()
                 .anyRequest().permitAll()
 //                .anyRequest().authenticated()
                 .and()
