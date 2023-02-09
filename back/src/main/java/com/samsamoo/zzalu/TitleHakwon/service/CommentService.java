@@ -6,12 +6,15 @@ import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
 import com.samsamoo.zzalu.TitleHakwon.entity.CommentLike;
 import com.samsamoo.zzalu.TitleHakwon.entity.ReplyComment;
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
+import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
+import com.samsamoo.zzalu.TitleHakwon.exception.CommentNotFoundException;
 import com.samsamoo.zzalu.TitleHakwon.exception.TitleHakwonException;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentLikeRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.ReplyCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import com.samsamoo.zzalu.advice.BadRequestException;
+import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
@@ -45,7 +48,12 @@ public class CommentService {
     public CommentResponse addComment (String token ,CommentRequest requestComment){
 
         Member member = jwtTokenProvider.getMember(token);
+        //없는 제목학원에 댓글을 게시하려 한 경우 예외처리
         TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonById(requestComment.getTitleHakwonId()).orElseThrow(()-> new TitleHakwonException());
+        //이미 끝났거나 열리지 않은 제목학원에 대하여 댓글을 게시하려 한 경우 예외처리
+        if(titleHakwon.getState()== TitleHakwonState.DONE || titleHakwon.getState() ==TitleHakwonState.NOT_OPEN){
+            throw new BadRequestException("[ERROR] 기한이 끝나거나 열리지 않은 제목학원에는 댓글을 달 수 없습니다. 제목학원의 회차를 확인해 주세요");
+        }
 
         Comment comment = Comment.builder()
                 .member(member)
@@ -69,7 +77,7 @@ public class CommentService {
 
 
         Member member = jwtTokenProvider.getMember(token);
-        Comment comment =  commentRepository.findById(replyCommentRequest.getParentCommentId()).orElseThrow(()->new BadRequestException("입력 형식~~"));
+        Comment comment =  commentRepository.findById(replyCommentRequest.getParentCommentId()).orElseThrow(()->new CommentNotFoundException("[ERROR] 대댓글을 달 댓글이 존재하지 않습니다."));
 
 
 
@@ -77,7 +85,7 @@ public class CommentService {
         ReplyComment replyComment = ReplyComment.builder()
                 .member(member)
                 .content(replyCommentRequest.getContent())
-                .parentComment(commentRepository.findById(replyCommentRequest.getParentCommentId()).get())
+                .parentComment(comment)
                 .build();
 
       replyCommentRepository.save(replyComment);
@@ -206,7 +214,7 @@ public class CommentService {
 
   public void updateReplyComment (UpdateCommentRequest ur){
 
-      ReplyComment replyComment = replyCommentRepository.findById(ur.getCommentId());
+      ReplyComment replyComment = replyCommentRepository.findById(ur.getCommentId()).orElseThrow(()->new CommentNotFoundException("[ERROR] 삭제하려는 대댓글이 존재하지 않습니다."));
 
       if(replyComment!=null){
           if(!StringUtils.isEmpty(ur.getContent())){
@@ -220,9 +228,15 @@ public class CommentService {
      * 댓글 삭제
      */
     @Transactional
-    public int deleteComment (Long id){
-         commentRepository.deleteById(id);
-        return 1;
+    public void  deleteComment (Long commentId ,String token){
+        Member member = jwtTokenProvider.getMember(token);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
+
+        if(!member.getUsername().equals(comment.getMember().getUsername())){
+            throw new BadRequestException("[ERROR] 삭제하려는 회원정보와 댓글 작성자가 일치하지 않습니다.");
+        }
+         commentRepository.deleteById(commentId);
+
 
     }
 
@@ -231,8 +245,16 @@ public class CommentService {
      * 대댓글 삭제
      */
     @Transactional
-    public void  deleteReplyCommnete(Long id){
-        replyCommentRepository.deleteById(id);
+    public void  deleteReplyComment(Long replyCommentId , String token){
+
+        Member member = jwtTokenProvider.getMember(token);
+        ReplyComment replyComment =  replyCommentRepository.findById(replyCommentId).orElseThrow(()-> new CommentNotFoundException("[ERROR] 삭제하려는 대댓글이 존재하지 않습니다."));
+
+        if(!member.getUsername().equals(replyComment.getMember().getUsername())){
+            throw new BadRequestException("[ERROR] 삭제하려는 회원정보와 대댓글 작성자가 일치하지 않습니다.");
+        }
+
+        replyCommentRepository.deleteById(replyCommentId);
 
     }
 
@@ -247,35 +269,25 @@ public class CommentService {
      * 할일 -> optional
      *
      */
-    public LikeResponse clickCommentLikes(Long commentId , String memberId){
+    public LikeResponse clickCommentLikes(Long commentId , String token){
 
-        //존재하지 않은 댓글이였다면?
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        Optional<Member> member = memberRepository.findByUsername(memberId);
-
-        if(!comment.isPresent()){
-            return null;
-        }
-        if(!member.isPresent()){
-                return null;
-        }
-        //존재하지 않는 멤버였다면?
+        //존재하지 않은 댓글이였다면 예외처리
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
+        Member member = jwtTokenProvider.getMember(token);
 
         CommentLike commentLike = CommentLike.builder()
-                .member(member.get())
-                .comment(comment.get()).build();
-        //좋아요을 눌렀으면 좋아요기록 테이블에 저장하고
+                .member(member)
+                .comment(comment)
+                .build();
 
         commentLikeRepository.save(commentLike);
-
-        //해당 댓글의 좋아요 +1을 증가시킨다.
-        comment.get().plusLikeNum();
-        commentRepository.save(comment.get());
+        comment.plusLikeNum();
+        commentRepository.save(comment);
 
 
 
 
-        return new LikeResponse(commentId,comment.get().getLikeNum());
+        return new LikeResponse(commentId,comment.getLikeNum());
 
     }
 
@@ -286,23 +298,16 @@ public class CommentService {
      */
     @Transactional
 
-    public LikeResponse cancelCommentLikes(Long commentId , String memberId){
-        Optional<Comment> comment = commentRepository.findById(commentId);
-        Optional<Member> member = memberRepository.findByUsername(memberId);
+    public LikeResponse cancelCommentLikes(Long commentId , String token){
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
+        Member member = jwtTokenProvider.getMember(token);
 
-        if(!comment.isPresent()){
-            return null;
-        }
-        if(!member.isPresent()){
-            return null;
-        }
+        commentLikeRepository.deleteByComment_IdAndMemberUsername(commentId,member.getUsername());
 
-        commentLikeRepository.deleteByComment_IdAndMemberUsername(commentId,memberId);
+        comment.minusLikeNum();
+        commentRepository.save(comment);
 
-        comment.get().minusLikeNum();
-        commentRepository.save(comment.get());
-
-        return new LikeResponse(commentId,comment.get().getLikeNum());
+        return new LikeResponse(commentId,comment.getLikeNum());
 
     }
 
@@ -311,9 +316,12 @@ public class CommentService {
      * 댓글 좋아요 기록이 존재하는지
      */
 
-    public  boolean existCommentLike(Long commentId ,String memberId ){
+    public  boolean existCommentLike(Long commentId ,String token ){
 
-        return commentLikeRepository.existsByComment_IdAndMemberUsername(commentId,memberId);
+        Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
+        Member member = jwtTokenProvider.getMember(token);
+
+        return commentLikeRepository.existsByComment_IdAndMemberUsername(commentId, member.getUsername());
     }
 
     /**
