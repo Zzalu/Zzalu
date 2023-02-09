@@ -70,7 +70,7 @@ public class GifsController {
 
         HashMap<Long, Boolean> randomGifIds = new HashMap<>();
 
-        while (randomGifIds.size() < 90) {
+        while (randomGifIds.size() < 30) {
             long randomId = (long) (Math.random() * columnCount + 1);
             randomGifIds.put(randomId, true);
         }

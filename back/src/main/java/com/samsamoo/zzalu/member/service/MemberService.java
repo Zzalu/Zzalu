@@ -48,7 +48,6 @@ public class MemberService {
     private final JwtTokenProvider jwtTokenProvider;
     private final MailService mailService;
     private final S3Uploader s3Uploader;
-
     private final AwardRecordRepository awardRecordRepository;
 
     @Value("${jwt.token.secret}")

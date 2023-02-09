@@ -7,8 +7,10 @@ import com.samsamoo.zzalu.TitleHakwon.dto.TitleHakwonResponse;
 import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
 import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
 import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
+import com.samsamoo.zzalu.TitleHakwon.exception.TitleHakwonException;
 import com.samsamoo.zzalu.TitleHakwon.repository.CommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
+import com.samsamoo.zzalu.advice.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -31,10 +33,11 @@ public class TitleHakwonService {
      */
 
     public TitleHakwonDetailResponse getTitleHakwonInfo(String openDate){
-        if(titleHackwonRepository.findTitleHakwonByOpenDate(openDate)==null){
 
-        }
-       return new TitleHakwonDetailResponse(titleHackwonRepository.findTitleHakwonByOpenDate(openDate));
+        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate(openDate).orElseThrow(()-> new TitleHakwonException());
+
+
+       return new TitleHakwonDetailResponse(titleHakwon);
 
     }
 
@@ -48,7 +51,7 @@ public class TitleHakwonService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = current.format(formatter);
 
-        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate(date);
+        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate(date).orElseThrow(()-> new TitleHakwonException());
 
         if(titleHakwon.getState().getCode().equals("N")) {
             System.out.println("오늘의 제목학원 open!");
@@ -74,7 +77,7 @@ public class TitleHakwonService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String date = current.format(formatter);
 
-        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate(date);
+        TitleHakwon titleHakwon = titleHackwonRepository.findTitleHakwonByOpenDate(date).orElseThrow(()-> new TitleHakwonException());
 
 
         //상위 3개의 댓글 가져오기

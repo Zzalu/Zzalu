@@ -49,10 +49,16 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE,"/boards/{boardId}").authenticated()
                 .antMatchers(HttpMethod.POST,"/boards/{boardId}").authenticated()
                 .antMatchers(HttpMethod.PUT,"/boards/{boardId}").authenticated()
+<<<<<<< back/src/main/java/com/samsamoo/zzalu/auth/config/SecurityConfig.java
+                
+=======
                 .antMatchers(HttpMethod.POST,"/temp").authenticated()
                 .antMatchers(HttpMethod.GET,"/temp/all").hasAnyAuthority("ROLE_MANAGER")
                 .antMatchers(HttpMethod.PUT,"/temp/{tempId}").hasAnyAuthority("ROLE_MANAGER")
                 .antMatchers(HttpMethod.DELETE,"/temp/{tempId}").hasAnyAuthority("ROLE_MANAGER")
+                .antMatchers(HttpMethod.POST, "/comments/**").authenticated()
+                .antMatchers(HttpMethod.DELETE,"/comments/**").authenticated()
+>>>>>>> back/src/main/java/com/samsamoo/zzalu/auth/config/SecurityConfig.java
                 .anyRequest().permitAll()
 //                .anyRequest().authenticated()
                 .and()
