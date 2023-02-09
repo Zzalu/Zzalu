@@ -31,15 +31,14 @@
                       ></div>
                     </div>
                   </div>
-                  <p class="fixed text-white"></p>
-
-                  <!-- 기본적으로 보이는 짤들 내 보드 들어갔을 시 안보임 -->
+                  <!-- 기본적으로 보이는 짤들 내 보드 들어갔을 시 안보이는 거 -->
 
                   <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                     <JjalListItemInChat
                       :zzal_info="zzal_info"
                       :i="i"
                       @select_id="select_id"
+                      @path="path"
                     />
                   </div>
                 </div>
@@ -47,12 +46,19 @@
             </div>
           </div>
 
-          <!-- 보드 목록 -->
+          <!-- 2.보드 목록 -->
           <div v-if="view_list_board == true">
             <div class="dark:border-zz-dark-div">
               <div class="modal">
                 <div
-                  class="modal-items"
+                  class="
+                    flex flex-wrap
+                    justify-center
+                    fixed
+                    overflow-y-scroll
+                    top-40
+                    pb-24
+                  "
                   ref="notification-list"
                   @scroll="handleNotificationListScroll"
                 >
@@ -98,7 +104,7 @@
                   >
                     <div
                       class="my-board-contain"
-                      @click="view_detail(board_list.id)"
+                      @click="view_detail(board_list.id, board_list.boardName)"
                     >
                       <div class="text-white absolute z-20 font-spoq">
                         {{ board_list.boardName }}
@@ -116,33 +122,90 @@
             </div>
           </div>
 
-          <!-- 보드 디테일 -->
+          <!-- 3.보드 디테일 -->
           <div v-if="view_list_detail == true">
             <div class="dark:border-zz-dark-div">
               <div class="modal">
                 <div
-                  class="modal-items"
+                  class="
+                    flex flex-wrap
+                    justify-center
+                    fixed
+                    overflow-y-scroll
+                    h-5/6
+                    top-40
+                    pb-24
+                  "
                   ref="notification-list"
-                  @scroll="handleNotificationListScroll"
                 >
                   <div
                     v-if="load_state"
                     id="loading"
                     class="fixed top-1/2"
                   ></div>
+                  <div
+                    class="
+                      h-nav-height
+                      fixed
+                      inset-x-0
+                      top-24
+                      flex
+                      items-center
+                      justify-center
+                    "
+                  >
+                    <font-awesome-icon
+                      icon="fa-solid fa-chevron-left"
+                      class="
+                        text-2xl
+                        absolute
+                        left-8
+                        text-black
+                        dark:text-white
+                      "
+                      @click="view_board"
+                    />
+                    <div class="text-black dark:text-white font-spoq text-xl">
+                      {{ list_name }}
+                    </div>
+                  </div>
 
+                  <!-- 디테일 내부 -->
                   <div
                     v-for="(board_list, i) in user_detail_list.gifs"
                     :key="i"
                   >
-                    <div class="text-white absolute z-20 font-spoq">
-                      {{ board_list.boardName }}
-                    </div>
-                    <div class="my-board">
+                    <!-- 선택짤 -->
+                    <div v-if="this.is_select == i" class="select-jjal-box">
+                      <div >
+                        <font-awesome-icon
+                          class="scrap-icon"
+                          icon="fa-solid fa-paper-plane"
+                          @click="send_message"
+                          @click.stop="''"
+                        />
+                      </div>
                       <div
-                        class="my-board-thumb"
-                        :style="`background-image:url(${board_list.thumbnailPath})`"
+                        class="select-jjal-img"
+                        :style="`background-image:url(${board_list.gifPath})`"
                       ></div>
+                    </div>
+
+                    <!-- 미선택짤 -->
+                    <div
+                      v-else
+                      class="my-board-contain"
+                      @click="select_jjal(board_list, i)"
+                    >
+                      <!-- <div class="text-white absolute z-20 font-spoq">
+                        {{ board_list.boardName }}
+                      </div> -->
+                      <div class="detail">
+                        <div
+                          class="my-board-thumb"
+                          :style="`background-image:url(${board_list.gifPath})`"
+                        ></div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -224,6 +287,9 @@ export default {
       view_list_full: true,
       view_list_board: false,
       view_list_detail: false,
+      list_name: "",
+      is_select: null,
+      gif_path: '',
     };
   },
   methods: {
@@ -252,12 +318,24 @@ export default {
       this.view_list_board = false;
       this.view_list_detail = false;
     },
-    view_detail(id) {
+    view_detail(id, name) {
       this.view_list_full = false;
       this.view_list_board = false;
       this.view_list_detail = true;
+      this.list_name = name;
+      this.is_select = null;
       this.ViewBoardDetail(id);
     },
+    select_jjal(a, b) {
+      this.gif_path = a;
+      this.is_select = b;
+    },
+    send_message() {
+      console.log(this.gif_path,'보낼 gif_path');
+    },
+    path(gifpath) {
+      console.log(gifpath,'보낼 gif_path');
+    }
   },
   watch: {
     random_gif_data(nv) {
@@ -267,6 +345,13 @@ export default {
       }
       this.gif_data = gif_id;
     },
+    open_search_modal(nv) {
+      if (nv == false) {
+        this.view_list_full = true;
+        this.view_list_board = false;
+        this.view_list_detail = false;
+      }
+    },
   },
 };
 </script>
@@ -274,12 +359,18 @@ export default {
 <style scoped lang="postcss">
 /* 로딩 애니메이션 */
 @import url(https://fonts.googleapis.com/css?family=Roboto:100);
-
+.modal {
+  box-shadow: 0px 0px 7px;
+  @apply fixed top-20 inset-x-0 border bg-white border-t-2 rounded-t-2xl z-10 dark:bg-zz-bd;
+}
 .my-board-contain {
   @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
 }
 .my-board {
   filter: opacity(0.1) drop-shadow(0 0 0 rgb(221, 218, 218));
+  @apply h-full w-full rounded-2xl bg-cover;
+}
+.detail {
   @apply h-full w-full rounded-2xl bg-cover;
 }
 .my-board-thumb {
@@ -352,5 +443,19 @@ h1 {
 
 .modal-items::-webkit-scrollbar {
   display: none;
+}
+
+.select-jjal-box {
+  overflow: hidden;
+  /* filter: opacity(0.5) drop-shadow(0 0 0 rgb(0, 0, 0)); */
+  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
+}
+.scrap-icon {
+  transform: translate(2.4rem, -1rem);
+  @apply absolute z-20 text-white ml-1 text-4xl;
+}
+.select-jjal-img {
+  filter: opacity(0.5) drop-shadow(0 0 0 rgb(0, 0, 0));
+  @apply h-full w-full rounded-2xl bg-cover bg-center;
 }
 </style>

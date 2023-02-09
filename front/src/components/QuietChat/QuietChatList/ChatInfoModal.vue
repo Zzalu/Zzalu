@@ -42,7 +42,7 @@
     </div>
     <div class="flex place-content-evenly">
       <button class="modal-create-btn">
-        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName }}"> 입장하기 </router-link>
+        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId }}"> 입장하기 </router-link>
       </button>
     </div>
   </div>
