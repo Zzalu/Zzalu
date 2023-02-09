@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.member.service;
 
 import com.samsamoo.zzalu.AwardRecord.RankDtoInterface;
 import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
+import com.samsamoo.zzalu.AwardRecord.dto.AwardResponse;
 import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
 import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
@@ -155,13 +156,10 @@ public class MemberService {
 
     }
 
-    // ---------------------사용자 제목학원 수상 기록 반환 ---------------------------------
-    public AwardCountResponse getAwardRecord (String username){
+    // ---------------------사용자 제목학원 수상 기록 개수 반환 ---------------------------------
+    public AwardCountResponse getAwardCountRecord (String username){
 
         Member member = getMemberbyUsername(username);
-
-        List<Integer> ranking = new ArrayList<>();
-
 
         RankDtoInterface rankDtoInterface = awardRecordRepository.getAwardRecordByMemberId(member.getId());
 
@@ -171,12 +169,31 @@ public class MemberService {
 
     }
 
+    //---------------------사용자 제목학원 수상 기록 리스트 반환 --------------------------------
+
+    public List<AwardResponse> getAwardRecordList (String username, String sort){
+
+        List<AwardRecord> awardRecordList = new ArrayList<>();
+        Member member = getMemberbyUsername(username);
+        //최신순 일경우
+        if(sort.equals("LATEST")){
+            awardRecordList = awardRecordRepository.findByMember_IdOrderByIdDesc(member.getId());
+            return AwardResponse.converToDtoList(awardRecordList);
+        }else{
+            //과거순 일 경우
+            awardRecordList = awardRecordRepository.findByMember_IdOrderById(member.getId());
+            return AwardResponse.converToDtoList(awardRecordList);
+        }
+
+
+    }
+
 // ---------------------사용자 프로필 반환---------------------------------
     public ProfileDTO getProfile(String username) {
         Member member = getMemberbyUsername(username);
 
         MembersBoardList membersBoardList = getMembersBoard(username);
-        AwardCountResponse awardCount = getAwardRecord(username);
+        AwardCountResponse awardCount = getAwardCountRecord(username);
         ProfileDTO profile = new ProfileDTO(member, membersBoardList ,awardCount);
         return profile;
     }
