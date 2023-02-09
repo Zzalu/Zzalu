@@ -1,4 +1,4 @@
-import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange } from "@/api/boardList"
+import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal } from "@/api/boardList"
 
 const boardListStore = {
   namespaced: true,
@@ -12,7 +12,10 @@ const boardListStore = {
     user_board_list: null,
 
     // 보드 디테일 리스트
-    board_detail_list: null
+    board_detail_list: null,
+
+    // 수정시 보드 이름
+    board_title : null
   }),
   mutations: {
     GET_USER_STORE_LIST(state, user_store_data) {
@@ -26,6 +29,10 @@ const boardListStore = {
     },
     GET_BOARD(state, board_detail) {
       state.board_detail_list = board_detail.data
+    },
+    NAME_CHANGE(state, changed_name) {
+      // console.log('qhsorl',changed_name),
+      state.board_title = changed_name
     }
   },
   actions: {
@@ -90,7 +97,7 @@ const boardListStore = {
         }
       )
     },
-    boardNameChange({ commit }, params) {
+    boardNameChange({commit }, params) {
       nameChange(
         params,
         (data) => {
@@ -99,6 +106,30 @@ const boardListStore = {
         },
         (err) => {
           console.log(err, '보드 타이틀 변경 실패');
+        }
+      )
+    },
+    boardDelete(datas, params) {
+      boardDel(
+        datas,
+        params,
+        (data) => {
+          console.log(data, '보드 삭제 성공');
+        },
+        (err) => {
+          console.log(err, '보드 삭제 실패');
+        }
+      )
+    },
+    removeBoardJjal(datas, params) {
+      removeBoardJjal(
+        datas,
+        params,
+        (data) => {
+          console.log(data, '보드 디테일 짤 삭제 성공');
+        },
+        (err) => {
+          console.log(err, '보드 디테일 짤 삭제 실패');
         }
       )
     }

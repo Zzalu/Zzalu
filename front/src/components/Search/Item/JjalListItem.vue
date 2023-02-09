@@ -2,22 +2,22 @@
   <div>
     <!-- v-touch:press="LongClickStart" v-touch:release="LongClickEnd" -->
     <div v-if="img_select" class="select-jjal-box" @click="route">
+      <div class="view-content">
+        <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
+        <p class="view-count">{{ zzal_info.visitedCount }}</p>
+      </div>
+      <div>
+        <font-awesome-icon
+          class="scrap-icon"
+          icon="fa-regular fa-star"
+          @click="open_list_modal"
+          @click.stop="''"
+        />
+      </div>
       <div
         class="select-jjal-img"
         :style="`background-image:url(${this.gifPath})`"
       >
-        <div class="view-content">
-          <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
-          <p class="view-count">{{ zzal_info.visitedCount }}</p>
-        </div>
-        <div>
-          <font-awesome-icon
-            class="scrap-icon"
-            icon="fa-regular fa-star"
-            @click="open_list_modal"
-            @click.stop="''"
-          />
-        </div>
       </div>
     </div>
     <div v-else class="jjal-box">
@@ -94,6 +94,7 @@ export default {
 
 <style scoped lang="postcss">
 .view-content {
+  transform: translate(-2.5rem, -2rem);
   /* filter: opacity(1) drop-shadow(0 0 0 rgb(255, 255, 255)); */
   @apply absolute flex text-white z-20 mt-2;
 }
@@ -104,7 +105,8 @@ export default {
   @apply text-sm ml-1;
 }
 .scrap-icon {
-  @apply absolute z-20 text-white mt-16 ml-1 text-3xl;
+  transform: translate(0px, 0.5rem);
+  @apply absolute z-20 text-white ml-1 text-3xl;
 }
 .select-jjal-box {
   overflow: hidden;
