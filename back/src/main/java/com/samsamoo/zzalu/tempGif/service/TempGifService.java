@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.tempGif.service;
 
+import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
@@ -19,6 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,14 +51,14 @@ public class TempGifService {
     }
     public Gifs returnGifs(Long gifsId) {
         return gifsRepository.findById(gifsId)
-                .orElseThrow(()-> new NotMatchException("해당 원본 gif를 찾을 수 없습니다."));
+                .orElseThrow(()-> new NotFoundException("해당 원본 gif를 찾을 수 없습니다."));
     }
 
     public void increaseCount(String token, Long tempId) {
         Member member = jwtTokenProvider.getMember(token);
         checkManager(member);
         TempGif tempGif = tempGifRepository.findById(tempId)
-                .orElseThrow(() -> new NotMatchException("해당 임시 게시물을 찾을 수 없습니다."));
+                .orElseThrow(() -> new NotFoundException("해당 임시 게시물을 찾을 수 없습니다."));
         int permittedCount = tempGif.getPermittedCount()+1;
         if (permittedCount >= 3) {
             // tempGif > real Gifs
@@ -84,5 +87,19 @@ public class TempGifService {
             tempGif.increseCount(permittedCount);
             tempGifRepository.save(tempGif);
         }
+    }
+
+    public List<TempGif> getAllTempGif(String token) {
+        checkManager(jwtTokenProvider.getMember(token));
+        List<TempGif> list = tempGifRepository.findAll();
+        Collections.reverse(list);
+        return list;
+    }
+
+    public void deleteTempGif(String token, Long tempId) {
+        checkManager(jwtTokenProvider.getMember(token));
+        TempGif tempGif = tempGifRepository.findById(tempId)
+                .orElseThrow(()-> new NotFoundException("해당 임시 게시물을 찾을 수 없습니다."));
+        tempGifRepository.delete(tempGif);
     }
 }
