@@ -31,7 +31,6 @@ const boardListStore = {
       state.board_detail_list = board_detail.data
     },
     NAME_CHANGE(state, changed_name) {
-      // console.log('qhsorl',changed_name),
       state.board_title = changed_name
     }
   },
@@ -41,7 +40,7 @@ const boardListStore = {
         params,
         data,
         (res) => {
-          console.log('유저 보관함 요청 성공', res);
+          console.log('유저 보관함 요청 성공', res)
           commit('GET_USER_STORE_LIST', res)
         },
         (err) => {
