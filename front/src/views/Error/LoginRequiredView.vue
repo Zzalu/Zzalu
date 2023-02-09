@@ -8,15 +8,15 @@
     </div>
     <!-- 해당페이지는 로그인 후 이용하실 수 있어요 -->
     <div class="text-oneline">
-        <div class="page-sub-title-black">해당 페이지는</div>
-        <router-link to="/login" class="page-sub-title-primary">로그인</router-link>
-        <div class="page-sub-title-black">후 이용하실 수 있어요</div>
+      <div class="page-sub-title-black">해당 페이지는</div>
+      <router-link to="/login" class="page-sub-title-primary">
+        로그인
+      </router-link>
+      <div class="page-sub-title-black">후 이용하실 수 있어요</div>
     </div>
     <!-- 아직 회원이 아니신가요? 회원가입 -->
     <div class="redir-accounts">
-      <div>
-        아직 회원이 아니신가요? |
-      </div>
+      <div>아직 회원이 아니신가요? |</div>
       <router-link to="/signup" class="redir-accounts-click">
         회원가입
       </router-link>
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
+import MainBottomNav from "@/components/Common/NavBar/MainBottomNav.vue";
 
 export default {
   name: "LoginRequiredView",
@@ -35,41 +35,38 @@ export default {
     MainBottomNav,
   },
   methods: {
-    goBack () {
-      this.$router.go(-1)
-    } 
+    goBack() {
+      this.$router.go(-1);
+    },
+    toLogin() {
+      this.$router.go({ name: "login" });
+    },
   },
-
-
-}
+};
 </script>
 
-<style scoped lang='postcss'>
+<style scoped lang="postcss">
+.oops {
+  @apply mt-16 text-8xl font-carter text-zz-s;
+}
+.sad-face {
+  transform: rotate(90deg);
+  right: 6rem;
+  @apply relative mt-12 font-pop text-4xl;
+}
 
-  .oops {
-    @apply mt-16 text-8xl font-carter text-zz-s
-  }
-  .sad-face {
-    transform: rotate(90deg);
-    right: 6rem;
-    @apply relative mt-12 font-pop text-4xl
-  }
+.resting-face {
+  transform: rotate(90deg);
+  right: 1rem;
+  bottom: 1.5rem;
+  @apply relative font-pop text-4xl;
+}
 
-  .resting-face {
-    transform: rotate(90deg);
-    right: 1rem;
-    bottom: 1.5rem;
-    @apply relative font-pop text-4xl
-  }
+.page-sub-title-black {
+  @apply mt-60 mx-1 font-spoq font-bold;
+}
 
-  .page-sub-title-black {
-    @apply mt-60 mx-1 font-spoq font-bold
-  }
-
-  .page-sub-title-primary {
-    @apply mt-60 font-spoq font-bold text-zz-p
-  }
-
-
-
+.page-sub-title-primary {
+  @apply mt-60 font-spoq font-bold text-zz-p;
+}
 </style>

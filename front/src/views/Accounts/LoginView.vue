@@ -55,7 +55,7 @@
     </div>
   </div>
   <div class="center-containers">
-    <img src="./assets/naver_icon.png" class="login-icon" alt="" />
+    <kakao-login-button></kakao-login-button>
     <img src="./assets/kakao_icon.png" class="login-icon" alt="" />
   </div>
   <!-- 로그인 버튼 -->
@@ -66,62 +66,66 @@
 </template>
 
 <script>
-import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue';
-import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
-import { useStore } from 'vuex';
-import { useDark } from '@vueuse/core';
-import { reactive } from 'vue'
-import { useRouter } from 'vue-router';
+  import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue';
+  import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
+  import KakaoLoginButton from '@/components/Accounts/Login/KakaoLoginButton.vue'
+  import { useStore } from 'vuex';
+  import { useDark } from '@vueuse/core';
+  import { reactive } from 'vue'
+  import { useRouter } from 'vue-router';
 
-const isDark = useDark();
-export default {
-  name: "LoginView",
-  components: {
-    OnlyGoBackTopNav,
-    SignUpBottomNav,
-  },
-  setup() {
-    const store = useStore();
-    const router = useRouter();
-    const state = reactive({
-      creds: {
-        username: null,
-        password: null,
-      }
-
-    })
-
-    const loginSubmit = async function () {
-        const loginData = {
-          username: state.creds.username,
-          password: state.creds.password,
+  const isDark = useDark();
+  export default {
+    name: "LoginView",
+    components: {
+      OnlyGoBackTopNav,
+      SignUpBottomNav,
+      KakaoLoginButton
+    },
+    setup() {
+      const store = useStore();
+      const router = useRouter();
+      const state = reactive({
+        creds: {
+          username: null,
+          password: null,
         }
-      
-      if (!loginData.username | !loginData.password) {
-        console.log("인풋값 입력 다 해야지;")
-      } else {
-      console.log('로그인 데이터', loginData)
-      const res = await store.dispatch('userStore/loginAction', loginData)
-      if (res) {
-        console.log("로그인 요청 잘 갔음")
-        router.push({name: 'main'})
-      }
-      }
-      
-    }
 
-    return {
-      state,
-      loginSubmit,
+      })
+
+      const loginSubmit = async function () {
+          const loginData = {
+            username: state.creds.username,
+            password: state.creds.password,
+          }
+        
+        if (!loginData.username | !loginData.password) {
+          console.log("인풋값 입력 다 해야지;")
+        } else {
+        console.log('로그인 데이터', loginData)
+        const res = await store.dispatch('userStore/loginAction', loginData)
+        if (res) {
+          console.log("로그인 요청 잘 갔음")
+          router.push({name: 'main'})
+        }
+        }
+        
+      }
+
+      return {
+        state,
+        loginSubmit,
+        
+      }
+    },
+    data() {
+      return {
+        isDark,
+      };
     }
-  },
-  data() {
-    return {
-      isDark,
-    };
   }
-}
 </script>
+
 
 <style scoped lang="postcss">
 .find-id {

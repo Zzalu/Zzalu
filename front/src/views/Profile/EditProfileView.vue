@@ -20,6 +20,7 @@
     <!-- <div class="bg-zz-light-p rounded-full h-28 w-28 mt-10"></div> -->
     <img class="bg-zz-light-p rounded-full h-28 w-28 mt-10"
       src="@/assets/happy_celebrate.gif"
+      @change = 'uploadImage()'
     >
     <div class="flex" for="file_input">
       <div
@@ -83,6 +84,8 @@ export default {
       profile_user_data,
       saveEditInfo,
     };
+
+
   },
 };
 </script>

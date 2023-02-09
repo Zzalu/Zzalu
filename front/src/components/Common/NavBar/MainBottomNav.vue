@@ -88,7 +88,7 @@ export default {
         this.$router.push({name: "profile", params: {username: this.current_user}});
       } else {
         console.log('지금 접속 안했어요',this.logged_in)
-        this.$router.push({name: "login"});
+        this.$router.push({name: "login-required"});
       }
     }
   },
