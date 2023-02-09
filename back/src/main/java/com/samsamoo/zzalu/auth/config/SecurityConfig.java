@@ -42,15 +42,17 @@ public class SecurityConfig {
                 .and()
                 //
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll() // 추가
+//                .antMatchers("/h2-console/**").permitAll() // 추가
                 .antMatchers("/members/signup", "/members/login").permitAll()
-                .antMatchers(HttpMethod.POST,"/reviews/**").authenticated()
-                .antMatchers(HttpMethod.POST,"/members/signup/email").authenticated()
                 .antMatchers(HttpMethod.PUT,"/boards/gif/{gifId}").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/boards/gif/{boardId}").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/boards/{boardId}").authenticated()
                 .antMatchers(HttpMethod.POST,"/boards/{boardId}").authenticated()
                 .antMatchers(HttpMethod.PUT,"/boards/{boardId}").authenticated()
+                .antMatchers(HttpMethod.POST,"/temp").authenticated()
+                .antMatchers(HttpMethod.GET,"/temp/all").hasAnyAuthority("ROLE_MANAGER")
+                .antMatchers(HttpMethod.PUT,"/temp/{tempId}").hasAnyAuthority("ROLE_MANAGER")
+                .antMatchers(HttpMethod.DELETE,"/temp/{tempId}").hasAnyAuthority("ROLE_MANAGER")
                 .antMatchers(HttpMethod.POST, "/comments/**").authenticated()
                 .antMatchers(HttpMethod.DELETE,"/comments/**").authenticated()
                 .anyRequest().permitAll()

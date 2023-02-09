@@ -35,7 +35,7 @@ public class TempGifService {
     private final S3Uploader s3Uploader;
     public Long createGifReq(String token, TempGifRequest request) throws IOException {
         Member writer = jwtTokenProvider.getMember(token);
-        checkManager(writer);
+//        checkManager(writer);
 
         if (request.getTempGifMultipartFile() != null) {
             String tempUrl = s3Uploader.upload(request.getTempGifMultipartFile(), "TempGif");
@@ -44,11 +44,11 @@ public class TempGifService {
         TempGif tempGif = tempGifRepository.save(request.toEntity(writer));
         return tempGif.getId();
     }
-    public void checkManager(Member member) {
-        if (member.getIsManager() == false) {
-            throw new AuthorizationException();
-        }
-    }
+//    public void checkManager(Member member) {
+//        if (!member.getRoles().contains("MANAGER")) {
+//            throw new AuthorizationException();
+//        }
+//    }
     public Gifs returnGifs(Long gifsId) {
         return gifsRepository.findById(gifsId)
                 .orElseThrow(()-> new NotFoundException("해당 원본 gif를 찾을 수 없습니다."));
@@ -56,7 +56,7 @@ public class TempGifService {
 
     public void increaseCount(String token, Long tempId) {
         Member member = jwtTokenProvider.getMember(token);
-        checkManager(member);
+//        checkManager(member);
         TempGif tempGif = tempGifRepository.findById(tempId)
                 .orElseThrow(() -> new NotFoundException("해당 임시 게시물을 찾을 수 없습니다."));
         int permittedCount = tempGif.getPermittedCount()+1;
@@ -89,15 +89,15 @@ public class TempGifService {
         }
     }
 
-    public List<TempGif> getAllTempGif(String token) {
-        checkManager(jwtTokenProvider.getMember(token));
+    public List<TempGif> getAllTempGif() {
+//        checkManager(jwtTokenProvider.getMember(token));
         List<TempGif> list = tempGifRepository.findAll();
         Collections.reverse(list);
         return list;
     }
 
-    public void deleteTempGif(String token, Long tempId) {
-        checkManager(jwtTokenProvider.getMember(token));
+    public void deleteTempGif(Long tempId) {
+//        checkManager(jwtTokenProvider.getMember(token));
         TempGif tempGif = tempGifRepository.findById(tempId)
                 .orElseThrow(()-> new NotFoundException("해당 임시 게시물을 찾을 수 없습니다."));
         tempGifRepository.delete(tempGif);

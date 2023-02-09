@@ -61,8 +61,8 @@ public class MemberController {
     }
 
     //--------------------------------------프로필 확인-------------------------------------------
-    @GetMapping("/{username}")
-    public ResponseEntity<ProfileDTO> getProfile(@PathVariable String username) {
+    @GetMapping
+    public ResponseEntity<ProfileDTO> getProfile(@RequestParam String username) {
         ProfileDTO profile = memberService.getProfile(username);
         return ResponseEntity.ok().body(profile);
     }
@@ -96,11 +96,19 @@ public class MemberController {
     }
 
     //-------------------------------------- 전체 수상 내역 조회-------------------------------------
-
     @GetMapping("/awards/{username}")
     public ResponseEntity<List<AwardResponse>> getAwardList (@PathVariable String username , @RequestParam String sort){
        List<AwardResponse> awardResponseList = memberService.getAwardRecordList(username,sort);
         return ResponseEntity.ok().body(awardResponseList);
     }
+
+    //---------------------------------------매니저 권한 요청-----------------------------------------
+    @PostMapping("/manager")
+    public ResponseEntity requestManager(@RequestHeader(value = "Authorization") String bearerToken) {
+        String token = bearerToken.substring(7);
+        memberService.requestManager(token);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }
