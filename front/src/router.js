@@ -146,6 +146,13 @@ const routes = [
     component: () => import('@/views/TitleCompetitionView'),
   },
   // --------------------------------------------------------------------
+  // 명예의 전당
+  {
+    path: '/whole-of-frame/:page',
+    name: 'whole-of-frame',
+    component: () => import('@/views/WholeOfFrameView'),
+  },
+  // --------------------------------------------------------------------
   // 수상기록
   {
     path: '/award-record/:username',
