@@ -28,7 +28,7 @@ public class StatisticsController {
     private final JwtTokenProvider jwtTokenProvider;
     private final MemberTagStatisticsRepository memberTagStatisticsRepository;
 
-    @GetMapping("/use")
+    @PostMapping("/use")
     @ResponseBody
     public boolean updateTagUseCount(@RequestHeader(value = "Authorization")String bearerToken, @RequestParam("gifId") Long gifId){
 
@@ -74,7 +74,7 @@ public class StatisticsController {
         }
     }
 
-    @GetMapping("/download")
+    @PostMapping("/download")
     @ResponseBody
     public boolean updateTagDownloadCount(@RequestHeader(value = "Authorization")String bearerToken, @RequestParam("gifId") Long gifId){
 
