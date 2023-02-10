@@ -19,7 +19,7 @@ public class TempGif {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="TEMP_GIF_ID")
     private Long id;
-    @Column(unique = true)
+//    @Column(unique = true)
     private String gifPath;
     @Column(nullable = false)
     private String tags;
