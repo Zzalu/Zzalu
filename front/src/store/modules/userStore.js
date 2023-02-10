@@ -154,7 +154,14 @@ const userStore = {
       // console.log("이안에 코드있음",response)
       return response
     },
+  // --------------------------------------------------------------
+  // 회원탈퇴
+    // userDeleteAction: async (commit, pwd) => {
+    //   const response = 
+    // }
   },
+
+  
   // plugins: [
   //   createPersistedState({
   //     paths: ['temp'],
