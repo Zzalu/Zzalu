@@ -19,7 +19,7 @@ public class ChatRoomListDto {
     private Long memberId;
     private Long likeCount;
 
-    private List<ChatMessage> chatMessages;
+    private List<Long> chatMessageId;
     private List<Long> likeMemberId;
     private String imagePath;
     private String description;
@@ -33,7 +33,11 @@ public class ChatRoomListDto {
         userNmae = chatRoom.getUserNmae();
         memberId = chatRoom.getMemberId();
         likeCount = chatRoom.getLikeCount();
-        chatMessages = chatRoom.getChatMessages();
+//        chatMessages = chatRoom.getChatMessages();
+        chatMessageId = new ArrayList<>();
+        for(ChatMessage chatMessage : chatRoom.getChatMessages()) {
+            chatMessageId.add(chatMessage.getId());
+        }
         likeMemberId = new ArrayList<>();
         for(Member member : chatRoom.getLikeMembers()) {
             likeMemberId.add(member.getId());

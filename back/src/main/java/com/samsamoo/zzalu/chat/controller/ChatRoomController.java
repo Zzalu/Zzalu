@@ -77,96 +77,158 @@ public class ChatRoomController {
 
     @GetMapping("/rooms-top10")
     @ResponseBody
-    public List<ChatRoom> findTop10ByOrderByLikeCountDesc() {
-        return chatRoomService.findTop10ByOrderByLikeCountDesc();
+    public List<ChatRoomListDto> findTop10ByOrderByLikeCountDesc() {
+        List<ChatRoom> chatRoomList = chatRoomService.findTop10ByOrderByLikeCountDesc();
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @PostMapping("/room")
     @ResponseBody
-    public ChatRoomDto createRoom(@RequestBody ChatRoomEnroll chatRoomEnroll) {
-        return chatRoomRedisRepository.createChatRoom(chatRoomEnroll);
+    public ChatRoomListDto createRoom(@RequestBody ChatRoomEnroll chatRoomEnroll) {
+        ChatRoom chatRoom = chatRoomRedisRepository.createChatRoom(chatRoomEnroll).toEntity();
+        return new ChatRoomListDto(chatRoom);
     }
 
     @GetMapping("/room/{roomId}")
     @ResponseBody
-    public ChatRoomDto roomInfo(@PathVariable String roomId) {
-        return chatRoomRedisRepository.findRoomById(roomId);
+    public ChatRoomListDto roomInfo(@PathVariable String roomId) {
+        ChatRoom chatRoom = chatRoomRedisRepository.findRoomById(roomId).toEntity();
+        return new ChatRoomListDto(chatRoom);
     }
 
     @GetMapping("/search")
     @ResponseBody
-    public List<ChatRoom> findByTagsContainsOrRoomNameContains(@RequestParam(name = "keyword") String keyword){
-        return chatRoomService.findByTagsContainsOrRoomNameContains(keyword);
+    public List<ChatRoomListDto> findByTagsContainsOrRoomNameContains(@RequestParam(name = "keyword") String keyword){
+        List<ChatRoom> chatRoomList = chatRoomService.findByTagsContainsOrRoomNameContains(keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/search-tags")
     @ResponseBody
-    public List<ChatRoom> findByTagsContains(@RequestParam(name = "keyword") String keyword){
-        return chatRoomService.findByTagsContains(keyword);
+    public List<ChatRoomListDto> findByTagsContains(@RequestParam(name = "keyword") String keyword){
+        List<ChatRoom> chatRoomList = chatRoomService.findByTagsContains(keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/search-room-name")
     @ResponseBody
-    public List<ChatRoom> findByRoomNameContains(@RequestParam(name = "keyword") String keyword){
-        return chatRoomService.findByRoomNameContains(keyword);
-    }
-
-    @GetMapping("/rooms-jpa")
-    @ResponseBody
-    public List<ChatRoom> roomsJpa() {
-        return chatRoomService.findAll();
+    public List<ChatRoomListDto> findByRoomNameContains(@RequestParam(name = "keyword") String keyword){
+        List<ChatRoom> chatRoomList = chatRoomService.findByRoomNameContains(keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/search-order-lastactivation")
     @ResponseBody
-    public List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword){
-        return chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword, keyword);
+    public List<ChatRoomListDto> findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword){
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 //
     @GetMapping("/search-order-likecount")
     @ResponseBody
-    public List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(@RequestParam(name = "keyword") String keyword){
-        return chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword, keyword);
+    public List<ChatRoomListDto> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(@RequestParam(name = "keyword") String keyword){
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/member")
     @ResponseBody
-    public List<ChatRoom> findAllByMemberId(@RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByMemberId(@RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        return chatRoomService.findAllByMemberId(requestMember.getId());
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberId(requestMember.getId());
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/member-order-lastactivation")
     @ResponseBody
-    public List<ChatRoom> findAllByMemberIdOrderByLastActivationDesc(@RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByMemberIdOrderByLastActivationDesc(@RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        return chatRoomService.findAllByMemberIdOrderByLastActivationDesc(requestMember.getId());
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberIdOrderByLastActivationDesc(requestMember.getId());
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/member-order-likecount")
     @ResponseBody
-    public List<ChatRoom> findAllByMemberIdOrderByLikeCountDesc(@RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByMemberIdOrderByLikeCountDesc(@RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        return chatRoomService.findAllByMemberIdOrderByLikeCountDesc(requestMember.getId());
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberIdOrderByLikeCountDesc(requestMember.getId());
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/search-member-order-lastactivation")
     @ResponseBody
-    public List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword,@RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword,@RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        return chatRoomService.findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     @GetMapping("/search-member-order-likecount")
     @ResponseBody
-    public List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        return chatRoomService.findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
     }
 
     // 사용자 인증 정보 식별을 위한 Token 필요
@@ -200,6 +262,5 @@ public class ChatRoomController {
             System.out.println("Can't find chatRoom Error");
             return false;
         }
-
     }
 }

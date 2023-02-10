@@ -110,18 +110,19 @@ public class ChatRoomRedisRepository {
     @CacheEvict(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()", allEntries = true)
     public void setChatMessage(ChatMessageDto message) {
         LocalDateTime sendDate = LocalDateTime.now();
+        System.out.println("setChatMessage ===");
         message.setSendDate(sendDate);
-        ChatRoomDto chatRoomDto = findRoomById(message.getRoomId());
-        chatRoomDto.setLastActivation(sendDate);
+
         // Redis에 저장
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
-        // DB에 저장
-        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomId(chatRoomDto.getRoomId());
+//         DB에 저장
+        Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomId(message.getRoomId());
         if(optionalChatRoom.isPresent()) {
             ChatRoom chatRoom = optionalChatRoom.get();
             ChatMessage chatMessage = message.toEntity();
             chatMessage.setChatRoom(chatRoom);
-            chatRoom.addChatMessage(chatMessage);
+            chatRoom.addChatMessage(message.toEntity());
+            chatRoom.setLastActivation(sendDate);
             chatRepository.save(chatMessage);
             chatRoomRepository.save(chatRoom);
         } else {
