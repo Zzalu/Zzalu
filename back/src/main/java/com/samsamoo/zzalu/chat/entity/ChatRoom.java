@@ -38,7 +38,7 @@ public class ChatRoom {
     @Column(name = "LIKE_COUNT")
     private Long likeCount;
 
-    @OneToMany(mappedBy = "chatRoom")
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.EAGER)
     @Builder.Default
     private List<ChatMessage> chatMessages  = new LinkedList<>();
 
