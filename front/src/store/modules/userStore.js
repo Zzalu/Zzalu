@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername} from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete } from "@/api/userAccount";
 // import createPersistedState from "vuex-persistedstate";
 
 const userStore = {
@@ -20,7 +20,7 @@ const userStore = {
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
       state.temp.username = credentialsData.username
-      state.temp.nickname = credentialsData.username
+      state.temp.nickname = credentialsData.nickname
       state.temp.password = credentialsData.password
       state.temp.passwordCheck = credentialsData.passwordCheck
       console.log(state.temp.username)
@@ -84,9 +84,11 @@ const userStore = {
       const response = await checkEmail(
         data,
         (res) => {
+          console.log("삭제잘됨?")
           return res
         },
         (err) => {
+          console.log("비번 틀렷거나..")
           return err.response
       }
         );
@@ -120,9 +122,9 @@ const userStore = {
     // -----------------------------------------------------------
     // 로그인
     loginAction: async (context, loginData ) => {
-      console.log("store잘 들어옴", loginData)
+      // console.log("store잘 들어옴", loginData)
       const response = await requestLogin(loginData)
-      console.log("store 다시 잘 들어옴", response)
+      // console.log("store 다시 잘 들어옴", response)
       context.commit('SAVE_CURRENT_USER', response)
       console.log(response.data)
       // localStorage.setItem('id', response.data.username)
@@ -154,7 +156,26 @@ const userStore = {
       // console.log("이안에 코드있음",response)
       return response
     },
+  // --------------------------------------------------------------
+  // 회원탈퇴
+    userDeleteAction: async (context, pwd) => {
+      console.log('여기도 들어옴?')
+      const response = requestDelete(
+        pwd,
+        (res) => {
+          window.localStorage.clear()
+          console.log("삭제 잘 되었다는 뜻",res);
+          return res
+        },
+        (err) => {
+          console.log(err.response.status)
+          return 400
+        })
+      return response
+    }
   },
+
+  
   // plugins: [
   //   createPersistedState({
   //     paths: ['temp'],

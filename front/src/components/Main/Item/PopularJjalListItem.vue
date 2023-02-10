@@ -14,8 +14,8 @@ export default {
     return {
       gifPath : this.PopularJjal.gifPath
     }
-  },
-}
+  },   
+}   
 </script>
 
 <style scoped lang="postcss">
