@@ -108,7 +108,8 @@ public class CommentController {
 
 
     @DeleteMapping("/{commentId}")
-    public  ResponseEntity deleteComment(@RequestHeader(value = "Authorization") String bearerToken ,@PathVariable Long commentId){
+    public  ResponseEntity deleteComment(@RequestHeader(required = false, value = "Authorization") String bearerToken ,@PathVariable Long commentId){
+
 
 
         String token = bearerToken.substring(7);
@@ -143,7 +144,7 @@ public class CommentController {
         String token = bearerToken.substring(7);
 
         //좋아요를 할껀데 기존에 누른 기록이 있었으면 예외처리
-        if(commentService.existCommentLike(commentId,token)){
+        if(commentService.existCommentLikeWithToken(commentId,token)){
             throw new ConflictException("[ERROR] 이미 좋아요를 눌렀습니다.");
         }else{
 
@@ -167,7 +168,7 @@ public class CommentController {
 
         String token = bearerToken.substring(7);
 
-        if(!commentService.existCommentLike(commentId,token)){
+        if(!commentService.existCommentLikeWithToken(commentId,token)){
             throw  new NotFoundException("[Error] 좋아요를 누른 기록이 없습니다.");
         }else{
 

@@ -102,15 +102,29 @@ public class TitleHakwonController {
      */
 
     @GetMapping("/{titleHakwonId}/comments")
-    public  ResponseEntity<List<CommentResponse>> getRecentCommentList (@PathVariable Long titleHakwonId, @RequestParam Long lastCid , @RequestParam int limit, @RequestParam String sort , @RequestParam String username){
+    public  ResponseEntity<List<CommentResponse>> getRecentCommentList (@RequestHeader( required = false, value = "Authorization") String bearerToken ,@PathVariable Long titleHakwonId, @RequestParam Long lastCid , @RequestParam int limit, @RequestParam String sort){
 
-        //status code =200
+
+
+        String token;
+        if(bearerToken==null){
+            System.out.println("헤더값 없어요!!");
+            token = null;
+        }else{
+             token = bearerToken.substring(7);
+             System.out.println(token);
+        }
+
         List<CommentResponse> commentResponseList;
         if(sort.equals("LATEST")){
-            commentResponseList = commentService.getRecentCommentList(titleHakwonId,lastCid,limit, username);
+            commentResponseList = commentService.getRecentCommentList(titleHakwonId,lastCid,limit, token);
+
+            for(CommentResponse c : commentResponseList){
+                System.out.println(c.getContent());
+            }
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
         } else if (sort.equals("CHRONOLOGICAL")) {
-            commentResponseList = commentService.getPastCommentList(titleHakwonId,lastCid,limit, username);
+            commentResponseList = commentService.getPastCommentList(titleHakwonId,lastCid,limit, token);
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
         }else {
             return null;
@@ -126,16 +140,17 @@ public class TitleHakwonController {
      */
 
     @GetMapping(value = "/comments/{parentId}/reply")
-    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@PathVariable Long parentId, @RequestParam Long lastCid , @RequestParam int limit, @RequestParam String sort , @RequestParam String username){
+    public  ResponseEntity<List<ReplyCommentResponse>> getReplyCommentList (@PathVariable Long parentId, @RequestParam Long lastCid , @RequestParam int limit, @RequestParam String sort){
+
 
 
         //status code =200
         List<ReplyCommentResponse> replyCommentResponseList;
         if(sort.equals("LATEST")){
-            replyCommentResponseList = commentService.getRecentReplyCommentList( lastCid ,  parentId ,   limit , null);
+            replyCommentResponseList = commentService.getRecentReplyCommentList( lastCid ,  parentId ,   limit );
             return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
         }else if (sort.equals("CHRONOLOGICAL")){
-            replyCommentResponseList = commentService.getPastReplyCommentList( lastCid ,  parentId ,   limit , null);
+            replyCommentResponseList = commentService.getPastReplyCommentList( lastCid ,  parentId ,   limit );
             return new ResponseEntity<>(replyCommentResponseList,HttpStatus.OK);
         }else {
             return null;
