@@ -65,7 +65,7 @@ export default {
   name: "ChatFilter",
   setup() {
     const store = useStore();
-    const user_id = window.localStorage.getItem("id");
+    const user_id = window.localStorage.getItem("profile_id");
 
     const get_all_rooms = () => {
       store.dispatch("quietChatStore/getQuietList");
@@ -76,11 +76,23 @@ export default {
     const nosearch_created_recent = () => {
       store.dispatch("quietChatStore/noSearchCreatedRecent", user_id);
     }
+    const nosearch_created_like = () => {
+      store.dispatch("quietChatStore/noSearchCreatedLike", user_id)
+    }
+    const search_all_like = (e) => {
+      store.dispatch("quietChatStore/searchAllLike", e)
+    }
+    const search_created_like = (e) => {
+      store.dispatch("quietChatStore/searchCreatedLike", e)
+    }
 
     return {
       only_search_room,
       get_all_rooms,
-      nosearch_created_recent
+      nosearch_created_recent,
+      nosearch_created_like,
+      search_all_like,
+      search_created_like
     };
   },
   data() {
@@ -100,11 +112,11 @@ export default {
         this.get_all_rooms();
         this.filter1 = 0;
         this.filter2 = 0;
+        this.input_data = null
       } else {
         (this.filter1 = 0), (this.filter2 = 0), this.only_search_room(nv);
-        console.log("검색으로만 필터링", nv);
+        this.input_data = nv
       }
-      this.input_data = nv
     },
     filter1(newvalue, oldvalue) {
       if (oldvalue == 0) {
@@ -117,34 +129,64 @@ export default {
     },
   },
   methods: {
+    //  전체고독방 눌렀을 때
     AllViewRoom() {
       this.filter1 = 0;
       if (this.filter2 == 0) {
-        console.log("전체 고독 + 최신 대화");
+        if (this.input_data == null) {
+          console.log("검색x + 전체 고독 + 최신 대화 //완료");
+          this.get_all_rooms()
+        } else {
+          console.log("검색 + 전체 고독 + 최신 대화 //완료");
+          this.only_search_room(this.input_data)
+        }
       } else if (this.filter2 == 1) {
-        console.log("전체 고독 + 좋아요순");
+        if (this.input_data == null) {
+          console.log("검색x + 전체 고독 + 좋아요순" );
+        } else {
+          console.log("검색 + 전체 고독 + 좋아요순 //완료");
+          this.search_all_like(this.input_data)
+        }
       }
     },
+    // 내가 개설 한
     CreatedByMe() {
       this.filter1 = 1;
       if (this.filter2 == 0) {
         if (this.input_data == null) {
-          console.log("내가 개설 + 최신 대화");
+          console.log("검색x + 내가 개설 + 최신 대화",'//완료');
+          this.nosearch_created_recent()
         } else {
-          console.log("검색필터 + 내가 개설 + 최신 대화");
+          console.log("검색 + 내가 개설 + 최신 대화");
         }
       } else if (this.filter2 == 1) {
-        console.log("내가 개설 + 좋아요순");
+        if(this.input_data == null) {
+          console.log("검색x + 내가 개설 + 좋아요순 //완료");
+          this.nosearch_created_like()
+        } else {
+          console.log("검색 + 내가 개설 + 좋아요");
+          this.search_created_like(this.input_data)
+        }
       }
     },
+    // 즐겨찾기 눌렀을 때
     ILoveItRoom() {
       this.filter1 = 2;
       if (this.filter2 == 0) {
-        console.log("즐겨찾기 + 최신 대화순");
+        if (this.input_data == null) {
+          console.log("검색x + 즐겨찾기 + 최신 대화순");
+        } else {
+          console.log("검색 + 즐겨찾기 + 최신 대화순");
+        }
       } else if (this.filter2 == 1) {
-        console.log("즐겨찾기 + 좋아요 순");
+        if (this.input_data == null) {
+          console.log("검색x +즐겨찾기 + 좋아요 순");
+        } else {
+          console.log("검색 +즐겨찾기 + 좋아요 순");
+        }
       }
     },
+    // 최신대화 순
     RecentSort() {
       this.filter2 = 0;
       if (this.filter1 == 0) {
@@ -155,12 +197,25 @@ export default {
         this.ILoveItRoom();
       }
     },
+    // 좋아요 순
     LikeSort() {
       this.filter2 = 1;
       if (this.filter1 == 0) {
-        this.AllViewRoom();
+        if (this.input_data == null) {
+          console.log('검색x + 전체고독방 + 좋아요순');
+          this.AllViewRoom();
+        } else {
+          console.log('검색 + 전체고독방 + 좋아요순 //완료');
+          this.search_all_like(this.input_data)
+        }
       } else if (this.filter1 == 1) {
-        this.CreatedByMe();
+        if (this.input_data == null) {
+          console.log('검색x + 내가 개설한 + 좋아요순 //완료');
+          this.nosearch_created_like();
+        } else {
+          console.log('검색 + 내가 개설한 + 좋아요순');
+          this.search_created_like(this.input_data)
+        }
       } else if (this.filter1 == 2) {
         this.ILoveItRoom();
       }
