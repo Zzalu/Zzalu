@@ -28,7 +28,7 @@ const zzalListStore = {
     getPopularGIFList({ commit }) {
       getPopularGIF(
         (data) => {
-          console.log(data, '인기짤 get 성공');
+          // console.log(data, '인기짤 get 성공');
           commit('GET_POPULAR_GIF', data)
         },
         (err) => {
@@ -39,7 +39,7 @@ const zzalListStore = {
     getRecommendGIFList({ commit }) {
       getRecommendGIF(
         (data) => {
-          console.log(data, '추천짤 get 성공');
+          // console.log(data, '추천짤 get 성공');
           commit('GET_RECOMMEND_GIF',data)
         },
         (err) => {
@@ -50,7 +50,7 @@ const zzalListStore = {
     getFirstRandomGIFList({ commit }) {
       getFirstRandomGIF (
         (data) => {
-          console.log(data, '겟퍼스트랜덤');
+          // console.log(data, '겟퍼스트랜덤');
           commit('GET_FIRST_RANDOM_GIF', data)
         },
         (err) => {
@@ -62,7 +62,7 @@ const zzalListStore = {
       getMoreRandomGIF (
         params,
         (data) => {
-          console.log(data, '모얼랜덤')
+          // console.log(data, '모얼랜덤')
           commit('GET_MORE_RANDOM_GIF', data)
         },
         (err) => {

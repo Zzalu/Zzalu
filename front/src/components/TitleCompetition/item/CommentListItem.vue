@@ -1,6 +1,6 @@
 <template>
   <li>
-    <div>
+    <div class="dark:text-white">
       <div class="flex items-center mb-2">
         <div class="w-3 h-3 rounded-full mr-2">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
@@ -61,7 +61,6 @@ export default {
     comment: Object,
   },
   setup(props) {
-    console.log(props);
     const store = useStore();
     // TODO: time ~~전으로 출력하기
     const comment_data = reactive({
@@ -80,7 +79,6 @@ export default {
 
     // TODO: 나중에 로그인 기능 완성되면 username 수정하기
     const canDelete = computed(() => {
-      console.log(comment_data.username);
       return (comment_data.username = 'c109');
     });
 

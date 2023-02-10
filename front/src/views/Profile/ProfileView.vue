@@ -47,11 +47,10 @@ export default {
     const store = useStore();
     const route = useRoute();
     const username = route.params.username;
-    store.dispatch("userStore/getProfileUser", username);
+    store.dispatch("profileStore/getProfileUser", username);
     const current_user = localStorage.getItem("id");
-
     return {
-      current_user,
+      current_user
     };
   },
 };

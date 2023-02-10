@@ -4,7 +4,7 @@ const titleCompetitionStore = {
   namespaced: true,
   state: () => ({
     // 제목학원
-    open_date: '2023-02-06',
+    open_date: '',
     total_comment_cnt: 0,
     title_competition_id: 0,
     zzal_url: '',
@@ -30,8 +30,14 @@ const titleCompetitionStore = {
     getLastCommentId: (state) => state.last_comment_id,
   },
   mutations: {
+    // 날짜 바꾸기
+    SET_OPEN_DATE(state, open_date) {
+      console.log('SET_OPEN_DATE');
+      state.open_date = open_date;
+    },
     // 제목학원
     SET_TITLE_COMPETITION(state, title_competition_data) {
+      console.log('SET_TITLE_COMPETITION');
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
@@ -39,6 +45,7 @@ const titleCompetitionStore = {
 
     // 댓글
     ADD_COMMENTS(state, new_comments) {
+      console.log('ADD_COMMENTS');
       state.comments.push(...new_comments);
     },
 
@@ -70,43 +77,54 @@ const titleCompetitionStore = {
     },
   },
   actions: {
+    async init({ state, dispatch }, data) {
+      console.log(data);
+      await dispatch('getTitleCompetition', data.open_date);
+      await dispatch('getNewestComments', data.size);
+      await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
+    },
     // 제목학원 가져오기
-    getTitleCompetition({ commit }, open_date) {
-      getTitleCompetition(
-        open_date,
-        ({ data }) => {
-          console.log(data);
-          commit('SET_TITLE_COMPETITION', data);
-        },
-        (error) => console.log(error),
-      );
+    async getTitleCompetition({ commit }, open_date) {
+      return new Promise((resolve, reject) => {
+        commit('SET_OPEN_DATE', open_date);
+        getTitleCompetition(
+          open_date,
+          ({ data }) => {
+            commit('SET_TITLE_COMPETITION', data);
+            resolve();
+          },
+          (error) => {
+            console.log(error);
+            reject();
+          },
+        );
+      });
     },
     // 댓글
-    getNewestComments({ commit, state }, size) {
+    async getNewestComments({ commit, state }, size) {
       const params = {
         lastCid: state.last_comment_id,
         limit: size,
         sort: 'LATEST',
         username: 'c109',
       };
-      return new Promise((resolve, reject) => {
-        getNewestComments(
-          state.title_competition_id,
-          params,
-          ({ data }) => {
-            commit('ADD_COMMENTS', data);
-            console.log(data);
-            commit('SET_LAST_COMMENT_ID', data[size - 1].commentId);
-            resolve();
-          },
-          (error) => {
-            console.log(error), reject();
-          },
-        );
-      });
+      await getNewestComments(
+        state.title_competition_id,
+        params,
+        ({ data }) => {
+          commit('ADD_COMMENTS', data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
     },
-    setTitleCompetitionId({ commit }, id) {
-      commit('SET_TITLE_COMPETITION_ID', id);
+
+    async setLastCommentId({ commit }, comment_id) {
+      return new Promise((resolve) => {
+        commit('SET_LAST_COMMENT_ID', comment_id);
+        resolve();
+      });
     },
 
     // 대댓글

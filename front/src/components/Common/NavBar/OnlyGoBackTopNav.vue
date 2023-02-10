@@ -1,6 +1,6 @@
 <template>
   <!-- < nav -->
-  <div class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center dark:bg-black">
+  <div class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center dark:bg-zz-bd">
     <span class="inline-block px-4 dark:text-white" @click="goBack">
       <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl" />
     </span>
@@ -15,14 +15,14 @@ export default {
   name: 'OnlyGoBackTopNavBar',
   data() {
     return {
-      isDark
-    }
+      isDark,
+    };
   },
   methods: {
-    goBack () {
-      this.$router.go(-1)
-    }
-  }
+    goBack() {
+      this.$router.go(-1);
+    },
+  },
 };
 </script>
 

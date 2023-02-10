@@ -37,7 +37,7 @@ const requestUsername = (data,res,err) => {
 }
 
 const getProfileUser = (username, success, fail) => {
-    api.get(`/members/${username}`).then(success).catch(fail);
+    api.get(`/members?username=${username}`).then(success).catch(fail);
 }
 
 export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser }

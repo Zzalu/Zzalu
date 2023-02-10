@@ -1,27 +1,47 @@
 <template>
-  <div class="profile-title">{{}}님의 보드</div>
-  <div class="profile-board">
-    <!-- <img src="https://media3.giphy.com/media/3ofSBzfwuwMhLaQNZm/giphy.gif?cid=99fefb40sq0mdhd9vs7c4bvk9ntjiuxto9wo4pzh0gsxe8lr&rid=giphy.gif&ct=g" alt=""/>
-    <img src="https://media4.giphy.com/media/KztT2c4u8mYYUiMKdJ/giphy.gif?cid=99fefb40794ob3uvhnn0gdrcpw577jgnr6nkwc7msn64urk8&rid=giphy.gif&ct=g" alt=""/>
-    <img src="https://media4.giphy.com/media/KztT2c4u8mYYUiMKdJ/giphy.gif?cid=99fefb40794ob3uvhnn0gdrcpw577jgnr6nkwc7msn64urk8&rid=giphy.gif&ct=g" alt=""/> -->
-    <BoardTitleList />
-</div>
+  <div class="profile-title">{{ profile_user_data.nickname }}님의 보드</div>
+    <div v-if="user_board_list" class="flex flex-wrap justify-center">
+      <div v-for="(board_list, i) in user_board_list.boards" :key="i">
+        <BoardTitleListItem :board_list="board_list" />
+      </div>
+    </div>
+  <!-- </div> -->
 </template>
 
 <script>
-import BoardTitleList from "../SaveJjal/BoardTitleList"
+import { useStore } from "vuex";
+import { computed, onBeforeMount } from "@vue/runtime-core";
+import BoardTitleListItem from "@/components/SaveJjal/Item/BoardTitleListItem";
+// import BoardTitleList from "../SaveJjal/BoardTitleList";
 export default {
   name: "UserBoard",
   components: {
-    BoardTitleList
-  }
+    BoardTitleListItem,
+  },
+  setup() {
+    const store = useStore();
+    const user_id = window.localStorage.getItem("profile_user");
+    const profile_user_data = computed(
+      () => store.state.profileStore.profile_user
+    );
+    const user_board_list = computed(
+      () => store.state.boardListStore.user_board_list
+    );
 
-}
+    onBeforeMount(() => {
+      store.dispatch("boardListStore/getUserBoardList", user_id);
+    });
+    return {
+      user_board_list,
+      user_id,
+      profile_user_data
+    };
+  },
+};
 </script>
 
 <style lang="postcss" scoped>
-
 .profile-board {
-  @apply mt-2 mb-6
+  @apply mt-2 mb-6;
 }
 </style>

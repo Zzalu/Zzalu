@@ -18,12 +18,14 @@
             <div>팔로잉</div>
           </div>
         </div>
-        <button
-          class="bg-zz-p mt-2 ml-4 text-white text-xl font-spoq px-5 py-1 rounded"
-          v-if="this.profile_user_data.username != this.me"
-        >
-          팔로우
-        </button>
+        <div v-if="this.profile_user_data.username != this.me">
+          <button
+            class="bg-zz-p mt-2 ml-4 text-white text-xl font-spoq px-5 py-1 rounded"
+            @click="follow_request"
+          >
+            팔로우
+          </button>
+        </div>
       </div>
     </div>
     <div class="mt-4 mb-4">
@@ -54,7 +56,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const profile_user_data = computed(
-      () => store.state.userStore.profile_user
+      () => store.state.profileStore.profile_user
     );
     const get_follower = (member_id) => {
       console.log("member_id", member_id)
@@ -69,9 +71,32 @@ export default {
     };
     const goFollow = function() {router.push({name: "follow", params: {username: this.profile_user_data.username}})}
 
+    // const follow_request = () => {
+    //   if (followState.value == false) {
+    //     store.dispatch("followStore/requsetFollow", id.value)
+    //     .then((res) => {
+    //       console.log(res)
+    //       followState.value = true;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    //   } else {
+    //     store.dispatch("followStore/requestUnfollow", id.value)
+    //     .then((res) => {
+    //       console.log(res)
+    //       followState.value = false;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err)
+    //     })
+    //   }
+    // };
+
     return {
       get_follower, get_following, goFollow,
-      profile_user_data
+      profile_user_data,
+      // follow_request
     }
 
   },

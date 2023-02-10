@@ -1,5 +1,5 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser } from "@/api/userAccount";
-import createPersistedState from "vuex-persistedstate";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername} from "@/api/userAccount";
+// import createPersistedState from "vuex-persistedstate";
 
 const userStore = {
   namespaced: true,
@@ -16,20 +16,6 @@ const userStore = {
     accessToken: "",
     refreshToken: "",
     // isLogin: false,
-    profile_user: {
-      id: '',
-      username: '',
-      nickname: "",
-      userEmail: "",
-      enrollDate: "",
-      profileMessage: null,
-      profilePath: null,
-      followingCnt: 0,
-      followerCnt: 0,
-      boardList: {
-          boards: []
-      }
-    }
   }),
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
@@ -62,19 +48,6 @@ const userStore = {
       state.accessToken = ''
       state.refreshToken = ''
       state.isLogin = false
-    },
-    // 프로필 유저
-    SET_PROFILE_USER(state, data) {
-      state.profile_user.id = data.id;
-      state.profile_user.username = data.username;
-      state.profile_user.nickname = data.nickname;
-      state.profile_user.profileMessage = data.profileMessage;
-      state.profile_user.profilePath = data.profilePath;
-      state.profile_user.profileMessage = data.profileMessage;
-      state.profile_user.followingCnt = data.followingCnt;
-      state.profile_user.followerCnt = data.followerCnt;
-      state.profile_user.boardList = data.boardList;
-      state.profile_user.enrollDate = data.enrollDate;
     },
   },
   getters: {
@@ -181,24 +154,12 @@ const userStore = {
       // console.log("이안에 코드있음",response)
       return response
     },
-    //  ----------------------------------------------------------
-    // 프로필 보기
-    getProfileUser({ commit }, username) {
-      getProfileUser(
-        username,
-        ({ data }) => {
-          console.log(data);
-          commit('SET_PROFILE_USER', data);
-        },
-        (error) => console.log(error),
-      );
-    },
   },
-  plugins: [
-    createPersistedState({
-      paths: ['temp'],
-    })
-  ],
+  // plugins: [
+  //   createPersistedState({
+  //     paths: ['temp'],
+  //   })
+  // ],
 };
 
 export default userStore;
