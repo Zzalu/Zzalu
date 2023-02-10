@@ -102,7 +102,7 @@
         if (!loginData.username | !loginData.password) {
           console.log("인풋값 입력 다 해야지;")
         } else {
-        console.log('로그인 데이터', loginData)
+        // console.log('로그인 데이터', loginData)
         const res = await store.dispatch('userStore/loginAction', loginData)
         if (res) {
           console.log("로그인 요청 잘 갔음")

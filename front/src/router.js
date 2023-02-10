@@ -172,6 +172,13 @@ const routes = [
     name: 'delete-account',
     component: () => import('@/views/Profile/AccountDeleteView'),
   },
+  // -----------------------------------------------------------
+  // 관리자계정
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/Accounts/AdminInfoView'),
+  },
   // -------------------------------------------------------------------
   // ERROR
   // 에러404 페이지X
