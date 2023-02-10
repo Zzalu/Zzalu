@@ -42,7 +42,6 @@ export default {
     };
     const close_search_modal = () => {
       store.commit("searchModalStore/open_search_modal")
-      store.dispatch("zzalListStore/getFirstRandomGIFLIST")
     };
     const send_select_gif_id_data = (data) => {
       store.commit("boardListStore/SELECT_GIF",data)

@@ -17,8 +17,7 @@
       <div
         class="select-jjal-img"
         :style="`background-image:url(${this.gifPath})`"
-      >
-      </div>
+      ></div>
     </div>
     <div v-else class="jjal-box">
       <div
@@ -44,12 +43,11 @@ export default {
       store.commit("searchModalStore/open_list_modal");
     };
     const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal")
-      store.dispatch("zzalListStore/getFirstRandomGIFLIST")
+      store.commit("searchModalStore/open_search_modal");
     };
     const send_select_gif_id_data = (data) => {
-      store.commit("boardListStore/SELECT_GIF",data)
-    }
+      store.commit("boardListStore/SELECT_GIF", data);
+    };
     const select_jjal_num = computed(
       () => store.state.searchModalStore.select_jjal_num
     );
@@ -81,7 +79,11 @@ export default {
   },
   methods: {
     route() {
-      this.$router.push(`/zzal/${this.zzal_info.id}`);
+      this.$router.push({
+        name: "zzal",
+        params: { zzal_id: this.zzal_info.id },
+        query: { gifpath: this.zzal_info.gifPath, id: this.zzal_info.id, tags: this.zzal_info.tags, visitedcount:this.zzal_info.visitedcount },
+      });
       this.close_search_modal();
     },
     long_click() {
