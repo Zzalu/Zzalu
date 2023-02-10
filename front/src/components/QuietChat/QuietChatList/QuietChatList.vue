@@ -10,7 +10,7 @@
         <p class="title-p">{{ room_data.roomName }} 고독방</p>
         <p class="content-p">{{ room_data.description }}</p>
         <div class="hashtag-div">
-          <div v-for="(hashtags, i) in hash" :key="i" class="hashtag-p">
+          <div v-for="(hashtags, i) in room_data.tags" :key="i" class="hashtag-p">
             <div v-if="hashtags">#{{ hashtags }}</div>
           </div>
         </div>
@@ -39,7 +39,7 @@ export default {
     room_data: Object,
     hashtag: String,
   },
-  created() {
+  mounted() {
     this.hash = this.hashtag.split(",");
 
     let date1 = new Date(this.room_data.lastActivation);

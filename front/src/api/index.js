@@ -19,7 +19,7 @@ function authApiInstance() {
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
       // 'Authorization': `Bearer ${ token }`,
-      'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaW8iLCJhdXRoIjoiUk9MRV9VU0VSIiwidXNlcm5hbWUiOiJnaW8iLCJleHAiOjE2NzYwMTAwNzd9.kb6wOjYwAX8lfTN2unJI8j0U-vuQeQZdr-hV1hJE_uo`,
+      'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnaW8iLCJhdXRoIjoiUk9MRV9VU0VSIiwidXNlcm5hbWUiOiJnaW8iLCJleHAiOjE2NzYxMDE5MjV9.VlK0mu8PfrPxLY1lijbw04gHQFtUUQY6hJibeqa1JPc`,
     },
   });
   return instance;
