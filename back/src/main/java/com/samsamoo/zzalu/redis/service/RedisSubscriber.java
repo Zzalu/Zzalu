@@ -3,6 +3,7 @@ package com.samsamoo.zzalu.redis.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsamoo.zzalu.TitleHakwon.dto.CommentResponse;
 import com.samsamoo.zzalu.TitleHakwon.dto.LikeResponse;
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.entity.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -51,7 +52,7 @@ public class RedisSubscriber implements MessageListener {
                 LikeResponse likeResponse = objectMapper.readValue(publishMessage, LikeResponse.class);
                 messagingTemplate.convertAndSend("/sub/title-hakwon/comments/likes", likeResponse);
             }else{
-                ChatMessage roomMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
+                ChatMessageDto roomMessage = objectMapper.readValue(publishMessage, ChatMessageDto.class);
                 messagingTemplate.convertAndSend("/sub/chat/room/" + roomMessage.getRoomId(), roomMessage);
             }
 
