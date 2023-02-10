@@ -10,7 +10,8 @@
 <script>
 import CommentListItem from './item/CommentListItem.vue';
 import { useStore } from 'vuex';
-import { ref } from 'vue';
+// import { ref } from 'vue';
+import { ref, computed } from 'vue';
 // import { onMounted, ref } from 'vue';
 
 export default {
@@ -19,7 +20,8 @@ export default {
   setup() {
     const store = useStore();
     const commentListComponent = ref(null);
-    let comments = store.state.titleCompetitionStore.comments;
+    let comments = computed(() => store.state.titleCompetitionStore.comments);
+    // let comments = store.state.titleCompetitionStore.comments;
 
     /*  onMounted(() => {
       window.addEventListener('scroll', handleScroll);
