@@ -11,6 +11,7 @@ import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
 import com.samsamoo.zzalu.TitleHakwon.service.CommentService;
 import com.samsamoo.zzalu.TitleHakwon.service.TitleHakwonService;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
+import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,8 @@ public class TitleHakwonController {
     private  final TitleHackwonRepository titleHackwonDao;
     private final CommentService commentService;
     private final TitleHakwonService titleHakwonService;
+
+    private final JwtTokenProvider jwtTokenProvider;
 
 
 
@@ -106,14 +109,7 @@ public class TitleHakwonController {
 
 
 
-        String token;
-        if(bearerToken==null){
-            System.out.println("헤더값 없어요!!");
-            token = null;
-        }else{
-             token = bearerToken.substring(7);
-             System.out.println(token);
-        }
+        String token = jwtTokenProvider.getToken(bearerToken);
 
         List<CommentResponse> commentResponseList;
         if(sort.equals("LATEST")){
@@ -122,11 +118,16 @@ public class TitleHakwonController {
             for(CommentResponse c : commentResponseList){
                 System.out.println(c.getContent());
             }
+
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
-        } else if (sort.equals("CHRONOLOGICAL")) {
+        }
+
+        else if (sort.equals("CHRONOLOGICAL")) {
             commentResponseList = commentService.getPastCommentList(titleHakwonId,lastCid,limit, token);
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
-        }else {
+        }
+
+        else {
             return null;
         }
 
@@ -165,22 +166,15 @@ public class TitleHakwonController {
      * 상위 좋아요 50개 댓글
      */
     @GetMapping("/{titleHakwonId}/comments/best")
-    public  ResponseEntity<List<CommentResponse>> getBest50CommentList (@PathVariable Long titleHakwonId, @RequestParam int limit ,@RequestParam String sort , @RequestParam String username){
-
-
+    public  ResponseEntity<List<CommentResponse>> getBest50CommentList (@RequestHeader( required = false, value = "Authorization") String bearerToken,@PathVariable Long titleHakwonId, @RequestParam int limit ,@RequestParam String sort){
+        String token = jwtTokenProvider.getToken(bearerToken);
         //code 200
         if(sort.equals("POPULAR")){
-            List<CommentResponse> commentResponseList = commentService.getBest50CommentList(limit,titleHakwonId, username);
+            List<CommentResponse> commentResponseList = commentService.getBest50CommentList(titleHakwonId, token);
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
         }
         return null;
-      /*  //로그인한 유저가 아닌 경우는
-        Long titleHakwonId = Long.parseLong(map.get("titleHakwonId").toString());
-        String username = map.get("username")==null ? null : map.get("username");
-        //로그인한 유저가 있다면 상위 좋아요 50개 댓글을 불러올때 댓글 누른 기록을 확인..*/
 
-
-       // return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
     }
 
     /**

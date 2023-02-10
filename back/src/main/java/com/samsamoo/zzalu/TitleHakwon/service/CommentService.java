@@ -14,19 +14,15 @@ import com.samsamoo.zzalu.TitleHakwon.repository.CommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.ReplyCommentRepository;
 import com.samsamoo.zzalu.TitleHakwon.repository.TitleHackwonRepository;
 import com.samsamoo.zzalu.advice.BadRequestException;
-import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.InvalidTokenException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +77,6 @@ public class CommentService {
         Member member = jwtTokenProvider.getMember(token);
         Comment comment =  commentRepository.findById(replyCommentRequest.getParentCommentId()).orElseThrow(()->new CommentNotFoundException("[ERROR] 대댓글을 달 댓글이 존재하지 않습니다."));
 
-
-
-
         ReplyComment replyComment = ReplyComment.builder()
                 .member(member)
                 .content(replyCommentRequest.getContent())
@@ -102,24 +95,24 @@ public class CommentService {
 
     public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String token ){
 
-        System.out.println("[Service] " +token);
+
         Page<Comment> comments = fetchRecentCommentPages(lastCommentId ,titleHakwonId,limit);
-        Member  member ;
-        String username;
-        if(token==null){
+
+        if(token== null || !jwtTokenProvider.validateToken(token)){
             return getCommentList(comments.getContent(),null);
         }else{
-            if(checkToken(token)) { //유효했을때
+            String username = jwtTokenProvider.getUserNameWithToken(token);
+               if(memberRepository.findByUsername(username).isPresent()){
+                   return getCommentList(comments.getContent(),username);
+               }
+            return getCommentList(comments.getContent(),null);
 
-                member = jwtTokenProvider.getMember(token);
-                username = member.getUsername();
-            }else{
-                username =null;
             }
+
         }
 
-        return getCommentList(comments.getContent(),username);
-        }
+
+
 
     private Page<Comment> fetchRecentCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
         PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
@@ -149,7 +142,6 @@ public class CommentService {
             return CommentResponse.convertCommentToDtoList(commentList);
         }else{
             //사용자가 로그인이 되어있는 경우 좋아요를 눌렀던 기록을 불러온다.
-
             List<CommentResponse> commentResponseList = new ArrayList<>();
             System.out.println("[Service List size]" + commentList.size());
             for(Comment comment : commentList){
@@ -278,13 +270,9 @@ public class CommentService {
 
     /**
      * 댓글에 좋아요 누르기
-     *
      * 1. 댓글 좋아요 기록에 추가
      * 2. 댓글 좋아요 +1
-     *
-     *
      * 할일 -> optional
-     *
      */
     public LikeResponse clickCommentLikes(Long commentId , String token){
 
@@ -352,18 +340,25 @@ public class CommentService {
      * 상위 50개 댓글 가져오기
      */
 
-    public List<CommentResponse> getBest50CommentList (int limit , Long titleHakwonId ,String username){
+    public List<CommentResponse> getBest50CommentList ( Long titleHakwonId ,String token){
+
+
 
         List<Comment> commentList = commentRepository.findTop50ByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(titleHakwonId,0);
+        if(token== null || !jwtTokenProvider.validateToken(token)){
 
-        return getCommentList(commentList,username);
+            return getCommentList(commentList,null);
 
-    }
-    public boolean checkToken(String token) {
-        if (!jwtTokenProvider.validateToken(token)) {
-            return false;
+        }else {
+            String username = jwtTokenProvider.getUserNameWithToken(token);
+            if (memberRepository.findByUsername(username).isPresent()) {
+                return getCommentList(commentList, username);
+            } else {
+                return getCommentList(commentList, null);
+            }
+
         }
-        return true;
     }
+
 
 }

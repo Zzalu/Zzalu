@@ -8,7 +8,6 @@ import com.samsamoo.zzalu.member.repo.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,9 +17,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-
-import java.nio.charset.Charset;
 import java.security.Key;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -98,7 +94,6 @@ public class JwtTokenProvider {
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         log.info("token = {}", token);
-//        String encodedKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
@@ -120,6 +115,13 @@ public class JwtTokenProvider {
                 .orElseThrow(() -> new MemberNotFoundException("로그인된 사용자를 찾을 수 없습니다."));
     }
 
+    public String getUserNameWithToken (String token){
+        Jws<Claims> claims = Jwts.parser().setSigningKey(key).parseClaimsJws(token);
+        String username = String.valueOf(claims.getBody().get("username"));
+
+        return username;
+    }
+
     private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();
@@ -127,5 +129,10 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
+
+    public String getToken (String token){
+        return  token == null ? null : token.substring(7);
+    }
+
 
 }
