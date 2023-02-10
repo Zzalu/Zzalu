@@ -13,6 +13,8 @@ import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Service
 public class RedisPublisher {
@@ -24,6 +26,7 @@ public class RedisPublisher {
     public void kafkaListener(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessageDto chatMessageDto = objectMapper.readValue(message, ChatMessageDto.class);
+//        chatMessageDto.setSendDate(LocalDateTime.now());
         System.out.println("publish : " + chatMessageDto.toString());
         redisTemplate.convertAndSend(((ChannelTopic) chatRoomRedisRepository.getTopic(chatMessageDto.getRoomId())).getTopic(), chatMessageDto);
     }
