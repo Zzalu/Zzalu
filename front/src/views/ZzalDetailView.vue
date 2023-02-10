@@ -3,12 +3,14 @@
   <!-- <kor-go-back-top-nav-bar></kor-go-back-top-nav-bar> -->
   <div class="h-screen">
     <div class="mt-6">
-      <zzal-list-item></zzal-list-item>
-      <img :src="`${gifpath}`" alt="">
+      <zzal-list-item
+      :gif_id="id"
+      ></zzal-list-item>
+      <!-- <img :src="`${gifpath}`" alt="">
       {{ gifpath }}
       {{ id }}
       {{ tags }}
-      {{ visitedcount }}
+      {{ visitedcount }} -->
       <zzal-info></zzal-info>
       <zzal-source-video></zzal-source-video>
     </div>
