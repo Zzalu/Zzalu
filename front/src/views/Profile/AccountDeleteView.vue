@@ -1,0 +1,30 @@
+<template>
+  <div>
+    진짜 갈거...? 가지마가지마가지마아ㅏㅏ
+    <input type="text"> 마지막으로 비번 함 입력해
+    <button @click="deleteAccount">그래도 갈거임 ㅃㅇ</button>
+  </div>
+</template>
+
+<script>
+// import { useStore } from 'vuex';
+export default {
+  name: "AccountDeleteView",
+  setup () {
+    // const store = useStore();
+    // const deleteAccount = async function () {
+    //   const result = await store.dispatch('userStore/userDeleteAction')
+    // }
+
+
+    return {
+
+    }
+  }
+
+}
+</script>
+
+<style>
+
+</style>

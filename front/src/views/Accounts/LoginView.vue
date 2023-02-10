@@ -49,17 +49,17 @@
       <router-link to="/reset-password">비밀번호 찾기</router-link>
     </div>
     <!-- 소셜로그인 -->
-    <div class="divide-social">
+    <!-- <div class="divide-social">
       <hr class="div-line" />
       <div class="or-start-with">Or Start With</div>
-    </div>
+    </div> -->
   </div>
-  <div class="center-containers">
+  <!-- <div class="center-containers">
     <kakao-login-button></kakao-login-button>
     <img src="./assets/kakao_icon.png" class="login-icon" alt="" />
-  </div>
+  </div> -->
   <!-- 로그인 버튼 -->
-  <div class="center-containers">
+  <div class="ml-20">
     <button class="submit-button" @click="loginSubmit">로그인</button>
   </div>
   <sign-up-bottom-nav></sign-up-bottom-nav>
@@ -68,7 +68,7 @@
 <script>
   import SignUpBottomNav from '../../components/Common/NavBar/SignUpBottomNav.vue';
   import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
-  import KakaoLoginButton from '@/components/Accounts/Login/KakaoLoginButton.vue'
+  // import KakaoLoginButton from '@/components/Accounts/Login/KakaoLoginButton.vue'
   import { useStore } from 'vuex';
   import { useDark } from '@vueuse/core';
   import { reactive } from 'vue'
@@ -80,7 +80,7 @@
     components: {
       OnlyGoBackTopNav,
       SignUpBottomNav,
-      KakaoLoginButton
+      // KakaoLoginButton
     },
     setup() {
       const store = useStore();
