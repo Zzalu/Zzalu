@@ -21,7 +21,7 @@ import MainBottomNavInChat from "../../components/Common/NavBar/MainBottomNavInC
 import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav"
 import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
-import { findQuiteChatRoom } from '@/api/quietChatList.js'
+// import { findQuiteChatRoom } from '@/api/quietChatList.js'
 
 export default {
   name: "ChatInsideView",
@@ -38,7 +38,7 @@ export default {
     }
   },
   created() {
-    this.findQuiteChatList = findQuiteChatRoom;
+    // this.findQuiteChatList = findQuiteChatRoom;
     this.room_id = this.$route.query.room_id;
     this.access_token = this.token;
     console.log("token : " + this.token)
