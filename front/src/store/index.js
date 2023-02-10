@@ -25,6 +25,7 @@ const store = new Vuex.Store({
     followStore,
     profileStore,
     boardListStore,
+    // tempGifStore,
   },
     //vuex plugin 명시
     plugins: [createPersistedState({
