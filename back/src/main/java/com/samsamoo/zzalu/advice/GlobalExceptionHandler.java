@@ -43,8 +43,8 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(UnauthorizedException.class)
-    public ResponseEntity<ErrorResponse> handleConflictException(UnauthorizedException e) {
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflictException(ConflictException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(409,e.getMessage()));
     }
 

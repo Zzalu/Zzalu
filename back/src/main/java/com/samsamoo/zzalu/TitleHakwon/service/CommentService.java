@@ -17,10 +17,12 @@ import com.samsamoo.zzalu.advice.BadRequestException;
 import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.exception.InvalidTokenException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -98,9 +100,23 @@ public class CommentService {
      * 무한 스크롤 / 커서 기반 페이지 네이션
      */
 
-    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username ){
+    public List<CommentResponse> getRecentCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String token ){
 
+        System.out.println("[Service] " +token);
         Page<Comment> comments = fetchRecentCommentPages(lastCommentId ,titleHakwonId,limit);
+        Member  member ;
+        String username;
+        if(token==null){
+            return getCommentList(comments.getContent(),null);
+        }else{
+            if(checkToken(token)) { //유효했을때
+
+                member = jwtTokenProvider.getMember(token);
+                username = member.getUsername();
+            }else{
+                username =null;
+            }
+        }
 
         return getCommentList(comments.getContent(),username);
         }
@@ -135,12 +151,13 @@ public class CommentService {
             //사용자가 로그인이 되어있는 경우 좋아요를 눌렀던 기록을 불러온다.
 
             List<CommentResponse> commentResponseList = new ArrayList<>();
-
+            System.out.println("[Service List size]" + commentList.size());
             for(Comment comment : commentList){
                 CommentResponse  commentResponse = new CommentResponse(comment);
+                System.out.println("[Service getCommentList]" + commentResponse.getContent());
 
                 //좋아요 누른 기록이 존재한다면
-                if(existCommentLike(comment.getId(),username)){
+                if(existCommentLikeWithUserName(comment.getId(),username)){
                     //좋아요 누른 기록으로 보낸다.
                     commentResponse.updateIsPressed();
                 }
@@ -158,7 +175,7 @@ public class CommentService {
      * 커서 기반 페이지 네이션
      */
 
-    public List<ReplyCommentResponse> getRecentReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
+    public List<ReplyCommentResponse> getRecentReplyCommentList (Long lastCommentId , Long parentId , int size){
 
         Page<ReplyComment> replyComments = fetchRecentReplyCommentPages(lastCommentId,parentId,size);
 
@@ -174,7 +191,7 @@ public class CommentService {
      * 커서 기반 페이지 네이션
      */
 
-    public List<ReplyCommentResponse> getPastReplyCommentList (Long lastCommentId , Long parentId , int size ,String username){
+    public List<ReplyCommentResponse> getPastReplyCommentList (Long lastCommentId , Long parentId , int size ){
 
         Page<ReplyComment> replyComments = fetchPastReplyCommentPages(lastCommentId,parentId,size);
 
@@ -316,13 +333,20 @@ public class CommentService {
      * 댓글 좋아요 기록이 존재하는지
      */
 
-    public  boolean existCommentLike(Long commentId ,String token ){
+    public  boolean existCommentLikeWithUserName(Long commentId ,String username ){
+
+        return commentLikeRepository.existsByComment_IdAndMemberUsername(commentId, username);
+    }
+
+
+    public  boolean existCommentLikeWithToken(Long commentId ,String token ){
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
         Member member = jwtTokenProvider.getMember(token);
 
         return commentLikeRepository.existsByComment_IdAndMemberUsername(commentId, member.getUsername());
     }
+
 
     /**
      * 상위 50개 댓글 가져오기
@@ -334,6 +358,12 @@ public class CommentService {
 
         return getCommentList(commentList,username);
 
+    }
+    public boolean checkToken(String token) {
+        if (!jwtTokenProvider.validateToken(token)) {
+            return false;
+        }
+        return true;
     }
 
 }
