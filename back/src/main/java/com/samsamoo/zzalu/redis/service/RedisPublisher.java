@@ -24,12 +24,13 @@ public class RedisPublisher {
     public void kafkaListener(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessageDto chatMessageDto = objectMapper.readValue(message, ChatMessageDto.class);
+        System.out.println("publish : " + chatMessageDto.toString());
         redisTemplate.convertAndSend(((ChannelTopic) chatRoomRedisRepository.getTopic(chatMessageDto.getRoomId())).getTopic(), chatMessageDto);
     }
 
-    public void publish(ChannelTopic topic, ChatMessageDto message) {
-        redisTemplate.convertAndSend(topic.getTopic(), message);
-    }
+//    public void publish(ChannelTopic topic, ChatMessageDto message) {
+//        redisTemplate.convertAndSend(topic.getTopic(), message);
+//    }
 
     public void publishTitleHakwon(ChannelTopic topic, CommentResponse commentResponse) {
         System.out.println("[publishTItlehakwon]"+ topic.getTopic());
