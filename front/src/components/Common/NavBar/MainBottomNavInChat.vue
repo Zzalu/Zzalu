@@ -1,6 +1,9 @@
 <template>
   <!-- 로그인 후 nav -->
-  <SearchViewInChat />
+  <SearchViewInChat 
+  @gif_path="gif_path"
+  @path="path"
+  />
   <div class="h-nav-height fixed border inset-x-0 bottom-0 border-t-2 border-zz-light-div z-50 dark:border-zz-dark-div">
     <div class="close-modal" v-if="check_search_modal" @click="close_modal"></div>
     <div class="close-modals" v-if="check_search_modal" @click="close_modal"></div>
@@ -87,6 +90,12 @@ export default {
         console.log('지금 접속 안했어요',this.logged_in)
         this.$router.push({name: "login"});
       }
+    },
+    gif_path(gif_path) {
+      this.$emit('gif_data',gif_path)
+    },
+    path(gif_path) {
+      this.$emit('gif_data',gif_path)
     }
   },
   watch: {
