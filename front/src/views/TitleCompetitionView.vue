@@ -14,11 +14,15 @@
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
-          <div ref="zzalComponent" class="h-48"><img :src="zzal_url" alt="짤" /></div>
-          <!-- 댓글 스크롤 했을 때 짤fixed -->
-          <div v-if="isScrolled" class="zzal_fixed">
+
+          <div v-on="zzal_url" ref="zzalComponent" class="h-48">
             <img :src="zzal_url" alt="짤" />
+            <div v-if="isScrolled" class="zzal_fixed">
+              <img :src="zzal_url" alt="짤" />
+            </div>
           </div>
+          <!-- 댓글 스크롤 했을 때 짤fixed -->
+
           <!-- <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
             <img class="title-image" :src="zzal_url" alt="짤" />
           </div> -->
@@ -38,7 +42,7 @@
           </div>
         </nav>
         <!-- 댓글 리스트 -->
-        <comment-list ref="commentListComponent" class="mb-10" @scroll="scroll"></comment-list>
+        <comment-list ref="commentListComponent" class="mb-10"></comment-list>
       </div>
       <!-- 댓글 input -->
       <comment-input></comment-input>
@@ -51,20 +55,19 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
 
-// import Stomp from 'webstomp-client';
-// import SockJS from 'sockjs-client';
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
 
 export default {
   components: { OnlySmallLogoTopNav, CommentList, MainBottomNav, CommentInput },
   name: 'TitleCompetitionView',
   setup() {
-    console.log('create');
     const store = useStore();
     const route = useRoute();
     const open_date = route.params.open_date; // 제목학원 날짜
@@ -72,21 +75,9 @@ export default {
     const zzalComponent = ref(null);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
     let total_comment_cnt = null; // 댓글 개수
-    let zzal_url = null; // 짤
+    // let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
+    let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
 
-    /*    async function init() {
-      await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
-        if (result) {
-          store.dispatch('titleCompetitionStore/getNewestComments', 4);
-        }
-      });
-      total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt;
-      zzal_url = store.state.titleCompetitionStore.zzal_url;
-
-      console.log(total_comment_cnt);
-      console.log(zzal_url);
-    }
-    init(); */
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
     // store.dispatch('titleCompetitionStore/getNewestComments', 4);
     function scroll(e) {
@@ -104,19 +95,19 @@ export default {
       //   isScrolled.value = ref(false);
       // }
     }
-    // onMounted(() => {
-    //   console.log(zzal_url);
-    //   loadMoreComments();
-    // });
+    /*     onMounted(() => {
+      console.log(zzal_url);
+      // loadMoreComments();
+    }); */
 
     const loadMoreComments = () => {
       store.dispatch('titleCompetitionStore/getNewestComments', 4);
     };
 
     //! 소켓 관련
-    // let sock = new SockJS('http://localhost:8080/ws-stomp');
-    // let ws = Stomp.over(sock);
-
+    let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
+    let sock = new SockJS('http://localhost:8080/ws-stomp');
+    let ws = Stomp.over(sock, options);
     /*  function reciveMessage(recv) {
       this.messages.unshift({
         type: recv.type,
@@ -124,7 +115,8 @@ export default {
         message: recv.message,
       });
     } */
-    /*     function connect() {
+    function connect() {
+      console.log('connect 시작');
       let localWs = ws;
       let localSock = sock;
       // let localReciveMessage = reciveMessage;
@@ -150,14 +142,14 @@ export default {
           }, 10 * 1000);
         },
       );
-    } */
+    }
 
-    // connect();
+    connect();
 
     return {
-      // sock,
-      // ws,
-      // connect,
+      sock,
+      ws,
+      connect,
       open_date,
       total_comment_cnt,
       zzal_url,
