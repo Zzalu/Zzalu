@@ -51,12 +51,18 @@ export default {
     const current_user = window.localStorage.getItem('id')
     const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
     const check_search_modal = computed(() => store.state.searchModalStore.open_search_modal);
+    const random_gif_data = computed(() => store.state.zzalListStore.random_gif_data)
     const close_search_modal = () => {
       store.commit('searchModalStore/open_search_modal')
       store.dispatch("zzalListStore/getFirstRandomGIFList")
     };
     const open_modal = () => {
       store.commit('searchModalStore/open_search_modal');
+      if (random_gif_data.value) {
+        return
+      } else {
+        store.dispatch("zzalListStore/getFirstRandomGIFList");
+      }
     };
 
 
@@ -66,7 +72,8 @@ export default {
       check_search_modal,
       open_chat_info,
       logged_in,
-      current_user
+      current_user,
+      random_gif_data
     };
   },
   methods: {

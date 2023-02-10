@@ -54,6 +54,7 @@ export default {
       store.dispatch("quietChatStore/getHotQuietList");
       store.dispatch("zzalListStore/getPopularGIFList");
       store.dispatch("zzalListStore/getRecommendGIFList");
+      store.commit("searchModalStore/default_select_num")
     });
     return {
       open_chat_info,

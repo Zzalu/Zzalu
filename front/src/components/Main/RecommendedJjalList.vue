@@ -1,11 +1,13 @@
 <template>
   <div v-if="user_id">
-    <p class="focus-text">{{user_id}}님을 위한 추천 짤</p>
+    <p class="focus-text">{{ user_id }}님을 위한 추천 짤</p>
     <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
     <div class="items">
-      <div v-for="(RecommendJjal,i) in RecommendJjalListData" :key="i">
+      <div v-for="(RecommendJjal, i) in RecommendJjalListData" :key="i">
         <RecommendedJjalListItem
-        :RecommendJjal="RecommendJjal"
+          :RecommendJjal="RecommendJjal"
+          :i="i"
+          @select_id="select_id"
         />
       </div>
     </div>
@@ -13,7 +15,7 @@
 </template>
 
 <script>
-import RecommendedJjalListItem from "../Main/Item/RecommendedJjalListItem"
+import RecommendedJjalListItem from "../Main/Item/RecommendedJjalListItem";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 
@@ -27,27 +29,34 @@ export default {
     const RecommendJjalListData = computed(
       () => store.state.zzalListStore.recommend_gif_data
     );
+    const send_select_recommend_jjal_num = (e) => {
+      store.commit("searchModalStore/send_select_recommend_jjal_num", e);
+    };
     return {
       RecommendJjalListData,
-      user_id
-    }
+      send_select_recommend_jjal_num,
+      user_id,
+    };
   },
-  components : {
-    RecommendedJjalListItem
-  }
-
+  components: {
+    RecommendedJjalListItem,
+  },
+  methods: {
+    select_id(a) {
+      this.send_select_recommend_jjal_num(a);
+    },
+  },
 };
 </script>
 
 <style scoped lang="postcss">
-
 .focus-text {
   @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
 }
 .items {
-  @apply flex overflow-x-auto
+  @apply flex overflow-x-auto;
 }
 .items::-webkit-scrollbar {
-  display:none;
+  display: none;
 }
 </style>

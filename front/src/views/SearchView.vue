@@ -42,7 +42,7 @@ import SearchBar from "../components/Search/SearchBar";
 import JjalListItem from "../components/Search/Item/JjalListItem";
 import StoreList from "../components/Search/StoreList";
 import { useStore } from "vuex";
-import { computed, onBeforeMount } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 export default {
   name: "SearchView",
   setup() {
@@ -65,11 +65,6 @@ export default {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
 
-    onBeforeMount(() => {
-      if (random_gif_data==null) {
-        store.dispatch("zzalListStore/getFirstRandomGIFList");
-      }
-    });
 
     function MoreRandomGIF(gif_data) {
       store.dispatch("zzalListStore/getMoreRandomGIFLIST", [...gif_data]);
