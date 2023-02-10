@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.gifs.controller;
 
+import com.samsamoo.zzalu.board.dto.GifList;
+import com.samsamoo.zzalu.gifs.dto.GifsDto;
 import com.samsamoo.zzalu.gifs.dto.GifsUpdateDto;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.service.GifsService;
@@ -81,11 +83,17 @@ public class GifsController {
         return ResponseEntity.ok().body(gifsList);
     }
 
-    @PutMapping("/gif")
-    public ResponseEntity<Gifs> updateGifs(@RequestBody GifsUpdateDto gifsUpdateDto) {
-        System.out.println(gifsUpdateDto.toString());
-        Gifs gifs = gifsService.gifDetailUpdate(gifsUpdateDto);
-        return ResponseEntity.ok().body(gifs);
+//    @PutMapping("/gif")
+//    public ResponseEntity<Gifs> updateGifs(@RequestBody GifsUpdateDto gifsUpdateDto) {
+//        System.out.println(gifsUpdateDto.toString());
+//        Gifs gifs = gifsService.gifDetailUpdate(gifsUpdateDto);
+//        return ResponseEntity.ok().body(gifs);
+//    }
+    @GetMapping("/recommend")
+    public ResponseEntity recommendCustomGif(@RequestHeader(value = "Authorization") String bearerToken) {
+        String token = bearerToken.substring(7);
+         GifList response = gifsService.recommendCustomGif(token);
+        return ResponseEntity.ok().body(response);
     }
 
 
