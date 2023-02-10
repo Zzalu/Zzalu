@@ -1,6 +1,6 @@
 <template>
   <div>
-    <only-small-logo-top-nav></only-small-logo-top-nav>
+    <only-small-logo-top-nav class="z-30"></only-small-logo-top-nav>
     <div class="flex flex-col items-center">
       <div class="w-full dark:text-white">
         <!-- 오늘의 제목학원 header -->
@@ -17,7 +17,7 @@
 
           <div ref="zzalComponent" class="h-48">
             <img :src="zzal_url" alt="짤" class="w-full h-full" />
-            <div v-if="isScrolled" class="zzal_fixed">
+            <div v-if="isScrolled" class="zzal-fixed">
               <img :src="zzal_url" alt="짤" />
             </div>
           </div>
@@ -78,53 +78,41 @@ export default {
     let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
 
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
-    store.dispatch('titleCompetitionStore/getComments', 4);
+    // store.dispatch('titleCompetitionStore/getComments', 4);
 
     const clickSortBtn = (sort_type) => {
-      console.log(sort_type);
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
-    function scroll() {
+    function infinityScroll() {
       let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
       let windowHeight = window.innerHeight; // 스크린 창
       let fullHeight = document.body.scrollHeight; // margin 값은 포함 x
-      if (store.state.titleCompetitionStore.comments.length < store.state.titleCompetitionStore.total_comment_cnt) {
+      if (store.state.titleCompetitionStore.comments.length >= total_comment_cnt.value) {
+        return;
+      } else {
         if (scrollLocation + windowHeight >= fullHeight) {
           setTimeout(() => {
+            document.documentElement.scrollTop = scrollLocation - 100;
             loadMoreComments();
           }, 2000);
         }
       }
     }
-    /*  console.log(e);
-
-      if (zzalComponent.value.offsetTop + zzalComponent.value.offSetHeight < zzalComponent.value.offSetHeight) {
-        console.log('스크롤 내려짐');
-        isScrolled.value = true;
-      } else {
-        isScrolled.value = false;
-      }
-      const isAtTheBottom = false;
-      if (isAtTheBottom) {
-        setTimeout(() => {
-          loadMoreComments();
-        }, 1000);
-      } */
-    // if (window.scrollY > zzalComponent.value.offsetBottom) {
-    // } else {
-    // }
 
     onMounted(() => {
-      window.addEventListener('scroll', scroll);
+      window.addEventListener('scroll', infinityScroll);
     });
 
     onBeforeUnmount(() => {
-      window.removeEventListener('scroll', scroll);
+      window.removeEventListener('scroll', infinityScroll);
     });
 
     const loadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getComments', 4);
+      setTimeout(() => {
+        store.dispatch('titleCompetitionStore/getComments', 4);
+      }, 2000);
+      console.log('불러옵니다');
     };
 
     //! 소켓 관련
@@ -191,5 +179,9 @@ export default {
 
 .title-image {
   @apply h-full w-full;
+}
+
+.zzal-fixed {
+  @apply fixed;
 }
 </style>

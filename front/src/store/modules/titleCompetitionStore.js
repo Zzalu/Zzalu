@@ -1,4 +1,4 @@
-import { getComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
+import { getComments, getBestComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
 
 const titleCompetitionStore = {
   namespaced: true,
@@ -44,8 +44,13 @@ const titleCompetitionStore = {
 
     // 댓글 sort 수정하기
     MODIFY_SORT_TYPE(state, sort_type) {
-      state.comments.sort_type = sort_type;
-      console.log(state.comments.sort_type);
+      state.sort_type = sort_type;
+      if (sort_type == 'LATEST') {
+        state.last_comment_id = Number.MAX_SAFE_INTEGER;
+      } else if (sort_type == 'CHRONOLOGICAL') {
+        state.last_comment_id = Number.MIN_SAFE_INTEGER;
+      }
+      state.comments = [];
     },
 
     // 댓글 추가하기
@@ -82,9 +87,9 @@ const titleCompetitionStore = {
   },
   actions: {
     async init({ state, dispatch }, data) {
-      console.log(data);
+      // console.log(data);
       await dispatch('getTitleCompetition', data.open_date);
-      await dispatch('getComments', data.size);
+      await dispatch('getBestComments');
       await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
     },
     // 제목학원 가져오기
@@ -106,18 +111,34 @@ const titleCompetitionStore = {
     },
 
     // 댓글 sort 수정하기
-    modifySortType({ commit }, sort_type) {
-      commit('MODIFY_SORT_TYPE', sort_type);
+    async modifySortType({ commit, dispatch }, sort_type) {
+      await commit('MODIFY_SORT_TYPE', sort_type);
+      await dispatch('getComments', 4);
     },
     // 댓글
     async getComments({ commit, state }, size) {
       const params = {
         lastCid: state.last_comment_id,
         limit: size,
-        sort: 'LATEST',
-        username: 'c109',
+        sort: state.sort_type,
       };
       await getComments(
+        state.title_competition_id,
+        params,
+        ({ data }) => {
+          commit('ADD_COMMENTS', data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    async getBestComments({ commit, state }) {
+      const params = {
+        limit: 50,
+        sort: state.sort_type,
+      };
+      await getBestComments(
         state.title_competition_id,
         params,
         ({ data }) => {
@@ -144,7 +165,6 @@ const titleCompetitionStore = {
         lastCid: datas.lastCid,
         limit: datas.limit,
         sort: 'LATEST',
-        username: 'c109',
       };
       return new Promise((resolve, reject) => {
         getNestedComments(
