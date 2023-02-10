@@ -1,4 +1,4 @@
-import { getNewestComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
+import { getComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
 
 const titleCompetitionStore = {
   namespaced: true,
@@ -10,6 +10,7 @@ const titleCompetitionStore = {
     zzal_url: '',
 
     // 댓글
+    sort_type: 'POPULAR',
     comments: [],
     last_comment_id: Number.MAX_SAFE_INTEGER,
 
@@ -32,20 +33,23 @@ const titleCompetitionStore = {
   mutations: {
     // 날짜 바꾸기
     SET_OPEN_DATE(state, open_date) {
-      console.log('SET_OPEN_DATE');
       state.open_date = open_date;
     },
     // 제목학원
     SET_TITLE_COMPETITION(state, title_competition_data) {
-      console.log('SET_TITLE_COMPETITION');
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
     },
 
-    // 댓글
+    // 댓글 sort 수정하기
+    MODIFY_SORT_TYPE(state, sort_type) {
+      state.comments.sort_type = sort_type;
+      console.log(state.comments.sort_type);
+    },
+
+    // 댓글 추가하기
     ADD_COMMENTS(state, new_comments) {
-      console.log('ADD_COMMENTS');
       state.comments.push(...new_comments);
     },
 
@@ -80,7 +84,7 @@ const titleCompetitionStore = {
     async init({ state, dispatch }, data) {
       console.log(data);
       await dispatch('getTitleCompetition', data.open_date);
-      await dispatch('getNewestComments', data.size);
+      await dispatch('getComments', data.size);
       await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
     },
     // 제목학원 가져오기
@@ -100,15 +104,20 @@ const titleCompetitionStore = {
         );
       });
     },
+
+    // 댓글 sort 수정하기
+    modifySortType({ commit }, sort_type) {
+      commit('MODIFY_SORT_TYPE', sort_type);
+    },
     // 댓글
-    async getNewestComments({ commit, state }, size) {
+    async getComments({ commit, state }, size) {
       const params = {
         lastCid: state.last_comment_id,
         limit: size,
         sort: 'LATEST',
         username: 'c109',
       };
-      await getNewestComments(
+      await getComments(
         state.title_competition_id,
         params,
         ({ data }) => {
