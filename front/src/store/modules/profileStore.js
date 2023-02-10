@@ -1,4 +1,6 @@
 import { getProfileUser } from "@/api/userAccount";
+import { getProfileStat } from "@/api/profileAccount";
+// import { reject } from "core-js/fn/promise";
 
 const profileStore = {
   namespaced: true,
@@ -60,23 +62,34 @@ const profileStore = {
     },
 
     // 프로필 통계 보기
-    // getProfileStats: async (commit, user_id) => {
-    //   const response = getProfileStats(user_id);
-    //   console.log("fbbsvebv",response)
-    //   return response
-  // },
-  // getProfileStats({ commit }, user_id) {
-  //   getProfileStats(
-  //     user_id,
-  //     (res) => {
-  //       console.log('유저 보관함 요청 성공', res)
-  //       commit('GET_USER_STORE_LIST', res)
-  //     },
-  //     (err) => {
-  //       console.log('유저 보관함 요청 실패', err);
-  //     }
-  //   )
-  // },
+   getProfileStats({ commit }, user_id) {
+    getProfileStat(
+      user_id,
+      (res) => {
+        console.log('유저 보관함 요청 성공', res)
+        commit('SET_PROFILE_STATS', res)
+      },
+      (err) => {
+        console.log('유저 보관함 요청 실패', err);
+      }
+    )
+  }, 
+/*   getProfileStats({ commit }, user_id) {
+   return new Promise((resolve, reject) => {
+    getProfileStat(
+      user_id,
+      (res) => {
+        console.log('유저 보관함 요청 성공', res)
+        commit('GET_USER_STORE_LIST', res)
+        resolve(res);
+      },
+      (err) => {
+        console.log('유저 보관함 요청 실패', err);
+        reject(err);
+      },
+    )
+   });
+  }, */
   }
 };
 

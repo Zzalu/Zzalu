@@ -33,7 +33,7 @@ export default {
       }, 200)
     };
     const quiet_chat_data = computed(
-      () => store.state.quietChatStore.quiet_list
+      () => store.state.quietChatStore.hot_quiet_list
     )
     return {
       send_chat_data,

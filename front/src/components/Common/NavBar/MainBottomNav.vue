@@ -1,6 +1,6 @@
 <template>
   <!-- 로그인 후 nav -->
-  <!-- <SearchView /> -->
+  <SearchView />
   <div class="h-nav-height fixed border inset-x-0 bottom-0 border-t-2 border-zz-light-div z-50 dark:border-zz-dark-div">
     <div class="close-modal" v-if="check_search_modal" @click="close_modal"></div>
     <div class="close-modals" v-if="check_search_modal" @click="close_modal"></div>
@@ -36,12 +36,12 @@
 import { useStore } from 'vuex';
 import { computed } from '@vue/runtime-core';
 // import { mapState } from 'vuex';
-// import SearchView from '../../../views/SearchView';
+import SearchView from '../../../views/SearchView';
 
 export default {
   name: 'MainBottomNavBar',
   components: {
-    // SearchView,
+    SearchView,
   },
   // computed:
   //   mapState({

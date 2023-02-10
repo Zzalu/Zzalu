@@ -1,4 +1,4 @@
-import { getQuiet, createQuietChat } from "@/api/quietChatList";
+import { getQuiet, createQuietChat, getHotQuietList, getOnlySearch } from "@/api/quietChatList";
 
 const quietChatStore = {
   namespaced: true,
@@ -6,6 +6,7 @@ const quietChatStore = {
     open_chat_info: false,
     open_chat_id: null,
     quiet_list: null,
+    hot_quiet_list : null,
   }),
   mutations: {
     open_chat_info(state) {
@@ -21,6 +22,12 @@ const quietChatStore = {
     GET_QUIET_CHAT(state, quietChatList) {
       state.quiet_list = quietChatList.data
     },
+    GET_HOT_QUIET(state, hotQuietChat) {
+      state.hot_quiet_list = hotQuietChat.data
+    },
+    GET_ONLY_SEARCH(state, onlySearch) {
+      state.quiet_list = onlySearch.data
+    }
   },
   actions: {
     getQuietList({ commit }) {
@@ -44,6 +51,32 @@ const quietChatStore = {
         },
         (err) => {
           console.log(err,' 고독방 생성 실패');
+        }
+      )
+    },
+    getHotQuietList({ commit }) {
+      getHotQuietList(
+        (data) => {
+          console.log(data, '고독방 인기 리스트 get 성공');
+          commit('GET_HOT_QUIET',data)
+        },
+        (err) => {
+          console.log(err, '고독방 인기 리스트 get 실패');
+        }
+      )
+    },
+
+    // 짤검색 api
+
+    onlySearchRoom({ commit }, params) {
+      getOnlySearch(
+        params,
+        (data) => {
+          console.log(data, 'only search 고독방 get 성공');
+          commit('GET_ONLY_SEARCH',data)
+        },
+        (err) => {
+          console.log(err, 'only search 고독방 get 실패');
         }
       )
     }

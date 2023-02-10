@@ -6,15 +6,26 @@ async function getTitleCompetition(open_date, success, fail) {
   console.log('api: getTitleCompetition');
   await api.get(`/title-hakwon/${open_date}`).then(success).catch(fail);
 }
-// 댓글 최신순 조회하기
+
+// 끝난 제목학원 리스트 조회하기
+async function getFinishTitleCompetition(success, fail) {
+  await api.get(`/title-hakwon`).then(success).catch(fail);
+}
+/* // 댓글 최신순 조회하기
 async function getNewestComments(title_competition_id, params, success, fail) {
   console.log('api: getNewestComments');
   await api.get(`/title-hakwon/${title_competition_id}/comments`, { params: params }).then(success).catch(fail);
-}
+} */
 
 // 상위 50개 좋아요 순 댓글
 async function getBestComments(title_competition_id, params, success, fail) {
   await api.get(`/title-hakwon/${title_competition_id}/comments/best`, { params: params }).then(success).catch(fail);
+}
+
+// 댓글 최신순 조회하기
+// 댓글 과거순 조회하기
+async function getComments(title_competition_id, params, success, fail) {
+  await api.get(`/title-hakwon/${title_competition_id}/comments`, { params: params }).then(success).catch(fail);
 }
 
 // 대댓글 최신순 조회하기
@@ -53,8 +64,9 @@ function deleteNestedComment(nested_comment_id, success, fail) {
 }
 
 export {
-  getNewestComments,
+  // getNewestComments,
   getBestComments,
+  getComments,
   getNestedComments,
   getTitleCompetition,
   addComment,
@@ -63,4 +75,5 @@ export {
   minusLike,
   deleteComment,
   deleteNestedComment,
+  getFinishTitleCompetition,
 };

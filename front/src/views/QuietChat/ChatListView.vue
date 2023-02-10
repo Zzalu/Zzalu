@@ -1,22 +1,27 @@
 <template>
   <div class="test">
-    <ChatSearchTopNav />
+    <ChatSearchTopNav @input_data="input_data" />
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
-    <ChatFilter />
+    <ChatFilter :search_data="search_data" />
     <MakeChatButton />
     <!-- 고독방이 있다면 -->
-    <div v-if="quiet_chat_data.length >= 1">
-      <div v-for="(datas, i) in quiet_chat_data" :key="i">
-        <QuietChatList
-          :room_data="datas"
-          :hashtag="datas.tags"
-          @click="chat_data(i)"
-        />
+    <div v-if="quiet_chat_data">
+      <div v-if="quiet_chat_data.length >= 1">
+        <div v-for="(datas, i) in quiet_chat_data" :key="i">
+          <QuietChatList
+            :room_data="datas"
+            :hashtag="datas.tags"
+            @click="chat_data(i)"
+          />
+        </div>
       </div>
     </div>
+
     <!-- 필터로 걸러진 고독방이 없다면 -->
-    <div v-else>
-      <NoResult />
+    <div v-if="quiet_chat_data">
+      <div v-if="quiet_chat_data.length == []">
+        <NoResult />
+      </div>
     </div>
     <div v-if="open_chat_info">
       <ChatInfoModal
@@ -25,9 +30,7 @@
       />
     </div>
     <div class="pb-16"></div>
-    <div v-if="tmpisLogin">
-      <MainBottomNav />
-    </div>
+    <MainBottomNav />
   </div>
 </template>
 
@@ -36,7 +39,7 @@ import ChatFilter from "../../components/QuietChat/QuietChatList/ChatFilter";
 import MakeChatButton from "../../components/QuietChat/QuietChatList/MakeChatButton";
 import QuietChatList from "../../components/QuietChat/QuietChatList/QuietChatList.vue";
 import ChatInfoModal from "../../components/QuietChat/QuietChatList/ChatInfoModal";
-import NoResult from "../../components/QuietChat/QuietChatList/NoResult"
+import NoResult from "../../components/QuietChat/QuietChatList/NoResult";
 import ChatSearchTopNav from "../../components/Common/NavBar/ChatSearchTopNav";
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav";
 import { useStore } from "vuex";
@@ -91,7 +94,7 @@ export default {
   },
   data() {
     return {
-      tmpisLogin: true,
+      search_data: "",
     };
   },
   methods: {
@@ -100,6 +103,9 @@ export default {
     },
     close_chat() {
       this.close_chat_info();
+    },
+    input_data(e) {
+      this.search_data = e;
     },
   },
   watch: {
