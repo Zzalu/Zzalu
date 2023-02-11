@@ -9,7 +9,7 @@
         v-model="state.credentials.email"
       />
 
-      <div class="error" v-if="errorMsgs.err.email">{{ errorMsgs.err.email }}</div>
+      <div class="signup-error" v-if="errorMsgs.err.email" >{{ errorMsgs.err.email }}</div>
     <div class="flex float-right mt-10" v-if="$route.name == 'input-signup-email'">
       <button class="go-next-button" @click="[sendEmailCode(), loadingAni()]">다음</button>
     </div>

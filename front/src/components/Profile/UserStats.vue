@@ -1,6 +1,6 @@
 <template>
-  <!-- <div class="profile-title">스탯</div>
-  <div class="user-stats">
+  <div class="profile-title">스탯</div>
+  <!-- <div class="user-stats">
     <div class="flex">
       <div class="stat-hashtag">#고양이들</div>
       <div class="graph">100%</div>

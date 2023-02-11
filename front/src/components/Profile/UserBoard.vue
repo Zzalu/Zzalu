@@ -27,7 +27,7 @@ export default {
     const user_board_list = computed(
       () => store.state.boardListStore.user_board_list
     );
-
+  
     onBeforeMount(() => {
       store.dispatch("boardListStore/getUserBoardList", user_id);
     });

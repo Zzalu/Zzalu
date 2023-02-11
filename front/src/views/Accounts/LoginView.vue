@@ -76,6 +76,7 @@
   import { useDark } from '@vueuse/core';
   import { reactive } from 'vue'
   import { useRouter } from 'vue-router';
+  import Swal from 'sweetalert2'
 
   const isDark = useDark();
   export default {
@@ -103,12 +104,15 @@
           }
         
         if (!loginData.username | !loginData.password) {
-          console.log("인풋값 입력 다 해야지;")
+          Swal.fire({
+            icon: "error",
+            text:"아이디와 비밀번호를 모두 입력해주세요."
+            })
         } else {
         // console.log('로그인 데이터', loginData)
         const res = await store.dispatch('userStore/loginAction', loginData)
         if (res) {
-          console.log("로그인 요청 잘 갔음")
+          // console.log("로그인 요청 잘 갔음")
           router.push({name: 'main'})
         }
         }

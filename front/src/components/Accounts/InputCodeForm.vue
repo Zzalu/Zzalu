@@ -31,7 +31,7 @@
       id="c3"
       class="input-code"
     />
-    <input
+    <div
       type="text"
       maxlength="1"
       id="c4"
@@ -43,7 +43,7 @@
   <div class="text-center-container">
     <div class="didnt-get-mail mb-20">
       <div class="mail-error">메일을 받지 못하셨나요?</div>
-      <button class="send-again-button">인증 메일 재전송</button>
+      <button class="send-again-button" @click="sendCode">인증 메일 재전송</button>
       <!-- {{ userInfo.code }} -->
     </div>
     
@@ -53,6 +53,9 @@
 
 <script>
 import { mapState } from "vuex";
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+// import { reactive } from 'vue'
 // import { computed } from '@vue/runtime-core'
 
 export default {
@@ -64,6 +67,41 @@ export default {
     this.startCode();
     this.countDownTimer();
   },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    // const state = reactive({
+    //   credentials: {
+    //     email: '',
+    //     code: ''
+    //   }
+    // })
+    // 이메일 중복확인 및 코드 요청 보내기
+    const sendCode = async function () {
+      const signup_user_email = window.localStorage.getItem("temp_email")
+        // console.log(this.userInfo)
+        const result = await store.dispatch('userStore/sendEmailAction', signup_user_email )
+        if (result.status == 400) {
+          alert("이미 사용중인 이메일입니다.\n다른 이메일을 입력해주세요.")
+        } else if (result.status == 200) {
+          const credentialsEmailCode = {
+            email: signup_user_email,
+            code: result.data.authKey,
+          }
+          // 회원가입 등록
+          const email_code = await store.dispatch('userStore/signupSecondAction', credentialsEmailCode)
+          if (email_code) {
+            router.push({name: 'input-signup-code'})
+          }
+        }
+      }
+
+
+    // 
+    return {
+      sendCode
+    }
+  },
   methods: {
     signupFinal: async function () {
       const code_try = this.inputCode
@@ -72,7 +110,6 @@ export default {
       if (code_try == this.userInfo.code) {
         console.log(this.userInfo);
         console.log(code_try);
-        // 여기까지는 잘 왔음
         const userData = {
           username: this.userInfo.username,
           password: this.userInfo.password,
@@ -88,6 +125,8 @@ export default {
         if (result.status == 400) {
           alert("야 넌 회원가입 다시해라");
         } else {
+          clearTimeout(this.min, this.sec)
+          console.log('멈춤')
           this.$router.push({ name: "complete" });
         }
       } else {
@@ -100,8 +139,13 @@ export default {
     },
     countDownTimer() {
         setTimeout(() => {
+          console.log('1초 지남')
           if (this.sec==0 && this.min == 0) {
-            this.$router.push('/input-signup-email')
+            if ( this.$route.name == 'input-signup-code') {
+              this.$router.push({ name: "input-signup-email" })
+            } else {
+              console.log('타이머끝남...')
+            }
           } else if (this.sec == 0) {
             this.min -= 1,
             this.sec =59
