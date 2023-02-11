@@ -62,8 +62,8 @@ export default {
         this.tags += ','
       }
       let room_data = {
-        "userName" : null,
-        "memberId" : null,
+        "userName" : localStorage.getItem("profile_user"),
+        "memberId" : localStorage.getItem("profile_id"),
         "imagePath" : null,
         "tags" : this.tags,
         "roomName" : this.room_name,

@@ -33,15 +33,12 @@ import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 
 export default {
-  name: "JjalListItem",
+  name: "JjalListItemInChat",
   setup() {
     const store = useStore();
 
     const open_list_modal = () => {
       store.commit("searchModalStore/open_list_modal");
-    };
-    const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal")
     };
     const send_select_gif_id_data = (data) => {
       store.commit("boardListStore/SELECT_GIF",data)
@@ -51,7 +48,6 @@ export default {
     );
     return {
       open_list_modal,
-      close_search_modal,
       send_select_gif_id_data,
       select_jjal_num,
     };
@@ -77,16 +73,16 @@ export default {
   },
   methods: {
     send_message_select() {
+      console.log('dd');
       this.$emit("select_id", this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
+    },
+    send_message() {
       let gif_path = {
         id : this.zzal_info.id,
         gifPath : this.zzal_info.gifPath,
       }
       this.$emit('path',gif_path)
-    },
-    send_message() {
-
     }
   },
 };

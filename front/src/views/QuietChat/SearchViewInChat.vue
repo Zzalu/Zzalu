@@ -3,7 +3,7 @@
     <div>
       <transition name="fade">
         <div v-if="open_search_modal">
-          <!-- 즐겨찾기 + 30 -->
+          <!-- 내보드 + 30 -->
           <div v-if="view_list_full == true">
             <div class="dark:border-zz-dark-div">
               <div class="modal">
@@ -177,7 +177,7 @@
                   >
                     <!-- 선택짤 -->
                     <div v-if="this.is_select == i" class="select-jjal-box">
-                      <div >
+                      <div>
                         <font-awesome-icon
                           class="scrap-icon"
                           icon="fa-solid fa-paper-plane"
@@ -250,6 +250,9 @@ export default {
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
+    const close_search_modal = () => {
+      store.commit("searchModalStore/open_search_modal")
+    }
 
     onBeforeMount(() => {
       store.dispatch("zzalListStore/getFirstRandomGIFList");
@@ -257,7 +260,6 @@ export default {
     });
 
     function ViewBoardDetail(board_id) {
-      console.log("실행됨?");
       store.dispatch("boardListStore/getBoardData", board_id);
     }
 
@@ -274,6 +276,7 @@ export default {
       send_select_jjal_num,
       MoreRandomGIF,
       ViewBoardDetail,
+      close_search_modal
     };
   },
   components: {
@@ -289,7 +292,7 @@ export default {
       view_list_detail: false,
       list_name: "",
       is_select: null,
-      gif_path: '',
+      gif_path: "",
     };
   },
   methods: {
@@ -298,9 +301,7 @@ export default {
     },
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
-      // 일정 한도 밑으로 내려오면 함수 실행
-      if (isAtTheBottom) {
+      if (scrollTop + clientHeight > scrollHeight - 1) {
         this.load_state = true;
         setTimeout(() => {
           this.MoreRandomGIF(this.gif_data);
@@ -331,13 +332,15 @@ export default {
       this.is_select = b;
     },
     send_message() {
-      this.$emit('gif_path',this.gif_path)
-      console.log(this.gif_path,'여기서보냄 gif_path');
+      this.$emit("gif_path", this.gif_path);
+      this.close_search_modal();
+      console.log(this.gif_path, "여기서보냄 gif_path");
     },
     path(gifpath) {
-      this.$emit('gif_path',gifpath)
-      console.log(gifpath,'보낼 gif_path');
-    }
+      this.$emit("gif_path", gifpath);
+      this.close_search_modal();
+      console.log(gifpath, "보낼 gif_path");
+    },
   },
   watch: {
     random_gif_data(nv) {
@@ -361,23 +364,7 @@ export default {
 <style scoped lang="postcss">
 /* 로딩 애니메이션 */
 @import url(https://fonts.googleapis.com/css?family=Roboto:100);
-.modal {
-  box-shadow: 0px 0px 7px;
-  @apply fixed top-20 inset-x-0 border bg-white border-t-2 rounded-t-2xl z-10 dark:bg-zz-bd;
-}
-.my-board-contain {
-  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
-}
-.my-board {
-  filter: opacity(0.1) drop-shadow(0 0 0 rgb(221, 218, 218));
-  @apply h-full w-full rounded-2xl bg-cover;
-}
-.detail {
-  @apply h-full w-full rounded-2xl bg-cover;
-}
-.my-board-thumb {
-  @apply w-32 h-24 rounded-2xl flex items-center justify-center bg-cover bg-center;
-}
+
 body {
   margin-top: 100px;
   background-color: #137b85;
@@ -411,6 +398,7 @@ h1 {
     -webkit-transform: rotate(360deg);
   }
 }
+
 /* 모달창 애니메이션 */
 .fade-enter-active {
   transform: translateY(90vh);
@@ -432,6 +420,24 @@ h1 {
   transform: translateY(0px);
   position: fixed;
   opacity: 1;
+}
+
+.modal {
+  box-shadow: 0px 0px 7px;
+  @apply fixed top-20 inset-0 border bg-white border-t-2 rounded-t-2xl z-10 dark:bg-zz-bd;
+}
+.my-board-contain {
+  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
+}
+.my-board {
+  filter: opacity(0.1) drop-shadow(0 0 0 rgb(221, 218, 218));
+  @apply h-full w-full rounded-2xl bg-cover;
+}
+.detail {
+  @apply h-full w-full rounded-2xl bg-cover;
+}
+.my-board-thumb {
+  @apply w-32 h-24 rounded-2xl flex items-center justify-center bg-cover bg-center;
 }
 /* 보관함 모달창 외부 클릭범위 */
 .list-view-bg {

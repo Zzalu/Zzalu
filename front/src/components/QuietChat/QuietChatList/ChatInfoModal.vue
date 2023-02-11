@@ -18,7 +18,7 @@
       <div class="modal-first-line">
         <div class="group">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="first-line-content">{{ room_data.userName }}</p>
+          <p class="first-line-content">{{ room_data.userNmae }}</p>
         </div>
         <div class="group">
           <font-awesome-icon
@@ -42,7 +42,7 @@
     </div>
     <div class="flex place-content-evenly">
       <button class="modal-create-btn">
-        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId }}"> 입장하기 </router-link>
+        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId, member_Id : room_data.memberId }}"> 입장하기 </router-link>
       </button>
     </div>
   </div>
