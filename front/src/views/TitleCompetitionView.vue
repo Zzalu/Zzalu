@@ -10,7 +10,7 @@
             <h1 class="text-xl font-bold">오늘의 제목학원</h1>
           </div>
           <div class="absolute right-0 top-0 flex flex-row items-center bg-zz-p p-1 rounded-md">
-            <button class="text-xs text-white">역대 제목학원</button>
+            <button class="text-xs text-white" @click="GoToWholeOfFrame">역대 제목학원</button>
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
@@ -56,7 +56,7 @@ import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
@@ -70,13 +70,26 @@ export default {
   setup() {
     const store = useStore();
     const route = useRoute();
+    const router = useRouter();
     const open_date = route.params.open_date; // 제목학원 날짜
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
     let total_comment_cnt = computed(() => store.state.titleCompetitionStore.total_comment_cnt); // 댓글 개수
     let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
-
+    const GoToWholeOfFrame = () => {
+      router.push(`/whole-of-frame`);
+    };
+    /*     async function init() {
+      await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
+        if (result) {
+          store.dispatch('titleCompetitionStore/getNewestComments', 4);
+        }
+      });
+      total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt;
+      zzal_url = store.state.titleCompetitionStore.zzal_url;
+    } */
+    document.documentElement.scrollTop = 0;
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
     // store.dispatch('titleCompetitionStore/getComments', 4);
 
@@ -93,7 +106,6 @@ export default {
       } else {
         if (scrollLocation + windowHeight >= fullHeight) {
           setTimeout(() => {
-            document.documentElement.scrollTop = scrollLocation - 100;
             loadMoreComments();
           }, 2000);
         }
@@ -156,6 +168,7 @@ export default {
       scroll,
       zzalComponent,
       clickSortBtn,
+      GoToWholeOfFrame,
     };
   },
 };
