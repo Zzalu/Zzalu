@@ -60,6 +60,7 @@ export default {
           comment_data,
           ({ data }) => {
             console.log(data);
+            store.dispatch('titleCompetitionStore/pushComment', data);
           },
           (error) => {
             console.log(error);

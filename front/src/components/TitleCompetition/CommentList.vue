@@ -1,10 +1,14 @@
 <template>
   <ol ref="commentListComponent">
-    <li v-for="comment in comments" :key="comment.id" :comment="comment" class="mb-1">
+    <li v-for="comment in comments" :key="comment.commentId" class="mb-1">
       <CommentListItem :comment="comment" />
       <span class="w-full h-divider-height bg-zz-light-div dark:border-b-zz-dark-div"></span>
     </li>
   </ol>
+  <div class="flex-row justify-center items-center" v-if="comments.length == 0">
+    <p>좋아요가 없네요ㅠㅠ</p>
+    <p>당신의 웃음벨에게 좋아요를 주세요!</p>
+  </div>
 </template>
 
 <script>

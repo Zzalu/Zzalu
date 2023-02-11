@@ -73,6 +73,11 @@ const titleCompetitionStore = {
       state.new_nested_comments.splice(0);
     },
 
+    // 작성관련
+    // 댓글
+    PUSH_COMMENT(state, comment) {
+      state.comments.unshift(comment);
+    },
     // 대댓글 작성 관련
     SET_COMMENT_WRITER(state, comment_writer) {
       state.comment_writer.comment_id = comment_writer.comment_id;
@@ -194,6 +199,14 @@ const titleCompetitionStore = {
     },
 
     // 작성 관련
+    // 댓글
+    pushComment({ commit }, comment) {
+      commit('PUSH_COMMENT', comment);
+    },
+    // 대댓글
+    pushNestedComment({ commit }, nested_comment) {
+      commit('PUSH_NESTED_COMMENT', nested_comment);
+    },
 
     // 대댓글 작성
     writeNestedComment({ commit }, comment_writer) {
