@@ -82,7 +82,7 @@ const boardListStore = {
       getUserBoard(
         params,
         (data) => {
-          console.log(data, '보드 요청 성공');
+          // console.log(data, '보드 요청 성공');
           commit('GET_USER_BOARD', data)
         },
         (err) => {

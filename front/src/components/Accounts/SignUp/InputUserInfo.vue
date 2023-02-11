@@ -122,10 +122,16 @@ export default {
       if (result.data.unique == true) {
         state.usernameState = true
         // alert("사용 가능한 아이디입니다.")
-        Swal.fire({text:"사용 가능한 아이디입니다."})
+        Swal.fire({
+          icon: "success",
+          text:"사용 가능한 아이디입니다."
+          })
       } else {
         state.usernameState = false
-        Swal.fire({html:"사용 중인 아이디입니다. <br>다른 아이디를 등록해주세요."})
+        Swal.fire({
+          icon: "error",
+          html:"사용 중인 아이디입니다. <br>다른 아이디를 등록해주세요."
+          })
       } }
     }
 
@@ -145,10 +151,16 @@ export default {
       const result = await store.dispatch('userStore/uniqueNicknameAction', state.credentials.nickname )
       if (result.data.unique==true) {
         state.nicknameState = true
-        Swal.fire({text:"사용 가능한 닉네임입니다."})
+        Swal.fire({
+          icon: "success",
+          text:"사용 가능한 닉네임입니다."
+          })
       } else {
         state.nicknameState = false
-        Swal.fire({html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."})
+        Swal.fire({
+          icon: "error",
+          html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+          })
       }
     }}
 

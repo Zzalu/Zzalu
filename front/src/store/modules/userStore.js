@@ -1,5 +1,4 @@
 import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete } from "@/api/userAccount";
-// import createPersistedState from "vuex-persistedstate";
 
 const userStore = {
   namespaced: true,
@@ -27,6 +26,7 @@ const userStore = {
     SAVE_EMAIL_TEMP(state, credentialsEmailCode) {
       state.temp.email = credentialsEmailCode.email
       state.temp.code = credentialsEmailCode.code
+      window.localStorage.setItem("temp_email", credentialsEmailCode.email)
     },
     SAVE_CURRENT_USER(state, loginData ) {
       console.log('지금 접속한 사람 저장')
@@ -39,6 +39,14 @@ const userStore = {
       localStorage.setItem('token', loginData.data.accessToken)
       console.log('지금 접속한 사람 출력', loginData.data.username)
       console.log('지금 접속한 사람 출력', state.user)
+    },
+    DELETE_TEMP_USER(state) {
+      state.temp.username = ''
+      state.temp.nickname = ''
+      state.temp.password = ''
+      state.temp.passwordCheck = ''
+      state.temp.email = ''
+      state.temp.code = ''
     },
     LOGOUT (state) {
       localStorage.removeItem('id')
@@ -79,6 +87,7 @@ const userStore = {
     },
     // 이메일 중복확인
     sendEmailAction: async (commit, email) => {
+      
       const data = JSON.stringify({"userEmail": email})
       const response = await checkEmail(
         data,
@@ -104,6 +113,7 @@ const userStore = {
     signupSecondAction: async (context, credentialsEmailCode) => {
       console.log(credentialsEmailCode)
       context.commit('SAVE_EMAIL_TEMP', credentialsEmailCode)
+      
       return true
     },
     signupFinalAction: async (context, signupUser ) => {
@@ -117,6 +127,9 @@ const userStore = {
             return err.response
         })
         return response
+    },
+    signupInfoDelete: (context) => {
+      context.commit('DELETE_USER_TEMP')
     },
     // -----------------------------------------------------------
     // 로그인
@@ -174,12 +187,6 @@ const userStore = {
     }
   },
 
-  
-  // plugins: [
-  //   createPersistedState({
-  //     paths: ['temp'],
-  //   })
-  // ],
 };
 
 export default userStore;

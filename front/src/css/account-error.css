@@ -66,19 +66,19 @@
 /* 에러페이지 중제목 */
 .error-sub-title {
   word-break: keep-all;
-  @apply text-lg font-spoq font-bold
+  @apply text-lg font-spoq font-bold dark:text-white
 }
 
 
 .error-content-bold {
   word-break: keep-all;
-  @apply font-spoq font-bold text-sm
+  @apply font-spoq font-bold text-sm dark:text-white
 }
 
 /* 에러페이지 내용 */
 .error-content {
   word-break: keep-all;
-  @apply font-spoq text-xs my-1
+  @apply font-spoq text-xs my-1 dark:text-white
 }
 
 

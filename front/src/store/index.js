@@ -27,7 +27,7 @@ const store = new Vuex.Store({
     boardListStore,
     // tempGifStore,
   },
-    //vuex plugin 명시
+    // vuex plugin 명시
     plugins: [createPersistedState({
       paths: ["userStore.temp"]
   })]
