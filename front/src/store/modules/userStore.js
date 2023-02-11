@@ -23,7 +23,6 @@ const userStore = {
       state.temp.nickname = credentialsData.nickname
       state.temp.password = credentialsData.password
       state.temp.passwordCheck = credentialsData.passwordCheck
-      console.log(state.temp.username)
     },
     SAVE_EMAIL_TEMP(state, credentialsEmailCode) {
       state.temp.email = credentialsEmailCode.email

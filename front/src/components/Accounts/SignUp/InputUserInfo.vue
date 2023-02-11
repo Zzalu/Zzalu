@@ -9,7 +9,7 @@
     />
     <button class="button-in-input" @click="uniqueUsername">중복확인</button>
   </div>
-  <div class="error" v-if="errorMsgs.err.username" > {{ errorMsgs.err.username }} </div>
+  <div class="signup-error" v-if="errorMsgs.err.username" > {{ errorMsgs.err.username }} </div>
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-user" class="icon-aligned-left" />
     <input
@@ -20,7 +20,7 @@
     />
     <button class="button-in-input" @click="uniqueNickname" >중복확인</button>
   </div>
-  <div class="error" v-if="errorMsgs.err.nickname" > {{ errorMsgs.err.nickname }} </div>
+  <div class="signup-error" v-if="errorMsgs.err.nickname" > {{ errorMsgs.err.nickname }} </div>
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
     <input
@@ -30,7 +30,7 @@
       v-model="state.credentials.password"
     />
   </div>
-  <div class="error" v-if="errorMsgs.err.password" > {{ errorMsgs.err.password }} </div>
+  <div class="signup-error" v-if="errorMsgs.err.password" > {{ errorMsgs.err.password }} </div>
   <div class="input-without-title">
     <font-awesome-icon icon="fa-solid fa-lock" class="icon-aligned-left" />
     <input
@@ -40,7 +40,7 @@
       v-model="state.credentials.passwordCheck"
     />
   </div>
-  <div class="error" v-if="errorMsgs.err.passwordCheck" > {{ errorMsgs.err.passwordCheck }} </div>
+  <div class="signup-error" v-if="errorMsgs.err.passwordCheck" > {{ errorMsgs.err.passwordCheck }} </div>
   <div class="account-right">
     <div class="redir-accounts">
       <div>이미 계정이 있으신가요?</div>
@@ -57,11 +57,13 @@
 // import useVuelidate from "@vuelidate/core";
 // import { required } from "@vuelidate/validators";
 import SignupInfoValidations from '../../../services/SignupValidations'
+import SignupUsernameValidations from '../../../services/SignupUsernameValidations'
+import SignupNicknameValidations from '../../../services/SignupNicknameValidations'
 import { useStore } from 'vuex';
 import { reactive, watch } from 'vue'
 import { useRouter } from 'vue-router';
 // import {mapActions} from 'vuex';
-
+import Swal from 'sweetalert2'
 
 export default {
   name: "InputUserInfo",
@@ -92,50 +94,83 @@ export default {
     })
     // 아이디 닉네임 바꾸는지 확인
     watch(() => state.credentials.username, (newValue, oldValue) => {
-      if (newValue != oldValue) {state.usernameState = false}
+      if (newValue != oldValue) {
+        state.usernameState = false
+        errorMsgs.err.username = null
+        }
     })
     watch(() => state.credentials.nickname, (newValue, oldValue) => {
-      if (newValue != oldValue) {state.nicknameState = false}
+      if (newValue != oldValue) {
+        state.nicknameState = false
+        errorMsgs.err.nickname= null
+        }
+      
     })
     // 아이디 중복확인
     const uniqueUsername = async function () {
-      const result = await store.dispatch('userStore/uniqueUsernameAction', state.credentials.username )
+      // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
+      const validations = new SignupUsernameValidations(
+        state.credentials.username
+        );
+      const errors = validations.checkValidations();
+      if ('username' in errors) {
+        errorMsgs.err.username = errors['username']
+        this.state.usernameState = false
+      } else {
+        // 네이밍 규칙 맞추면 이제 진짜 중복확인 
+        const result = await store.dispatch('userStore/uniqueUsernameAction', state.credentials.username )
       if (result.data.unique == true) {
         state.usernameState = true
-        alert("사용 가능한 아이디입니다.")
+        // alert("사용 가능한 아이디입니다.")
+        Swal.fire({text:"사용 가능한 아이디입니다."})
       } else {
         state.usernameState = false
-        alert("사용 중인 아이디입니다. \n다른 아이디를 등록해주세요.")
-      } 
+        Swal.fire({html:"사용 중인 아이디입니다. <br>다른 아이디를 등록해주세요."})
+      } }
     }
+
+
     // 닉네임 중복확인
     const uniqueNickname = async function () {
+      // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
+      const validations = new SignupNicknameValidations(
+        state.credentials.nickname
+        );
+      const errors = validations.checkValidations();
+      
+      if ('nickname' in errors) {
+        errorMsgs.err.nickname = errors['nickname']
+        this.state.nicknameState = false
+      } else {
       const result = await store.dispatch('userStore/uniqueNicknameAction', state.credentials.nickname )
       if (result.data.unique==true) {
         state.nicknameState = true
-        alert("사용 가능한 닉네임입니다.")
+        Swal.fire({text:"사용 가능한 닉네임입니다."})
       } else {
         state.nicknameState = false
-        alert("이미 사용 중인 닉네임입니다. \n다른 닉네임을 등록해주세요.")
+        Swal.fire({html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."})
       }
-    }
+    }}
 
     // 네이밍규칙
     const submitRules = function () {
+      
       const validations = new SignupInfoValidations(
         state.credentials.username, 
         state.credentials.nickname, 
         state.credentials.password,
         state.credentials.passwordCheck,
         );
-      // console.log(validations.checkValidations())
+
       const errors = validations.checkValidations();
       
       if ('username' in errors) {
         errorMsgs.err.username = errors['username']
+        this.state.usernameState = false
       } 
       if ('nickname' in errors) {
         errorMsgs.err.nickname = errors['nickname']
+        this.state.nicknameState = false
       }
       if ('password' in errors) {
         errorMsgs.err.password = errors['password']
@@ -168,7 +203,6 @@ export default {
       // 회원가입 등록
       const res = await store.dispatch('userStore/signupFirstAction', credentialsData)
       if (res) {
-        console.log("회원가입 요청 1 잘 갔음")
         router.push({name: 'input-signup-email'})
       }
       }

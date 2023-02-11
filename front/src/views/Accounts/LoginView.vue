@@ -1,6 +1,6 @@
 <template>
   <div>
-    <only-go-back-top-nav></only-go-back-top-nav>>
+    <only-go-back-top-nav></only-go-back-top-nav>
     <!-- 로고랑 제목 -->
     <img
       alt="ZZalu Light logo"
@@ -25,6 +25,7 @@
         class="account-input"
         placeholder="아이디를 입력하세요"
         v-model="state.creds.username"
+        autocomplete="off"
       />
     </div>
     <!-- <div class="error" v-if = "errors.username"> {{ errors.username }} </div> -->
@@ -34,10 +35,12 @@
       <input
         type="password"
         class="account-input"
+        id="password"
         placeholder="비밀번호를 입력하세요"
         v-model='state.creds.password'
+        autocomplete="off"
       />
-      <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
+      <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" @click="showPwd" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
     <!-- <div class="error" v-if = "errors.password"> {{ errors.password }} </div> -->
@@ -112,10 +115,18 @@
         
       }
 
+      const showPwd = function() {
+        var pwd = document.getElementById("password");
+        if (pwd.type=="text") {
+          pwd.type = "password"
+        } else {
+          pwd.type="text"
+        }
+      }
       return {
         state,
         loginSubmit,
-        
+        showPwd
       }
     },
     data() {
