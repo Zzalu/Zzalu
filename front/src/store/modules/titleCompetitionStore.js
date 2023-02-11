@@ -8,7 +8,7 @@ const titleCompetitionStore = {
     total_comment_cnt: 0,
     title_competition_id: 0,
     zzal_url: '',
-
+    state: '',
     // 댓글
     sort_type: 'POPULAR',
     comments: [],
@@ -40,6 +40,7 @@ const titleCompetitionStore = {
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
+      state.state = title_competition_data.state;
     },
 
     // 댓글 sort 수정하기
@@ -72,6 +73,11 @@ const titleCompetitionStore = {
       state.new_nested_comments.splice(0);
     },
 
+    // 작성관련
+    // 댓글
+    PUSH_COMMENT(state, comment) {
+      state.comments.unshift(comment);
+    },
     // 대댓글 작성 관련
     SET_COMMENT_WRITER(state, comment_writer) {
       state.comment_writer.comment_id = comment_writer.comment_id;
@@ -83,6 +89,9 @@ const titleCompetitionStore = {
       state.comment_writer.id = '';
       state.comment_writer.nickname = '';
       state.isNested = false;
+    },
+    DELETE_COMMENT(state, comment_index) {
+      state.comments.splice(comment_index, 1);
     },
   },
   actions: {
@@ -113,7 +122,11 @@ const titleCompetitionStore = {
     // 댓글 sort 수정하기
     async modifySortType({ commit, dispatch }, sort_type) {
       await commit('MODIFY_SORT_TYPE', sort_type);
-      await dispatch('getComments', 4);
+      if (sort_type == 'POPULAR') {
+        await dispatch('getBestComments');
+      } else {
+        await dispatch('getComments', 4);
+      }
     },
     // 댓글
     async getComments({ commit, state }, size) {
@@ -189,6 +202,14 @@ const titleCompetitionStore = {
     },
 
     // 작성 관련
+    // 댓글
+    pushComment({ commit }, comment) {
+      commit('PUSH_COMMENT', comment);
+    },
+    // 대댓글
+    pushNestedComment({ commit }, nested_comment) {
+      commit('PUSH_NESTED_COMMENT', nested_comment);
+    },
 
     // 대댓글 작성
     writeNestedComment({ commit }, comment_writer) {
@@ -200,6 +221,10 @@ const titleCompetitionStore = {
         commit('DELETE_COMMENT_WRITER');
         resolve();
       });
+    },
+    // 삭제 관련
+    deleteComment({ commit }, comment_index) {
+      commit('DELETE_COMMENT', comment_index);
     },
   },
 };

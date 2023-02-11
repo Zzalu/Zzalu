@@ -36,9 +36,24 @@
             <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
           </div>
           <div>
-            <button class="sort-text" @click="clickSortBtn('POPULAR')">인기순</button>
+            <button
+              :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
+              @click="clickSortBtn('POPULAR')"
+            >
+              인기순
+            </button>
+            <button :class="[sort_type == 'LATEST' ? 'sort-text-active' : 'sort-text']" @click="clickSortBtn('LATEST')">
+              최신순
+            </button>
+            <button
+              :class="[sort_type == 'CHRONOLOGICAL' ? 'sort-text-active' : 'sort-text']"
+              @click="clickSortBtn('CHRONOLOGICAL')"
+            >
+              과거순
+            </button>
+            <!-- <button class="sort-text" @click="clickSortBtn('POPULAR')">인기순</button>
             <button class="sort-text" @click="clickSortBtn('LATEST')">최신순</button>
-            <button class="sort-text" @click="clickSortBtn('CHRONOLOGICAL')">과거순</button>
+            <button class="sort-text" @click="clickSortBtn('CHRONOLOGICAL')">과거순</button> -->
           </div>
         </nav>
         <!-- 댓글 리스트 -->
@@ -55,7 +70,7 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
@@ -80,6 +95,7 @@ export default {
     const GoToWholeOfFrame = () => {
       router.push(`/whole-of-frame`);
     };
+    let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
     /*     async function init() {
       await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
         if (result) {
@@ -97,7 +113,7 @@ export default {
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
-    function infinityScroll() {
+    /*     function infinityScroll() {
       let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
       let windowHeight = window.innerHeight; // 스크린 창
       let fullHeight = document.body.scrollHeight; // margin 값은 포함 x
@@ -125,7 +141,7 @@ export default {
         store.dispatch('titleCompetitionStore/getComments', 4);
       }, 2000);
       console.log('불러옵니다');
-    };
+    }; */
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
@@ -169,6 +185,7 @@ export default {
       zzalComponent,
       clickSortBtn,
       GoToWholeOfFrame,
+      sort_type,
     };
   },
 };
@@ -176,7 +193,10 @@ export default {
 
 <style>
 .sort-text {
-  @apply text-xs text-zz-p mr-1;
+  @apply text-xs text-zz-p mr-1 font-thin;
+}
+.sort-text-active {
+  @apply text-xs text-zz-s mr-1 font-black;
 }
 
 .title-header {
