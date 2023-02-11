@@ -1,13 +1,21 @@
 <template>
   <!-- 댓글 input -->
-  <div class="comment_write flex">
+  <div v-if="state != 'DONE'" class="comment_write flex">
     <div v-show="canWriteNested.value" class="absolute bottom-10 bg-zz-p px-2 py-1 text-xs rounded-xl">
       <span class="mr-1">{{ comment_writer_nickname }}에게 답글</span>
       <button @click="undoWriteNestedComment">
         <font-awesome-icon icon="fa-solid fa-circle-xmark" class="text-zz-light-p" />
       </button>
     </div>
-    <input type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." />
+    <input v-if="isLogined" type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." />
+    <input
+      v-else
+      type="text"
+      class="comment_input"
+      @change="changeInput"
+      placeholder="로그인 후에 참여하실 수 있습니다 :)"
+      disabled
+    />
 
     <button class="comment_submit" @click="clicksubmitBtn">등록</button>
   </div>
@@ -26,7 +34,14 @@ export default {
     let comment_writer_nickname = computed(() => ref(store.state.titleCompetitionStore.comment_writer.nickname));
 
     let canWriteNested = computed(() => ref(store.state.titleCompetitionStore.isNested));
-
+    let state = computed(() => store.state.titleCompetitionStore.state);
+    let isLogined = computed(() => {
+      if (window.localStorage.getItem('token')) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     const undoWriteNestedComment = async () => {
       await store.dispatch('titleCompetitionStore/deleteCommentWriter');
     };
@@ -78,6 +93,8 @@ export default {
       canWriteNested,
       clicksubmitBtn,
       changeInput,
+      state,
+      isLogined,
     };
   },
 };

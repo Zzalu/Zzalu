@@ -8,7 +8,7 @@ const titleCompetitionStore = {
     total_comment_cnt: 0,
     title_competition_id: 0,
     zzal_url: '',
-
+    state: '',
     // 댓글
     sort_type: 'POPULAR',
     comments: [],
@@ -40,6 +40,7 @@ const titleCompetitionStore = {
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
+      state.state = title_competition_data.state;
     },
 
     // 댓글 sort 수정하기
