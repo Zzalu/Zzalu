@@ -5,33 +5,40 @@
       <div class="medal-board">
         <font-awesome-icon icon="fa-solid fa-medal" class="text-zz-gold h-8" />
         <div class="medal-title">금상</div>
-        <div>0회</div>
+        <div>{{ this.profile_user_data.awardCount.count1st }}회</div>
       </div>
       <div class="medal-board">
         <font-awesome-icon icon="fa-solid fa-medal" class="text-zz-silver h-8" />
         <div class="medal-title">은상</div>
-        <div>0회</div>
+        <div>{{ this.profile_user_data.awardCount.count2nd }}회</div>
       </div>
       <div class="medal-board">
         <font-awesome-icon icon="fa-solid fa-medal" class="text-zz-bronze h-8" />
         <div class="medal-title">동상</div>
-        <div>0회</div>
+        <div>{{ this.profile_user_data.awardCount.count3nd }}회</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+// import { useRouter } from 'vue-router';
+import { computed } from "@vue/runtime-core";
 export default {
   name: 'UserAward',
   setup() {
-    const router = useRouter();
-    const GoToAwardRecord = () => {
-      router.push(`/award-record/c109`);
-    };
+    const store = useStore();
+    // const router = useRouter();
+    // const GoToAwardRecord = () => {
+    //   router.push(`/award-record/${profile_user_data.username}`);
+    // };
+    const profile_user_data = computed(
+      () => store.state.profileStore.profile_user
+    );
     return {
-      GoToAwardRecord,
+      // GoToAwardRecord,
+      profile_user_data
     };
   },
 };

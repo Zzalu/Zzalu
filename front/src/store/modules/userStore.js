@@ -1,5 +1,5 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser } from "@/api/userAccount";
-import createPersistedState from "vuex-persistedstate";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete } from "@/api/userAccount";
+// import createPersistedState from "vuex-persistedstate";
 
 const userStore = {
   namespaced: true,
@@ -16,25 +16,11 @@ const userStore = {
     accessToken: "",
     refreshToken: "",
     // isLogin: false,
-    profile_user: {
-      id: '',
-      username: '',
-      nickname: "",
-      userEmail: "",
-      enrollDate: "",
-      profileMessage: null,
-      profilePath: null,
-      followingCnt: 0,
-      followerCnt: 0,
-      boardList: {
-          boards: []
-      }
-    }
   }),
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
       state.temp.username = credentialsData.username
-      state.temp.nickname = credentialsData.username
+      state.temp.nickname = credentialsData.nickname
       state.temp.password = credentialsData.password
       state.temp.passwordCheck = credentialsData.passwordCheck
       console.log(state.temp.username)
@@ -62,19 +48,6 @@ const userStore = {
       state.accessToken = ''
       state.refreshToken = ''
       state.isLogin = false
-    },
-    // 프로필 유저
-    SET_PROFILE_USER(state, data) {
-      state.profile_user.id = data.id;
-      state.profile_user.username = data.username;
-      state.profile_user.nickname = data.nickname;
-      state.profile_user.profileMessage = data.profileMessage;
-      state.profile_user.profilePath = data.profilePath;
-      state.profile_user.profileMessage = data.profileMessage;
-      state.profile_user.followingCnt = data.followingCnt;
-      state.profile_user.followerCnt = data.followerCnt;
-      state.profile_user.boardList = data.boardList;
-      state.profile_user.enrollDate = data.enrollDate;
     },
   },
   getters: {
@@ -111,9 +84,11 @@ const userStore = {
       const response = await checkEmail(
         data,
         (res) => {
+          console.log("삭제잘됨?")
           return res
         },
         (err) => {
+          console.log("비번 틀렷거나..")
           return err.response
       }
         );
@@ -147,9 +122,9 @@ const userStore = {
     // -----------------------------------------------------------
     // 로그인
     loginAction: async (context, loginData ) => {
-      console.log("store잘 들어옴", loginData)
+      // console.log("store잘 들어옴", loginData)
       const response = await requestLogin(loginData)
-      console.log("store 다시 잘 들어옴", response)
+      // console.log("store 다시 잘 들어옴", response)
       context.commit('SAVE_CURRENT_USER', response)
       console.log(response.data)
       // localStorage.setItem('id', response.data.username)
@@ -181,24 +156,31 @@ const userStore = {
       // console.log("이안에 코드있음",response)
       return response
     },
-    //  ----------------------------------------------------------
-    // 프로필 보기
-    getProfileUser({ commit }, username) {
-      getProfileUser(
-        username,
-        ({ data }) => {
-          console.log(data);
-          commit('SET_PROFILE_USER', data);
+  // --------------------------------------------------------------
+  // 회원탈퇴
+    userDeleteAction: async (context, pwd) => {
+      console.log('여기도 들어옴?')
+      const response = requestDelete(
+        pwd,
+        (res) => {
+          window.localStorage.clear()
+          console.log("삭제 잘 되었다는 뜻",res);
+          return res
         },
-        (error) => console.log(error),
-      );
-    },
+        (err) => {
+          console.log(err.response.status)
+          return 400
+        })
+      return response
+    }
   },
-  plugins: [
-    createPersistedState({
-      paths: ['temp'],
-    })
-  ],
+
+  
+  // plugins: [
+  //   createPersistedState({
+  //     paths: ['temp'],
+  //   })
+  // ],
 };
 
 export default userStore;

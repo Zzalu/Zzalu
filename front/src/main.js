@@ -4,6 +4,10 @@ import './css/common.css';
 import router from './router.js';
 import store from '@/store';
 import Vue3TouchEvents from "vue3-touch-events";
+// import Vue from 'vue'
+import VueApexCharts from 'vue3-apexcharts';
+// Vue.use(VueApexCharts)
+// Vue.component('apexchart', VueApexCharts)
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -30,3 +34,4 @@ app.use(store);
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
 app.use(Vue3TouchEvents)
+app.use(VueApexCharts)

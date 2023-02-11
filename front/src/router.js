@@ -133,7 +133,6 @@ const routes = [
   },
   // 프로필 정보 수정
   {
-    // path: '/:user_id/edit-profile',
     path: '/profile/edit',
     name: 'edit-profile',
     component: () => import('@/views/Profile/EditProfileView'),
@@ -172,6 +171,20 @@ const routes = [
     path: '/board/:board_id',
     name: 'board',
     component: () => import('@/views/BoardDetailView'),
+  },
+  // -----------------------------------------------------------
+  // 계정 삭제
+  {
+    path: '/account/delete',
+    name: 'delete-account',
+    component: () => import('@/views/Profile/AccountDeleteView'),
+  },
+  // -----------------------------------------------------------
+  // 관리자계정
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/Accounts/AdminInfoView'),
   },
   // -------------------------------------------------------------------
   // ERROR

@@ -163,7 +163,7 @@
 /* 회원정보 수정 관련 */
 
 .settings-button {
-  @apply flex-auto bg-zz-light-input text-zz-light-p text-xl font-spoq my-1 py-2 px-16 h-16 text-left dark:text-white
+  @apply flex-auto bg-zz-light-input rounded text-xl font-spoq my-1 py-2 px-16 h-16 text-left dark:bg-zz-dark-input
 }
 
 .settings-icon-aligned-left {
@@ -171,13 +171,13 @@
 }
 
 .settings-toggle-right {
-  @apply absolute right-6 mx-5 my-2 h-14 text-zz-light-p
+  @apply absolute right-6 mx-5 my-2 h-14 text-zz-light-p dark:text-white
 }
 
 .settings-right-letter-off {
   top: 17.65rem;
   right: 1.77rem;
-  @apply absolute mx-6 text-xs font-spoq text-zz-light-p font-bold
+  @apply absolute mx-6 text-xs font-spoq text-zz-light-p font-bold dark:text-white
 }
 
 .settings-right-letter-on {

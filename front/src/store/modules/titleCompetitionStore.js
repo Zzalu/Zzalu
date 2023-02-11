@@ -1,4 +1,4 @@
-import { getNewestComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
+import { getComments, getBestComments, getNestedComments, getTitleCompetition } from '@/api/titleCompetition';
 
 const titleCompetitionStore = {
   namespaced: true,
@@ -10,6 +10,7 @@ const titleCompetitionStore = {
     zzal_url: '',
 
     // 댓글
+    sort_type: 'POPULAR',
     comments: [],
     last_comment_id: Number.MAX_SAFE_INTEGER,
 
@@ -32,20 +33,28 @@ const titleCompetitionStore = {
   mutations: {
     // 날짜 바꾸기
     SET_OPEN_DATE(state, open_date) {
-      console.log('SET_OPEN_DATE');
       state.open_date = open_date;
     },
     // 제목학원
     SET_TITLE_COMPETITION(state, title_competition_data) {
-      console.log('SET_TITLE_COMPETITION');
       state.title_competition_id = title_competition_data.titleHakwonId;
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
     },
 
-    // 댓글
+    // 댓글 sort 수정하기
+    MODIFY_SORT_TYPE(state, sort_type) {
+      state.sort_type = sort_type;
+      if (sort_type == 'LATEST') {
+        state.last_comment_id = Number.MAX_SAFE_INTEGER;
+      } else if (sort_type == 'CHRONOLOGICAL') {
+        state.last_comment_id = Number.MIN_SAFE_INTEGER;
+      }
+      state.comments = [];
+    },
+
+    // 댓글 추가하기
     ADD_COMMENTS(state, new_comments) {
-      console.log('ADD_COMMENTS');
       state.comments.push(...new_comments);
     },
 
@@ -78,9 +87,9 @@ const titleCompetitionStore = {
   },
   actions: {
     async init({ state, dispatch }, data) {
-      console.log(data);
+      // console.log(data);
       await dispatch('getTitleCompetition', data.open_date);
-      await dispatch('getNewestComments', data.size);
+      await dispatch('getBestComments');
       await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
     },
     // 제목학원 가져오기
@@ -100,15 +109,36 @@ const titleCompetitionStore = {
         );
       });
     },
+
+    // 댓글 sort 수정하기
+    async modifySortType({ commit, dispatch }, sort_type) {
+      await commit('MODIFY_SORT_TYPE', sort_type);
+      await dispatch('getComments', 4);
+    },
     // 댓글
-    async getNewestComments({ commit, state }, size) {
+    async getComments({ commit, state }, size) {
       const params = {
         lastCid: state.last_comment_id,
         limit: size,
-        sort: 'LATEST',
-        username: 'c109',
+        sort: state.sort_type,
       };
-      await getNewestComments(
+      await getComments(
+        state.title_competition_id,
+        params,
+        ({ data }) => {
+          commit('ADD_COMMENTS', data);
+        },
+        (error) => {
+          console.log(error);
+        },
+      );
+    },
+    async getBestComments({ commit, state }) {
+      const params = {
+        limit: 50,
+        sort: state.sort_type,
+      };
+      await getBestComments(
         state.title_competition_id,
         params,
         ({ data }) => {
@@ -135,7 +165,6 @@ const titleCompetitionStore = {
         lastCid: datas.lastCid,
         limit: datas.limit,
         sort: 'LATEST',
-        username: 'c109',
       };
       return new Promise((resolve, reject) => {
         getNestedComments(

@@ -7,6 +7,7 @@ import searchModalStore from '@/store/modules/searchModalStore.js'
 import quietChatStore from '@/store/modules/quietChatStore.js'
 import zzalListStore from '@/store/modules/zzalListStore.js'
 import followStore from './modules/followStore';
+import profileStore from '@/store/modules/profileStore';
 import boardListStore from '@/store/modules/boardListStore';
 import createPersistedState from 'vuex-persistedstate';
 
@@ -22,7 +23,9 @@ const store = new Vuex.Store({
     quietChatStore,
     zzalListStore,
     followStore,
+    profileStore,
     boardListStore,
+    // tempGifStore,
   },
     //vuex plugin 명시
     plugins: [createPersistedState({

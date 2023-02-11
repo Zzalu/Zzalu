@@ -43,7 +43,7 @@
     <input
       type="text"
       class="account-input"
-      v-bind:placeholder="this.profile_user_data.username"
+      v-bind:placeholder="this.my_data.username"
     />
     <button class="button-in-input">중복확인</button>
   </div>
@@ -55,10 +55,10 @@
     <input
       type="text"
       class="intro-input"
-      v-bind:placeholder="this.profile_user_data.profileMessage"
+      v-bind:placeholder="this.my_data.profileMessage"
     />
   </div>
-  <div class="delete-account">탈퇴하기</div>
+  <router-link to="/account/delete" class="delete-account">탈퇴하기</router-link>
   <main-bottom-nav></main-bottom-nav>
 </template>
 
@@ -74,17 +74,21 @@ export default {
     MainBottomNav,
   },
   setup() {
+    const me = localStorage.getItem("id");
     const store = useStore();
-    const profile_user_data = computed(
-      () => store.state.userStore.profile_user
+    const my_data= computed(
+      () => store.state.profileStore.profile_user
     );
 
-    const saveEditInfo = {};
+
     return {
-      profile_user_data,
-      saveEditInfo,
+      me,
+      my_data,
     };
 
+
+  },
+  methods: {
 
   },
 };

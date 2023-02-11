@@ -84,7 +84,7 @@ const followStore = {
         })
       },
 
-      // 팔로우 상태 확인
+      // 팔로우 상태 확인 > 못함
       checkFollowState(your_id) {
         checkFollowState(
             your_id,

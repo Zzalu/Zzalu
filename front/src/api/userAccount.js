@@ -1,7 +1,6 @@
-import { apiInstance } from './index.js';
-// import { authApiInstance } from './index.js';
+import { apiInstance, authApiInstance } from './index.js';
 const api = apiInstance();
-// const auth_api = authApiInstance();
+const auth_api = authApiInstance();
 
 const checkUsername = (payload) => {
     // console.log(payload)
@@ -37,7 +36,13 @@ const requestUsername = (data,res,err) => {
 }
 
 const getProfileUser = (username, success, fail) => {
-    api.get(`/members/${username}`).then(success).catch(fail);
+    api.get(`/members?username=${username}`).then(success).catch(fail);
 }
 
-export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser }
+
+const requestDelete = (pwd, res, err) => {
+    const data = JSON.stringify({"rawPassword": pwd})
+    auth_api.delete(`members`, {data: data}).then(res).catch(err)
+}
+
+export { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, getProfileUser, requestDelete }

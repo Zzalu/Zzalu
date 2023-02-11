@@ -42,7 +42,6 @@ export default {
     };
     const close_search_modal = () => {
       store.commit("searchModalStore/open_search_modal")
-      store.dispatch("zzalListStore/getFirstRandomGIFLIST")
     };
     const send_select_gif_id_data = (data) => {
       store.commit("boardListStore/SELECT_GIF",data)
@@ -80,7 +79,11 @@ export default {
     send_message_select() {
       this.$emit("select_id", this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
-      this.$emit('path',this.zzal_info.gifPath)
+      let gif_path = {
+        id : this.zzal_info.id,
+        gifPath : this.zzal_info.gifPath,
+      }
+      this.$emit('path',gif_path)
     },
     send_message() {
 

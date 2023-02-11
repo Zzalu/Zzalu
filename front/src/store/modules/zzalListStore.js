@@ -50,11 +50,11 @@ const zzalListStore = {
     getFirstRandomGIFList({ commit }) {
       getFirstRandomGIF (
         (data) => {
-          console.log(data, '겟퍼스트랜덤');
+          console.log(data, '서치 모달 데이터 받아옴');
           commit('GET_FIRST_RANDOM_GIF', data)
         },
         (err) => {
-          console.log(err, '겟퍼스트실패');
+          console.log(err, '서치 모달 데이터 받지못함');
         }
       )
     },
@@ -62,7 +62,7 @@ const zzalListStore = {
       getMoreRandomGIF (
         params,
         (data) => {
-          console.log(data, '모얼랜덤')
+          console.log(data, '추가 랜덤짤 로딩')
           commit('GET_MORE_RANDOM_GIF', data)
         },
         (err) => {

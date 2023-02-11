@@ -331,9 +331,11 @@ export default {
       this.is_select = b;
     },
     send_message() {
-      console.log(this.gif_path,'보낼 gif_path');
+      this.$emit('gif_path',this.gif_path)
+      console.log(this.gif_path,'여기서보냄 gif_path');
     },
     path(gifpath) {
+      this.$emit('gif_path',gifpath)
       console.log(gifpath,'보낼 gif_path');
     }
   },

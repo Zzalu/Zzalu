@@ -44,16 +44,17 @@ export default {
       () => store.state.quietChatStore.open_chat_id
     );
     const quiet_chat_data = computed(
-      () => store.state.quietChatStore.quiet_list
+      () => store.state.quietChatStore.hot_quiet_list
     )
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
     };
     onBeforeMount(() => {
       // axios 요청
-      store.dispatch("quietChatStore/getQuietList");
+      store.dispatch("quietChatStore/getHotQuietList");
       store.dispatch("zzalListStore/getPopularGIFList");
       store.dispatch("zzalListStore/getRecommendGIFList");
+      store.commit("searchModalStore/default_select_num")
     });
     return {
       open_chat_info,
