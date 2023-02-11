@@ -11,7 +11,7 @@
         <p class="title-competiton-icon">{{ date }}</p>
       </div>
 
-      <img src="../../QuietChat/QuietChatList/assets/nyang.gif" class="title-competiton-img" alt="" />
+      <img :src="zzal_url" class="title-competiton-img" alt="" />
     </div>
     <div class="border-l-2 border-b-2 border-r-2 h-20 rounded-b-2xl border-white dark:border-zz-dark-div">
       <div class="flex">
@@ -35,9 +35,9 @@
 </template>
 
 <script>
-import { reactive } from 'vue-demi';
+import { reactive, ref } from 'vue-demi';
 import { toRefs } from '@vueuse/shared';
-
+import { getBestComments } from '@/api/titleCompetition';
 export default {
   name: 'TitleCompetitionListItem',
   props: {
@@ -45,16 +45,32 @@ export default {
   },
   setup(props) {
     const title_competition = reactive({
-      title_competition_id: props.title_competition.title_competition_id,
+      title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openData,
-      zzal_url: props.zzalUrl,
-      state: props.state,
+      zzal_url: props.title_competition.zzalurl,
+      state: props.title_competition.state,
     });
-    // best comment를 가져온다.
-    const best_comment_nickname = '이름이 최대 열글자';
-    const best_comment_like = 999;
-    const best_comment_content = '잠깐만요. 불공평한거 같은데요. 이 펜싱 대회 만약 더 길다면';
 
+    // best comment를 가져온다.
+    const best_comment_nickname = ref(null);
+    const best_comment_like = ref(null);
+    const best_comment_content = ref(null);
+
+    getBestComments(
+      title_competition.title_competition_id,
+      {
+        limit: 1,
+        sort: 'POPULAR',
+      },
+      (data) => {
+        best_comment_nickname.value = data.data[0].nickname;
+        best_comment_like.value = data.data[0].likeNumber;
+        best_comment_content.value = data.data[0].content;
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
     let open_date_obj = new Date(title_competition.open_date);
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();

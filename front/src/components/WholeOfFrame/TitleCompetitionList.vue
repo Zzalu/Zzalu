@@ -2,7 +2,11 @@
   <div class="flex justify-center">
     <ol class="grid grid-cols-2 mt-1 mb-6">
       <li v-for="title_competition in title_competitions" :key="title_competition.titleHakwonId">
-        <title-competition-list-item class="academy-list" :title_competition="title_competition" />
+        <title-competition-list-item
+          class="academy-list"
+          :title_competition="title_competition"
+          @click="goToTitleCompetition(title_competition.openData)"
+        />
       </li>
     </ol>
   </div>
@@ -10,6 +14,9 @@
 
 <script>
 import TitleCompetitionListItem from './item/TitleCompetitionListItem.vue';
+import { getFinishTitleCompetition } from '@/api/titleCompetition';
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
 // import { useStore } from 'vuex';
 export default {
   name: 'TitleCompetitionList',
@@ -18,33 +25,25 @@ export default {
   },
 
   setup() {
-    // const store = useStore();
-    // let title_competitions = store.state.titleCompetitionStore.title_competitions;
-    let title_competitions = [
-      {
-        titleHakwonId: 1,
-        openData: '2023-02-09',
-        zzalurl:
-          'https://zzalu-buket.s3.ap-northeast-2.amazonaws.com/TitleHakwon/10a8bccb-9202-40a5-b9cd-b2adf0431929-9279-apex.png',
-        state: 'DONE',
+    const router = useRouter();
+    let title_competitions = ref();
+    getFinishTitleCompetition(
+      (data) => {
+        title_competitions.value = data.data;
       },
-      {
-        titleHakwonId: 2,
-        openData: '2023-02-09',
-        zzalurl:
-          'https://zzalu-buket.s3.ap-northeast-2.amazonaws.com/TitleHakwon/10a8bccb-9202-40a5-b9cd-b2adf0431929-9279-apex.png',
-        state: 'DONE',
+      (error) => {
+        console.log(error);
       },
-      {
-        titleHakwonId: 3,
-        openData: '2023-01-09',
-        zzalurl:
-          'https://zzalu-buket.s3.ap-northeast-2.amazonaws.com/TitleHakwon/10a8bccb-9202-40a5-b9cd-b2adf0431929-9279-apex.png',
-        state: 'DONE',
-      },
-    ];
+    );
+
+    const goToTitleCompetition = (open_date) => {
+      console.log(open_date);
+      router.push(`/title-competition/${open_date}`);
+    };
+
     return {
       title_competitions,
+      goToTitleCompetition,
     };
   },
 };
