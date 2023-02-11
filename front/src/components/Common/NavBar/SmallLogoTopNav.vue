@@ -7,7 +7,7 @@
       <img v-else alt="ZZalu Dark logo" class="logo" src="../../../assets/zzalu_logo_dark.png" />
     </div>
     <span class="inline-block px-4 absolute left-0">
-      <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl dark:text-white" />
+      <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl dark:text-white" @click="$router.go(-1)" />
     </span>
   </div>
 </template>

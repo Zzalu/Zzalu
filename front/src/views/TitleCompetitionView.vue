@@ -78,9 +78,9 @@ export default {
     let total_comment_cnt = computed(() => store.state.titleCompetitionStore.total_comment_cnt); // 댓글 개수
     let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
     const GoToWholeOfFrame = () => {
-      router.push(`/whole-of-frame/1`);
+      router.push(`/whole-of-frame`);
     };
-    /*    async function init() {
+    /*     async function init() {
       await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
         if (result) {
           store.dispatch('titleCompetitionStore/getNewestComments', 4);
@@ -88,7 +88,8 @@ export default {
       });
       total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt;
       zzal_url = store.state.titleCompetitionStore.zzal_url;
-
+    } */
+    document.documentElement.scrollTop = 0;
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
     // store.dispatch('titleCompetitionStore/getComments', 4);
 
@@ -105,7 +106,6 @@ export default {
       } else {
         if (scrollLocation + windowHeight >= fullHeight) {
           setTimeout(() => {
-            document.documentElement.scrollTop = scrollLocation - 100;
             loadMoreComments();
           }, 2000);
         }

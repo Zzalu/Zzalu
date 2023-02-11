@@ -147,7 +147,7 @@ const routes = [
   // --------------------------------------------------------------------
   // 명예의 전당
   {
-    path: '/whole-of-frame/:page',
+    path: '/whole-of-frame',
     name: 'whole-of-frame',
     component: () => import('@/views/WholeOfFrameView'),
   },
