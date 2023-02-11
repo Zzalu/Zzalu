@@ -7,6 +7,14 @@
       </div>
       <div>
         <font-awesome-icon
+          v-if="already"
+          class="scrap-icon"
+          icon="fa-solid fa-star"
+          @click="open_list_modal"
+          @click.stop="''"
+        />
+        <font-awesome-icon
+          v-else
           class="scrap-icon"
           icon="fa-regular fa-star"
           @click="open_list_modal"
@@ -47,20 +55,29 @@ export default {
       store.commit("boardListStore/SELECT_RECOMMEND_GIF", e);
       store.commit("searchModalStore/default_popular_num")
     };
+    const user_store_list = computed(
+      () => store.state.boardListStore.user_store_list
+    );
+    const get_user_list = (data) => {
+      store.dispatch("boardListStore/getUserStoreList", data);
+    };
 
     return {
       send_select_recommend_gif_id_data,
       open_list_modal,
+      get_user_list,
       select_recommend_jjal_num,
+      user_store_list
     };
   },
   props: {
-    RecommendJjal: Object,
+    RecommendZzal: Object,
     i: Number,
   },
   data() {
     return {
-      gifPath: this.RecommendJjal.gifPath,
+      // gifPath: this.RecommendJjal.gifPath,
+      already : false
     };
   },
   computed: {
@@ -70,6 +87,12 @@ export default {
       } else {
         return false;
       }
+    },
+    RecommendJjal() {
+      return this.RecommendZzal
+    },
+    gifPath() {
+      return this.RecommendJjal.gifPath
     },
   },
   methods: {
@@ -83,6 +106,26 @@ export default {
     long_click() {
       this.$emit("select_id", this.i);
       this.send_select_recommend_gif_id_data(this.RecommendJjal.id);
+      this.get_user_list(this.RecommendJjal.id);
+    },
+  },
+  watch: {
+    user_store_list(nv) {
+      if (nv.boards) {
+        let flag
+        for (let i=0; i<nv.boards.length; i++) {
+          if (nv.boards[i].gifContainState == true) {
+            flag = true
+            break
+          }
+          flag = false
+        }
+        if (flag) {
+          this.already = true
+        } else {
+          this.already = false
+        }
+      }
     },
   },
 };

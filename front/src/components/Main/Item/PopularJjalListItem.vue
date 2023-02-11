@@ -7,6 +7,14 @@
       </div>
       <div>
         <font-awesome-icon
+          v-if="already"
+          class="scrap-icon"
+          icon="fa-solid fa-star"
+          @click="open_list_modal"
+          @click.stop="''"
+        />
+        <font-awesome-icon
+          v-else
           class="scrap-icon"
           icon="fa-regular fa-star"
           @click="open_list_modal"
@@ -45,22 +53,30 @@ export default {
     };
     const send_select_popular_gif_id_data = (e) => {
       store.commit("boardListStore/SELECT_POPULAR_GIF", e);
-      store.commit("searchModalStore/default_recommend_num")
+      store.commit("searchModalStore/default_recommend_num");
+    };
+    const user_store_list = computed(
+      () => store.state.boardListStore.user_store_list
+    );
+    const get_user_list = (data) => {
+      store.dispatch("boardListStore/getUserStoreList", data);
     };
 
     return {
       send_select_popular_gif_id_data,
       open_list_modal,
+      get_user_list,
       select_popular_jjal_num,
+      user_store_list,
     };
   },
   props: {
-    PopularJjal: Object,
+    PopularZzal: Object,
     i: Number,
   },
   data() {
     return {
-      gifPath: this.PopularJjal.gifPath,
+      already: false,
     };
   },
   computed: {
@@ -71,18 +87,49 @@ export default {
         return false;
       }
     },
+    PopularJjal() {
+      return this.PopularZzal;
+    },
+    gifPath() {
+      return this.PopularJjal.gifPath;
+    },
   },
   methods: {
     route() {
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.PopularJjal.id },
-        query: { gifpath: this.PopularJjal.gifPath, id: this.PopularJjal.id, tags: this.PopularJjal.tags, visitedcount:this.PopularJjal.visitedcount },
+        query: {
+          gifpath: this.PopularJjal.gifPath,
+          id: this.PopularJjal.id,
+          tags: this.PopularJjal.tags,
+          visitedcount: this.PopularJjal.visitedcount,
+        },
       });
     },
     long_click() {
       this.$emit("select_id", this.i);
       this.send_select_popular_gif_id_data(this.PopularJjal.id);
+      this.get_user_list(this.PopularJjal.id);
+    },
+  },
+  watch: {
+    user_store_list(nv) {
+      if (nv.boards) {
+        let flag;
+        for (let i = 0; i < nv.boards.length; i++) {
+          if (nv.boards[i].gifContainState == true) {
+            flag = true;
+            break;
+          }
+          flag = false;
+        }
+        if (flag) {
+          this.already = true;
+        } else {
+          this.already = false;
+        }
+      }
     },
   },
 };

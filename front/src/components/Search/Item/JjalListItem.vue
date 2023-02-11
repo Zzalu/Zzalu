@@ -8,6 +8,14 @@
       </div>
       <div>
         <font-awesome-icon
+          v-if="already"
+          class="scrap-icon"
+          icon="fa-solid fa-star"
+          @click="open_list_modal"
+          @click.stop="''"
+        />
+        <font-awesome-icon
+          v-else
           class="scrap-icon"
           icon="fa-regular fa-star"
           @click="open_list_modal"
@@ -51,18 +59,31 @@ export default {
     const select_jjal_num = computed(
       () => store.state.searchModalStore.select_jjal_num
     );
+    const user_store_list = computed(
+      () => store.state.boardListStore.user_store_list
+    );
+    const get_user_list = (data) => {
+      store.dispatch("boardListStore/getUserStoreList", data);
+    };
+
     return {
       open_list_modal,
       close_search_modal,
       send_select_gif_id_data,
+      get_user_list,
       select_jjal_num,
+      user_store_list,
     };
   },
   data() {
     return {
       start_time: null,
-      gifPath: this.zzal_info.gifPath,
+      already : false
     };
+  },
+  props: {
+    i: Number,
+    jjal_info: Object,
   },
   computed: {
     img_select() {
@@ -72,23 +93,51 @@ export default {
         return false;
       }
     },
+    zzal_info() {
+      return this.jjal_info
+    },
+    gifPath() {
+      return this.zzal_info.gifPath
+    }
   },
-  props: {
-    i: Number,
-    zzal_info: Object,
+  watch: {
+    user_store_list(nv) {
+      if (nv.boards) {
+        let flag
+        for (let i=0; i<nv.boards.length; i++) {
+          if (nv.boards[i].gifContainState == true) {
+            flag = true
+            break
+          }
+          flag = false
+        }
+        console.log(flag);
+        if (flag) {
+          this.already = true
+        } else {
+          this.already = false
+        }
+      }
+    },
   },
   methods: {
     route() {
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.zzal_info.id },
-        query: { gifpath: this.zzal_info.gifPath, id: this.zzal_info.id, tags: this.zzal_info.tags, visitedcount:this.zzal_info.visitedcount },
+        query: {
+          gifpath: this.zzal_info.gifPath,
+          id: this.zzal_info.id,
+          tags: this.zzal_info.tags,
+          visitedcount: this.zzal_info.visitedcount,
+        },
       });
       this.close_search_modal();
     },
     long_click() {
       this.$emit("select_id", this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
+      this.get_user_list(this.zzal_info.id);
     },
   },
 };
