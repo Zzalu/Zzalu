@@ -55,7 +55,7 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue';
+import { computed, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
@@ -97,7 +97,7 @@ export default {
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
-    function infinityScroll() {
+    /*     function infinityScroll() {
       let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
       let windowHeight = window.innerHeight; // 스크린 창
       let fullHeight = document.body.scrollHeight; // margin 값은 포함 x
@@ -125,7 +125,7 @@ export default {
         store.dispatch('titleCompetitionStore/getComments', 4);
       }, 2000);
       console.log('불러옵니다');
-    };
+    }; */
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };

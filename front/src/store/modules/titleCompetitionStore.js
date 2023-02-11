@@ -113,7 +113,11 @@ const titleCompetitionStore = {
     // 댓글 sort 수정하기
     async modifySortType({ commit, dispatch }, sort_type) {
       await commit('MODIFY_SORT_TYPE', sort_type);
-      await dispatch('getComments', 4);
+      if (sort_type == 'POPULAR') {
+        await dispatch('getBestComments');
+      } else {
+        await dispatch('getComments', 4);
+      }
     },
     // 댓글
     async getComments({ commit, state }, size) {

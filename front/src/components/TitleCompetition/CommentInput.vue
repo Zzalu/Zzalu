@@ -38,7 +38,6 @@ export default {
     const clicksubmitBtn = () => {
       if (!canWriteNested.value.value) {
         const comment_data = {
-          username: 'c109',
           content: content,
           titleHakwonId: store.state.titleCompetitionStore.title_competition_id,
         };
@@ -54,7 +53,6 @@ export default {
         console.log('댓글입니다');
       } else {
         const nested_comment_data = {
-          username: 'c109',
           content: content,
           parentCommentId: store.state.titleCompetitionStore.comment_writer.comment_id,
         };
