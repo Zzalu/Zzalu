@@ -1,13 +1,23 @@
 <template>
   <!-- 댓글 input -->
-  <div v-if="state != 'DONE'" class="comment_write flex">
+  <div v-if="state == 'PROCEED'" class="relative comment_write flex">
     <div v-show="canWriteNested.value" class="absolute bottom-10 bg-zz-p px-2 py-1 text-xs rounded-xl">
       <span class="mr-1">{{ comment_writer_nickname }}에게 답글</span>
       <button @click="undoWriteNestedComment">
         <font-awesome-icon icon="fa-solid fa-circle-xmark" class="text-zz-light-p" />
       </button>
     </div>
-    <input v-if="isLogined" type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." />
+    <textarea
+      ref="textArea"
+      rows="{1}"
+      @input="resize"
+      v-if="isLogined"
+      type="text"
+      class="comment_textarea"
+      @change="changeInput"
+      placeholder="글 남기기..."
+    />
+    <!-- <input v-if="isLogined" type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." /> -->
     <input
       v-else
       type="text"
@@ -49,6 +59,13 @@ export default {
     const changeInput = (e) => {
       return (content = e.target.value);
     };
+
+    const textArea = ref(null);
+    const resize = () => {
+      textArea.value.style.height = '1.5rem';
+      textArea.value.style.height = textArea.value.scrollHeight + 'px';
+    };
+
     // 등록버튼 눌렀을 때
     const clicksubmitBtn = () => {
       if (!canWriteNested.value.value) {
@@ -66,7 +83,9 @@ export default {
             console.log(error);
           },
         );
-        console.log('댓글입니다');
+        if (store.state.state != 'LATEST') {
+          store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
+        }
       } else {
         const nested_comment_data = {
           content: content,
@@ -82,7 +101,6 @@ export default {
             console.log(error);
           },
         );
-        console.log('답글입니다');
       }
     };
 
@@ -96,6 +114,8 @@ export default {
       changeInput,
       state,
       isLogined,
+      resize,
+      textArea,
     };
   },
 };
@@ -105,14 +125,16 @@ export default {
 .comment_write {
   @apply w-11/12 bg-zz-light-input flex rounded-lg p-1 fixed bottom-14;
 }
-.nested_comment_input {
-  @apply w-auto bg-transparent  text-xs h-7 px-2 focus:outline-none;
+
+.comment_textarea {
+  @apply w-10/12 bg-transparent text-xs h-6 px-2 focus:outline-none;
+  min-height: 0.75rem;
 }
 .comment_input {
-  @apply w-full bg-transparent  text-xs h-7 px-2 focus:outline-none;
+  @apply w-full bg-transparent text-xs h-7 px-2 focus:outline-none;
 }
 
 .comment_submit {
-  @apply text-xs w-14 px-2 bg-zz-light-p rounded-xl text-white;
+  @apply absolute bottom-1 right-1 text-xs w-14 h-7 px-2 bg-zz-light-p rounded-xl text-white;
 }
 </style>

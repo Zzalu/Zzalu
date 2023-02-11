@@ -6,8 +6,8 @@
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
-        <p class="text-xs mr-1">{{ time }}</p>
-        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
+        <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
+        <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row mb-2">
@@ -59,10 +59,10 @@ export default {
   name: 'CommentListItem',
   props: {
     comment: Object,
+    index: Number,
   },
   setup(props) {
     const store = useStore();
-    // TODO: time ~~전으로 출력하기
     const comment_data = reactive({
       profile_image: 'profile.jpg',
       username: props.comment.username,
@@ -76,11 +76,37 @@ export default {
       like_cnt: props.comment.likeNumber,
       is_liked: props.comment.pressed,
     });
+    const username = window.localStorage.getItem('profile_user');
 
-    // TODO: 나중에 로그인 기능 완성되면 username 수정하기
+    // 삭제 버튼
     const canDelete = computed(() => {
-      return (comment_data.username = 'c109');
+      return (comment_data.username = username);
     });
+
+    // 시간표시: ~ 전
+    const new_time = timeForToday(new Date(comment_data.time));
+    function timeForToday(value) {
+      const today = new Date();
+      const timeValue = new Date(value);
+
+      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+      if (betweenTime < 1) return '방금 전';
+      if (betweenTime < 60) {
+        return `${betweenTime}분 전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간 전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일 전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년 전`;
+    }
 
     // 답글쓰기 버튼 클릭
     const writeNestedComment = () => {
@@ -93,42 +119,40 @@ export default {
 
     // 좋아요 버튼 클릭
     const clickLikeBtn = () => {
-      console.log(`isLike 버튼 클릭 전: ${comment_data.is_liked}`);
       const comment_id = comment_data.comment_id;
       if (comment_data.is_liked) {
-        console.log('음별로');
         minusLike(
           comment_id,
           ({ data }) => {
             console.log(data);
             comment_data.is_liked = false;
+            comment_data.like_cnt -= 1;
           },
           (error) => {
             console.log(error);
           },
         );
       } else {
-        console.log('좋아요!');
         plusLike(
           comment_id,
           ({ data }) => {
             console.log(data);
             comment_data.is_liked = true;
+            comment_data.like_cnt += 1;
           },
           (error) => {
             console.log(error);
           },
         );
       }
-      console.log(`is_like 버튼 클릭 후: ${comment_data.is_liked}`);
     };
 
     const clickDeleteBtn = () => {
+      store.dispatch('titleCompetitionStore/deleteComment', props.index);
       deleteComment(
         comment_data.comment_id,
-        (({ data }) => {
+        ((data) => {
           console.log(data);
-          //TODO: 데이터 삭제 후 store의 comments 배열에서 삭제하기
         },
         (error) => {
           console.log(error);
@@ -142,6 +166,7 @@ export default {
       clickLikeBtn,
       canDelete,
       clickDeleteBtn,
+      new_time,
     };
   },
 };

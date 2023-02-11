@@ -90,6 +90,9 @@ const titleCompetitionStore = {
       state.comment_writer.nickname = '';
       state.isNested = false;
     },
+    DELETE_COMMENT(state, comment_index) {
+      state.comments.splice(comment_index, 1);
+    },
   },
   actions: {
     async init({ state, dispatch }, data) {
@@ -218,6 +221,10 @@ const titleCompetitionStore = {
         commit('DELETE_COMMENT_WRITER');
         resolve();
       });
+    },
+    // 삭제 관련
+    deleteComment({ commit }, comment_index) {
+      commit('DELETE_COMMENT', comment_index);
     },
   },
 };
