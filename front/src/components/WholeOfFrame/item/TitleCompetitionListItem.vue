@@ -1,0 +1,119 @@
+<template>
+  <div class="title-competition-card-container">
+    <div class="title-competiton-img-container">
+      <!-- 아이콘 날짜 사진 -->
+
+      <div class="absolute">
+        <font-awesome-icon icon="fa-solid fa-bookmark" class="date-icon" />
+      </div>
+      <div class="absolute z-10 ml-4 flex-col justify-center">
+        <p class="title-competiton-icon">{{ month }}</p>
+        <p class="title-competiton-icon">{{ date }}</p>
+      </div>
+
+      <img src="../../QuietChat/QuietChatList/assets/nyang.gif" class="title-competiton-img" alt="" />
+    </div>
+    <div class="border-l-2 border-b-2 border-r-2 h-20 rounded-b-2xl border-white dark:border-zz-dark-div">
+      <div class="flex">
+        <div>
+          <!-- 컨텐트 -->
+          <div class="title-competition-content-profile">
+            <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" />
+            <p class="title-competiton-content-text">{{ best_comment_nickname }}</p>
+          </div>
+        </div>
+        <!-- 좋아요 -->
+        <div class="title-competiton-button-contain">
+          <font-awesome-icon icon="fa-solid fa-heart" class="title-competiton-button-icon" />
+          <p class="title-competiton-button-text">{{ best_comment_like }}</p>
+        </div>
+      </div>
+      <!-- 내용 -->
+      <p class="title-competiton-content">{{ best_comment_content }}</p>
+    </div>
+  </div>
+</template>
+
+<script>
+import { reactive } from 'vue-demi';
+import { toRefs } from '@vueuse/shared';
+
+export default {
+  name: 'TitleCompetitionListItem',
+  props: {
+    title_competition: Object,
+  },
+  setup(props) {
+    const title_competition = reactive({
+      title_competition_id: props.title_competition.title_competition_id,
+      open_date: props.title_competition.openData,
+      zzal_url: props.zzalUrl,
+      state: props.state,
+    });
+    // best comment를 가져온다.
+    const best_comment_nickname = '이름이 최대 열글자';
+    const best_comment_like = 999;
+    const best_comment_content = '잠깐만요. 불공평한거 같은데요. 이 펜싱 대회 만약 더 길다면';
+
+    let open_date_obj = new Date(title_competition.open_date);
+    const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
+    const date = open_date_obj.getDate();
+    return {
+      ...toRefs(title_competition),
+      best_comment_nickname,
+      best_comment_like,
+      best_comment_content,
+      month,
+      date,
+    };
+  },
+};
+</script>
+
+<style scoped lang="postcss">
+.title-competition-card-container {
+  @apply w-36 h-48 rounded-2xl ml-3 mr-2 mb-1 relative;
+}
+.title-competiton-img-container {
+  @apply relative;
+}
+.date-icon {
+  @apply w-14 h-12 text-zz-p;
+}
+
+.title-competiton-icon {
+  font-size: 0.8rem;
+  text-align: center;
+  @apply font-bhs text-white;
+}
+
+.title-competiton-img {
+  overflow: hidden;
+  @apply h-28 w-36 rounded-t-xl border-2 dark:border-zz-dark-div;
+}
+.title-competition-content-profile {
+  @apply flex items-center mt-2 mr-12;
+}
+.title-competiton-content-img {
+  @apply rounded-full w-4 mx-1;
+}
+.title-competiton-content-text {
+  font-size: 0.4rem;
+  @apply font-spoq line-clamp-1 dark:text-white;
+}
+.title-competiton-button-contain {
+  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 absolute right-1 w-10 h-4 dark:border-zz-dark-div;
+}
+.title-competiton-button-icon {
+  font-size: 0.5rem;
+  @apply mr-1 text-zz-s;
+}
+.title-competiton-button-text {
+  font-size: 0.4rem;
+  @apply text-white w-8 truncate;
+}
+.title-competiton-content {
+  word-break: keep-all;
+  @apply mt-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white;
+}
+</style>

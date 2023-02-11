@@ -1,6 +1,6 @@
 <template>
   <!-- 로고있는 위쪽 nav -->
-  <div class="h-nav-height fixed inset-x-0 top-0 bg-white dark:bg-zz-bd flex items-center justify-center">
+  <div class="h-nav-height fixed inset-x-0 top-0 bg-white dark:bg-zz-bd flex items-center justify-center z-30">
     <!-- 로고랑 제목 -->
     <div class="w-20">
       <img v-if="!this.isDark" alt="ZZalu Light logo" class="logo" src="../../../assets/zzalu_logo_light.png" />
