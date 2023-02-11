@@ -26,11 +26,11 @@
         </div>
       </transition>
       <!-- <transition name="slide-fade"> -->
-        
+
       <div v-if="open_list_modal">
         <div class="list-view-bg"></div>
-        
-        <StoreList class="list-view" :user_store_list="user_store_list"/>
+
+        <StoreList class="list-view" :user_store_list="user_store_list" />
       </div>
     </div>
     <!-- </transition> -->
@@ -65,7 +65,6 @@ export default {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
 
-
     function MoreRandomGIF(gif_data) {
       store.dispatch("zzalListStore/getMoreRandomGIFLIST", [...gif_data]);
     }
@@ -96,15 +95,12 @@ export default {
     },
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
-      // 일정 한도 밑으로 내려오면 함수 실행
-      if (isAtTheBottom) {
+      if (scrollTop + clientHeight > scrollHeight-1) {
         this.load_state = true;
         setTimeout(() => {
           this.MoreRandomGIF(this.gif_data);
           this.load_state = false;
-        }, 1000);
-      }
+        }, 1000);}
     },
   },
   watch: {
