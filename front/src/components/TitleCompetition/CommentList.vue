@@ -5,9 +5,14 @@
       <span class="w-full h-divider-height bg-zz-light-div dark:border-b-zz-dark-div"></span>
     </li>
   </ol>
-  <div class="flex-row justify-center items-center" v-if="comments.length == 0">
-    <p>좋아요가 없네요ㅠㅠ</p>
-    <p>당신의 웃음벨에게 좋아요를 주세요!</p>
+  <div class="flex flex-col justify-center items-center mt-5" v-if="comments.length == 0">
+    <p class="text-center text-2xl font-bhs">앗! 좋아요가 아직 없네요 😢 <br />당신의 웃음벨에게 좋아요를 주세요!</p>
+    <div class="w-1/6 m-3">
+      <img :src="require(`@/assets/cat_love.gif`)" alt="cat-love" />
+    </div>
+    <button class="font-bhs bg-zz-p px-2 py-1 rounded text-white" @click="clickLatest('LATEST')">
+      최신순으로 보기
+    </button>
   </div>
 </template>
 
@@ -26,7 +31,9 @@ export default {
     const commentListComponent = ref(null);
     let comments = computed(() => store.state.titleCompetitionStore.comments);
     // let comments = store.state.titleCompetitionStore.comments;
-
+    const clickLatest = (sort_type) => {
+      store.dispatch('titleCompetitionStore/modifySortType', sort_type);
+    };
     /*  onMounted(() => {
       window.addEventListener('scroll', handleScroll);
     });
@@ -44,6 +51,7 @@ export default {
     return {
       comments,
       commentListComponent,
+      clickLatest,
     };
   },
 };
