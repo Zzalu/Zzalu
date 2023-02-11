@@ -6,8 +6,8 @@
       <zzal-list-item
       :gif_id="id"
       ></zzal-list-item>
-      <!-- <img :src="`${gifpath}`" alt="">
-      {{ gifpath }}
+      <img :src="`${gifpath}`" alt="">
+      <!-- {{ gifpath }}
       {{ id }}
       {{ tags }}
       {{ visitedcount }} -->

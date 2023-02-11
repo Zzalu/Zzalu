@@ -53,7 +53,6 @@ export default {
         return
       } else {
         this.search_data(e)
-
       }
     }, 1000),
     // input_search_data(nv)  {

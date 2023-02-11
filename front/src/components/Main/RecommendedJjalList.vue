@@ -5,7 +5,7 @@
     <div class="items">
       <div v-for="(RecommendJjal, i) in RecommendJjalListData" :key="i">
         <RecommendedJjalListItem
-          :RecommendJjal="RecommendJjal"
+          :RecommendZzal="RecommendJjal"
           :i="i"
           @select_id="select_id"
         />

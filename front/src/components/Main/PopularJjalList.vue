@@ -5,7 +5,7 @@
     <div class="items">
       <div v-for="(PopularJjal, i) in PopularJjalListData" :key="i">
         <PopularJjalListItem
-          :PopularJjal="PopularJjal"
+          :PopularZzal="PopularJjal"
           :i="i"
           @select_id="select_id"
         />
