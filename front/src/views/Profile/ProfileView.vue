@@ -48,6 +48,7 @@ export default {
     const route = useRoute();
     const username = route.params.username;
     store.dispatch("profileStore/getProfileUser", username);
+    store.dispatch("boardListStore/getUserBoardList", username);
     const current_user = localStorage.getItem("id");
     return {
       current_user

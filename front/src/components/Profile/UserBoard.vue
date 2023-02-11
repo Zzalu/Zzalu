@@ -10,7 +10,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, onBeforeMount } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 import BoardTitleListItem from "@/components/SaveJjal/Item/BoardTitleListItem";
 // import BoardTitleList from "../SaveJjal/BoardTitleList";
 export default {
@@ -20,20 +20,15 @@ export default {
   },
   setup() {
     const store = useStore();
-    const user_id = window.localStorage.getItem("profile_user");
     const profile_user_data = computed(
       () => store.state.profileStore.profile_user
     );
     const user_board_list = computed(
       () => store.state.boardListStore.user_board_list
     );
-  
-    onBeforeMount(() => {
-      store.dispatch("boardListStore/getUserBoardList", user_id);
-    });
+
     return {
       user_board_list,
-      user_id,
       profile_user_data
     };
   },

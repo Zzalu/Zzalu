@@ -35,11 +35,18 @@ const requestUsername = (data,res,err) => {
     .then(res).catch(err)
 }
 
+
 const getProfileUser = (username, success, fail) => {
     api.get(`/members?username=${username}`).then(success).catch(fail);
 }
 
+// 회원정보변경
+// const requestChange = (pwd, res, err) => {
+//     const data = JSON.stringify({"rawPassword": pwd})
+//     auth_api.delete(`members`, {data: data}).then(res).catch(err)
+// }
 
+// 계정 삭제
 const requestDelete = (pwd, res, err) => {
     const data = JSON.stringify({"rawPassword": pwd})
     auth_api.delete(`members`, {data: data}).then(res).catch(err)
