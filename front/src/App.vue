@@ -39,7 +39,8 @@ export default {
 <style scoped lang="postcss">
 .main-bg {
   background-attachment: fixed;
-  @apply dark:bg-zz-bd w-screen h-screen
+  height: 90vh;
+  @apply dark:bg-zz-bd w-screen
 }
 .main-margin {
   padding: 0 1.25rem;

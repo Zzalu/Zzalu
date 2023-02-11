@@ -40,7 +40,7 @@
       </div>
       <!-- 해시태그 인풋 -->
       <div v-if="hashtags_input_mode" class="input_contain">
-        <input type="text" class="input_value" v-model="hash_input"/>
+        <input type="text" class="input_value" v-model="hash_input" autofocus/>
       </div>
       <!-- 해시태그 인풋 버튼 -->
       <button v-if="hashtags_input_mode" class="hashtag-btn" @click="AddHashtag">
