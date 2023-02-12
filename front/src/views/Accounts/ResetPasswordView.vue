@@ -6,21 +6,31 @@
       alt="ZZalu Light logo"
       class="logo"
       src="../../assets/zzalu_logo_light.png"
+      v-if="isDark==false"
+    />
+    <img
+      alt="ZZalu Dark logo"
+      class="logo"
+      src="../../assets/zzalu_logo_dark.png"
+      v-if="isDark==true"
     />
     <div class="account-title mb-10">Reset Password</div>
   </div>
       <!-- <input-id-email></input-id-email> -->
       <!-- <input-code-form></input-code-form> -->
-      <change-password></change-password>
-      <reset-complete></reset-complete>
+      <!-- <change-password></change-password>
+      <reset-complete></reset-complete> -->
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
+import { useDark } from '@vueuse/core';
+const isDark = useDark();
 import OnlyGoBackTopNavBar from '../../components/Common/NavBar/OnlyGoBackTopNav.vue'
 // import InputCodeForm from '../../components/Accounts/InputCodeForm.vue'
 // import ChangePassword from '../../components/Accounts/ChangePassword.vue'
-import ResetComplete from '../../components/Accounts/ResetPassword/ResetComplete.vue'
+// import ResetComplete from '../../components/Accounts/ResetPassword/ResetComplete.vue'
 
 
 
@@ -32,8 +42,13 @@ export default {
     OnlyGoBackTopNavBar,
     // InputCodeForm,
     // ChangePassword,
-    ResetComplete,
-  }
+    // ResetComplete,
+  },
+  data() {
+    return {
+      isDark,
+    };
+  },
 }
 </script>
 

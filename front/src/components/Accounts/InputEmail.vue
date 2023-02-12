@@ -1,6 +1,10 @@
 <template>
   <div class="mt-20">
     <h2 class="find-id-input-title" v-if="$route.name == 'find-id'">아이디 찾기</h2>
+    <h2 class="find-id-input-title" v-if="$route.name == 'input-reset-email'">비밀번호 분실
+
+      
+    </h2>
     <font-awesome-icon icon="fa-solid fa-envelope" class='icon-aligned-left'/>
       <input
         type="text"
@@ -122,5 +126,7 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-
+.find-id-input-title {
+  @apply dark:text-white mb-1 font-spoq mx-2
+}
 </style>

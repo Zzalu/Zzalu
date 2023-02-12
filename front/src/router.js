@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Signup from '@/views/Accounts/SignUpView';
 import FindId from '@/views/Accounts/FindIdView';
+import ResetPassword from '@/views/Accounts/ResetPasswordView'
 
 const routes = [
   {
@@ -69,7 +70,30 @@ const routes = [
   {
     path: '/reset-password',
     name: 'reset-password',
-    component: () => import('@/views/Accounts/ResetPasswordView'),
+    component: ResetPassword,
+    children: [
+      {
+        path: '',
+        name: 'input-reset-email',
+        component: () => import('@/components/Accounts/InputEmail.vue'),
+        props: true,
+      },
+      {
+        path: 'code',
+        name: 'input-reset-code',
+        component: () => import('@/components/Accounts/InputCodeForm.vue'),
+      },
+      {
+        path: 'change-password',
+        name: 'reset-password',
+        component: () => import('@/views/Accounts/ChangePasswordView'),
+      },
+      {
+        path: 'complete',
+        name: 'reset-complete',
+        component: () => import('@/components/Accounts/SignUp/WelcomeToZzalu.vue'),
+      },
+    ],
   },
   // 탈퇴
   {

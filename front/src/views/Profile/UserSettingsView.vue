@@ -11,7 +11,7 @@
     </div >
     <div class="flex">
       <font-awesome-icon icon="fa-solid fa-lock" class='settings-icon-aligned-left'/>
-      <button class="settings-button">
+      <button class="settings-button" @click="goChangePwd">
         <div class="text-zz-light-p dark:text-white">비밀번호 변경</div>
         </button>
     </div>
@@ -77,12 +77,14 @@ export default {
     const goProfileEdit = () => {
       router.push({name: 'edit-profile'})
     }
-
+    const goChangePwd = () => {
+      router.push({name: 'change-password'})
+    }
     const managerApply = () => {
       store.dispatch('userStore/managerApplyAction')
     }
     return {
-      logoutSubmit,goProfileEdit,managerApply
+      logoutSubmit,goProfileEdit,managerApply,goChangePwd
     }
   }
 }
