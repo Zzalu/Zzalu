@@ -1,10 +1,8 @@
 <template>
   <!-- 에디트 모드 -->
   <div v-if="edit_mode">
-    <zzal-list-item :gif_id="id"></zzal-list-item>
-    <zzal-info
-    :zzal_origin_content="zzal_origin_content"
-    ></zzal-info>
+    <zzal-list-item :gif_id="jjal_detail_data.id"></zzal-list-item>
+    <zzal-info :zzal_origin_content="zzal_origin_content"></zzal-info>
     <zzal-source-video></zzal-source-video>
     <div class="flex justify-center dark:text-white">
       <button
@@ -39,79 +37,83 @@
       <!-- 뷰 모드 -->
       <div v-else>
         <!-- 헤더 -->
-        <div>
-          <font-awesome-icon icon="fa-solid fa-eye" class="view-count" />
-          <div>{{ visitedcount }}</div>
-        </div>
-        <div class="grid grid-cols-3 gap-4">
-          <img :src="`${gifpath}`" alt="" class="col-span-2 justify-center" />
-          <div class="grid grid-rows-2 gap-2">
-            <div
-              class="flex place-items-end"
-              @click="this.open_list_modal(gif_id)"
-            >
-              <font-awesome-icon
-                icon="fa-solid fa-star"
-                class="my-1 text-zz-s"
-              />
-              <div class="mx-1 text-sm text-zz-s line-clamp-1 font-spoq">스크랩하기</div>
-            </div>
-            <div class="flex">
-              <font-awesome-icon
-                icon="fa-solid fa-download"
-                class="my-1 text-zz-s"
-              />
-              <div class="mx-1 text-zz-s line-clamp-1 font-spoq">저장하기</div>
+        <div v-if="jjal_detail_data">
+          <div>
+            <font-awesome-icon icon="fa-solid fa-eye" class="view-count" />
+            <div>{{ visitedCount }}</div>
+          </div>
+          <div class="grid grid-cols-3 gap-4">
+            <img :src="`${gif_path}`" alt="" class="col-span-2 justify-center" />
+            <div class="grid grid-rows-2 gap-2">
+              <div
+                class="flex place-items-end"
+                @click="this.open_list_modal(gif_id)"
+              >
+                <font-awesome-icon
+                  icon="fa-solid fa-star"
+                  class="my-1 text-zz-s"
+                />
+                <div class="mx-1 text-sm text-zz-s line-clamp-1 font-spoq">
+                  스크랩하기
+                </div>
+              </div>
+              <div class="flex">
+                <font-awesome-icon
+                  icon="fa-solid fa-download"
+                  class="my-1 text-zz-s"
+                />
+                <div class="mx-1 text-zz-s line-clamp-1 font-spoq">
+                  저장하기
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-        <!-- 바디 -->
-        <button
-          class="edit-button text-zz-edit flex float-right font-spoq"
-          @click="EditMode"
-        >
-          [편집하기]
-        </button>
-        <div class="mt-6">
-          <div class="last-edited">마지막으로 수정한 사람: {{ 누구 }}</div>
-          <div class="last-edited">마지막으로 수정한 날짜: {{ 날짜 }}</div>
-        </div>
-
-        <div class="hashtag-contain">
-          <div class="hashtag-div">
-            <div v-for="(hashtag, i) in tags" :key="i" class="relative">
-              <div class="hashtag-text">{{ hashtag }}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="mt-6 mb-2 font-bold font-spoq text-zz-p">
-          이 짤의 유래는?
-        </div>
-        <div class="zzal-origin-edit">
-          <div v-if="zzal_origin_content"
-          class="font-spoq"
+          <!-- 바디 -->
+          <button
+            class="edit-button text-zz-edit flex float-right font-spoq"
+            @click="EditMode"
           >
-            {{ zzal_origin_content }}
+            [편집하기]
+          </button>
+          <div class="mt-6">
+            <div class="last-edited">마지막으로 수정한 사람: {{ 누구 }}</div>
+            <div class="last-edited">마지막으로 수정한 날짜: {{ 날짜 }}</div>
           </div>
-          <div v-else
-          class="dark:text-white font-spoq"
-          >
-            현재 등록된 짤 유래가 없습니다.
-            <p>
-            해당 게시글의 짤 유래를 아신다면 직접 등록해주세요 !</p>
-          </div>
-        </div>
 
-        <!-- 푸터 -->
-        <div class="edit-original-vid">
-          <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" />
-          <input
-            type="text"
-            class="edit-original-link"
-            placeholder="https://www.youtube.com/watch?v=sey8rFdvq6M"
-          />
-          <font-awesome-icon icon="fa-solid fa-square-plus" class="plus-icon" />
+          <div class="hashtag-contain">
+            <div class="hashtag-div">
+              <div v-for="(hashtag, i) in tags" :key="i" class="relative">
+                <div class="hashtag-text">{{ hashtag }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 mb-2 font-bold font-spoq text-zz-p">
+            이 짤의 유래는?
+          </div>
+          <div class="zzal-origin-edit">
+            <div v-if="zzal_origin_content" class="font-spoq">
+              {{ zzal_origin_content }}
+            </div>
+            <div v-else class="dark:text-white font-spoq">
+              현재 등록된 짤 유래가 없습니다.
+              <p>해당 게시글의 짤 유래를 아신다면 직접 등록해주세요 !</p>
+            </div>
+          </div>
+
+          <!-- 푸터 -->
+          <div class="edit-original-vid">
+            <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" />
+            <input
+              type="text"
+              class="edit-original-link"
+              placeholder="https://www.youtube.com/watch?v=sey8rFdvq6M"
+            />
+            <font-awesome-icon
+              icon="fa-solid fa-square-plus"
+              class="plus-icon"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -127,9 +129,31 @@ import MainBottomNav from "../components/Common/NavBar/MainBottomNav.vue";
 import ZzalListItem from "../components/ZzalDetail/ZzalListItem.vue";
 import ZzalInfo from "@/components/ZzalDetail/ZzalInfo.vue";
 import ZzalSourceVideo from "../components/ZzalDetail/ZzalSourceVideo.vue";
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 
 export default {
   name: "ZzalDetailView",
+  setup() {
+    const store = useStore();
+
+    const open_list_modal = (e) => {
+      store.commit("boardListStore/SELECT_GIF", e);
+      store.commit("searchModalStore/open_list_modal");
+    };
+    const jjal_detail_data = computed(
+      () => store.state.zzalListStore.jjal_data
+    );
+    const get_detail_data = (gif_id) => {
+      console.log('실행?',gif_id);
+      store.dispatch("zzalListStore/getDetailData",gif_id);
+    };
+    return {
+      open_list_modal,
+      get_detail_data,
+      jjal_detail_data,
+    };
+  },
   components: {
     ZzalListItem,
     ZzalInfo,
@@ -140,13 +164,33 @@ export default {
   },
   data() {
     return {
-      gifpath: this.$route.query.gifpath,
-      id: this.$route.query.id,
-      tags: this.$route.query.tags.split(","),
-      visitedcount: this.$route.query.visitedcount,
       edit_mode: false,
-      zzal_origin_content : '',
+      zzal_origin_content: "",
+      gif_id : this.$store.state.zzalListStore.jjal_data
     };
+  },
+  // created() {
+  //   console.log('created', this.$router.params.id );
+  //   this.get_detail_data(this.$router.params.id)
+  // },
+  computed: {
+    tags() {
+      return this.jjal_detail_data.tags.split(",");
+    },
+    visitedCount() {
+      return this.jjal_detail_data.visitedCount;
+    },
+    gif_path() {
+      return this.jjal_detail_data.gifPath
+    }
+    // gif_id() {
+    //   localStorage.setItem("now_gif_id",this.gif_id)
+    //   this.get_detail_data(this.$router.params.id)
+    //   return this.$router.params.id
+    // }
+  },
+  mounted() {
+    this.get_detail_data(this.$route.params.zzal_id)
   },
   methods: {
     EditMode() {

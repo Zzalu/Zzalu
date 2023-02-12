@@ -60,6 +60,7 @@ export default {
     );
     const get_user_list = (data) => {
       store.dispatch("boardListStore/getUserStoreList", data);
+      store.dispatch("zzalListStore/getDetailData",data);
     };
 
     return {
@@ -96,15 +97,10 @@ export default {
   },
   methods: {
     route() {
+      this.get_user_list(this.PopularJjal.id);
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.PopularJjal.id },
-        query: {
-          gifpath: this.PopularJjal.gifPath,
-          id: this.PopularJjal.id,
-          tags: this.PopularJjal.tags,
-          visitedcount: this.PopularJjal.visitedcount,
-        },
       });
     },
     long_click() {

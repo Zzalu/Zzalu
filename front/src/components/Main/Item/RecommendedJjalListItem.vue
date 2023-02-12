@@ -60,6 +60,7 @@ export default {
     );
     const get_user_list = (data) => {
       store.dispatch("boardListStore/getUserStoreList", data);
+      store.dispatch("zzalListStore/getDetailData",data);
     };
 
     return {
@@ -97,6 +98,7 @@ export default {
   },
   methods: {
     route() {
+      this.get_user_list(this.RecommendJjal.id);
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.RecommendJjal.id },
