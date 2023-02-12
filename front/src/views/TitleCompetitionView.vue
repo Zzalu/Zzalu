@@ -63,10 +63,18 @@
             class="fixed left-1/2 transform flex flex-col justify-center items-center text-zz-p"
           >
             <font-awesome-icon icon="fa-solid fa-circle-arrow-up" class="text-3xl" />
-            <div v-show="socket_comment_cnt" class="flex items-center">
+            <div v-show="sort_type == 'LATEST' && socket_comment_cnt" class="flex items-center">
               <font-awesome-icon icon="fa-solid fa-plus" class="mr-1 text-xs" />
               <p class="text-ls">{{ socket_comment_cnt }}</p>
             </div>
+          </div>
+          <div
+            v-show="sort_type != 'LATEST' && socket_comment_cnt"
+            class="flex items-center fixed right-5 bg-zz-p px-2 rounded-3xl"
+            @click="clickSortBtn('LATEST')"
+          >
+            <font-awesome-icon icon="fa-solid fa-bell" class="mr-1 text-xs" />
+            <p class="text-ls">{{ socket_comment_cnt }}</p>
           </div>
           <!-- 댓글 리스트 -->
           <comment-list ref="commentListComponent" class="comment-list"></comment-list>
@@ -117,6 +125,7 @@ export default {
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
 
     const clickSortBtn = (sort_type) => {
+      store.dispatch('titleCompetitionStore/setSocketDataInit');
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
@@ -125,9 +134,15 @@ export default {
       store.dispatch('titleCompetitionStore/getComments', 4);
     };
 
-    const handleCommentListScroll = (e) => {
+    const handleCommentListScroll = async (e) => {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      if ((scrollTop == 0 && is_top.value == false) || (scrollTop != 0 && is_top.value == true)) {
+
+      if (scrollTop == 0 && is_top.value == false) {
+        store.dispatch('titleCompetitionStore/setIsTop');
+        if (sort_type.value == 'LATEST') {
+          await store.dispatch('titleCompetitionStore/pushSocketComments');
+        }
+      } else if (scrollTop != 0 && is_top.value == true) {
         store.dispatch('titleCompetitionStore/setIsTop');
       }
 
@@ -140,10 +155,6 @@ export default {
 
     const goToTop = async () => {
       document.querySelector('#comment-main').scrollTo({ top: 0, behavior: 'smooth' });
-      if (sort_type.value == 'LATEST') {
-        await store.dispatch('titleCompetitionStore/pushSocketComments');
-        store.dispatch('titleCompetitionStore/setSocketDataInit');
-      }
     };
 
     //! 소켓 관련
@@ -166,8 +177,12 @@ export default {
             // if (recv_comment_data.username != window.localStorage.getItem('profile_user')) {
             if (sort_type.value == 'LATEST') {
               // 최신순 정렬
-              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-              store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+              if (is_top.value) {
+                store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
+              } else {
+                store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+                store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+              }
             } else {
               // 과거순 or 인기순 정렬
               store.dispatch('titleCompetitionStore/addSocketCommentCnt');

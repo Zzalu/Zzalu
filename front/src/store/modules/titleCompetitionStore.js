@@ -66,12 +66,12 @@ const titleCompetitionStore = {
     },
 
     PUSH_SOCKET_COMMENTS(state) {
-      state.comments.unshift(...state.socket_comments);
+      state.comments.unshift(...state.socket_comments.reverse());
     },
 
     SET_SOCKET_DATA_INIT(state) {
+      state.socket_comments.splice(0);
       state.socket_comment_cnt = 0;
-      state.socket_comments = [];
     },
 
     // 소켓 관련 저장
@@ -275,10 +275,10 @@ const titleCompetitionStore = {
     setSocketDataInit({ commit }) {
       commit('SET_SOCKET_DATA_INIT');
     },
-    pushSocketComments({ commit }) {
+    pushSocketComments({ commit, dispatch }) {
       return new Promise(() => {
         commit('PUSH_SOCKET_COMMENTS');
-      });
+      }).then(dispatch('setSocketDataInit'));
     },
   },
 };
