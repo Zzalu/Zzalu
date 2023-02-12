@@ -2,7 +2,6 @@ import { apiInstance } from './index.js';
 const api = apiInstance();
 
 
-
 function getProfileStat(params, res, err) {
   api.get(`statistics/member?memberId=${params}`)
       .then(res).catch(err)

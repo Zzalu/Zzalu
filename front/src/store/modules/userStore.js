@@ -163,11 +163,27 @@ const userStore = {
     // 아이디찾기
     sendUsernameAction: async (commit, email) => {
       console.log(email);
+      localStorage.setItem('temp_email', email)
       const data = JSON.stringify({"userEmail": email})
-      const response = await requestUsername(data);
-      // console.log("이안에 코드있음",response)
+      const response = await requestUsername(
+        data,
+        (res) => {
+          console.log(res)
+          return res
+        },
+        (error) => {
+          console.log(error.response);
+          return error.response
+        }
+      );
       return response
+      // console.log("이안에 코드있음",response)
     },
+    // ----------------------------------------------------------
+    // 매니저
+    // managerApplyAction: async (commit) => {
+      
+    // },
   // --------------------------------------------------------------
   // 회원탈퇴
     userDeleteAction: async (context, pwd) => {

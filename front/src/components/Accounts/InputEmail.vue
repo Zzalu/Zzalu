@@ -25,6 +25,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { reactive } from 'vue'
 import SignupEmailValidations from '../../services/SignupEmailValidations'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'InputEmail',
@@ -94,6 +95,11 @@ export default {
       console.log(result)
       if (result.status == 200 ) {
         router.push({name: 'check-email'})
+      } else {
+        Swal.fire({
+          icon: "error",
+          text:"해당 이메일에 대한 정보가 없습니다."
+          })
       }
     }
     return {

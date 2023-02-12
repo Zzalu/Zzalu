@@ -43,10 +43,11 @@
     <input
       type="text"
       class="account-input"
-      v-bind:placeholder="this.my_data.username"
+      v-bind:placeholder="this.my_data.nickname"
     />
-    <button class="button-in-input">중복확인</button>
+    <button class="button-in-input" @click="uniqueNickname" >중복확인</button>
   </div>
+    <!-- <div class="signup-error" v-if="errorMsgs.err.nickname" > {{ errorMsgs.err.nickname }} </div> -->
   <div class="my-2">
     <font-awesome-icon
       icon="fa-solid fa-pen-to-square"
@@ -63,9 +64,11 @@
 </template>
 
 <script>
+// import Swal from 'sweetalert2'
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-// import ModifyProfileTopNav from "../../components/Common/NavBar/ModifyProfileTopNav.vue";
+// import { reactive,watch } from 'vue'
+// import SignupNicknameValidations from '@/services/SignupNicknameValidations'
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue";
 export default {
   name: "EditProfileView",
@@ -79,11 +82,57 @@ export default {
     const my_data= computed(
       () => store.state.profileStore.profile_user
     );
-
-
+    // const submit = reactive({
+    //   profile_msg:'',
+    //   nickname: '',
+    //   nicknameState: false,
+    // })
+    // const errorMsgs = reactive({
+    //   err: {
+    //     nickname: '',
+    //   }
+    // })
+    // 닉 바꾸는지 확인
+    // watch(() => submit.nickname, (newValue, oldValue) => {
+    //   if (newValue != oldValue) {
+    //     submit.nicknameState = false
+    //     }
+      
+    // })
+    // // 닉네임 중복확인
+    // const uniqueNickname = async function () {
+    //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
+    //   const validations = new SignupNicknameValidations(
+    //     submit.nickname
+    //     );
+    //   const errors = validations.checkValidations();
+      
+    //   if ('nickname' in errors) {
+    //     errorMsgs.err.nickname = errors['nickname']
+    //     this.submit.nicknameState = false
+    //   } else {
+      // console.log(submit.nickname)
+      // const result = store.dispatch('userStore/uniqueNicknameAction', submit.nickname )
+      // if (result.data.unique==true) {
+      //   submit.nicknameState = true
+      //   Swal.fire({
+      //     icon: "success",
+      //     text:"사용 가능한 닉네임입니다."
+      //     })
+      // } else {
+      //   submit.nicknameState = false
+      //   Swal.fire({
+      //     icon: "error",
+      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+      //     })
+      // }
+      // }
+    // }
     return {
+      // submit,
       me,
       my_data,
+      // uniqueNickname
     };
 
 

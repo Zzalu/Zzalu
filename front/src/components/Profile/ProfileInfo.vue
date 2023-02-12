@@ -124,6 +124,7 @@ export default {
 .follower-and-following {
   @apply mt-10 text-center mx-2 text-zz-s font-spoq;
 }
-/* 내프로필이면 my-auto */
+
+
 
 </style>

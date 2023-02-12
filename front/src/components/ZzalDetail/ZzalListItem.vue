@@ -1,11 +1,11 @@
 <template>
+  <div>
+    <font-awesome-icon icon="fa-solid fa-lock" class="view-count" />
+    <div>{{visitedcount}}</div>
+  </div>
   <div class="grid grid-cols-3 gap-4">
-    <img
-      src="https://media4.giphy.com/media/KztT2c4u8mYYUiMKdJ/giphy.gif?cid=99fefb40794ob3uvhnn0gdrcpw577jgnr6nkwc7msn64urk8&rid=giphy.gif&ct=g"
-      class="col-span-2"
-      alt=""
-    />
-    <div class="grid grid-rows-2 gap-2">
+    <img :src="`${gifpath}`" alt="" class="col-span-2 justify-center">
+    <div class="grid grid-rows-2 gap-2 ">
       <div class="flex place-items-end"
       @click="this.open_list_modal(gif_id)"
       >
@@ -25,6 +25,14 @@ import { useStore } from "vuex";
 
 export default {
   name: "ZzalListItem",
+  data() {
+    return {
+      gifpath: this.$route.query.gifpath,
+      // id: this.$route.query.id,
+      // tags: this.$route.query.tags,
+      visitedcount: this.$route.query.visitedcount,
+    };
+  },
   setup() {
     const store = useStore();
 
@@ -43,5 +51,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="postcss" scoped>
+
+.view-count {
+  @apply my-3 mx-2 text-zz-negative
+}
 </style>

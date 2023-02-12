@@ -22,7 +22,7 @@ export default {
   }
 
   .edit-original-vid {
-    @apply mt-6 flex
+    @apply mt-6 flex mb-20
   }
 
   .edit-original-link {
