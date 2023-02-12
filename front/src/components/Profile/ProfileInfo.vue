@@ -48,7 +48,7 @@ export default {
   name: "ProfileInfo",
   data() {
     return {
-      me: localStorage.getItem("id")
+      me: localStorage.getItem("current_userid")
       // myProfile: false,
     };
   },

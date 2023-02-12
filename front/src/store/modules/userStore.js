@@ -14,6 +14,8 @@ const userStore = {
     user: null,
     accessToken: "",
     refreshToken: "",
+    nickname: "",
+    isManager: false
     // isLogin: false,
   }),
   mutations: {
@@ -35,9 +37,13 @@ const userStore = {
       state.user = loginData.data.username
       state.accessToken = loginData.data.accessToken
       state.refreshToken = loginData.data.refreshToken
-      localStorage.setItem('id', loginData.data.username)
+      state.nickname = loginData.data.nickname
+      state.isManager = loginData.data.isManager
+      localStorage.setItem('current_userid', loginData.data.username)
+      localStorage.setItem('current_nickname', loginData.data.nickname)
       localStorage.setItem('token', loginData.data.accessToken)
-      console.log('지금 접속한 사람 출력', loginData.data.username)
+      localStorage.setItem('isManager', loginData.data.isManager)
+      console.log('지금 접속한 사람 닉 출력', loginData.data.nickname)
       console.log('지금 접속한 사람 출력', state.user)
     },
     DELETE_TEMP_USER(state) {
