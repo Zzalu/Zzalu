@@ -15,6 +15,12 @@
         <div class="text-zz-light-p dark:text-white">비밀번호 변경</div>
         </button>
     </div>
+    <div class="flex">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="managerApply">
+        <div class="text-zz-light-p dark:text-white">매니저 권한 신청하기</div>
+        </button>
+    </div>
     <div class="flex" @click="toggleDark()" v-if="isDark==true">
       <font-awesome-icon icon="fa-regular fa-moon" class='settings-icon-aligned-left'/>
       <button class="settings-button">
@@ -30,6 +36,7 @@
       <div class="settings-right-letter-on">ON</div>
     </div>
   </div>
+
   <div class="logout">
     <button @click="logoutSubmit">로그아웃하기</button>
   </div>
@@ -71,8 +78,11 @@ export default {
       router.push({name: 'edit-profile'})
     }
 
+    const managerApply = () => {
+      store.dispatch('userStore/managerApplyAction')
+    }
     return {
-      logoutSubmit,goProfileEdit
+      logoutSubmit,goProfileEdit,managerApply
     }
   }
 }
@@ -81,5 +91,9 @@ export default {
 <style lang="postcss" scoped>
 .logout {
   @apply fixed inset-x-0 flex flex-wrap bottom-16 border-t text-zz-light-p font-spoq text-xl pt-3 px-4 dark:text-zz-light-s
+}
+
+.settings-icon-crown {
+  @apply absolute mx-4 my-5 h-8 text-zz-light-p dark:text-white
 }
 </style>

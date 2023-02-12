@@ -1,5 +1,5 @@
 <template>
-  <button class="edit-button text-zz-edit flex float-right">
+  <button class="edit-button text-zz-edit flex float-right" @click="showTags">
     [편집하기]
   </button>
   <div class="mt-6">
@@ -12,21 +12,9 @@
   </div>
 
   <div class="hashtag-container">
-    <div class="flex">
+    <div class="flex" v-for="(tag, i) in tags" :key='i'>
       <font-awesome-icon icon="fa-solid fa-circle-minus" class="hashtag-edit" />
-      <div class="hashtag">해시태그해시태그해시</div>
-    </div>
-    <div class="flex">
-      <font-awesome-icon icon="fa-solid fa-circle-minus" class="hashtag-edit" />
-      <div class="hashtag">해시태그</div>
-    </div>
-    <div class="flex">
-      <font-awesome-icon icon="fa-solid fa-circle-minus" class="hashtag-edit" />
-      <div class="hashtag">해시태그</div>
-    </div>
-    <div class="flex">
-      <font-awesome-icon icon="fa-solid fa-circle-minus" class="hashtag-edit" />
-      <div class="hashtag">해시태그</div>
+      <div class="hashtag">{{tag}}</div>
     </div>
   </div>
 
@@ -41,8 +29,13 @@
 <script>
 export default {
   name: 'ZzalInfo',
-
-
+  data() {
+    return {
+      id: this.$route.query.id,
+      tags: this.$route.query.tags.split(','),
+      visitedcount: this.$route.query.visitedcount,
+    };
+  },
 }
 </script>
 

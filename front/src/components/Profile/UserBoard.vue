@@ -1,11 +1,14 @@
 <template>
-  <div class="profile-title">{{ profile_user_data.nickname }}님의 보드</div>
+  <div class="mb-10">
+    <div class="profile-title">
+      {{ profile_user_data.nickname }}님의 보드
+    </div>
     <div v-if="user_board_list" class="flex flex-wrap justify-center">
       <div v-for="(board_list, i) in user_board_list.boards" :key="i">
         <BoardTitleListItem :board_list="board_list" />
       </div>
     </div>
-  <!-- </div> -->
+  </div>
 </template>
 
 <script>
@@ -29,7 +32,7 @@ export default {
 
     return {
       user_board_list,
-      profile_user_data
+      profile_user_data,
     };
   },
 };
