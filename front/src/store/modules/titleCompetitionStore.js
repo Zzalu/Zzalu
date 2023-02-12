@@ -9,6 +9,7 @@ const titleCompetitionStore = {
     title_competition_id: 0,
     zzal_url: '',
     state: '',
+
     // 댓글
     sort_type: 'POPULAR',
     comments: [],
@@ -25,6 +26,7 @@ const titleCompetitionStore = {
     },
 
     // 소켓 관련
+    is_top: true,
     socket_comment_cnt: 0,
     socket_comments: [],
   }),
@@ -58,6 +60,28 @@ const titleCompetitionStore = {
       state.comments = [];
     },
 
+    // 위로 올라가기
+    SET_IS_TOP(state) {
+      state.is_top = !state.is_top;
+    },
+
+    PUSH_SOCKET_COMMENTS(state) {
+      state.comments.unshift(...state.socket_comments);
+    },
+
+    SET_SOCKET_DATA_INIT(state) {
+      state.socket_comment_cnt = 0;
+      state.socket_comments = [];
+    },
+
+    // 소켓 관련 저장
+    ADD_SOCKET_COMMENT_CNT(state) {
+      state.socket_comment_cnt += 1;
+    },
+    ADD_SOCKET_COMMENT(state, comment) {
+      state.socket_comments.push(comment);
+    },
+
     // 댓글 추가하기
     ADD_COMMENTS(state, new_comments) {
       state.comments.push(...new_comments);
@@ -79,6 +103,7 @@ const titleCompetitionStore = {
 
     // 작성관련
     // 댓글
+
     PUSH_COMMENT(state, comment) {
       state.comments.unshift(comment);
     },
@@ -96,16 +121,6 @@ const titleCompetitionStore = {
     },
     DELETE_COMMENT(state, comment_index) {
       state.comments.splice(comment_index, 1);
-    },
-    ADD_SOCKET_COMMENT_CNT(state) {
-      state.socket_comment_cnt += 1;
-    },
-    ADD_SOCKET_COMMENT(state, comment) {
-      state.socket_comments.push(comment);
-    },
-    DELETE_SOCKET_DATA(state) {
-      state.socket_comment_cnt = 0;
-      state.socket_comments = [];
     },
   },
   actions: {
@@ -141,6 +156,11 @@ const titleCompetitionStore = {
       } else {
         await dispatch('getComments', 10);
       }
+    },
+
+    // 위로 올라가기
+    setIsTop({ commit }) {
+      commit('SET_IS_TOP');
     },
     // 댓글
     async getComments({ commit, state, dispatch }, size) {
@@ -252,8 +272,13 @@ const titleCompetitionStore = {
     addSocketComment({ commit }, comment) {
       commit('ADD_SOCKET_COMMENT', comment);
     },
-    deleteSocketData({ commit }) {
-      commit('DELETE_SOCKET_DATA');
+    setSocketDataInit({ commit }) {
+      commit('SET_SOCKET_DATA_INIT');
+    },
+    pushSocketComments({ commit }) {
+      return new Promise(() => {
+        commit('PUSH_SOCKET_COMMENTS');
+      });
     },
   },
 };
