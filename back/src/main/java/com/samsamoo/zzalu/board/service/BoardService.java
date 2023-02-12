@@ -143,6 +143,7 @@ public class BoardService {
         board.getGifs().remove(gif);
         boardRepository.save(board);
         gif.decreaseScrap();
+        gifsRepository.save(gif);
     }
 
     private void insertGif(Board board, Gifs gif, Member member) {
@@ -150,6 +151,7 @@ public class BoardService {
         board.getGifs().add(0, gif);
         boardRepository.save(board);
         gif.increaseScrap();
+        gifsRepository.save(gif);
     }
 
     public void deleteGifFromBoard(Long boardId, List<Long> gifList) {

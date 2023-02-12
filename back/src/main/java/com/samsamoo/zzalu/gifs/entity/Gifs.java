@@ -105,4 +105,8 @@ public class Gifs {
     public void decreaseScrap() {
         this.scrapCount--;
     }
+
+    public void updateVisitedCount() {
+        this.visitedCount++;
+    }
 }
