@@ -54,7 +54,6 @@ export default {
     const random_gif_data = computed(() => store.state.zzalListStore.random_gif_data)
     const close_search_modal = () => {
       store.commit('searchModalStore/open_search_modal')
-      store.dispatch("zzalListStore/getFirstRandomGIFList")
     };
     // 처음에 최초1회 받아옴, 페이지 새로고침되거나 데이터 추가로 받아온게 있다면 새로 받음
     const open_modal = () => {

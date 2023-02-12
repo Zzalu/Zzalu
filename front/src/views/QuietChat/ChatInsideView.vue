@@ -3,6 +3,7 @@
     <ChatRoomTopNav :room_name="this.$route.query.room_name" class="z-50" />
     <!-- {{ member_Id }}
     {{ my_member_Id }} -->
+    {{ totalheight }}
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
         <!-- {{ message }} -->
@@ -19,7 +20,7 @@
               </div> -->
 
         <!-- </div> -->
-
+          <!-- ---------------------------------------------------------------------------------- -->
         <!-- 상대방이 보낸 메세지 -->
 
         <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
@@ -28,10 +29,7 @@
 v-if="ChatMaster"  -->
           <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
           <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
-          <font-awesome-icon
-            icon="fa-solid fa-play"
-            class="message-balloon"
-          />
+          <font-awesome-icon icon="fa-solid fa-play" class="message-balloon" />
         </div>
 
         <!-- 짤 이미지 -->
@@ -45,11 +43,12 @@ v-if="ChatMaster"  -->
       </div>
     </div>
     <div class="pb-12"></div>
-    <MainBottomNavInChat @gif_data="gif_data" @gif_data2="gif_data2" />
+      <MainBottomNavInChat @gif_data="gif_data" @gif_data2="gif_data2" />
   </div>
 </template>
 
 <script>
+
 import MainBottomNavInChat from "../../components/Common/NavBar/MainBottomNavInChat";
 import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav";
 import Stomp from "webstomp-client";
@@ -104,8 +103,13 @@ export default {
       // 방장 확인
       member_Id: this.$route.query.member_Id,
       my_member_Id: localStorage.getItem("profile_id"),
+
+      // 채팅창 높이
+      // totalheight: document.body.scrollHeight,
     };
   },
+
+
   methods: {
     gif_data(data) {
       this.message = data.gifPath;
@@ -143,12 +147,18 @@ export default {
     reciveMessage(recv) {
       console.log("receive message: " + recv);
       console.log(recv);
+      console.log(this.messages,'message');
+      let totalheight =  document.body.scrollHeight;
       this.messages.unshift({
         type: recv.type,
         sender: recv.type == "ENTER" ? "[알림]" : recv.sender,
         message: recv.message,
         profilePath: recv.profilePath,
       });
+      console.log(totalheight+400,'높이');
+      setTimeout(() => {
+        window.scrollTo({ top:totalheight, left:0 , behavior:'smooth'});
+      }, 100);
     },
     connect() {
       let local_web_stomp = this.web_stomp;
@@ -203,6 +213,7 @@ export default {
 </script>
 
 <style scoped lang="postcss">
+
 /* 내 메세지 */
 .my-image-group {
   transform: translateY(-1.3rem);
@@ -236,8 +247,8 @@ export default {
 }
 
 .message-balloon {
-  transform: rotate(180deg) translate(-2rem,-2rem);
-  @apply text-zz-p text-2xl
+  transform: rotate(180deg) translate(-2rem, -2rem);
+  @apply text-zz-p text-2xl;
 }
 .master-icon {
   transform: translate(3.5rem, -0.7rem);
@@ -254,7 +265,6 @@ export default {
 }
 .write-time {
   font-size: 0.2rem;
-  @apply text-xs dark:text-white text-right text-zz-dark-p;
+  @apply dark:text-white text-right text-zz-dark-p;
 }
-
 </style>

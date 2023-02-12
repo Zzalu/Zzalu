@@ -35,7 +35,7 @@
 
                   <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                     <JjalListItemInChat
-                      :zzal_info="zzal_info"
+                      :jjal_info="zzal_info"
                       :i="i"
                       @select_id="select_id"
                       @path="path"
