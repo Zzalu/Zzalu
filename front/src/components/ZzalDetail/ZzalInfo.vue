@@ -50,9 +50,6 @@ export default {
   name: "ZzalInfo",
   data() {
     return {
-      id: this.$route.query.id,
-      tags: this.$route.query.tags.split(","),
-      visitedcount: this.$route.query.visitedcount,
       hashtags_input_mode : false,
       hash_input_err : false,
       hash_input : '',
@@ -60,6 +57,18 @@ export default {
   },
   props: {
     zzal_origin_content:String,
+    jjal_detail_data:Object,
+  },
+  computed: {
+    tags() {
+      return this.jjal_detail_data.tags.split(",")
+    },
+    visitedcount() {
+      return this.jjal_detail_data.visitedcount
+    },
+    id() {
+      return this.jjal_detail_data.id
+    }
   },
   methods: {
     RemoveHashtag(i) {
