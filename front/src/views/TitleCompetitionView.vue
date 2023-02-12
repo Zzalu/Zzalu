@@ -4,60 +4,63 @@
     <div class="flex flex-col items-center">
       <div class="w-full dark:text-white">
         <!-- 오늘의 제목학원 header -->
-        <header class="relative w-full flex flex-col items-center">
+        <!-- <header class="relative w-full flex flex-col items-center">` -->
+        <header class="title-header">
           <div>
             <span class="text-xs font-medium">{{ open_date }}</span>
             <h1 class="text-xl font-bold">오늘의 제목학원</h1>
           </div>
-          <div class="absolute right-0 top-0 flex flex-row items-center bg-zz-p p-1 rounded-md">
+          <div class="whole-of-frame-btn">
             <button class="text-xs text-white" @click="GoToWholeOfFrame">역대 제목학원</button>
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
 
-          <div ref="zzalComponent" class="h-48">
+          <div ref="zzalComponent" class="w-2/5 h-2/5">
             <img :src="zzal_url" alt="짤" class="w-full h-full" />
             <div v-if="isScrolled" class="zzal-fixed">
               <img :src="zzal_url" alt="짤" />
             </div>
           </div>
-          <!-- 댓글 스크롤 했을 때 짤fixed -->
-
-          <!-- <div :class="{ 'big-image': !isScrolled.value, 'small-image': isScrolled.value }">
-            <img class="title-image" :src="zzal_url" alt="짤" />
-          </div> -->
         </header>
 
         <!-- TOP 5 -->
         <!-- 댓글 네브 -->
-        <nav class="flex justify-between">
-          <div class="flex">
-            <h2 class="text-xl text-zz-p">댓글</h2>
-            <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
-          </div>
-          <div>
-            <button
-              :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
-              @click="clickSortBtn('POPULAR')"
-            >
-              인기순
-            </button>
-            <button :class="[sort_type == 'LATEST' ? 'sort-text-active' : 'sort-text']" @click="clickSortBtn('LATEST')">
-              최신순
-            </button>
-            <button
-              :class="[sort_type == 'CHRONOLOGICAL' ? 'sort-text-active' : 'sort-text']"
-              @click="clickSortBtn('CHRONOLOGICAL')"
-            >
-              과거순
-            </button>
-            <!-- <button class="sort-text" @click="clickSortBtn('POPULAR')">인기순</button>
+        <!-- 댓글 main -->
+
+        <div class="comment-main" @scroll="handleCommentListScroll">
+          <nav class="flex justify-between">
+            <div class="flex">
+              <h2 class="text-xl text-zz-p">댓글</h2>
+              <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
+            </div>
+            <div>
+              <button
+                :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
+                @click="clickSortBtn('POPULAR')"
+              >
+                인기순
+              </button>
+              <button
+                :class="[sort_type == 'LATEST' ? 'sort-text-active' : 'sort-text']"
+                @click="clickSortBtn('LATEST')"
+              >
+                최신순
+              </button>
+              <button
+                :class="[sort_type == 'CHRONOLOGICAL' ? 'sort-text-active' : 'sort-text']"
+                @click="clickSortBtn('CHRONOLOGICAL')"
+              >
+                과거순
+              </button>
+              <!-- <button class="sort-text" @click="clickSortBtn('POPULAR')">인기순</button>
             <button class="sort-text" @click="clickSortBtn('LATEST')">최신순</button>
             <button class="sort-text" @click="clickSortBtn('CHRONOLOGICAL')">과거순</button> -->
-          </div>
-        </nav>
-        <!-- 댓글 리스트 -->
-        <comment-list ref="commentListComponent" class="mb-10"></comment-list>
+            </div>
+          </nav>
+          <!-- 댓글 리스트 -->
+          <comment-list ref="commentListComponent" class="comment-list"></comment-list>
+        </div>
       </div>
       <!-- 댓글 input -->
       <comment-input></comment-input>
@@ -96,52 +99,25 @@ export default {
       router.push(`/whole-of-frame`);
     };
     let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
-    /*     async function init() {
-      await store.dispatch('titleCompetitionStore/getTitleCompetition', open_date).then((result) => {
-        if (result) {
-          store.dispatch('titleCompetitionStore/getNewestComments', 4);
-        }
-      });
-      total_comment_cnt = store.state.titleCompetitionStore.total_comment_cnt;
-      zzal_url = store.state.titleCompetitionStore.zzal_url;
-    } */
+
     document.documentElement.scrollTop = 0;
-    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 4 });
-    // store.dispatch('titleCompetitionStore/getComments', 4);
+    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
 
     const clickSortBtn = (sort_type) => {
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
-    /*     function infinityScroll() {
-      let scrollLocation = document.documentElement.scrollTop; // 현재 스크롤바 위치
-      let windowHeight = window.innerHeight; // 스크린 창
-      let fullHeight = document.body.scrollHeight; // margin 값은 포함 x
-      if (store.state.titleCompetitionStore.comments.length >= total_comment_cnt.value) {
-        return;
-      } else {
-        if (scrollLocation + windowHeight >= fullHeight) {
-          setTimeout(() => {
-            loadMoreComments();
-          }, 2000);
-        }
-      }
-    }
-
-    onMounted(() => {
-      window.addEventListener('scroll', infinityScroll);
-    });
-
-    onBeforeUnmount(() => {
-      window.removeEventListener('scroll', infinityScroll);
-    });
-
     const loadMoreComments = () => {
-      setTimeout(() => {
-        store.dispatch('titleCompetitionStore/getComments', 4);
-      }, 2000);
-      console.log('불러옵니다');
-    }; */
+      store.dispatch('titleCompetitionStore/getComments', 4);
+    };
+    const handleCommentListScroll = (e) => {
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      if (scrollTop + clientHeight > scrollHeight - 1) {
+        setTimeout(() => {
+          loadMoreComments();
+        }, 1000);
+      }
+    };
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
@@ -186,12 +162,20 @@ export default {
       clickSortBtn,
       GoToWholeOfFrame,
       sort_type,
+      handleCommentListScroll,
     };
   },
 };
 </script>
 
 <style>
+.title-header {
+  @apply fixed w-full flex flex-col items-center justify-center;
+}
+
+.whole-of-frame-btn {
+  @apply absolute right-10 top-0 flex flex-row items-center bg-zz-p p-1 rounded-md;
+}
 .sort-text {
   @apply text-xs text-zz-p mr-1 font-thin;
 }
@@ -199,8 +183,15 @@ export default {
   @apply text-xs text-zz-s mr-1 font-black;
 }
 
-.title-header {
-  @apply relative w-full flex flex-col items-center;
+.comment-main {
+  @apply fixed bottom-0 w-11/12 mb-14 overflow-y-scroll h-1/2;
+}
+.comment-list {
+  @apply w-full mb-10 overflow-y-scroll h-auto;
+}
+
+.comment-list ::-webkit-scrollbar {
+  display: none;
 }
 
 .big-imange {
