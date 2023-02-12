@@ -19,6 +19,11 @@
     </div>
 
     <p class="guide">고독방 이름</p>
+    <div
+        class="select-jjal-img h-40 w-40"
+        :style="`background-image:url(https://jjalbang.today/files/jjalbox/2015/03/103_5516a42575dca_944.gif)`"
+      ></div>
+    <!-- <img class="h-40 w-40 " src='https://jjalbang.today/files/jjalbox/2015/03/103_5516a42575dca_944.gif' alt=""> -->
     <input class="guideline dark:text-white" placeholder="고독방을 제외한 고독방 이름을 입력해주세요." v-model="room_name_input" @blur="this.title_input_err=false"/>
     <p v-if="title_input_err" class="caution">고독방 이름에는 띄어쓰기를 제외한 특수문자를 사용할 수 없습니다.</p>
     <p class="guide">고독방 한 줄 소개</p>

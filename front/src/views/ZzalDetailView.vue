@@ -121,6 +121,7 @@
         </div>
       </div>
     </div>
+    <div class="pb-12"></div>
   </div>
   <main-bottom-nav></main-bottom-nav>
 </template>

@@ -1,4 +1,7 @@
 import { apiInstance } from './index.js';
+import { authApiInstance } from './index.js';
+
+const authapi = authApiInstance();
 const api = apiInstance();
 
 function getPopularGIF(res,err) {
@@ -6,7 +9,7 @@ function getPopularGIF(res,err) {
     .then(res).catch(err)
 }
 function getRecommendGIF(res,err) {
-    api.get(`/gif/user`)
+    authapi.get(`/gif/recommend`)
     .then(res).catch(err)
 }
 function getFirstRandomGIF(res,err) {
