@@ -11,13 +11,13 @@
         <!-- <div v-if="member_Id == my_member_Id"> -->
         <!-- 짤 이미지 -->
 
-        <!-- <font-awesome-icon icon="fa-solid fa-play" 
+        <font-awesome-icon icon="fa-solid fa-play" 
             class="my-message-balloon"
               />
             <div class="my-image-group">
                 <span class="my-write-time">오후 6:00</span>
                 <img class="my-image-box" :src="`${message.message}`" alt="" />
-              </div> -->
+              </div>
 
         <!-- </div> -->
           <!-- ---------------------------------------------------------------------------------- -->
@@ -114,7 +114,7 @@ export default {
     gif_data(data) {
       this.message = data.gifPath;
       console.log(this.message, this.message);
-      console.log(data, "여기서데이터받음");
+
       this.sendMessage();
       // BE에 짤 유즈 메세지 보내기
       // gifId => data.id
@@ -127,7 +127,7 @@ export default {
       this.message = data.gifPath;
       this.sendMessage();
       this.message = "";
-      console.log(data, "여기서데이터받음2");
+      // console.log(data, "여기서데이터받음2");
     },
     findRoom() {
       this.findQuiteChatList(this.room_id);
@@ -147,7 +147,7 @@ export default {
     reciveMessage(recv) {
       console.log("receive message: " + recv);
       console.log(recv);
-      console.log(this.messages,'message');
+      // console.log(this.messages,'message');
       let totalheight =  document.body.scrollHeight;
       this.messages.unshift({
         type: recv.type,
@@ -155,7 +155,7 @@ export default {
         message: recv.message,
         profilePath: recv.profilePath,
       });
-      console.log(totalheight+400,'높이');
+      // console.log(totalheight+400,'높이');
       setTimeout(() => {
         window.scrollTo({ top:totalheight, left:0 , behavior:'smooth'});
       }, 100);
@@ -221,7 +221,8 @@ export default {
 }
 .my-image-box {
   max-width: 75%;
-  @apply bg-left bg-contain h-40 bg-no-repeat ml-3 border-2 border-zz-p rounded-2xl;
+  min-width: 5%;
+  @apply bg-zz-p bg-left bg-contain h-40 bg-no-repeat ml-3 border-2 border-zz-p rounded-2xl;
 }
 .my-write-time {
   font-size: 0.2rem;
@@ -229,8 +230,8 @@ export default {
 }
 
 .my-message-balloon {
-  transform: translate(19.4rem);
-  @apply text-zz-p absolute text-2xl;
+  transform: translateX(0.7rem);
+  @apply text-zz-p absolute text-2xl right-0;
 }
 
 /* 상대방 메세지 */
@@ -261,7 +262,8 @@ export default {
 }
 .image-box {
   max-width: 75%;
-  @apply bg-left bg-contain h-40 bg-no-repeat mr-3 border-2 border-zz-p rounded-2xl;
+  min-width: 5%;
+  @apply bg-zz-p bg-left bg-contain h-40 bg-no-repeat mr-3 border-2 border-zz-p rounded-2xl;
 }
 .write-time {
   font-size: 0.2rem;

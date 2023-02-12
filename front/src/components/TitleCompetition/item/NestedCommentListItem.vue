@@ -16,9 +16,9 @@
 
 <script>
 import { reactive, toRefs } from '@vue/reactivity';
-// import { deleteNestedComment } from '@/api/titleCompetition.js';
+import { deleteNestedComment } from '@/api/titleCompetition.js';
 import { computed } from 'vue-demi';
-
+import Swal from 'sweetalert2';
 export default {
   name: 'NestedCommentListItem',
   props: {
@@ -70,19 +70,29 @@ export default {
     }
 
     const clickDeleteBtn = () => {
-      console.log('dd');
       console.log(props.index);
-      ctx.emit('popNestedComment', props.index);
-      /*       deleteNestedComment(
-        nested_comment_data.nested_comment_id,
-        (({ data }) => {
-          console.log(data);
-          //TODO: 데이터 삭제 후 부모의 nested comment 배열에서 삭제하기
-        },
-        (error) => {
-          console.log(error);
-        }),
-      ); */
+      Swal.fire({
+        icon: 'warning',
+        text: '삭제하시겠습니까?',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+      }).then((result) => {
+        if (result.isConfirmed) {
+          ctx.emit('popNestedComment', props.index);
+          deleteNestedComment(
+            nested_comment_data.nested_comment_id,
+            (({ data }) => {
+              console.log(data);
+            },
+            (error) => {
+              console.log(error);
+            }),
+          );
+        }
+      });
     };
 
     return {

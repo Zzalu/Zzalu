@@ -50,7 +50,7 @@ export default {
   setup() {
     const store = useStore();
     const logged_in = window.localStorage.getItem('token');
-    const current_user = window.localStorage.getItem('id');
+    const current_user = window.localStorage.getItem('current_userid');
     const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
     const check_search_modal = computed(() => store.state.searchModalStore.open_search_modal);
     const random_gif_data = computed(() => store.state.zzalListStore.random_gif_data)

@@ -122,6 +122,7 @@ export default {
   },
   methods: {
     route() {
+      this.get_user_list(this.zzal_info.id);
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.zzal_info.id },

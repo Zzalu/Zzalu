@@ -18,10 +18,11 @@
   </div>
   <div class="text-center-container">
     <!-- <div class="bg-zz-light-p rounded-full h-28 w-28 mt-10"></div> -->
-    <img class="bg-zz-light-p rounded-full h-28 w-28 mt-10"
-      src="@/assets/happy_celebrate.gif"
-      @change = 'uploadImage()'
+    <img class="profile-image"
+      :style="{backgroundImage : `url(${this.image})`}"
+      
     >
+    <div>이미지: {{ this.profileImg.name }}</div>
     <div class="flex" for="file_input">
       <div
         class="flex mt-10 mb-20 items-center justify-center bg-grey-lighter"
@@ -29,6 +30,8 @@
         <label
           class="px-4 flex flex-col items-center bg-white dark:bg-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
         >
+        <input type="file" class="bg-red-200" ref="profilePic" @change='inputImage()'>
+        <button @click="profileUploadBtn"></button>
         <div class="flex">
           <font-awesome-icon icon="fa-solid fa-image" class="my-auto mr-2 dark:text-white" />
           <span class="text-base leading-normal dark:text-white">사진 수정</span>
@@ -67,7 +70,7 @@
 // import Swal from 'sweetalert2'
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-// import { reactive,watch } from 'vue'
+// import { reactive } from 'vue'
 // import SignupNicknameValidations from '@/services/SignupNicknameValidations'
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue";
 export default {
@@ -82,11 +85,6 @@ export default {
     const my_data= computed(
       () => store.state.profileStore.profile_user
     );
-    // const submit = reactive({
-    //   profile_msg:'',
-    //   nickname: '',
-    //   nicknameState: false,
-    // })
     // const errorMsgs = reactive({
     //   err: {
     //     nickname: '',
@@ -128,18 +126,43 @@ export default {
       // }
       // }
     // }
+    // const uploadImage = () => {
+    //   this.profileImg = this.$refs.profilePic.files
+    //   console.log(this.profileImg)
+    //   console.log(this.$refs.profilePic.filters)
+    // }
+
+    // const profileUploadBtn = () => {
+
+    // }
     return {
-      // submit,
       me,
       my_data,
+      // uploadImage
       // uniqueNickname
     };
 
 
   },
-  methods: {
-
+  data() {
+    return {
+      profileImg: '',
+    }
   },
+  methods: {
+    inputImage () {
+      this.profileImg = this.$refs.profilePic.files[0]
+      console.log(this.profileImg, "잘 들어왔는지")
+      var image = this.$refs.profilePic.files[0]
+      console.log('이미지', image)
+      const url = URL.createObjectURL(image)
+      console.log('유알엘', url)
+      this.image = url
+      console.log(url)
+      console.log(this.image)
+    }
+
+  }
 };
 </script>
 
@@ -150,5 +173,15 @@ export default {
 
 .delete-account {
   @apply fixed inset-x-0 flex flex-wrap justify-end bottom-14 text-zz-error font-spoq text-xs pr-3;
+}
+
+.profile-image{
+    width: 100px; 
+    height: 100px;
+    background-size: contain;
+    /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply rounded-full
 }
 </style>

@@ -23,6 +23,10 @@ const titleCompetitionStore = {
       comment_id: '',
       nickname: '',
     },
+
+    // 소켓 관련
+    socket_comment_cnt: 0,
+    socket_comments: [],
   }),
   getters: {
     getDate: (state) => state.open_date,
@@ -93,6 +97,16 @@ const titleCompetitionStore = {
     DELETE_COMMENT(state, comment_index) {
       state.comments.splice(comment_index, 1);
     },
+    ADD_SOCKET_COMMENT_CNT(state) {
+      state.socket_comment_cnt += 1;
+    },
+    ADD_SOCKET_COMMENT(state, comment) {
+      state.socket_comments.push(comment);
+    },
+    DELETE_SOCKET_DATA(state) {
+      state.socket_comment_cnt = 0;
+      state.socket_comments = [];
+    },
   },
   actions: {
     async init({ state, dispatch }, data) {
@@ -125,16 +139,17 @@ const titleCompetitionStore = {
       if (sort_type == 'POPULAR') {
         await dispatch('getBestComments');
       } else {
-        await dispatch('getComments', 4);
+        await dispatch('getComments', 10);
       }
     },
     // 댓글
-    async getComments({ commit, state }, size) {
+    async getComments({ commit, state, dispatch }, size) {
       const params = {
         lastCid: state.last_comment_id,
         limit: size,
         sort: state.sort_type,
       };
+
       await getComments(
         state.title_competition_id,
         params,
@@ -145,6 +160,7 @@ const titleCompetitionStore = {
           console.log(error);
         },
       );
+      dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
     },
     async getBestComments({ commit, state }) {
       const params = {
@@ -225,6 +241,19 @@ const titleCompetitionStore = {
     // 삭제 관련
     deleteComment({ commit }, comment_index) {
       commit('DELETE_COMMENT', comment_index);
+    },
+
+    // 소켓 통신 관련
+
+    // 새로운 댓글 추가
+    addSocketCommentCnt({ commit }) {
+      commit('ADD_SOCKET_COMMENT_CNT');
+    },
+    addSocketComment({ commit }, comment) {
+      commit('ADD_SOCKET_COMMENT', comment);
+    },
+    deleteSocketData({ commit }) {
+      commit('DELETE_SOCKET_DATA');
     },
   },
 };

@@ -1,6 +1,6 @@
 <template>
   <!-- 댓글 input -->
-  <div v-if="state == 'PROCEED'" class="relative comment_write flex">
+  <div v-if="state == 'PROCEED'" class="comment_write">
     <div v-show="canWriteNested.value" class="absolute bottom-10 bg-zz-p px-2 py-1 text-xs rounded-xl">
       <span class="mr-1">{{ comment_writer_nickname }}에게 답글</span>
       <button @click="undoWriteNestedComment">

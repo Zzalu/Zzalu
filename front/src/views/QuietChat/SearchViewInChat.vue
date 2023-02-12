@@ -229,7 +229,7 @@ export default {
   name: "SearchViewInChat",
   setup() {
     const store = useStore();
-    const user_id = window.localStorage.getItem("id");
+    const user_id = window.localStorage.getItem("current_userid");
 
     const open_search_modal = computed(
       () => store.state.searchModalStore.open_search_modal
