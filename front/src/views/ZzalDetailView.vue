@@ -1,8 +1,12 @@
 <template>
   <!-- 에디트 모드 -->
   <div v-if="edit_mode">
-    <zzal-list-item :gif_id="jjal_detail_data.id"></zzal-list-item>
-    <zzal-info :zzal_origin_content="zzal_origin_content"></zzal-info>
+    <zzal-list-item :gif_id="jjal_detail_data.id"
+    :jjal_detail_data="jjal_detail_data"
+    ></zzal-list-item>
+    <zzal-info :zzal_origin_content="zzal_origin_content"
+    :jjal_detail_data="jjal_detail_data"
+    ></zzal-info>
     <zzal-source-video></zzal-source-video>
     <div class="flex justify-center dark:text-white">
       <button
@@ -38,9 +42,9 @@
       <div v-else>
         <!-- 헤더 -->
         <div v-if="jjal_detail_data">
-          <div>
+          <div class="flex items-center">
             <font-awesome-icon icon="fa-solid fa-eye" class="view-count" />
-            <div>{{ visitedCount }}</div>
+            <div class="ml-2 dark:text-white">{{ visitedCount }}</div>
           </div>
           <div class="grid grid-cols-3 gap-4">
             <img :src="`${gif_path}`" alt="" class="col-span-2 justify-center" />

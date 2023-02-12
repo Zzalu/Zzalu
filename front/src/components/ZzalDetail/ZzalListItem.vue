@@ -11,14 +11,6 @@ import { useStore } from "vuex";
 
 export default {
   name: "ZzalListItem",
-  data() {
-    return {
-      gifpath: this.$route.query.gifpath,
-      // id: this.$route.query.id,
-      // tags: this.$route.query.tags,
-      visitedcount: this.$route.query.visitedcount,
-    };
-  },
   setup() {
     const store = useStore();
 
@@ -33,7 +25,13 @@ export default {
   },
   props: {
     gif_id: Number,
+    jjal_detail_data : Object,
   },
+  computed: {
+    gifpath() {
+      return this.jjal_detail_data.gifPath
+    },
+  }
 };
 </script>
 
