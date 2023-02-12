@@ -55,7 +55,6 @@ export default {
   data() {
     return {
       start_time: null,
-      gifPath: this.zzal_info.gifPath,
     };
   },
   computed: {
@@ -66,10 +65,16 @@ export default {
         return false;
       }
     },
+    zzal_info() {
+      return this.jjal_info
+    },
+    gifPath() {
+      return this.zzal_info.gifPath
+    }
   },
   props: {
     i: Number,
-    zzal_info: Object,
+    jjal_info: Object,
   },
   methods: {
     send_message_select() {
