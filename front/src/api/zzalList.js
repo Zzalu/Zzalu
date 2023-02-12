@@ -22,5 +22,10 @@ function getSearchZzal(params,res,err) {
     api.get(`gif/search?searchKeyword=${params}`)
     .then(res).catch(err)
 }
+function getDetailData(params,res,err) {
+    console.log(params,'디테일ID')
+    api.get(`/gif/gif?gifId=${params}`)
+    .then(res).catch(err)
+}
 
-export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal }
+export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal, getDetailData }
