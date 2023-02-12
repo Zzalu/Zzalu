@@ -54,6 +54,7 @@ import { reactive, toRefs } from '@vue/reactivity';
 import NestedCommentList from '@/components/TitleCompetition/NestedCommentList.vue';
 import { plusLike, minusLike, deleteComment } from '@/api/titleCompetition.js';
 import { computed } from 'vue-demi';
+import Swal from 'sweetalert2';
 export default {
   components: { NestedCommentList },
   name: 'CommentListItem',
@@ -147,8 +148,31 @@ export default {
       }
     };
 
+    // 삭제버튼 클릭
     const clickDeleteBtn = () => {
-      store.dispatch('titleCompetitionStore/deleteComment', props.index);
+      Swal.fire({
+        icon: 'warning',
+        text: '삭제하시겠습니까?',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+      }).then((result) => {
+        if (result.isConfirmed) {
+          store.dispatch('titleCompetitionStore/deleteComment', props.index);
+          deleteComment(
+            comment_data.comment_id,
+            ((data) => {
+              console.log(data);
+            },
+            (error) => {
+              console.log(error);
+            }),
+          );
+        }
+      });
+      /*       store.dispatch('titleCompetitionStore/deleteComment', props.index);
       deleteComment(
         comment_data.comment_id,
         ((data) => {
@@ -157,7 +181,7 @@ export default {
         (error) => {
           console.log(error);
         }),
-      );
+      ); */
     };
 
     return {
