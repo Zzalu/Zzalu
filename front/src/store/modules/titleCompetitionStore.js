@@ -125,16 +125,17 @@ const titleCompetitionStore = {
       if (sort_type == 'POPULAR') {
         await dispatch('getBestComments');
       } else {
-        await dispatch('getComments', 4);
+        await dispatch('getComments', 10);
       }
     },
     // 댓글
-    async getComments({ commit, state }, size) {
+    async getComments({ commit, state, dispatch }, size) {
       const params = {
         lastCid: state.last_comment_id,
         limit: size,
         sort: state.sort_type,
       };
+
       await getComments(
         state.title_competition_id,
         params,
@@ -145,6 +146,7 @@ const titleCompetitionStore = {
           console.log(error);
         },
       );
+      dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
     },
     async getBestComments({ commit, state }) {
       const params = {
