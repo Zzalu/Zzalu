@@ -1,7 +1,8 @@
 <template>
   <div class="quiet-chat-card-contain">
     <div v-if="here">
-      <div class="animations-start-contain"></div>
+      <div class="animations-start-contain">        
+      </div>
     </div>
     <!-- 고독방 정보 -->
     <div class="quiet-chat-like-contain">

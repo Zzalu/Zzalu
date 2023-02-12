@@ -43,6 +43,7 @@
     <input
       type="text"
       class="account-input"
+      v-model="submit.nickname"
       v-bind:placeholder="this.my_data.nickname"
     />
     <button class="button-in-input" @click="uniqueNickname" >중복확인</button>
@@ -67,7 +68,7 @@
 // import Swal from 'sweetalert2'
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-// import { reactive,watch } from 'vue'
+import { reactive,watch } from 'vue'
 // import SignupNicknameValidations from '@/services/SignupNicknameValidations'
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue";
 export default {
@@ -82,23 +83,23 @@ export default {
     const my_data= computed(
       () => store.state.profileStore.profile_user
     );
-    // const submit = reactive({
-    //   profile_msg:'',
-    //   nickname: '',
-    //   nicknameState: false,
-    // })
+    const submit = reactive({
+      profile_msg:'',
+      nickname: '',
+      nicknameState: false,
+    })
     // const errorMsgs = reactive({
     //   err: {
     //     nickname: '',
     //   }
     // })
     // 닉 바꾸는지 확인
-    // watch(() => submit.nickname, (newValue, oldValue) => {
-    //   if (newValue != oldValue) {
-    //     submit.nicknameState = false
-    //     }
-      
-    // })
+    watch(() => submit.nickname, (newValue, oldValue) => {
+      console.log(newValue,oldValue);
+      if (newValue != oldValue) {
+        submit.nicknameState = false
+        }
+    })
     // // 닉네임 중복확인
     // const uniqueNickname = async function () {
     //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
@@ -129,7 +130,7 @@ export default {
       // }
     // }
     return {
-      // submit,
+      submit,
       me,
       my_data,
       // uniqueNickname

@@ -9,12 +9,12 @@
         <!-- {{ message }} -->
         <!-- 내가 보낸 메세지 -->
         <!-- <div v-if="member_Id == my_member_Id"> -->
-        <!-- 짤 이미지 -->
-
-        <font-awesome-icon icon="fa-solid fa-play" 
-            class="my-message-balloon"
-              />
-            <div class="my-image-group">
+          <!-- 짤 이미지 -->
+          
+          <font-awesome-icon icon="fa-solid fa-play" 
+          class="my-message-balloon"
+          />
+          <div class="my-image-group">
                 <span class="my-write-time">오후 6:00</span>
                 <img class="my-image-box" :src="`${message.message}`" alt="" />
               </div>
