@@ -15,10 +15,24 @@
         <div class="text-zz-light-p dark:text-white">비밀번호 변경</div>
         </button>
     </div>
-    <div class="flex">
+    <div class="flex" v-if="this.isManager==false">
       <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
       <button class="settings-button" @click="managerApply">
         <div class="text-zz-light-p dark:text-white">매니저 권한 신청하기</div>
+        </button>
+    </div>
+
+    <div class="flex">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="[GetTempGif(), goAdmin()]">
+        <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
+        </button>
+    </div>
+
+    <div class="flex" v-if="this.isManager">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="goAdmin">
+        <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
         </button>
     </div>
     <div class="flex" @click="toggleDark()" v-if="isDark==true">
@@ -68,6 +82,7 @@ export default {
     };
   },
   setup() {
+    const isManager = localStorage.getItem("isManager")
     const store = useStore();
     const router = useRouter();
     const logoutSubmit = async function() {
@@ -83,10 +98,18 @@ export default {
     const managerApply = () => {
       store.dispatch('userStore/managerApplyAction')
     }
-    return {
-      logoutSubmit,goProfileEdit,managerApply,goChangePwd
+    const goAdmin = () => {
+      router.push({name: 'admin'})
     }
-  }
+    const GetTempGif = () => {
+      store.dispatch('tempGifStore/getAllTempGif')
+    }
+    return {
+      logoutSubmit,goProfileEdit,managerApply,goChangePwd, goAdmin, GetTempGif,
+      isManager
+    }
+  },
+
 }
 </script>
 
