@@ -1,8 +1,12 @@
 <template>
   <div>
     <ol>
-      <li v-for="nested_comment in nested_comments" :key="nested_comment.nested_comment_id" class="mb-1">
-        <nested-comment-list-item :nested_comment="nested_comment" />
+      <li v-for="(nested_comment, index) in nested_comments" :key="nested_comment.replyCommentId" class="mb-1">
+        <nested-comment-list-item
+          :nested_comment="nested_comment"
+          :index="index"
+          @popNestedComment="popNestedComment(index)"
+        />
         <span class="w-full h-divider-height bg-zz-light-div"></span>
       </li>
     </ol>
@@ -40,7 +44,9 @@ export default {
         resolve();
       });
     };
+
     // 답글 읽기
+    // TODO: 과거순 정렬이면 답글도 과거순으로
     const loadMoreNestedComments = async () => {
       console.log(props);
       await store.dispatch('titleCompetitionStore/getNestedCommentList', {
@@ -51,13 +57,19 @@ export default {
       });
       await pushNestedComments();
       state.last_nested_comment_id = state.nested_comments[state.nested_comments.length - 1].replyCommentId;
-      console.log(state.last_nested_comment_id);
+    };
+
+    // 답글 삭제
+    const popNestedComment = (index) => {
+      state.nested_comments.splice(index, 1);
+      console.log(state.nested_comments);
     };
 
     loadMoreNestedComments();
     return {
       ...toRefs(state),
       loadMoreNestedComments,
+      popNestedComment,
     };
   },
 };

@@ -6,7 +6,7 @@
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
-        <p class="text-xs mr-1">{{ time }}</p>
+        <p class="text-xs mr-1">{{ new_time }}</p>
         <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
@@ -16,16 +16,17 @@
 
 <script>
 import { reactive, toRefs } from '@vue/reactivity';
-import { deleteNestedComment } from '@/api/titleCompetition.js';
+// import { deleteNestedComment } from '@/api/titleCompetition.js';
 import { computed } from 'vue-demi';
 
 export default {
   name: 'NestedCommentListItem',
   props: {
     nested_comment: Object,
+    index: Number,
   },
-  setup(props) {
-    // TODO: time ~~전으로 출력하기
+  emits: ['popNestedComment'],
+  setup(props, ctx) {
     const nested_comment_data = reactive({
       profile_image: 'profile.jpg',
       username: props.nested_comment.username,
@@ -36,14 +37,43 @@ export default {
       // modified: false,
     });
 
-    // TODO: 나중에 로그인 기능 완성되면 username 수정하기
+    const username = window.localStorage.getItem('profile_user');
+
+    // 삭제 버튼
     const canDelete = computed(() => {
-      console.log(nested_comment_data.username);
-      return (nested_comment_data.username = 'c109');
+      return (nested_comment_data.username = username);
     });
 
+    // 시간표시: ~ 전
+    const new_time = timeForToday(new Date(nested_comment_data.time));
+    function timeForToday(value) {
+      const today = new Date();
+      const timeValue = new Date(value);
+
+      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+      if (betweenTime < 1) return '방금 전';
+      if (betweenTime < 60) {
+        return `${betweenTime}분 전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간 전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일 전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년 전`;
+    }
+
     const clickDeleteBtn = () => {
-      deleteNestedComment(
+      console.log('dd');
+      console.log(props.index);
+      ctx.emit('popNestedComment', props.index);
+      /*       deleteNestedComment(
         nested_comment_data.nested_comment_id,
         (({ data }) => {
           console.log(data);
@@ -52,13 +82,14 @@ export default {
         (error) => {
           console.log(error);
         }),
-      );
+      ); */
     };
 
     return {
       ...toRefs(nested_comment_data),
       canDelete,
       clickDeleteBtn,
+      new_time,
     };
   },
 };
