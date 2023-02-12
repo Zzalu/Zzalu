@@ -9,6 +9,7 @@ import zzalListStore from '@/store/modules/zzalListStore.js'
 import followStore from './modules/followStore';
 import profileStore from '@/store/modules/profileStore';
 import boardListStore from '@/store/modules/boardListStore';
+import tempGifStore from '@/store/modules/tempGifStore';
 import createPersistedState from 'vuex-persistedstate';
 
 
@@ -25,7 +26,7 @@ const store = new Vuex.Store({
     followStore,
     profileStore,
     boardListStore,
-    // tempGifStore,
+    tempGifStore,
   },
     // vuex plugin 명시
     plugins: [createPersistedState({

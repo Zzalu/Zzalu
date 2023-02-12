@@ -7,9 +7,9 @@ function getAllTempGif(params, res, err) {
         .then(res).catch(err)
 }
 
-function putTempGif(params, data, res, err) {
+function putTempGif(params, data, success, fail) {
     authapi.put(`/temp/${data}`)
-        .then(res).catch(err)
+        .then(success).catch(fail)
 }
 
 function deleteTempGif(params, data, res, err) {
