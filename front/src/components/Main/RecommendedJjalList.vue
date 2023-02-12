@@ -22,7 +22,7 @@ import { computed } from "@vue/runtime-core";
 export default {
   name: "RecommendedJjalList",
   setup() {
-    const user_id = localStorage.getItem("id");
+    const user_id = localStorage.getItem("current_nickname");
 
     const store = useStore();
 

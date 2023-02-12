@@ -112,7 +112,7 @@
         // console.log('로그인 데이터', loginData)
         const res = await store.dispatch('userStore/loginAction', loginData)
         if (res) {
-          // console.log("로그인 요청 잘 갔음")
+          console.log("로그인 요청 잘 갔음")
           router.push({name: 'main'})
         }
         }
