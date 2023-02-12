@@ -132,12 +132,25 @@ export default {
         function () {
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
             console.log(message);
+            let recv_comment_data = JSON.parse(message.body);
+            console.log('recv_comment_data: ' + recv_comment_data);
+            if (sort_type.value == 'LATEST') {
+              // 최신순
+              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+              store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+            } else {
+              // 과거순 or 인기순
+              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+            }
           });
-          localWs.subscribe('/sub/title-hakwon/comments/like', function (message) {
+          localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             console.log(message);
+            let recv_like_data = JSON.parse(message.body);
+            console.log('recv_like_data: ' + recv_like_data);
           });
         },
-        function () {
+        function (error) {
+          console.log('error: ' + error);
           setTimeout(function () {
             console.log('connection reconnect');
             localSock = new SockJS('/ws-stomp');
