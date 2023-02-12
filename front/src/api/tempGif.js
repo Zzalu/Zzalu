@@ -1,6 +1,8 @@
 import { authApiInstance } from './index.js';
+import { formApiInstance } from './index.js';
 
 const authapi = authApiInstance();
+const formApi = formApiInstance();
 
 function getAllTempGif(params, res, err) {
     authapi.get(`/temp/all`)
@@ -17,8 +19,20 @@ function deleteTempGif(params, data, res, err) {
         .then(res).catch(err)
 }
 
-function postTempGif(params, formData, res, err) {
-    authapi.post(`/temp`, formData)
+function postTempGif(params, form, res, err) {
+    const tempData = new FormData();
+    if (form.updated_description != "") {
+        tempData.append("description", form.updated_description)
+    }
+    if (form.updated_relationsVideo != "") {
+        tempData.append("relationsVideo", form.updated_relationsVideo)
+    }
+    if (form.updated_tags != "") {
+        tempData.append("tags", form.updated_tags)
+    }
+    console.log(form)
+    tempData.append("originId", form.origin_id)
+    formApi.post(`/temp`, tempData)
         .then(res).catch(err)
 }
 

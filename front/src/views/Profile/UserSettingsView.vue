@@ -22,19 +22,19 @@
         </button>
     </div>
 
-    <div class="flex">
+    <div class="flex" v-if="this.isManager">
       <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
       <button class="settings-button" @click="[GetTempGif(), goAdmin()]">
         <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
         </button>
     </div>
 
-    <div class="flex" v-if="this.isManager">
+    <!-- <div class="flex" v-if="this.isManager">
       <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
       <button class="settings-button" @click="goAdmin">
         <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
         </button>
-    </div>
+    </div> -->
     <div class="flex" @click="toggleDark()" v-if="isDark==true">
       <font-awesome-icon icon="fa-regular fa-moon" class='settings-icon-aligned-left'/>
       <button class="settings-button">
