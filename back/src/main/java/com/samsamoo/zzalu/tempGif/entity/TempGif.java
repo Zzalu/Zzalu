@@ -21,7 +21,7 @@ public class TempGif {
     private Long id;
 //    @Column(unique = true)
     private String gifPath;
-    @Column(nullable = false)
+//    @Column(nullable = false)
     private String tags;
     private String relationsVideo;
     private String description;
