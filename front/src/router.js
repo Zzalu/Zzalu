@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Signup from '@/views/Accounts/SignUpView';
 import FindId from '@/views/Accounts/FindIdView';
-import ResetPassword from '@/views/Accounts/ResetPasswordView'
+import ResetPassword from '@/views/Accounts/ResetPasswordView';
 
 const routes = [
   {
@@ -178,7 +178,7 @@ const routes = [
   // --------------------------------------------------------------------
   // 수상기록
   {
-    path: '/award-record/:username',
+    path: '/award-record/:member_id',
     name: 'award-record',
     component: () => import('@/views/AwardRecordView'),
   },
@@ -188,6 +188,12 @@ const routes = [
     path: '/zzal/:zzal_id',
     name: 'zzal',
     component: () => import('@/views/ZzalDetailView'),
+  },
+  // 짤 업로드
+  {
+    path: '/zzal/create',
+    name: 'create-zzal',
+    component: () => import('@/views/ZzalCreateView'),
   },
   // ----------------------------------------------------------------
   // 보드 디테일
@@ -240,7 +246,7 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior() {
-    return { top: 0 }
+    return { top: 0 };
   },
 });
 

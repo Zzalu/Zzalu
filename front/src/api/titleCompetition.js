@@ -68,6 +68,11 @@ async function deleteNestedComment(nested_comment_id, success, fail) {
   await authApi.delete(`/comments/reply/${nested_comment_id}`).then(success).catch(fail);
 }
 
+// 제목학원 수상
+async function getAwardRecord(member_id, params, success, fail) {
+  await api.get(`/members/awards/${member_id}`, { params: params }).then(success).catch(fail);
+}
+
 export {
   // getNewestComments,
   getBestComments,
@@ -81,4 +86,5 @@ export {
   deleteComment,
   deleteNestedComment,
   getFinishTitleCompetition,
+  getAwardRecord,
 };

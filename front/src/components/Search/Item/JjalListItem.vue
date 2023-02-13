@@ -126,12 +126,12 @@ export default {
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.zzal_info.id },
-        query: {
-          gifpath: this.zzal_info.gifPath,
-          id: this.zzal_info.id,
-          tags: this.zzal_info.tags,
-          visitedcount: this.zzal_info.visitedcount,
-        },
+        // query: {
+        //   gifpath: this.zzal_info.gifPath,
+        //   id: this.zzal_info.id,
+        //   tags: this.zzal_info.tags,
+        //   visitedcount: this.zzal_info.visitedcount,
+        // },
       });
       this.close_search_modal();
     },

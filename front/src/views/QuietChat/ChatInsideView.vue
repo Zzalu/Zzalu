@@ -1,39 +1,52 @@
 <template>
   <div>
-    <ChatRoomTopNav :room_name="this.$route.query.room_name" class="z-50" />
+    <ChatRoomTopNav :room_name="this.$route.query.room_name"
+    :room_id="this.$route.query.room_id"
+    class="z-50" />
     <!-- {{ member_Id }}
-    {{ my_member_Id }} -->
+      {{ my_member_Id }} -->
     {{ totalheight }}
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
-        <!-- {{ message }} -->
         <!-- 내가 보낸 메세지 -->
-        <!-- <div v-if="member_Id == my_member_Id"> -->
+        <div v-if="user_nickname == message.sender">
           <!-- 짤 이미지 -->
-          
-          <font-awesome-icon icon="fa-solid fa-play" 
-          class="my-message-balloon"
+
+          <font-awesome-icon
+            icon="fa-solid fa-play"
+            class="my-message-balloon"
           />
           <div class="my-image-group">
-                <span class="my-write-time">오후 6:00</span>
-                <img class="my-image-box" :src="`${message.message}`" alt="" />
-              </div>
-
-        <!-- </div> -->
-          <!-- ---------------------------------------------------------------------------------- -->
+            <span class="my-write-time">오후 6:00</span>
+            <img class="my-image-box" :src="`${message.message}`" alt="" />
+          </div>
+        </div>
+        <!-- ---------------------------------------------------------------------------------- -->
         <!-- 상대방이 보낸 메세지 -->
 
         <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
-        <div class="profile-image">
+        <div class="profile-image" v-if="user_nickname != message.sender">
           <!-- 만약 방장이라면
-v-if="ChatMaster"  -->
-          <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
-          <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
-          <font-awesome-icon icon="fa-solid fa-play" class="message-balloon" />
+"  -->
+          <div v-if="message.member_id == member_Id">
+            <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
+            <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
+            <font-awesome-icon
+              icon="fa-solid fa-play"
+              class="message-balloon"
+            />
+          </div>
+          <div v-else>
+            <p class="profile-nicknames dark:text-white">{{ message.sender }}</p>
+            <font-awesome-icon
+              icon="fa-solid fa-play"
+              class="message-balloons"
+            />
+          </div>
         </div>
 
         <!-- 짤 이미지 -->
-        <div class="image-contain">
+        <div class="image-contain" v-if="user_nickname != message.sender">
           <div class="image-group">
             <img class="image-box" :src="`${message.message}`" alt="" />
             <!-- 작성 시간  -->
@@ -42,13 +55,35 @@ v-if="ChatMaster"  -->
         </div>
       </div>
     </div>
-    <div class="pb-12"></div>
-      <MainBottomNavInChat @gif_data="gif_data" @gif_data2="gif_data2" />
+
+    <!-- 서치바 -->
+
+    <div class="navbar-main">
+      <div class="navbar-input-box" @click="open_search_modal">
+        <font-awesome-icon
+          icon="fa-solid fa-magnifying-glass"
+          class="navbar-icon"
+        />
+        <input
+          type="text"
+          placeholder="짤 검색하기"
+          class="navbar-input"
+          disabled
+        />
+      </div>
+    </div>
+
+    <!--  -->
+    <div class="pb-20"></div>
+    <MainBottomNavInChat
+      @gif_data="gif_data"
+      @gif_data2="gif_data2"
+      :search_modal="search_modal"
+    />
   </div>
 </template>
 
 <script>
-
 import MainBottomNavInChat from "../../components/Common/NavBar/MainBottomNavInChat";
 import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav";
 import Stomp from "webstomp-client";
@@ -70,6 +105,9 @@ export default {
     };
   },
   created() {
+    if (localStorage.getItem("token") == null) {
+      this.$router.push({name: 'login-required'})
+    }
     // this.findQuiteChatList = findQuiteChatRoom;
     this.room_id = this.$route.query.room_id;
     this.access_token = this.token;
@@ -99,18 +137,21 @@ export default {
       reconnect: 0,
       message: "",
       messages: [],
+      search_modal: false,
 
       // 방장 확인
       member_Id: this.$route.query.member_Id,
-      my_member_Id: localStorage.getItem("profile_id"),
+      that_member_Id: localStorage.getItem("profile_id"),
 
-      // 채팅창 높이
-      // totalheight: document.body.scrollHeight,
+      // 본인 확인
+      user_nickname: localStorage.getItem("current_nickname"),
     };
   },
 
-
   methods: {
+    open_search_modal() {
+      this.search_modal = !this.search_modal;
+    },
     gif_data(data) {
       this.message = data.gifPath;
       console.log(this.message, this.message);
@@ -123,8 +164,8 @@ export default {
 
       this.message = "";
     },
-    gif_data2(data) {
-      this.message = data.gifPath;
+    gif_data2(data2) {
+      this.message = data2.gifPath;
       this.sendMessage();
       this.message = "";
       // console.log(data, "여기서데이터받음2");
@@ -146,18 +187,18 @@ export default {
     },
     reciveMessage(recv) {
       console.log("receive message: " + recv);
-      console.log(recv);
-      // console.log(this.messages,'message');
-      let totalheight =  document.body.scrollHeight;
+      console.log("test", recv);
+      let totalheight = document.body.scrollHeight;
       this.messages.unshift({
         type: recv.type,
-        sender: recv.type == "ENTER" ? "[알림]" : recv.sender,
+        member_id: recv.memberId,
+        sender: recv.sender,
         message: recv.message,
+        send_date: recv.sendDate,
         profilePath: recv.profilePath,
       });
-      // console.log(totalheight+400,'높이');
       setTimeout(() => {
-        window.scrollTo({ top:totalheight, left:0 , behavior:'smooth'});
+        window.scrollTo({ top: totalheight, left: 0, behavior: "smooth" });
       }, 100);
     },
     connect() {
@@ -213,7 +254,6 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-
 /* 내 메세지 */
 .my-image-group {
   transform: translateY(-1.3rem);
@@ -236,7 +276,7 @@ export default {
 
 /* 상대방 메세지 */
 .message-contain {
-  @apply flex flex-col-reverse relative pt-4 font-spoq;
+  @apply flex flex-col-reverse relative pt-4 font-spoq pt-8;
 }
 
 /* 프로필 */
@@ -244,6 +284,10 @@ export default {
   @apply w-12 h-12 rounded-full bg-zz-dark-input flex inset-x-0 text-sm border dark:border-zz-dark-s;
 }
 .profile-nickname {
+  transform: translateY(-1.4rem);
+  @apply absolute ml-14 dark:text-white;
+}
+.profile-nicknames {
   @apply absolute ml-14 dark:text-white;
 }
 
@@ -251,8 +295,13 @@ export default {
   transform: rotate(180deg) translate(-2rem, -2rem);
   @apply text-zz-p text-2xl;
 }
+
+.message-balloons {
+  transform: rotate(180deg) translate(-2.8rem, -2rem);
+  @apply text-zz-p text-2xl;
+}
 .master-icon {
-  transform: translate(3.5rem, -0.7rem);
+  transform: translate(3.5rem, -1.2rem);
   @apply text-zz-dark-p text-sm;
 }
 
@@ -268,5 +317,20 @@ export default {
 .write-time {
   font-size: 0.2rem;
   @apply dark:text-white text-right text-zz-dark-p;
+}
+
+/* 서치바 */
+
+.navbar-main {
+  @apply h-nav-height fixed inset-x-0 bottom-14 flex items-center justify-center;
+}
+.navbar-input-box {
+  @apply bg-zz-light-input w-10/12 h-9 flex items-center px-5 py-1 rounded-lg dark:bg-zz-dark-input;
+}
+.navbar-icon {
+  @apply text-zz-darkgray mr-2;
+}
+.navbar-input {
+  @apply bg-transparent text-zz-darkgray w-full dark:text-white font-spoq;
 }
 </style>
