@@ -237,10 +237,10 @@ public class ChatRoomController {
 
     @GetMapping("/search-like-order-lastactivation")
     @ResponseBody
-    public List<ChatRoomListDto> findAllByIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = memberRepository.findAllByIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember, keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
@@ -251,10 +251,10 @@ public class ChatRoomController {
 
     @GetMapping("/search-like-order-likecount")
     @ResponseBody
-    public List<ChatRoomListDto> findAllByIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = memberRepository.findAllByIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember, keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
@@ -297,7 +297,8 @@ public class ChatRoomController {
             return false;
         }
     }
-    @GetMapping("/abc")
+    @GetMapping("/messages")
+    @ResponseBody
     public String findAllChatMessage(@RequestParam String roomId) {
         System.out.println(1234);
         List<ChatMessageDto> returnValue = chatRoomRedisRepository.findAllChatMessage(roomId);
