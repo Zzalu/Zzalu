@@ -5,7 +5,7 @@ const boardListStore = {
   state: () => ({
     // 나의 보관함 리스트
     user_store_list: null,
-
+    // 선택된 GIF Id
     select_gif_id: null,
 
     // 유저의 보드 리스트
@@ -22,6 +22,12 @@ const boardListStore = {
       state.user_store_list = user_store_data.data
     },
     SELECT_GIF(state, gif_id) {
+      state.select_gif_id = gif_id
+    },
+    SELECT_POPULAR_GIF(state, gif_id) {
+      state.select_gif_id = gif_id
+    },
+    SELECT_RECOMMEND_GIF(state, gif_id) {
       state.select_gif_id = gif_id
     },
     GET_USER_BOARD(state, user_board) {
@@ -76,7 +82,7 @@ const boardListStore = {
       getUserBoard(
         params,
         (data) => {
-          console.log(data, '보드 요청 성공');
+          // console.log(data, '보드 요청 성공');
           commit('GET_USER_BOARD', data)
         },
         (err) => {

@@ -27,7 +27,7 @@
 
 /* 메일 다시보내기 버튼 */
 .send-again-button {
-  @apply bg-zz-light-p text-white rounded-full font-spoq text-xs mt-2 py-1 px-3
+  @apply bg-zz-light-p text-white rounded-full font-spoq text-xs mt-2 py-1 px-3 mx-3 dark:bg-zz-dark-p
 }
 
 /* 제출버튼 */
@@ -59,27 +59,28 @@
 
 /* 에러페이지 제목 404,500, oops */
 .error-title {
-  @apply mt-16 text-9xl font-carter text-zz-s
+  @apply mt-16 text-9xl font-carter text-zz-s dark:text-zz-p
 }
 
 
 /* 에러페이지 중제목 */
 .error-sub-title {
   word-break: keep-all;
-  @apply text-lg font-spoq font-bold
+  @apply text-lg font-spoq font-bold dark:text-white
 }
 
 
 .error-content-bold {
   word-break: keep-all;
-  @apply font-spoq font-bold text-sm
+  @apply font-spoq font-bold text-sm dark:text-white
 }
 
 /* 에러페이지 내용 */
 .error-content {
   word-break: keep-all;
-  @apply font-spoq text-xs my-1
+  @apply font-spoq text-xs my-1 dark:text-white
 }
+
 
 
 
@@ -104,7 +105,7 @@
 
 /* 인풋창 */
 .account-input {
-  @apply bg-zz-light-input rounded-sm w-full text-zz-s h-10 px-8 text-sm dark:bg-zz-dark-input
+  @apply bg-zz-light-input rounded-sm w-full text-zz-p h-10 px-8 text-sm dark:bg-zz-dark-input
 }
 
 .input-without-title {
@@ -133,7 +134,7 @@
 
 /* 코드입력 */
 .input-code {
-  @apply mt-6 bg-zz-light-input rounded-sm text-sm mx-2 h-12 w-12 dark:bg-zz-dark-input
+  @apply mt-6 bg-zz-light-input rounded-sm text-lg justify-items-center mx-2 h-12 w-12 dark:bg-zz-dark-input
 }
 
 /* 전송코드입력 text */
@@ -143,7 +144,11 @@
 
 /* 메일 못받음? text */
 .didnt-get-mail {
-  @apply mt-6 text-zz-light-p text-center                                                                                               
+  @apply mt-6 text-zz-light-p text-center flex dark:text-zz-dark-p                                                                                     
+}
+
+.signup-error {
+  @apply text-zz-error text-sm
 }
 
 /* -------------------------------------------------------------- */
@@ -175,13 +180,13 @@
 }
 
 .settings-right-letter-off {
-  top: 17.65rem;
+  top: 22.17rem;
   right: 1.77rem;
   @apply absolute mx-6 text-xs font-spoq text-zz-light-p font-bold dark:text-white
 }
 
 .settings-right-letter-on {
-  top: 17.65rem;
+  top: 22.17rem;
   right:3.5rem;
   @apply absolute mx-6 text-xs font-spoq text-white font-bold
 }

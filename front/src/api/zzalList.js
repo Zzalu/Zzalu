@@ -1,4 +1,7 @@
 import { apiInstance } from './index.js';
+import { authApiInstance } from './index.js';
+
+const authapi = authApiInstance();
 const api = apiInstance();
 
 function getPopularGIF(res,err) {
@@ -6,7 +9,7 @@ function getPopularGIF(res,err) {
     .then(res).catch(err)
 }
 function getRecommendGIF(res,err) {
-    api.get(`/gif/user`)
+    authapi.get(`/gif/recommend`)
     .then(res).catch(err)
 }
 function getFirstRandomGIF(res,err) {
@@ -22,5 +25,10 @@ function getSearchZzal(params,res,err) {
     api.get(`gif/search?searchKeyword=${params}`)
     .then(res).catch(err)
 }
+function getDetailData(params,res,err) {
+    console.log(params,'디테일ID')
+    api.get(`/gif/gif?gifId=${params}`)
+    .then(res).catch(err)
+}
 
-export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal }
+export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal, getDetailData }

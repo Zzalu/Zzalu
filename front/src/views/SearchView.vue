@@ -13,9 +13,21 @@
               >
                 <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
                 <SearchBar />
+                <div v-if="random_gif_data.length == 0" class="w-screen mt-12 text-lg text-center font-spoq dark:text-white z-50">
+                  <div class="flex justify-center mb-6 rounded-xl">
+                  <img 
+                  class="h-40 overflow-hidden rounded-2xl"
+                  src="../components/QuietChat/QuietChatList/assets/sad_man.gif" alt="">
+                </div>
+                  <p>검색하신 검색 결과를 찾을 수 없어요..</p>
+
+                  <button class="border p-4 mt-6 rounded-2xl bg-zz-s dark:border-zz-dark-input mb-80"
+                  @click="getrandomgif"
+                  >다른 짤 보러가기</button>
+                </div>
                 <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                   <JjalListItem
-                    :zzal_info="zzal_info"
+                    :jjal_info="zzal_info"
                     :i="i"
                     @select_id="select_id"
                   />
@@ -26,11 +38,11 @@
         </div>
       </transition>
       <!-- <transition name="slide-fade"> -->
-        
+
       <div v-if="open_list_modal">
         <div class="list-view-bg"></div>
-        
-        <StoreList class="list-view" :user_store_list="user_store_list"/>
+
+        <StoreList class="list-view" :user_store_list="user_store_list" />
       </div>
     </div>
     <!-- </transition> -->
@@ -42,7 +54,7 @@ import SearchBar from "../components/Search/SearchBar";
 import JjalListItem from "../components/Search/Item/JjalListItem";
 import StoreList from "../components/Search/StoreList";
 import { useStore } from "vuex";
-import { computed, onBeforeMount } from "@vue/runtime-core";
+import { computed } from "@vue/runtime-core";
 export default {
   name: "SearchView",
   setup() {
@@ -60,16 +72,13 @@ export default {
     const user_store_list = computed(
       () => store.state.boardListStore.user_store_list
     );
+    const get_random_gif = () => {
+      store.dispatch("zzalListStore/getFirstRandomGIFList")
+    }
 
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
-
-    onBeforeMount(() => {
-      if (random_gif_data==null) {
-        store.dispatch("zzalListStore/getFirstRandomGIFList");
-      }
-    });
 
     function MoreRandomGIF(gif_data) {
       store.dispatch("zzalListStore/getMoreRandomGIFLIST", [...gif_data]);
@@ -82,6 +91,7 @@ export default {
       user_store_list,
       send_select_jjal_num,
       MoreRandomGIF,
+      get_random_gif,
     };
   },
   components: {
@@ -101,16 +111,16 @@ export default {
     },
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
-      // 일정 한도 밑으로 내려오면 함수 실행
-      if (isAtTheBottom) {
+      if (scrollTop + clientHeight > scrollHeight-1) {
         this.load_state = true;
         setTimeout(() => {
           this.MoreRandomGIF(this.gif_data);
           this.load_state = false;
-        }, 1000);
-      }
+        }, 1000);}
     },
+    getrandomgif() {
+      this.get_random_gif();
+    }
   },
   watch: {
     random_gif_data(nv) {

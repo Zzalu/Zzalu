@@ -47,11 +47,12 @@
               dark:border-zz-dark-input
             "
             :style="`background-image:url(${jjal.gifPath})`"
-            @click="GoToJjalDetail(jjal.id)"
+            @click="GoToJjalDetail(jjal)"
           ></div>
         </div>
       </div>
     </div>
+    <div class="pb-16"></div>
     <MainBottomNav />
   </div>
 </template>
@@ -76,11 +77,16 @@ export default {
     };
     const getBoardData = (datas) => {
       store.dispatch("boardListStore/getBoardData",datas)
-    }
+    };
+    const getDetailData = (gif_id) => {
+      store.dispatch("zzalListStore/getDetailData",gif_id);
+      store.dispatch("boardListStore/getUserStoreList", gif_id);
+    };
     return {
       board_jjal_list,
       RemoveBoardJjal,
       getBoardData,
+      getDetailData,
     };
   },
   components: {
@@ -99,8 +105,11 @@ export default {
   },
   methods: {
     GoToJjalDetail(jjal) {
-      console.log(jjal);
-      this.$router.push(`/zzal/${jjal.id}`);
+      this.getDetailData(jjal.id)
+      this.$router.push({
+        name: "zzal",
+        params: { zzal_id: jjal.id },
+      });
     },
     EditMode() {
       this.edit_mode = !this.edit_mode;

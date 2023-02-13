@@ -1,32 +1,15 @@
 <template>
-  <!-- <div class="profile-title">스탯</div>
-  <div class="user-stats">
-    <div class="flex">
-      <div class="stat-hashtag">#고양이들</div>
-      <div class="graph">100%</div>
-    </div>
-    <div class="flex">
-      <div class="stat-hashtag">#겁나긴해시태그</div>
-      <div class="graph">10%</div>
-    </div>
-    <div class="flex">
-      <div class="stat-hashtag">#hello~</div>
-      <div class="graph">1%</div>
-    </div>
-    <div class="flex justify-end">
-      <div class="result-stat">{{}}님은 00 입니다</div>
-    </div>
-  </div> -->
+  <div class="profile-title mb-1">스탯</div>
   <div id="chart" class="rounded-lg">
-    <!-- <div>{{ stat_dirty }}</div> -->
+    <div>{{ stat_dirty }}</div>
     <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { computed, onBeforeMount } from "@vue/runtime-core";
-import { watch } from 'vue'
+// import { useStore } from "vuex";
+// import { computed, onBeforeMount } from "@vue/runtime-core";
+// import { watch } from 'vue'
 export default {
   name: "UserStats",
   // components: {
@@ -34,7 +17,8 @@ export default {
   // },
   data: function () {
     return {
-      series: [{
+      series: 
+      [{
         data: this.nums_data
         }],
       chartOptions: {
@@ -58,7 +42,7 @@ export default {
           enabled: true,
         },
         xaxis: {
-          categories: [this.title_data],
+          categories: this.title_data,
           labels: {
             show: false,
             style: {
@@ -77,59 +61,72 @@ export default {
     };
   },
   setup() {
-    const store = useStore();
-    const user_id = window.localStorage.getItem("profile_id");
-    onBeforeMount(() => {
-      store.dispatch("profileStore/getProfileStats", user_id);
-      console.log("이게뭐임");
-      // stat_dirty.value.forEach((value, index, array) => {
-      //   console.log(`${index} ${value}`);
-      //   titles.push(value);
+    // const store = useStore();
+    // const user_id = window.localStorage.getItem("profile_id");
+    // onBeforeMount(() => {
+    //   store.dispatch("profileStore/getProfileStats", user_id);
+      // var titles = new Array();
+      // var nums = new Array();
+      // stats.data.forEach( stat => {
+      //   console.log(stat)
+      //   // stat.tag.push(titles)
+      //   // stat.count.push(nums)
       // });
-    });
-    const stat_dirty = computed(
-      () => store.state.profileStore.profile_user.stats
-    );
+      // console.log(titles)
+      // console.log(nums)
+    // });
+    // const stat_dirty = computed(
+    //   () => store.state.profileStore.profile_user.stats
+    // );
 
-    var titles = new Array();
-    var nums = new Array();
+    // var titles = new Array();
+    // var nums = [];
 
-    watch(stat_dirty, (nv) => {
-      if (nv) {
-        nv.data.forEach((value, index, array) => {
-          console.log(array);
-          console.log(`${index} ${value}`);
-          titles.push(value.tag);
-          nums.push(value.count)
-          console.log(titles,'titles');
-        })
-      }
-    })
+    // watch(stat_dirty, (nv) => {
+    //   if (nv) {
+    //     nv.data.forEach(element => {
+    //       titles.push(element.tag)
+    //       nums.push(element.count)
+    //     });
+    //   }
+    // })
     
-    const title_data = localStorage.getItem('stat_title')
-    const nums_data = localStorage.getItem('stat_nums')
+    // const title_data = localStorage.getItem('stat_title').split(',')
+    // console.log(title_data)
+    // const nums_data = localStorage.getItem('stat_nums').split(',')
     return {
-      stat_dirty,
-      title_data,
-      nums_data
+      // stat_dirty,
+      // title_data,
+      // nums_data
 
     };
   },
   watch: {
     stat_dirty: function (nv) {
-      console.log(nv.data,"test");
+  //     console.log(nv.data,"test");
       var titles = new Array();
       var nums = new Array();
       if (nv) {
-        nv.data.forEach((value, index, array) => {
-          console.log(array);
-          console.log(`${index} ${value}`);
-          titles.push(value.tag);
-          nums.push(value.count)
-          console.log(titles,'titles');
-          localStorage.setItem('stat_num', nums)
-          localStorage.setItem('stat_title', titles)
+        nv.data.forEach(element => {
+          titles.push(element.tag)
+          nums.push(element.count)
         });
+
+  //       console.log(nv, "ㅇ게ㅜ")
+  //       nv.data.forEach((value, index, array) => {
+  //         console.log(array);
+  //         console.log(`${index} ${value}`, "이건뭐야");
+  //         titles.push(value.tag);
+  //         nums.push(value.count)
+          // console.log(titles,'titles');
+          // console.log(typeof(titles))
+  //         localStorage.setItem('stat_num', nums)
+  //         localStorage.setItem('stat_title', titles)
+  //         console.log(typeof(localStorage.getItem('stat_title')))
+  //       });
+  //       for (i in this.stat_dirty) {
+  //         titles.push(this.stat_dirty[i].tag)
+  //       }
       }
     },
 

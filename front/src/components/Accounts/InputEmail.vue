@@ -1,6 +1,10 @@
 <template>
   <div class="mt-20">
     <h2 class="find-id-input-title" v-if="$route.name == 'find-id'">아이디 찾기</h2>
+    <h2 class="find-id-input-title" v-if="$route.name == 'input-reset-email'">비밀번호 분실
+
+      
+    </h2>
     <font-awesome-icon icon="fa-solid fa-envelope" class='icon-aligned-left'/>
       <input
         type="text"
@@ -9,7 +13,7 @@
         v-model="state.credentials.email"
       />
 
-      <div class="error" v-if="errorMsgs.err.email">{{ errorMsgs.err.email }}</div>
+      <div class="signup-error" v-if="errorMsgs.err.email" >{{ errorMsgs.err.email }}</div>
     <div class="flex float-right mt-10" v-if="$route.name == 'input-signup-email'">
       <button class="go-next-button" @click="[sendEmailCode(), loadingAni()]">다음</button>
     </div>
@@ -25,6 +29,7 @@ import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { reactive } from 'vue'
 import SignupEmailValidations from '../../services/SignupEmailValidations'
+import Swal from 'sweetalert2'
 
 export default {
   name: 'InputEmail',
@@ -94,6 +99,11 @@ export default {
       console.log(result)
       if (result.status == 200 ) {
         router.push({name: 'check-email'})
+      } else {
+        Swal.fire({
+          icon: "error",
+          text:"해당 이메일에 대한 정보가 없습니다."
+          })
       }
     }
     return {
@@ -116,5 +126,7 @@ export default {
 </script>
 
 <style lang="postcss" scoped>
-
+.find-id-input-title {
+  @apply dark:text-white mb-1 font-spoq mx-2
+}
 </style>

@@ -48,7 +48,7 @@ export default {
   name: "ProfileInfo",
   data() {
     return {
-      me: localStorage.getItem("id")
+      me: localStorage.getItem("current_userid")
       // myProfile: false,
     };
   },
@@ -58,6 +58,9 @@ export default {
     const profile_user_data = computed(
       () => store.state.profileStore.profile_user
     );
+    // const my_data = computed(
+    //   () => store.state.userStore
+    // );
     const get_follower = (member_id) => {
       console.log("member_id", member_id)
       store.dispatch("followStore/getFollowerList", member_id)
@@ -124,6 +127,7 @@ export default {
 .follower-and-following {
   @apply mt-10 text-center mx-2 text-zz-s font-spoq;
 }
-/* 내프로필이면 my-auto */
+
+
 
 </style>

@@ -110,15 +110,15 @@ export default {
     const select_gif_id = computed(
       () => store.state.boardListStore.select_gif_id
     );
-    const get_user_list = (data) => {
-      store.dispatch("boardListStore/getUserStoreList", data);
-    };
+    // const get_user_list = (data) => {
+    //   store.dispatch("boardListStore/getUserStoreList", data);
+    // };
     const put_boards_data = (data) => {
       store.dispatch("boardListStore/putBoardData", data);
     };
     return {
       close_list_modal,
-      get_user_list,
+      // get_user_list,
       CreateBoard,
       put_boards_data,
       open_list_modal,
@@ -135,7 +135,7 @@ export default {
     };
   },
   mounted() {
-    this.get_user_list(this.select_gif_id);
+    // this.get_user_list(this.select_gif_id);
     if (this.open_list_modal) {
       setTimeout(() => {
         document.addEventListener("click", this.ListoutClick);

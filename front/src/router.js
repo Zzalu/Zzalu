@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Signup from '@/views/Accounts/SignUpView';
 import FindId from '@/views/Accounts/FindIdView';
+import ResetPassword from '@/views/Accounts/ResetPasswordView'
 
 const routes = [
   {
@@ -69,7 +70,30 @@ const routes = [
   {
     path: '/reset-password',
     name: 'reset-password',
-    component: () => import('@/views/Accounts/ResetPasswordView'),
+    component: ResetPassword,
+    children: [
+      {
+        path: '',
+        name: 'input-reset-email',
+        component: () => import('@/components/Accounts/InputEmail.vue'),
+        props: true,
+      },
+      {
+        path: 'code',
+        name: 'input-reset-code',
+        component: () => import('@/components/Accounts/InputCodeForm.vue'),
+      },
+      {
+        path: 'change-password',
+        name: 'reset-password',
+        component: () => import('@/views/Accounts/ChangePasswordView'),
+      },
+      {
+        path: 'complete',
+        name: 'reset-complete',
+        component: () => import('@/components/Accounts/SignUp/WelcomeToZzalu.vue'),
+      },
+    ],
   },
   // 탈퇴
   {
@@ -133,7 +157,7 @@ const routes = [
   },
   // 프로필 정보 수정
   {
-    path: '/profile/edit',
+    path: '/edit-profile',
     name: 'edit-profile',
     component: () => import('@/views/Profile/EditProfileView'),
   },
@@ -143,6 +167,13 @@ const routes = [
     path: '/title-competition/:open_date',
     name: 'title-competition',
     component: () => import('@/views/TitleCompetitionView'),
+  },
+  // --------------------------------------------------------------------
+  // 명예의 전당
+  {
+    path: '/whole-of-frame',
+    name: 'whole-of-frame',
+    component: () => import('@/views/WholeOfFrameView'),
   },
   // --------------------------------------------------------------------
   // 수상기록
@@ -171,6 +202,13 @@ const routes = [
     path: '/account/delete',
     name: 'delete-account',
     component: () => import('@/views/Profile/AccountDeleteView'),
+  },
+  // -----------------------------------------------------------
+  // 관리자계정
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/Accounts/AdminInfoView'),
   },
   // -------------------------------------------------------------------
   // ERROR
@@ -201,6 +239,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    return { top: 0 }
+  },
 });
 
 export default router;

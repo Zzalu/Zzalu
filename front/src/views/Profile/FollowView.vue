@@ -17,7 +17,7 @@
 
 <script>
 // import { useStore } from 'vuex';
-import FollowTopNav from "../../components/Common/NavBar/FollowTopNav.vue"
+import FollowTopNav from "@/components/Common/NavBar/FollowTopNav.vue"
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue"
 import FollowingList from "@/components/Profile/FollowingList"
 import FollowerList from "@/components/Profile/FollowerList"

@@ -50,15 +50,27 @@ export default {
   setup() {
     const store = useStore();
     const logged_in = window.localStorage.getItem('token');
-    const current_user = window.localStorage.getItem('id');
+    const current_user = window.localStorage.getItem('current_userid');
     const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
     const check_search_modal = computed(() => store.state.searchModalStore.open_search_modal);
+    const random_gif_data = computed(() => store.state.zzalListStore.random_gif_data)
     const close_search_modal = () => {
       store.commit('searchModalStore/open_search_modal');
-      store.dispatch('zzalListStore/getFirstRandomGIFList');
     };
+
+    // 처음에 최초1회 받아옴, 페이지 새로고침되거나 데이터 추가로 받아온게 있다면 새로 받음
     const open_modal = () => {
       store.commit('searchModalStore/open_search_modal');
+      if (random_gif_data.value) {
+        if (random_gif_data.value.length > 30) {
+          store.dispatch("zzalListStore/getFirstRandomGIFList");
+        } else {
+          return
+        }
+      } else {
+        store.dispatch("zzalListStore/getFirstRandomGIFList");
+      }
+
     };
 
     const today = new Date();
@@ -73,6 +85,7 @@ export default {
       open_chat_info,
       logged_in,
       current_user,
+      random_gif_data
     };
   },
   methods: {

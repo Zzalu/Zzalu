@@ -11,10 +11,30 @@
     </div >
     <div class="flex">
       <font-awesome-icon icon="fa-solid fa-lock" class='settings-icon-aligned-left'/>
-      <button class="settings-button">
+      <button class="settings-button" @click="goChangePwd">
         <div class="text-zz-light-p dark:text-white">비밀번호 변경</div>
         </button>
     </div>
+    <div class="flex" v-if="this.isManager==false">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="managerApply">
+        <div class="text-zz-light-p dark:text-white">매니저 권한 신청하기</div>
+        </button>
+    </div>
+
+    <div class="flex" v-if="this.isManager">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="[GetTempGif(), goAdmin()]">
+        <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
+        </button>
+    </div>
+
+    <!-- <div class="flex" v-if="this.isManager">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="goAdmin">
+        <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
+        </button>
+    </div> -->
     <div class="flex" @click="toggleDark()" v-if="isDark==true">
       <font-awesome-icon icon="fa-regular fa-moon" class='settings-icon-aligned-left'/>
       <button class="settings-button">
@@ -30,6 +50,7 @@
       <div class="settings-right-letter-on">ON</div>
     </div>
   </div>
+
   <div class="logout">
     <button @click="logoutSubmit">로그아웃하기</button>
   </div>
@@ -61,6 +82,7 @@ export default {
     };
   },
   setup() {
+    const isManager = localStorage.getItem("isManager")
     const store = useStore();
     const router = useRouter();
     const logoutSubmit = async function() {
@@ -70,16 +92,33 @@ export default {
     const goProfileEdit = () => {
       router.push({name: 'edit-profile'})
     }
-
-    return {
-      logoutSubmit,goProfileEdit
+    const goChangePwd = () => {
+      router.push({name: 'change-password'})
     }
-  }
+    const managerApply = () => {
+      store.dispatch('userStore/managerApplyAction')
+    }
+    const goAdmin = () => {
+      router.push({name: 'admin'})
+    }
+    const GetTempGif = () => {
+      store.dispatch('tempGifStore/getAllTempGif')
+    }
+    return {
+      logoutSubmit,goProfileEdit,managerApply,goChangePwd, goAdmin, GetTempGif,
+      isManager
+    }
+  },
+
 }
 </script>
 
 <style lang="postcss" scoped>
 .logout {
   @apply fixed inset-x-0 flex flex-wrap bottom-16 border-t text-zz-light-p font-spoq text-xl pt-3 px-4 dark:text-zz-light-s
+}
+
+.settings-icon-crown {
+  @apply absolute mx-4 my-5 h-8 text-zz-light-p dark:text-white
 }
 </style>
