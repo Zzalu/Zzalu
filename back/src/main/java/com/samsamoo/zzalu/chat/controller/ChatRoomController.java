@@ -11,6 +11,8 @@ import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
 import com.samsamoo.zzalu.chat.service.ChatRoomService;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.repo.MemberRepository;
+import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +30,7 @@ public class ChatRoomController {
 
     private final ChatRoomRedisRepository chatRoomRedisRepository;
     private final ChatRoomService chatRoomService;
+    private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -224,6 +227,34 @@ public class ChatRoomController {
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
         List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
+    }
+
+    @GetMapping("/search-like-order-lastactivation")
+    @ResponseBody
+    public List<ChatRoomListDto> findAllByIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+        List<ChatRoom> chatRoomList = memberRepository.findAllByIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
+            chatRoomListDtos.add(chatRoomListDto);
+        }
+        return chatRoomListDtos;
+    }
+
+    @GetMapping("/search-like-order-likecount")
+    @ResponseBody
+    public List<ChatRoomListDto> findAllByIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+        List<ChatRoom> chatRoomList = memberRepository.findAllByIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember.getId(), keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
