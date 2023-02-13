@@ -13,6 +13,18 @@
               >
                 <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
                 <SearchBar />
+                <div v-if="random_gif_data.length == 0" class="w-screen mt-12 text-lg text-center font-spoq dark:text-white z-50">
+                  <div class="flex justify-center mb-6 rounded-xl">
+                  <img 
+                  class="h-40 overflow-hidden rounded-2xl"
+                  src="../components/QuietChat/QuietChatList/assets/sad_man.gif" alt="">
+                </div>
+                  <p>검색하신 검색 결과를 찾을 수 없어요..</p>
+
+                  <button class="border p-4 mt-6 rounded-2xl bg-zz-s dark:border-zz-dark-input mb-80"
+                  @click="getrandomgif"
+                  >다른 짤 보러가기</button>
+                </div>
                 <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                   <JjalListItem
                     :jjal_info="zzal_info"
@@ -60,6 +72,9 @@ export default {
     const user_store_list = computed(
       () => store.state.boardListStore.user_store_list
     );
+    const get_random_gif = () => {
+      store.dispatch("zzalListStore/getFirstRandomGIFList")
+    }
 
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
@@ -76,6 +91,7 @@ export default {
       user_store_list,
       send_select_jjal_num,
       MoreRandomGIF,
+      get_random_gif,
     };
   },
   components: {
@@ -102,6 +118,9 @@ export default {
           this.load_state = false;
         }, 1000);}
     },
+    getrandomgif() {
+      this.get_random_gif();
+    }
   },
   watch: {
     random_gif_data(nv) {

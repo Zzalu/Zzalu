@@ -4,10 +4,14 @@
     <zzal-list-item :gif_id="jjal_detail_data.id"
     :jjal_detail_data="jjal_detail_data"
     ></zzal-list-item>
-    <zzal-info :zzal_origin_content="zzal_origin_content"
+    <zzal-info
     :jjal_detail_data="jjal_detail_data"
+    @infoUpdateRequest="changeInfo"
     ></zzal-info>
-    <zzal-source-video></zzal-source-video>
+    <zzal-source-video
+    :jjal_detail_data="jjal_detail_data"
+    @videoUpdate="changeVideo"
+    ></zzal-source-video>
     <div class="flex justify-center dark:text-white">
       <button
         class="
@@ -23,14 +27,17 @@
           font-spoq
           dark:border-zz-dark-div
         "
-        @click="짤수정요청함수"
+        @click="update_request(this.request_form)"
       >
         저장하기
       </button>
+      
     </div>
 
     <DetailKorGoBackTopNavBar @notEditMode="notEditMode" />
   </div>
+  <!-- 에디트 모드 -->
+
   <div v-else>
     <only-go-back-top-nav></only-go-back-top-nav>
   </div>
@@ -96,8 +103,8 @@
             이 짤의 유래는?
           </div>
           <div class="zzal-origin-edit">
-            <div v-if="zzal_origin_content" class="font-spoq">
-              {{ zzal_origin_content }}
+            <div v-if="description" class="font-spoq">
+              {{ description }}
             </div>
             <div v-else class="dark:text-white font-spoq">
               현재 등록된 짤 유래가 없습니다.
@@ -121,6 +128,7 @@
         </div>
       </div>
     </div>
+    <div class="pb-12"></div>
   </div>
   <main-bottom-nav></main-bottom-nav>
 </template>
@@ -141,6 +149,10 @@ export default {
   setup() {
     const store = useStore();
 
+    // const FollowerListItemData = computed(
+    //   () => store.state.zzalListStore.follower_list
+    // );
+
     const open_list_modal = (e) => {
       store.commit("boardListStore/SELECT_GIF", e);
       store.commit("searchModalStore/open_list_modal");
@@ -152,10 +164,17 @@ export default {
       console.log('실행?',gif_id);
       store.dispatch("zzalListStore/getDetailData",gif_id);
     };
+    const update_request = (form) => {
+      form.origin_id = jjal_detail_data.value.id;
+      store.dispatch("tempGifStore/postTempGif", form)
+      // 이전 페이지로
+
+    }
     return {
       open_list_modal,
       get_detail_data,
       jjal_detail_data,
+      update_request
     };
   },
   components: {
@@ -170,14 +189,26 @@ export default {
     return {
       edit_mode: false,
       zzal_origin_content: "",
-      gif_id : this.$store.state.zzalListStore.jjal_data
+      gif_id : this.$store.state.zzalListStore.jjal_data,
+      request_form : {
+        origin_id : "",
+        updated_description : "",
+        updated_relationsVideo : "",
+        updated_tags : "",
+
+      }
     };
   },
-  // created() {
-  //   console.log('created', this.$router.params.id );
-  //   this.get_detail_data(this.$router.params.id)
-  // },
   computed: {
+    id() {
+      return this.jjal_detail_data.id;
+    },
+    relationsVideo() {
+      return this.jjal_detail_data.relationsVideo;
+    },
+    description() {
+      return this.jjal_detail_data.description;
+    },
     tags() {
       return this.jjal_detail_data.tags.split(",");
     },
@@ -187,11 +218,6 @@ export default {
     gif_path() {
       return this.jjal_detail_data.gifPath
     }
-    // gif_id() {
-    //   localStorage.setItem("now_gif_id",this.gif_id)
-    //   this.get_detail_data(this.$router.params.id)
-    //   return this.$router.params.id
-    // }
   },
   mounted() {
     this.get_detail_data(this.$route.params.zzal_id)
@@ -203,9 +229,15 @@ export default {
     notEditMode() {
       this.edit_mode = false;
     },
-    짤수정요청함수() {
-      // 여기서 입력된 데이터 가지고 api 요청하면됨
+    changeInfo(newDescription, newTags) {
+      this.request_form.updated_description = newDescription;
+      this.request_form.updated_tags = newTags;
+      console.log(this.request_form.updated_description)
     },
+    changeVideo(newRelationsVideo) {
+      this.request_form.updated_relationsVideo = newRelationsVideo;
+      console.log(this.request_form)
+    }
   },
 };
 </script>

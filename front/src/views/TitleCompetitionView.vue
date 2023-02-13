@@ -28,7 +28,7 @@
         <!-- 댓글 네브 -->
         <!-- 댓글 main -->
 
-        <div class="comment-main" @scroll="handleCommentListScroll">
+        <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
           <nav class="flex justify-between">
             <div class="flex">
               <h2 class="text-xl text-zz-p">댓글</h2>
@@ -53,11 +53,29 @@
               >
                 과거순
               </button>
-              <!-- <button class="sort-text" @click="clickSortBtn('POPULAR')">인기순</button>
-            <button class="sort-text" @click="clickSortBtn('LATEST')">최신순</button>
-            <button class="sort-text" @click="clickSortBtn('CHRONOLOGICAL')">과거순</button> -->
             </div>
           </nav>
+
+          <!-- 댓글을 내려봤을 때 -->
+          <div
+            v-show="!is_top"
+            @click="goToTop"
+            class="fixed left-1/2 transform flex flex-col justify-center items-center text-zz-p"
+          >
+            <font-awesome-icon icon="fa-solid fa-circle-arrow-up" class="text-3xl" />
+            <div v-show="sort_type == 'LATEST' && socket_comment_cnt" class="flex items-center">
+              <font-awesome-icon icon="fa-solid fa-plus" class="mr-1 text-xs" />
+              <p class="text-ls">{{ socket_comment_cnt }}</p>
+            </div>
+          </div>
+          <div
+            v-show="sort_type != 'LATEST' && socket_comment_cnt"
+            class="flex items-center fixed right-5 bg-zz-p px-2 rounded-3xl"
+            @click="clickSortBtn('LATEST')"
+          >
+            <font-awesome-icon icon="fa-solid fa-bell" class="mr-1 text-xs" />
+            <p class="text-ls">{{ socket_comment_cnt }}</p>
+          </div>
           <!-- 댓글 리스트 -->
           <comment-list ref="commentListComponent" class="comment-list"></comment-list>
         </div>
@@ -92,6 +110,9 @@ export default {
     const open_date = route.params.open_date; // 제목학원 날짜
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
+    let is_top = computed(() => store.state.titleCompetitionStore.is_top);
+    let socket_comment_cnt = computed(() => store.state.titleCompetitionStore.socket_comment_cnt);
+    let socket_comments = computed(() => store.state.titleCompetitionStore.socket_comments);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
     let total_comment_cnt = computed(() => store.state.titleCompetitionStore.total_comment_cnt); // 댓글 개수
     let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
@@ -100,23 +121,40 @@ export default {
     };
     let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
 
-    document.documentElement.scrollTop = 0;
+    document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
 
     const clickSortBtn = (sort_type) => {
+      store.dispatch('titleCompetitionStore/setSocketDataInit');
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
+    //! 스크롤 관련
     const loadMoreComments = () => {
       store.dispatch('titleCompetitionStore/getComments', 4);
     };
-    const handleCommentListScroll = (e) => {
+
+    const handleCommentListScroll = async (e) => {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
+
+      if (scrollTop == 0 && is_top.value == false) {
+        store.dispatch('titleCompetitionStore/setIsTop');
+        if (sort_type.value == 'LATEST') {
+          await store.dispatch('titleCompetitionStore/pushSocketComments');
+        }
+      } else if (scrollTop != 0 && is_top.value == true) {
+        store.dispatch('titleCompetitionStore/setIsTop');
+      }
+
       if (scrollTop + clientHeight > scrollHeight - 1) {
         setTimeout(() => {
           loadMoreComments();
         }, 1000);
       }
+    };
+
+    const goToTop = async () => {
+      document.querySelector('#comment-main').scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     //! 소켓 관련
@@ -130,19 +168,28 @@ export default {
       localWs.connect(
         {},
         function () {
+          // 댓글 관련
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
             console.log(message);
             let recv_comment_data = JSON.parse(message.body);
             console.log('recv_comment_data: ' + recv_comment_data);
+            // 자기가 보낸 댓글이 아닐 때 저장시킨다.
+            // if (recv_comment_data.username != window.localStorage.getItem('profile_user')) {
             if (sort_type.value == 'LATEST') {
-              // 최신순
-              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-              store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+              // 최신순 정렬
+              if (is_top.value) {
+                store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
+              } else {
+                store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+                store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+              }
             } else {
-              // 과거순 or 인기순
+              // 과거순 or 인기순 정렬
               store.dispatch('titleCompetitionStore/addSocketCommentCnt');
             }
+            // }
           });
+          // 좋아요 관련
           localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             console.log(message);
             let recv_like_data = JSON.parse(message.body);
@@ -153,7 +200,7 @@ export default {
           console.log('error: ' + error);
           setTimeout(function () {
             console.log('connection reconnect');
-            localSock = new SockJS('/ws-stomp');
+            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
         },
@@ -167,6 +214,7 @@ export default {
       ws,
       connect,
       open_date,
+      is_top,
       total_comment_cnt,
       zzal_url,
       isScrolled,
@@ -176,12 +224,18 @@ export default {
       GoToWholeOfFrame,
       sort_type,
       handleCommentListScroll,
+      goToTop,
+      socket_comment_cnt,
+      socket_comments,
     };
   },
 };
 </script>
 
 <style>
+.transform {
+  transform: translate(-50%, -50%);
+}
 .title-header {
   @apply fixed w-full flex flex-col items-center justify-center;
 }
@@ -200,7 +254,7 @@ export default {
   @apply fixed bottom-0 w-11/12 mb-14 overflow-y-scroll h-1/2;
 }
 .comment-list {
-  @apply w-full mb-10 overflow-y-scroll h-auto;
+  @apply w-full mb-10  h-auto;
 }
 
 .comment-list ::-webkit-scrollbar {

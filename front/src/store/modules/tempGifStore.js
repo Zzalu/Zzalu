@@ -1,4 +1,4 @@
-import { getAllTempGif, putTempGif, deleteTempGif } from "@/api/tempGif"
+import { getAllTempGif, putTempGif, deleteTempGif, postTempGif } from "@/api/tempGif"
 
 const tempGifStore = {
 	namespaced: true,
@@ -55,6 +55,20 @@ const tempGifStore = {
       deleteTempGif(
         params,
         temp_id,
+        ({ data }) => {
+          console.log(data, "성공입니다.");
+        },
+        (error) => {
+          console.log(error, "실패입니다.");
+          alert(error.response.data.message);
+        },
+      )
+    },
+    // 임시 게시물 등록 요청
+    postTempGif: (params, form) => {
+      postTempGif(
+        params,
+        form,
         ({ data }) => {
           console.log(data, "성공입니다.");
         },

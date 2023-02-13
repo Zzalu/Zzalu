@@ -30,10 +30,10 @@
   <div class="mt-6 mb-2 font-bold font-spoq text-zz-p">이 짤의 유래는?</div>
   <div class="zzal-origin-edit">
     <input
-    v-if="zzal_origin_content"
+    v-if="description"
     type="textarea"
     class="input-box"
-    :value="`${zzal_origin_content}`"
+    v-model="description"
     />
     <input
     v-else
@@ -42,6 +42,10 @@
     placeholder="이 짤의 유래를 입력해주세요!"
     />
     
+  </div>
+  <div>
+    <button @click="updateRequest">완료</button>
+
   </div>
 </template>
 
@@ -53,11 +57,12 @@ export default {
       hashtags_input_mode : false,
       hash_input_err : false,
       hash_input : '',
+      description : this.jjal_detail_data.description
     };
   },
   props: {
-    zzal_origin_content:String,
-    jjal_detail_data:Object,
+    // zzal_origin_content: String,
+    jjal_detail_data: Object,
   },
   computed: {
     tags() {
@@ -68,7 +73,10 @@ export default {
     },
     id() {
       return this.jjal_detail_data.id
-    }
+    },
+    // description() {
+    //   return this.jjal_detail_data.description
+    // }
   },
   methods: {
     RemoveHashtag(i) {
@@ -89,8 +97,12 @@ export default {
         this.hash_input = ''
         this.hashtags_input_mode = false
         this.hash_input_err = false
+        // console.log(this.tags.join())
       }
     },
+    updateRequest() {
+      this.$emit('infoUpdateRequest', this.description, this.tags.join())
+    }
   },
   watch: {
     hash_input(nv,ov) {
