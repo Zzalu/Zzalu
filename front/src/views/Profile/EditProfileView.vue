@@ -44,11 +44,11 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2';
-import { useStore } from 'vuex';
-import { computed } from '@vue/runtime-core';
-import { reactive, watch } from 'vue';
-import SignupNicknameValidations from '@/services/SignupNicknameValidations';
+// import Swal from 'sweetalert2';
+// import { useStore } from 'vuex';
+// import { computed } from '@vue/runtime-core';
+// import { reactive, watch } from 'vue';
+// import SignupNicknameValidations from '@/services/SignupNicknameValidations';
 import MainBottomNav from '../../components/Common/NavBar/MainBottomNav.vue';
 export default {
   name: 'EditProfileView',
@@ -56,175 +56,175 @@ export default {
     // ModifyProfileTopNav,
     MainBottomNav,
   },
-  setup() {
-    const me = localStorage.getItem('current_nickname');
-    const store = useStore();
-    const my_data = computed(() => store.state.profileStore.profile_user);
-    const errorMsgs = reactive({
-      err: {
-        nickname: '',
-      },
-    });
-    const state = reactive({
-      newNickname: null,
-      newNicknameState: true,
-      newNicknameError: '',
-      profileIntro: null,
-      // profileImg: ''
-    });
-    // const inputImage = function () {
-    //   state.profileImg = this.$refs.profilePic.files[0]
-    //   console.log(state.profileImg, "잘 들어왔는지")
-    //   var image = this.$refs.profilePic.files[0]
-    //   console.log('이미지', image)
-    //   const url = URL.createObjectURL(image)
-    //   console.log('유알엘', url)
-    //   this.image = url
-    //   state.profileImg = url
+//   setup() {
+//     const me = localStorage.getItem('current_nickname');
+//     const store = useStore();
+//     const my_data = computed(() => store.state.profileStore.profile_user);
+//     const errorMsgs = reactive({
+//       err: {
+//         nickname: '',
+//       },
+//     });
+//     const state = reactive({
+//       newNickname: null,
+//       newNicknameState: true,
+//       newNicknameError: '',
+//       profileIntro: null,
+//       // profileImg: ''
+//     });
+//     // const inputImage = function () {
+//     //   state.profileImg = this.$refs.profilePic.files[0]
+//     //   console.log(state.profileImg, "잘 들어왔는지")
+//     //   var image = this.$refs.profilePic.files[0]
+//     //   console.log('이미지', image)
+//     //   const url = URL.createObjectURL(image)
+//     //   console.log('유알엘', url)
+//     //   this.image = url
+//     //   state.profileImg = url
 
-    //   console.log(state.profileImg)
-    // }
-    // 닉 바꾸는지 확인
-    // watch(() => submit.nickname, (newValue, oldValue) => {
-    //   console.log(newValue,oldValue);
-    //   if (newValue != oldValue) {
-    //     submit.nicknameState = false
-    //     }
-    // })
-    // // 닉네임 중복확인
-    // const uniqueNickname = async function () {
-    //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
-    //   const validations = new SignupNicknameValidations(
-    //     submit.nickname
-    //     );
-    //   const errors = validations.checkValidations();
+//     //   console.log(state.profileImg)
+//     // }
+//     // 닉 바꾸는지 확인
+//     // watch(() => submit.nickname, (newValue, oldValue) => {
+//     //   console.log(newValue,oldValue);
+//     //   if (newValue != oldValue) {
+//     //     submit.nicknameState = false
+//     //     }
+//     // })
+//     // // 닉네임 중복확인
+//     // const uniqueNickname = async function () {
+//     //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
+//     //   const validations = new SignupNicknameValidations(
+//     //     submit.nickname
+//     //     );
+//     //   const errors = validations.checkValidations();
       
-    //   if ('nickname' in errors) {
-    //     errorMsgs.err.nickname = errors['nickname']
-    //     this.submit.nicknameState = false
-    //   } else {
-      // console.log(submit.nickname)
-      // const result = store.dispatch('userStore/uniqueNicknameAction', submit.nickname )
-      // if (result.data.unique==true) {
-      //   submit.nicknameState = true
-      //   Swal.fire({
-      //     icon: "success",
-      //     text:"사용 가능한 닉네임입니다."
-      //     })
-      // } else {
-      //   submit.nicknameState = false
-      //   Swal.fire({
-      //     icon: "error",
-      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
-      //     })
-      // }
-      // }
-    // }
-    // const uploadImage = () => {
-    //   this.profileImg = this.$refs.profilePic.files
-    //   console.log(this.profileImg)
-    //   console.log(this.$refs.profilePic.filters)
-    // }
+//     //   if ('nickname' in errors) {
+//     //     errorMsgs.err.nickname = errors['nickname']
+//     //     this.submit.nicknameState = false
+//     //   } else {
+//       // console.log(submit.nickname)
+//       // const result = store.dispatch('userStore/uniqueNicknameAction', submit.nickname )
+//       // if (result.data.unique==true) {
+//       //   submit.nicknameState = true
+//       //   Swal.fire({
+//       //     icon: "success",
+//       //     text:"사용 가능한 닉네임입니다."
+//       //     })
+//       // } else {
+//       //   submit.nicknameState = false
+//       //   Swal.fire({
+//       //     icon: "error",
+//       //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+//       //     })
+//       // }
+//       // }
+//     // }
+//     // const uploadImage = () => {
+//     //   this.profileImg = this.$refs.profilePic.files
+//     //   console.log(this.profileImg)
+//     //   console.log(this.$refs.profilePic.filters)
+//     // }
 
-      if ('nickname' in errors) {
-        errorMsgs.err.nickname = errors['nickname'];
-        this.state.newNicknameState = false;
-      } else {
-        const result = await store.dispatch('userStore/uniqueNicknameAction', state.newNickname);
-        if (result.data.unique == true) {
-          state.newNicknameState = true;
-          Swal.fire({
-            icon: 'success',
-            text: '사용 가능한 닉네임입니다.',
-          });
-        } else {
-          state.newNicknameState = false;
-          Swal.fire({
-            icon: 'error',
-            html: '이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요.',
-          });
-        }
-      }
-    };
+//       if ('nickname' in errors) {
+//         errorMsgs.err.nickname = errors['nickname'];
+//         this.state.newNicknameState = false;
+//       } else {
+//         const result = await store.dispatch('userStore/uniqueNicknameAction', state.newNickname);
+//         if (result.data.unique == true) {
+//           state.newNicknameState = true;
+//           Swal.fire({
+//             icon: 'success',
+//             text: '사용 가능한 닉네임입니다.',
+//           });
+//         } else {
+//           state.newNicknameState = false;
+//           Swal.fire({
+//             icon: 'error',
+//             html: '이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요.',
+//           });
+//         }
+//       }
+//     };
 
-    const saveEditInfo = async function () {
-      let changedData = new FormData();
-      changedData.append("nickname", this.state.newNickname)
-      console.log('이미지... 넣고싶어요', )
-      changedData.append("profileMultipartFile", this.send_image)
-      changedData.append("profileMessage", this.state.profileIntro)
-      console.log(changedData.entries, '폼데이터')
-      for (let key of changedData.keys()) {
-        console.log(key);
-      }
+//     const saveEditInfo = async function () {
+//       let changedData = new FormData();
+//       changedData.append("nickname", this.state.newNickname)
+//       console.log('이미지... 넣고싶어요', )
+//       changedData.append("profileMultipartFile", this.send_image)
+//       changedData.append("profileMessage", this.state.profileIntro)
+//       console.log(changedData.entries, '폼데이터')
+//       for (let key of changedData.keys()) {
+//         console.log(key);
+//       }
 
-      // FormData의 value 확인
-      for (let value of changedData.values()) {
-        console.log(value);
-      }
-      const result = await store.dispatch('userStore/patchUserInfoAction', changedData )
-      console.log('제발', result)
-      // if (result.status==200) {
-      //   state.newNicknameState = true
-      //   Swal.fire({
-      //     icon: "success",
-      //     text:"사용 가능한 닉네임입니다."
-      //     })
-      // } else {
-      //   state.newNicknameState = false
-      //   Swal.fire({
-      //     icon: "error",
-      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
-      //     })
-      // }
+//       // FormData의 value 확인
+//       for (let value of changedData.values()) {
+//         console.log(value);
+//       }
+//       const result = await store.dispatch('userStore/patchUserInfoAction', changedData )
+//       console.log('제발', result)
+//       // if (result.status==200) {
+//       //   state.newNicknameState = true
+//       //   Swal.fire({
+//       //     icon: "success",
+//       //     text:"사용 가능한 닉네임입니다."
+//       //     })
+//       // } else {
+//       //   state.newNicknameState = false
+//       //   Swal.fire({
+//       //     icon: "error",
+//       //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+//       //     })
+//       // }
 
-    }
-    let profile_Image = null;
-    const test = (a1) => {
-      profile_Image = a1;
-    };
-    return {
-      profile_Image,
-      state,
-      errorMsgs,
-      me,
-      my_data,
-      uniqueNickname,
-      saveEditInfo,
-      test,
-      // inputImage
-    };
-  },
-  data() {
-    return {
-      profileImg: '',
-      send_image:'',
-    }
-  },
-  methods: {
-    inputImage () {
-      this.send_image = this.$refs.profilePic.files[0]
-      this.profileImg = this.send_image
-      console.log(this.profileImg, "잘 들어왔는지")
-      var image = this.$refs.profilePic.files[0]
+//     }
+//     let profile_Image = null;
+//     const test = (a1) => {
+//       profile_Image = a1;
+//     };
+//     return {
+//       profile_Image,
+//       state,
+//       errorMsgs,
+//       me,
+//       my_data,
+//       uniqueNickname,
+//       saveEditInfo,
+//       test,
+//       // inputImage
+//     };
+//   },
+//   data() {
+//     return {
+//       profileImg: '',
+//       send_image:'',
+//     }
+//   },
+//   methods: {
+//     inputImage () {
+//       this.send_image = this.$refs.profilePic.files[0]
+//       this.profileImg = this.send_image
+//       console.log(this.profileImg, "잘 들어왔는지")
+//       var image = this.$refs.profilePic.files[0]
       
 
-      console.log('이미지2', this.send_image)
-      const url = URL.createObjectURL(image)
-      console.log('유알엘', url)
-      this.image = url
-      this.profileImg = url
-      console.log('this',this.profileImg)
+//       console.log('이미지2', this.send_image)
+//       const url = URL.createObjectURL(image)
+//       console.log('유알엘', url)
+//       this.image = url
+//       this.profileImg = url
+//       console.log('this',this.profileImg)
 
-      console.log('send_image',this.send_image)
+//       console.log('send_image',this.send_image)
 
-      // test
-      let asd = url;
-      this.test(asd);
+//       // test
+//       let asd = url;
+//       this.test(asd);
 
-      console.log(this.profileImg, '얘는찍힘?');
-    },
-  },
+//       console.log(this.profileImg, '얘는찍힘?');
+//     },
+//   },
 };
 </script>
 
