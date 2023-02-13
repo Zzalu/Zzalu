@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-10">
+  <div class="mb-1">
     <div class="profile-title">
       {{ profile_user_data.nickname }}님의 보드
     </div>

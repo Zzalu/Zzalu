@@ -102,7 +102,6 @@ export default {
       this.$router.push({
         name: "zzal",
         params: { zzal_id: this.RecommendJjal.id },
-        query: { gifpath: this.RecommendJjal.gifPath, id: this.RecommendJjal.id, tags: this.RecommendJjal.tags, visitedcount:this.RecommendJjal.visitedcount },
       });
     },
     long_click() {

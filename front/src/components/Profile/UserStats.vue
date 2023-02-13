@@ -1,27 +1,81 @@
 <template>
-  <div class="profile-title mb-1">스탯</div>
-  <div id="chart" class="rounded-lg">
-    <div>{{ stat_dirty }}</div>
-    <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
+  <div class="profile-title" v-if="stat_dirty">
+    스탯 <button @click="test">보기</button>
+    <div>
+  <div class="profile-title"> {{ profile_user_data.nickname }} {{ zzalMBTI }} </div>
+      <div id="chart" class="mb-10">
+        <apexchart
+          type="bar"
+          :options="chartOptions"
+          :series="series"
+        ></apexchart>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-// import { useStore } from "vuex";
-// import { computed, onBeforeMount } from "@vue/runtime-core";
-// import { watch } from 'vue'
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 export default {
-  name: "UserStats",
-  // components: {
-  //   apexcharts: VueApexCharts,
-  // },
-  data: function () {
+  data(){
     return {
-      series: 
-      [{
-        data: this.nums_data
-        }],
-      chartOptions: {
+      chartOptions : null,
+      series : null,
+    };
+  },
+  setup() {
+    const store = useStore();
+    const zzalMBTI = null
+    // const profile_user = localStorage.getItem('profile_user')
+    // onBeforeMount(() => {
+    //   if (this.stat_dirty.data[0].tag == "게임") {
+    //       this.zzalMBTI = '는 컴퓨터랑 연애한다'
+    //     } else if (this.stat_dirty.data[0].tag == "애니") {
+    //       this.zzalMBTI = '정도면... 갓반인이죠'
+    //     } else if (this.stat_dirty.data[0].tag == "TV") {
+    //       this.zzalMBTI = '뭐해? 나 누워서 TV봐...'
+    //     } else if (this.stat_dirty.data[0].tag == "연예인") {
+    //       this.zzalMBTI = '는... 우리 최애 보려고 살아요'
+    //     } else if (this.stat_dirty.data[0].tag == "일상") {
+    //       this.zzalMBTI = '는... 감정표현의 대가'
+    //     } else if (this.stat_dirty.data[0].tag == "스포츠") {
+    //       this.zzalMBTI = '팀은 언제 이기냐?'
+    //     } else if (this.stat_dirty.data[0].tag == "동물") {
+    //       this.zzalMBTI = '귀여운 동물들이 세상을 구한다!'
+    //     } else if (this.stat_dirty.data[0].tag == "싸피") {
+    //       this.zzalMBTI = '는 진정한 개발자... 제법 멋져'
+    //     } else if (this.stat_dirty.data[0].tag == "음식") {
+    //       this.zzalMBTI = '는 살려고 먹는게 아니라 먹으려고 살아'
+    //     }
+    // });
+    const stat_dirty = computed(
+      () => store.state.profileStore.profile_user.stats
+    );
+    const profile_user_data = computed(
+      () => store.state.profileStore.profile_user
+    );
+
+
+    return {
+      stat_dirty,
+      zzalMBTI,
+      profile_user_data
+    };
+  },
+  methods: {
+    test() {
+      this.series= [
+        {
+          data: [
+            this.stat_dirty.data[0].count,
+            this.stat_dirty.data[1].count,
+            this.stat_dirty.data[2].count,
+            this.stat_dirty.data[3].count,
+          ],
+        },
+      ],
+      this.chartOptions = {
         grid: {
           show: false,
         },
@@ -42,7 +96,12 @@ export default {
           enabled: true,
         },
         xaxis: {
-          categories: this.title_data,
+          categories: [
+            this.stat_dirty.data[0].tag,
+            this.stat_dirty.data[1].tag,
+            this.stat_dirty.data[2].tag,
+            this.stat_dirty.data[3].tag,
+          ],
           labels: {
             show: false,
             style: {
@@ -57,79 +116,8 @@ export default {
             },
           },
         },
-      },
-    };
-  },
-  setup() {
-    // const store = useStore();
-    // const user_id = window.localStorage.getItem("profile_id");
-    // onBeforeMount(() => {
-    //   store.dispatch("profileStore/getProfileStats", user_id);
-      // var titles = new Array();
-      // var nums = new Array();
-      // stats.data.forEach( stat => {
-      //   console.log(stat)
-      //   // stat.tag.push(titles)
-      //   // stat.count.push(nums)
-      // });
-      // console.log(titles)
-      // console.log(nums)
-    // });
-    // const stat_dirty = computed(
-    //   () => store.state.profileStore.profile_user.stats
-    // );
-
-    // var titles = new Array();
-    // var nums = [];
-
-    // watch(stat_dirty, (nv) => {
-    //   if (nv) {
-    //     nv.data.forEach(element => {
-    //       titles.push(element.tag)
-    //       nums.push(element.count)
-    //     });
-    //   }
-    // })
-    
-    // const title_data = localStorage.getItem('stat_title').split(',')
-    // console.log(title_data)
-    // const nums_data = localStorage.getItem('stat_nums').split(',')
-    return {
-      // stat_dirty,
-      // title_data,
-      // nums_data
-
-    };
-  },
-  watch: {
-    stat_dirty: function (nv) {
-  //     console.log(nv.data,"test");
-      var titles = new Array();
-      var nums = new Array();
-      if (nv) {
-        nv.data.forEach(element => {
-          titles.push(element.tag)
-          nums.push(element.count)
-        });
-
-  //       console.log(nv, "ㅇ게ㅜ")
-  //       nv.data.forEach((value, index, array) => {
-  //         console.log(array);
-  //         console.log(`${index} ${value}`, "이건뭐야");
-  //         titles.push(value.tag);
-  //         nums.push(value.count)
-          // console.log(titles,'titles');
-          // console.log(typeof(titles))
-  //         localStorage.setItem('stat_num', nums)
-  //         localStorage.setItem('stat_title', titles)
-  //         console.log(typeof(localStorage.getItem('stat_title')))
-  //       });
-  //       for (i in this.stat_dirty) {
-  //         titles.push(this.stat_dirty[i].tag)
-  //       }
       }
     },
-
   },
 };
 </script>

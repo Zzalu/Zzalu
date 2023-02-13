@@ -62,9 +62,9 @@ const profileStore = {
     },
 
     // 프로필 통계 보기
-   getProfileStats({ commit }, user_id) {
+  getProfileStats({ commit }, params) {
     getProfileStat(
-      user_id,
+      params,
       (res) => {
         console.log('유저 보관함 요청 성공', res)
         commit('SET_PROFILE_STATS', res)
@@ -75,7 +75,7 @@ const profileStore = {
     )
   }, 
 /*   getProfileStats({ commit }, user_id) {
-   return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     getProfileStat(
       user_id,
       (res) => {
