@@ -1,6 +1,7 @@
-import { apiInstance, authApiInstance } from './index.js';
+import { apiInstance, authApiInstance, formApiInstance } from './index.js';
 const api = apiInstance();
 const auth_api = authApiInstance();
+const form_api = formApiInstance();
 
 // 회원가입 (1)
 const requestRegister = (payload,res,err) => {
@@ -40,9 +41,8 @@ const checkNickname = (payload) => {
 
 // 회원정보변경 (7)
 const requestChangeInfo = (payload, res, err) => {
-    const data = JSON.stringify(payload)
-    console.log('api요청 직전 데이터', data)
-    auth_api.patch(`members`, data).then(res).catch(err)
+    console.log('api 요청 직전 데이터', payload)
+    form_api.patch(`members`, payload).then(res).catch(err)
 }
 
 // 계정 삭제 (8)

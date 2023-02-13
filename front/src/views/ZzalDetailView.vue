@@ -68,7 +68,7 @@
                   스크랩하기
                 </div>
               </div>
-              <div class="flex">
+              <!-- <div class="flex">
                 <font-awesome-icon
                   icon="fa-solid fa-download"
                   class="my-1 text-zz-s"
@@ -76,7 +76,7 @@
                 <div class="mx-1 text-zz-s line-clamp-1 font-spoq">
                   저장하기
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
           <!-- 바디 -->
