@@ -193,6 +193,7 @@ export default {
           localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             console.log(message);
             let recv_like_data = JSON.parse(message.body);
+            document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
             console.log('recv_like_data: ' + recv_like_data);
           });
         },

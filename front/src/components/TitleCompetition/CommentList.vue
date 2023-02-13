@@ -12,7 +12,12 @@
       </button>
     </div>
     <ol v-else ref="commentListComponent">
-      <li v-for="(comment, index) in comments" :key="comment.commentId" class="mb-1">
+      <li
+        v-for="(comment, index) in comments"
+        :key="comment.commentId"
+        class="mb-1"
+        :id="'comment-' + comment.commentId"
+      >
         <CommentListItem :comment="comment" :index="index" />
         <span class="w-full h-divider-height bg-zz-light-div dark:border-b-zz-dark-div"></span>
       </li>
