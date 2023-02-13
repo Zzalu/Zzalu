@@ -17,9 +17,4 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     Optional<Member> findByUserEmail(String userEmail);
 
     Optional<Member> findById(Long id);
-
-    List<ChatRoom> findAllByIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Long id, String keyword1, String keyword2);
-    List<ChatRoom> findAllByIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Long id, String keyword1, String keyword2);
-
-
 }
