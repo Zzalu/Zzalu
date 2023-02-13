@@ -18,31 +18,53 @@
         </button>
       </div>
     </nav>
-    <award-record-list :member_id="member_id" :sort="sort"></award-record-list>
+    <!-- <award-record-list :member_id="member_id" :sort="sort"></award-record-list> -->
+    <ol class="grid grid-cols-3 pb-16">
+      <li v-for="award in awards" :key="award.titleHakwonId">
+        <medal-item :award="award"></medal-item>
+      </li>
+    </ol>
     <main-bottom-nav></main-bottom-nav>
   </div>
 </template>
 
 <script>
-import AwardRecordList from '@/components/TitleCompetition/AwardRecordList.vue';
+// import AwardRecordList from '@/components/TitleCompetition/AwardRecordList.vue';
 import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
 import MainBottomNav from '../components/Common/NavBar/MainBottomNav.vue';
 import { useRoute } from 'vue-router';
 import { ref } from 'vue';
-
+import { getAwardRecord } from '@/api/titleCompetition.js';
+import MedalItem from '../components/TitleCompetition/item/MedalItem.vue';
 export default {
-  components: { AwardRecordList, OnlyGoBackTopNav, MainBottomNav },
+  components: { OnlyGoBackTopNav, MainBottomNav, MedalItem },
   name: 'UserAward',
   setup() {
     const route = useRoute();
     const member_id = route.params.member_id;
     let sort = ref('LATEST');
-
+    let awards = ref(null);
     const clickSortBtn = (type) => {
       sort.value = type;
+      getAwardRecord(
+        member_id,
+        { sort: sort.value },
+        ({ data }) => {
+          awards.value = data;
+        },
+        (error) => console.log(error),
+      );
     };
+    getAwardRecord(
+      member_id,
+      { sort: sort.value },
+      ({ data }) => {
+        awards.value = data;
+      },
+      (error) => console.log(error),
+    );
 
-    return { member_id, sort, clickSortBtn };
+    return { member_id, sort, clickSortBtn, awards };
   },
 };
 </script>

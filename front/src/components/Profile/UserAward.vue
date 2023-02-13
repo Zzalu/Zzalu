@@ -23,22 +23,22 @@
 
 <script>
 import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router';
-import { computed } from "@vue/runtime-core";
+import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
+import { computed } from '@vue/runtime-core';
 export default {
   name: 'UserAward',
   setup() {
     const store = useStore();
-    // const router = useRouter();
-    // const GoToAwardRecord = () => {
-    //   router.push(`/award-record/${profile_user_data.username}`);
-    // };
-    const profile_user_data = computed(
-      () => store.state.profileStore.profile_user
-    );
+    const router = useRouter();
+    const route = useRoute();
+    const GoToAwardRecord = () => {
+      router.push(`/award-record/${route.params.username}`);
+    };
+    const profile_user_data = computed(() => store.state.profileStore.profile_user);
     return {
-      // GoToAwardRecord,
-      profile_user_data
+      GoToAwardRecord,
+      profile_user_data,
     };
   },
 };
