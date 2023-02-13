@@ -1,5 +1,4 @@
 <template>
-  <!-- <modify-profile-top-nav></modify-profile-top-nav> -->
   <div
     class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center justify-center dark:bg-zz-bd"
   >
@@ -30,12 +29,12 @@
         <label
           class="px-4 flex flex-col items-center bg-white dark:bg-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
         >
-        <input type="file" class="bg-red-200" ref="profilePic" @change='inputImage()'>
+        <input type="file" ref="profilePic" class="hidden" @change='inputImage()'>
         <button @click="profileUploadBtn"></button>
         <div class="flex">
           <font-awesome-icon icon="fa-solid fa-image" class="my-auto mr-2 dark:text-white" />
           <span class="text-base leading-normal dark:text-white">사진 수정</span>
-          <input type="file" class="hidden" />
+
           </div>
         </label>
       </div>
@@ -46,11 +45,12 @@
     <input
       type="text"
       class="account-input"
-      v-bind:placeholder="this.my_data.nickname"
+      v-bind:placeholder="this.me"
+      v-model="state.newNickname"
     />
     <button class="button-in-input" @click="uniqueNickname" >중복확인</button>
   </div>
-    <!-- <div class="signup-error" v-if="errorMsgs.err.nickname" > {{ errorMsgs.err.nickname }} </div> -->
+    <div class="signup-error" v-if="errorMsgs.err.nickname" > {{ errorMsgs.err.nickname }} </div>
   <div class="my-2">
     <font-awesome-icon
       icon="fa-solid fa-pen-to-square"
@@ -58,8 +58,9 @@
     />
     <input
       type="text"
-      class="intro-input"
+      class="account-input"
       v-bind:placeholder="this.my_data.profileMessage"
+      v-model="state.profileIntro"
     />
   </div>
   <router-link to="/account/delete" class="delete-account">탈퇴하기</router-link>
@@ -67,11 +68,11 @@
 </template>
 
 <script>
-// import Swal from 'sweetalert2'
+import Swal from 'sweetalert2'
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
-// import { reactive } from 'vue'
-// import SignupNicknameValidations from '@/services/SignupNicknameValidations'
+import { reactive, watch } from 'vue'
+import SignupNicknameValidations from '@/services/SignupNicknameValidations'
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue";
 export default {
   name: "EditProfileView",
@@ -80,66 +81,108 @@ export default {
     MainBottomNav,
   },
   setup() {
-    const me = localStorage.getItem("id");
+    const me = localStorage.getItem("current_nickname");
     const store = useStore();
     const my_data= computed(
       () => store.state.profileStore.profile_user
     );
-    // const errorMsgs = reactive({
-    //   err: {
-    //     nickname: '',
-    //   }
-    // })
+    const errorMsgs = reactive({
+      err: {
+        nickname: '',
+      }
+    })
+    const state = reactive({
+      newNickname: null,
+      newNicknameState: true,
+      newNicknameError:'',
+      profileIntro: null,
+      // profileImg: ''
+    })
+    // const inputImage = function () {
+    //   state.profileImg = this.$refs.profilePic.files[0]
+    //   console.log(state.profileImg, "잘 들어왔는지")
+    //   var image = this.$refs.profilePic.files[0]
+    //   console.log('이미지', image)
+    //   const url = URL.createObjectURL(image)
+    //   console.log('유알엘', url)
+    //   this.image = url
+    //   state.profileImg = url
+
+    //   console.log(state.profileImg)
+    // }
     // 닉 바꾸는지 확인
-    // watch(() => submit.nickname, (newValue, oldValue) => {
-    //   if (newValue != oldValue) {
-    //     submit.nicknameState = false
-    //     }
+    watch(() => state.newNickname, (newValue, oldValue) => {
+      if (newValue != oldValue) {
+        state.newNicknameState = false
+        errorMsgs.err.nickname = null
+        }
       
-    // })
-    // // 닉네임 중복확인
-    // const uniqueNickname = async function () {
-    //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
-    //   const validations = new SignupNicknameValidations(
-    //     submit.nickname
-    //     );
-    //   const errors = validations.checkValidations();
+    })
+    // 닉네임 중복확인
+    const uniqueNickname = async function () {
+      // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
+      const validations = new SignupNicknameValidations(
+        state.newNickname
+        );
+      const errors = validations.checkValidations();
       
-    //   if ('nickname' in errors) {
-    //     errorMsgs.err.nickname = errors['nickname']
-    //     this.submit.nicknameState = false
-    //   } else {
-      // console.log(submit.nickname)
-      // const result = store.dispatch('userStore/uniqueNicknameAction', submit.nickname )
-      // if (result.data.unique==true) {
-      //   submit.nicknameState = true
-      //   Swal.fire({
-      //     icon: "success",
-      //     text:"사용 가능한 닉네임입니다."
-      //     })
-      // } else {
-      //   submit.nicknameState = false
-      //   Swal.fire({
-      //     icon: "error",
-      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
-      //     })
-      // }
-      // }
-    // }
-    // const uploadImage = () => {
-    //   this.profileImg = this.$refs.profilePic.files
-    //   console.log(this.profileImg)
-    //   console.log(this.$refs.profilePic.filters)
-    // }
+      if ('nickname' in errors) {
+        errorMsgs.err.nickname = errors['nickname']
+        this.state.newNicknameState = false
+      } else {
+      const result = await store.dispatch('userStore/uniqueNicknameAction', state.newNickname )
+      if (result.data.unique==true) {
+        state.newNicknameState = true
+        Swal.fire({
+          icon: "success",
+          text:"사용 가능한 닉네임입니다."
+          })
+      } else {
+        state.newNicknameState = false
+        Swal.fire({
+          icon: "error",
+          html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+          })
+      }
+      }
+    }
 
-    // const profileUploadBtn = () => {
-
-    // }
+    const saveEditInfo = async function () {
+      const changedData = {
+        newNickname: this.state.newNickname,
+        profileImg : profile_Image,
+        profileIntro : this.state.profileIntro,
+      }
+      const result = await store.dispatch('userStore/patchUserInfoAction', changedData )
+      console.log('제발', result)
+      if (result.status==200) {
+        state.newNicknameState = true
+        Swal.fire({
+          icon: "success",
+          text:"사용 가능한 닉네임입니다."
+          })
+      } else {
+        state.newNicknameState = false
+        Swal.fire({
+          icon: "error",
+          html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+          })
+      }
+    }
+    let profile_Image = null;
+    const test = (a1) => {
+      profile_Image = a1
+    }
     return {
+      profile_Image,
+      state,
+      errorMsgs,
       me,
       my_data,
-      // uploadImage
-      // uniqueNickname
+      uniqueNickname,
+      saveEditInfo,
+      test
+      // inputImage
     };
 
 
@@ -158,9 +201,17 @@ export default {
       const url = URL.createObjectURL(image)
       console.log('유알엘', url)
       this.image = url
-      console.log(url)
-      console.log(this.image)
-    }
+      this.profileImg = url
+      console.log('this',this.profileImg)
+      
+
+      // test
+      let asd = url
+      this.test(asd)
+
+      console.log(this.profileImg,'얘는찍힘?')
+    },
+
 
   }
 };
