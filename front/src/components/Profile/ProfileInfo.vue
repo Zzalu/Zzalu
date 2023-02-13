@@ -58,6 +58,9 @@ export default {
     const profile_user_data = computed(
       () => store.state.profileStore.profile_user
     );
+    // const my_data = computed(
+    //   () => store.state.userStore
+    // );
     const get_follower = (member_id) => {
       console.log("member_id", member_id)
       store.dispatch("followStore/getFollowerList", member_id)
