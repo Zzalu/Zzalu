@@ -288,6 +288,7 @@ public class ChatRoomController {
             } else {
                 requestMember.getLikeChatRooms().remove(requestMember);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() - 1);
+                memberRepository.save(requestMember);
                 System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
             }
