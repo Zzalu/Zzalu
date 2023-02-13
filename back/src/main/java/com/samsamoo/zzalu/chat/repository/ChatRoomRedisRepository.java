@@ -8,6 +8,7 @@ import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,7 +64,9 @@ public class ChatRoomRedisRepository {
         System.out.println("ChatRoomRepository - findAllChatMessage : " + opsListChatMessage.size(id + id));
         System.out.println("Cache 미적용");
         long size = opsListChatMessage.size(id + id);
+        System.out.println(1);
         List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, 0, size);
+        System.out.println(2);
        return chatMessageDtos;
     }
 
@@ -107,8 +111,8 @@ public class ChatRoomRedisRepository {
     }
 
 
-    @CacheEvict(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()", allEntries = true)
-    public void setChatMessage(ChatMessageDto message) {
+    @CachePut(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()")
+    public List<ChatMessageDto> setChatMessage(ChatMessageDto message) {
         LocalDateTime sendDate = LocalDateTime.now();
         System.out.println("setChatMessage ===");
         message.setSendDate(sendDate);
@@ -121,13 +125,20 @@ public class ChatRoomRedisRepository {
             ChatRoom chatRoom = optionalChatRoom.get();
             ChatMessage chatMessage = message.toEntity();
             chatMessage.setChatRoom(chatRoom);
-            chatRoom.addChatMessage(message.toEntity());
+            chatRoom.addChatMessage( message.toEntity());
             chatRoom.setLastActivation(sendDate);
             chatRepository.save(chatMessage);
             chatRoomRepository.save(chatRoom);
         } else {
             System.out.println("need chat room not found exception throw");
         }
+        LinkedList<ChatMessageDto> chatMessageDtos = new LinkedList<>();
+        chatMessageDtos = (LinkedList<ChatMessageDto>) findAllChatMessage(message.getRoomId() + message.getRoomId());
+        if(chatMessageDtos.size() >= 100)
+            chatMessageDtos.pollFirst();
+        chatMessageDtos.addLast(message);
+        List<ChatMessageDto> retunValue = chatMessageDtos;
+        return retunValue;
     }
 
     /**
