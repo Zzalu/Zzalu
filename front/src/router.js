@@ -189,6 +189,12 @@ const routes = [
     name: 'zzal',
     component: () => import('@/views/ZzalDetailView'),
   },
+  // 짤 업로드
+  {
+    path: '/zzal/create',
+    name: 'create-zzal',
+    component: () => import('@/views/ZzalCreateView'),
+  },
   // ----------------------------------------------------------------
   // 보드 디테일
   {
