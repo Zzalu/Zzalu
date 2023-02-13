@@ -22,7 +22,8 @@ public class Gifs {
     @Column(name="GIF_ID")
     private Long id;
 
-    @Column(name="GIF_PATH", nullable = false, unique = true)
+    @Column(name="GIF_PATH", nullable = false, unique = true ,length = 20000)
+
     private String gifPath;
 
     @Column(name="USE_COUNT", nullable = false)
