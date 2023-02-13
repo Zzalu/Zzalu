@@ -29,7 +29,7 @@
           <span class="text-xs mr-1" :id="'comment-id-' + comment_id + '-like-cnt'">
             {{ like_cnt }}
           </span>
-          <button class="my-auto" @click="clickLikeBtn" :id="'comment-id-' + comment_id + '-like-btn'">
+          <button class="my-auto like-btn" @click="clickLikeBtn" :id="'comment-id-' + comment_id + '-like-btn'">
             <font-awesome-icon v-if="!is_liked" icon="fa-regular fa-heart" class="text-xs" />
             <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
           </button>

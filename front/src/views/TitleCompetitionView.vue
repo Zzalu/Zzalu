@@ -276,4 +276,20 @@ export default {
 .zzal-fixed {
   @apply fixed;
 }
+
+.like-btn {
+  animation: heartbeat 1s 3 ease;
+}
+/* 크기가 변하는 아이콘 키프레임 애니메이션 */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 </style>
