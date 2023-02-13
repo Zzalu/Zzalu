@@ -40,8 +40,9 @@ const checkNickname = (payload) => {
 
 // 회원정보변경 (7)
 const requestChangeInfo = (payload, res, err) => {
-    // const data = JSON.stringify({"rawPassword": pwd})
-    auth_api.patch(`members`, payload).then(res).catch(err)
+    const data = JSON.stringify(payload)
+    console.log('api요청 직전 데이터', data)
+    auth_api.patch(`members`, data).then(res).catch(err)
 }
 
 // 계정 삭제 (8)
