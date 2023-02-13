@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -32,6 +33,7 @@ public class ChatController {
         message.setSender(requestMember.getNickname());
         message.setProfilePath(requestMember.getProfilePath());
         message.setMemberId(requestMember.getId());
+        message.setSendDate(LocalDateTime.now());
 
         if (ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
             chatRoomRedisRepository.enterChatRoom(message.getRoomId());

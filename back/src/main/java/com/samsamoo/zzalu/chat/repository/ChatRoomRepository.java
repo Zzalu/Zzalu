@@ -1,6 +1,7 @@
 package com.samsamoo.zzalu.chat.repository;
 
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
+import com.samsamoo.zzalu.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,5 +22,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(String keyword1, String keyword2);
     List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Long memberId, String keyword1, String keyword2);
     List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Long memberId, String keyword1, String keyword2);
+    List<ChatRoom> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Member mebmer, String keyword1, String keyword2);
+    List<ChatRoom> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Member mebmer, String keyword1, String keyword2);
 
 }
