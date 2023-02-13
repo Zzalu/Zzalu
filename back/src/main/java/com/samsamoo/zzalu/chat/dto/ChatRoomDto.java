@@ -18,7 +18,7 @@ public class ChatRoomDto implements Serializable {
     private static final long serialVersionUID = 6494678977089006639L;
     private String roomId;
     private String roomName;
-    private String userNmae;
+    private String userName;
     private Long memberId;
     private Long likeCount;
 
@@ -33,7 +33,7 @@ public class ChatRoomDto implements Serializable {
     public static ChatRoomDto create(ChatRoomEnroll chatRoomEnroll) {
         ChatRoomDto chatRoomDto = new ChatRoomDto();
         chatRoomDto.roomId = UUID.randomUUID().toString();
-        chatRoomDto.userNmae = chatRoomEnroll.getUserName();
+        chatRoomDto.userName = chatRoomEnroll.getUserName();
         chatRoomDto.memberId = chatRoomEnroll.getMemberId();
         chatRoomDto.roomName = chatRoomEnroll.getRoomName();
         chatRoomDto.imagePath = chatRoomEnroll.getImagePath();
@@ -51,7 +51,7 @@ public class ChatRoomDto implements Serializable {
         return ChatRoom.builder()
                 .roomId(roomId)
                 .roomName(roomName)
-                .userNmae(userNmae)
+                .userName(userName)
                 .memberId(memberId)
                 .likeCount(likeCount)
                 .likeMembers(likeMembers)

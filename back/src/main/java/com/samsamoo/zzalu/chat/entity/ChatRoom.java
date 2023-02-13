@@ -30,7 +30,7 @@ public class ChatRoom {
     private String roomName;
 
     @Column(name = "USER_NAME")
-    private String userNmae;
+    private String userName;
 
     @Column(name = "MEMBER_ID")
     private Long memberId;
