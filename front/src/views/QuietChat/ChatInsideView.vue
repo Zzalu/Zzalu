@@ -6,44 +6,46 @@
     class="z-50" />
     <!-- {{ member_Id }}
       {{ my_member_Id }} -->
-    <!-- {{ totalheight }} -->
+    {{ totalheight }}
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
-        {{ message }}
+
+        <div v-if="message.type != 'ENTER'">
         <!-- 내가 보낸 메세지 -->
-        <div v-if="user_nickname == message.sender">
-          <!-- 짤 이미지 -->
+          <div v-if="user_nickname == message.sender">
+            <!-- 짤 이미지 -->
 
-          <font-awesome-icon
-            icon="fa-solid fa-play"
-            class="my-message-balloon"
-          />
-          <div class="my-image-group">
-            <span class="my-write-time">오후 6:00</span>
-            <img class="my-image-box" :src="`${message.message}`" alt="" />
-          </div>
-        </div>
-        <!-- ---------------------------------------------------------------------------------- -->
-        <!-- 상대방이 보낸 메세지 -->
-
-        <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
-        <div class="profile-image" v-if="user_nickname != message.sender">
-          <!-- 만약 방장이라면
-"  -->
-          <div v-if="message.member_id == member_Id">
-            <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
-            <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
             <font-awesome-icon
               icon="fa-solid fa-play"
-              class="message-balloon"
+              class="my-message-balloon"
             />
+            <div class="my-image-group">
+              <span class="my-write-time">오후 6:00</span>
+              <img class="my-image-box" :src="`${message.message}`" alt="" />
+            </div>
           </div>
-          <div v-else>
-            <p class="profile-nicknames dark:text-white">{{ message.sender }}</p>
-            <font-awesome-icon
-              icon="fa-solid fa-play"
-              class="message-balloons"
-            />
+          <!-- ---------------------------------------------------------------------------------- -->
+          <!-- 상대방이 보낸 메세지 -->
+
+          <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
+          <div class="profile-image" v-if="user_nickname != message.sender">
+            <!-- 만약 방장이라면
+  "  -->    
+            <div v-if="message.member_id == member_Id">
+              <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
+              <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
+              <font-awesome-icon
+                icon="fa-solid fa-play"
+                class="message-balloon"
+              />
+            </div>
+            <div v-else>
+              <p class="profile-nicknames dark:text-white">{{ message.sender }}</p>
+              <font-awesome-icon
+                icon="fa-solid fa-play"
+                class="message-balloons"
+              />
+            </div>
           </div>
         </div>
 
@@ -52,7 +54,7 @@
           <div class="image-group">
             <img class="image-box" :src="`${message.message}`" alt="" />
             <!-- 작성 시간  -->
-            <span class="write-time">{{ message.sendDate}}</span>
+            <span class="write-time">오후 6:00</span>
           </div>
         </div>
       </div>
@@ -216,6 +218,7 @@ export default {
       let local_connect = this.connect;
       let local_socket = this.socket;
       let local_room_id = this.room_id;
+      let local_token = this.access_token;
 
       console.log("local_web_stomp : " + local_web_stomp);
       console.log("local_room_id : " + local_room_id);
@@ -230,6 +233,15 @@ export default {
               let recv = JSON.parse(message.body);
               local_recive_message(recv);
             }
+          );
+          local_web_stomp.send(
+            "/pub/chat/message",
+            JSON.stringify({
+              type: "ENTER",
+              roomId: local_room_id,
+              sender: local_token,
+            }),
+            {}
           );
         },
         function (error) {
