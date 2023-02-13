@@ -1,5 +1,5 @@
 <template>
-  <div class="medal-board">
+  <div class="medal-board" @click="goToTitleCompetition">
     <font-awesome-icon v-if="award.rank == 1" icon="fa-solid fa-medal" class="text-zz-gold h-8" />
     <font-awesome-icon v-if="award.rank == 2" icon="fa-solid fa-medal" class="text-zz-silver h-8" />
     <font-awesome-icon v-if="award.rank == 3" icon="fa-solid fa-medal" class="text-zz-bronze h-8" />
@@ -12,12 +12,14 @@
 <script>
 import { computed } from 'vue-demi';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
   name: 'MedalItem',
   props: {
     award: Object,
   },
   setup(props) {
+    const router = useRouter();
     const award = ref(props.award);
     let medal_name = computed(() => {
       if (award.value.rank == 1) {
@@ -31,9 +33,14 @@ export default {
 
     let title_competition_id = ref(award.value.titleHakwonId);
 
+    const goToTitleCompetition = () => {
+      console.log(award.value.openDate);
+      router.push(`/title-competition/${award.value.openDate}`);
+    };
     return {
       medal_name,
       title_competition_id,
+      goToTitleCompetition,
     };
   },
 };
