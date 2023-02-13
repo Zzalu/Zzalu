@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.chat.service;
 
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
+import com.samsamoo.zzalu.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -64,5 +65,13 @@ public class ChatRoomService {
 
     public void save(ChatRoom chatRoom) {
         chatRoomRepository.save(chatRoom);
+    }
+
+    public List<ChatRoom> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Member member, String keyword1, String keyword2) {
+        return chatRoomRepository.findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(member, keyword1, keyword2);
+    }
+
+    public List<ChatRoom> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Member member, String keyword1, String keyword2) {
+        return chatRoomRepository.findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(member, keyword1, keyword2);
     }
 }
