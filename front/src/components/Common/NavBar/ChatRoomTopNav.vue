@@ -41,10 +41,24 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+
 export default {
   name: "ChatRoomTopNav",
+  setup() {
+    const store = useStore();
+
+    const chat_room_like = (room_id) => {
+      let data = { "roomId" : room_id}
+      store.dispatch("quietChatStore/chatRoomLike", data)
+    }
+    return {
+      chat_room_like
+    }
+  },
   props: {
     room_name: String,
+    room_id: Number,
   },
   data() {
     return {
@@ -53,6 +67,7 @@ export default {
   },
   methods: {
     changelike() {
+      this.chat_room_like(this.room_id)
       this.is_like = !this.is_like;
     },
   },

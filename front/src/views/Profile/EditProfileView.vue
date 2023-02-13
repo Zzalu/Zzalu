@@ -85,20 +85,46 @@ export default {
     //   console.log(state.profileImg)
     // }
     // 닉 바꾸는지 확인
-    watch(
-      () => state.newNickname,
-      (newValue, oldValue) => {
-        if (newValue != oldValue) {
-          state.newNicknameState = false;
-          errorMsgs.err.nickname = null;
-        }
-      },
-    );
-    // 닉네임 중복확인
-    const uniqueNickname = async function () {
-      // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
-      const validations = new SignupNicknameValidations(state.newNickname);
-      const errors = validations.checkValidations();
+    // watch(() => submit.nickname, (newValue, oldValue) => {
+    //   console.log(newValue,oldValue);
+    //   if (newValue != oldValue) {
+    //     submit.nicknameState = false
+    //     }
+    // })
+    // // 닉네임 중복확인
+    // const uniqueNickname = async function () {
+    //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
+    //   const validations = new SignupNicknameValidations(
+    //     submit.nickname
+    //     );
+    //   const errors = validations.checkValidations();
+      
+    //   if ('nickname' in errors) {
+    //     errorMsgs.err.nickname = errors['nickname']
+    //     this.submit.nicknameState = false
+    //   } else {
+      // console.log(submit.nickname)
+      // const result = store.dispatch('userStore/uniqueNicknameAction', submit.nickname )
+      // if (result.data.unique==true) {
+      //   submit.nicknameState = true
+      //   Swal.fire({
+      //     icon: "success",
+      //     text:"사용 가능한 닉네임입니다."
+      //     })
+      // } else {
+      //   submit.nicknameState = false
+      //   Swal.fire({
+      //     icon: "error",
+      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+      //     })
+      // }
+      // }
+    // }
+    // const uploadImage = () => {
+    //   this.profileImg = this.$refs.profilePic.files
+    //   console.log(this.profileImg)
+    //   console.log(this.$refs.profilePic.filters)
+    // }
 
       if ('nickname' in errors) {
         errorMsgs.err.nickname = errors['nickname'];

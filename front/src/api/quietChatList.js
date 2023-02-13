@@ -44,9 +44,14 @@ function SearchAllLikeroom(data, res, err) {
 }
 
 function SearchCreatedLikeroom(data, res, err) {
-    console.log('내가만든검색좋아요',data);
     authapi.get(`/chat/search-member-order-likecount?keyword&memberId=${data}`)
         .then(res).catch(err)
 }
 
-export { getQuiet, createQuietChat, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom }
+function RoomLike(data, datas, res, err) {
+    console.log('좋아요데이터', datas)
+    authapi.post(`chat/like`, datas)
+        .then(res).catch(err)
+}
+
+export { getQuiet, createQuietChat, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike }
