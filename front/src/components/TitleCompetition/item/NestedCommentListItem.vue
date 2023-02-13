@@ -7,7 +7,7 @@
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ new_time }}</p>
-        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
+        <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
     </li>
