@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete, requestChangeInfo } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -15,8 +15,7 @@ const userStore = {
     accessToken: "",
     refreshToken: "",
     nickname: "",
-    isManager: false
-    // isLogin: false,
+    isManager: false,
   }),
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
@@ -62,6 +61,22 @@ const userStore = {
       state.refreshToken = ''
       state.isLogin = false
     },
+    // PATCH_USER_INFO (state, changedData) {
+    //   if (changedData.profileIntro) {
+    //     console.log('아이고')
+    //     state.myIntro = changedData.profileIntro
+    //   }
+    //   if (changedData.profileImg) {state.myImg = changedData.profileImg}
+    //   if (changedData.newNickname) {
+    //     state.nickname = changedData.newNickname
+    //     localStorage.setItem('current_nickname', changedData.newNickname)
+    //   }
+    //   // state.myImg = changedData.profileImg,
+    //   // state.nickname = changedData.newNickname
+    //   console.log('데이터 바꾼거', changedData)
+    //   console.log(state.nickname)
+    //   console.log(state.myImg)
+    // }
   },
   getters: {
     // signupTempInfoGet(state) {
@@ -168,7 +183,6 @@ const userStore = {
     // ----------------------------------------------------------
     // 아이디찾기
     sendUsernameAction: async (commit, email) => {
-      console.log(email);
       localStorage.setItem('temp_email', email)
       const data = JSON.stringify({"userEmail": email})
       const response = await requestUsername(
@@ -184,6 +198,24 @@ const userStore = {
       );
       return response
       // console.log("이안에 코드있음",response)
+    },
+    // ----------------------------------------------------------
+    // 회원정보수정
+    patchUserInfoAction: async (context, changedData) => {
+      // context.commit('PATCH_USER_INFO', changedData)
+      // const response = await requestChangeInfo(
+        await requestChangeInfo(
+        changedData,
+        (res) => {
+          console.log("유저인포 잘고침?ㅇㅇ",res)
+          return res
+        },
+        (err) => {
+          console.log("뭔가뭔가... 잘못됨")
+          return err.response
+      })
+        // console.log(response, 'ㅎㅇ')
+        // return response
     },
     // ----------------------------------------------------------
     // 매니저
