@@ -26,14 +26,12 @@ public class ChatController {
 
     @MessageMapping("/chat/message")
     public void message(ChatMessageDto message) {
-        System.out.println(message.toString());
-        System.out.println(message.getClass().getName());
-        System.out.println("ChatController - ChatMessage : " + message);
 
         // 토큰 검사 => 에외 발생 시 Exception
         Member requestMember = jwtTokenProvider.getMember(message.getSender());
         message.setSender(requestMember.getNickname());
         message.setProfilePath(requestMember.getProfilePath());
+        message.setMemberId(requestMember.getId());
         if (ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
             chatRoomRedisRepository.enterChatRoom(message.getRoomId());
 //            System.out.println("ChatController - if(ENTER) - findAllChatMessage : " + chatRoomRepository.findAllChatMessage(message.getRoomId()));
@@ -50,12 +48,4 @@ public class ChatController {
         }
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
-
-    @GetMapping("/chat/messages")
-    public List<ChatMessageDto> getAllChatMessages(@RequestParam("roomId") String roomId) {
-        return chatRoomRedisRepository.findAllChatMessage(roomId);
-    }
-
-
-
 }

@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.chat.controller;
 
 import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
 import com.samsamoo.zzalu.chat.dto.ChatRoomListDto;
@@ -262,5 +263,12 @@ public class ChatRoomController {
             System.out.println("Can't find chatRoom Error");
             return false;
         }
+    }
+    @GetMapping("/abc")
+    public String findAllChatMessage(@RequestParam String roomId) {
+        System.out.println(1234);
+        List<ChatMessageDto> returnValue = chatRoomRedisRepository.findAllChatMessage(roomId);
+        System.out.println(returnValue);
+        return "1234";
     }
 }
