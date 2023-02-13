@@ -62,12 +62,19 @@ public class JwtTokenProvider {
                 .compact();
 
         String username = authentication.getName();
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException("사용자를 찾을 수 없습니다."));
+        String nickname = member.getNickname();
+        Boolean isManager = member.getRoles().contains("MANAGER");
+
 
         return TokenInfo.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .username(username)
+                .nickname(nickname)
+                .isManager(isManager)
                 .build();
     }
 

@@ -54,7 +54,7 @@ public class MemberController {
         return ResponseEntity.ok().body(tokenInfo);
     }
 
-    //--------------------------------------나의 프로필 확인-------------------------------------------
+    //--------------------------------------나의 프로필 확인------------------------------------
     @GetMapping(value = "/my-profile")
     public ResponseEntity getMyProfile(@RequestHeader(value = "Authorization") String bearerToken) {
         return ResponseEntity.ok().body("OK");

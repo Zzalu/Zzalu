@@ -1,9 +1,11 @@
 package com.samsamoo.zzalu.gifs.controller;
 
+import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.board.dto.GifList;
 import com.samsamoo.zzalu.gifs.dto.GifsDto;
 import com.samsamoo.zzalu.gifs.dto.GifsUpdateDto;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
+import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.gifs.service.GifsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import java.util.*;
 public class GifsController {
 
     private final GifsService gifsService;
+    private final GifsRepository gifsRepository;
 
     @GetMapping("/gifs")
     public ResponseEntity<List<Gifs>> mainPage() {
@@ -28,8 +31,11 @@ public class GifsController {
 
     @GetMapping("/gif")
     public ResponseEntity<Optional<Gifs>> findById(@RequestParam("gifId") Long gifId) {
-        Optional<Gifs> gif = gifsService.findById(gifId);
-        return ResponseEntity.ok().body(gif);
+        Gifs gif = gifsService.findById(gifId)
+                .orElseThrow(() -> new NotFoundException("gif를 찾을 수 없습니다."));
+        gif.updateVisitedCount();
+        gifsRepository.save(gif);
+        return ResponseEntity.ok().body(Optional.of(gif));
     }
 
     @GetMapping("/main/gifs")

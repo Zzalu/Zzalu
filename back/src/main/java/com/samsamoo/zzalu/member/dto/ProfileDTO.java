@@ -18,6 +18,7 @@ public class ProfileDTO {
     private Long id;
     private String username;
     private String nickname;
+    private Boolean isManager;
     private String userEmail;
     private LocalDate enrollDate;
     private String profileMessage;
@@ -31,6 +32,7 @@ public class ProfileDTO {
     public ProfileDTO(Member member, MembersBoardList membersBoardList , AwardCountResponse awardCountResponse) {
         this.id = member.getId();
         this.username = member.getUsername();
+        this.isManager = member.getRoles().contains("MANAGER");
         this.userEmail = member.getUserEmail();
         this.nickname = member.getNickname();
         this.enrollDate = LocalDate.from(member.getEnrollDate());
@@ -42,6 +44,5 @@ public class ProfileDTO {
         this.awardCount = awardCountResponse;
         // 보드 리스트 넣어주기
         this.boardList = membersBoardList;
-
     }
 }
