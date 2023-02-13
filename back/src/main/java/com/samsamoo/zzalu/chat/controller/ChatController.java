@@ -32,20 +32,13 @@ public class ChatController {
         message.setSender(requestMember.getNickname());
         message.setProfilePath(requestMember.getProfilePath());
         message.setMemberId(requestMember.getId());
+
         if (ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
             chatRoomRedisRepository.enterChatRoom(message.getRoomId());
-//            System.out.println("ChatController - if(ENTER) - findAllChatMessage : " + chatRoomRepository.findAllChatMessage(message.getRoomId()));
-            message.setMessage(message.getSender() + "님이 입장하셨습니다.");
         }
 
         // kafka topic 발행
         kafkaProducer.sendMessage(message);
-
-        // kafka topic 발행 정상 처리 이후 ChatMessage Redis에 저장
-        // 입장 메시지 미저장 (입장이 아닐때만 저장)
-        if(!ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
-            chatRoomRedisRepository.setChatMessage(message);
-        }
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
 }
