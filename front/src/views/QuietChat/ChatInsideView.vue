@@ -9,40 +9,43 @@
     {{ totalheight }}
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
+
+        <div v-if="message.type != 'ENTER'">
         <!-- 내가 보낸 메세지 -->
-        <div v-if="user_nickname == message.sender">
-          <!-- 짤 이미지 -->
+          <div v-if="user_nickname == message.sender">
+            <!-- 짤 이미지 -->
 
-          <font-awesome-icon
-            icon="fa-solid fa-play"
-            class="my-message-balloon"
-          />
-          <div class="my-image-group">
-            <span class="my-write-time">오후 6:00</span>
-            <img class="my-image-box" :src="`${message.message}`" alt="" />
-          </div>
-        </div>
-        <!-- ---------------------------------------------------------------------------------- -->
-        <!-- 상대방이 보낸 메세지 -->
-
-        <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
-        <div class="profile-image" v-if="user_nickname != message.sender">
-          <!-- 만약 방장이라면
-"  -->
-          <div v-if="message.member_id == member_Id">
-            <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
-            <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
             <font-awesome-icon
               icon="fa-solid fa-play"
-              class="message-balloon"
+              class="my-message-balloon"
             />
+            <div class="my-image-group">
+              <span class="my-write-time">오후 6:00</span>
+              <img class="my-image-box" :src="`${message.message}`" alt="" />
+            </div>
           </div>
-          <div v-else>
-            <p class="profile-nicknames dark:text-white">{{ message.sender }}</p>
-            <font-awesome-icon
-              icon="fa-solid fa-play"
-              class="message-balloons"
-            />
+          <!-- ---------------------------------------------------------------------------------- -->
+          <!-- 상대방이 보낸 메세지 -->
+
+          <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
+          <div class="profile-image" v-if="user_nickname != message.sender">
+            <!-- 만약 방장이라면
+  "  -->    
+            <div v-if="message.member_id == member_Id">
+              <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
+              <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
+              <font-awesome-icon
+                icon="fa-solid fa-play"
+                class="message-balloon"
+              />
+            </div>
+            <div v-else>
+              <p class="profile-nicknames dark:text-white">{{ message.sender }}</p>
+              <font-awesome-icon
+                icon="fa-solid fa-play"
+                class="message-balloons"
+              />
+            </div>
           </div>
         </div>
 
@@ -115,7 +118,7 @@ export default {
     console.log("token : " + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
 
-    this.socket = new SockJS("http://i8c109.p.ssafy.io:8080" + "/ws-stomp");
+    this.socket = new SockJS("http://i8c109.p.ssafy.io:8090" + "/ws-stomp");
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),
@@ -138,6 +141,7 @@ export default {
       reconnect: 0,
       message: "",
       messages: [],
+      gif_id: 0,
       search_modal: false,
 
       // 방장 확인
@@ -156,6 +160,8 @@ export default {
     gif_data(data) {
       this.message = data.gifPath;
       console.log(this.message, this.message);
+      console.log("gifId : ", data.id);
+      this.gif_id = data.id;
 
       this.sendMessage();
       // BE에 짤 유즈 메세지 보내기
@@ -167,6 +173,8 @@ export default {
     },
     gif_data2(data2) {
       this.message = data2.gifPath;
+      console.log("gifId : ", data2.id);
+      this.gif_id = data2.id;
       this.sendMessage();
       this.message = "";
       // console.log(data, "여기서데이터받음2");
@@ -182,6 +190,7 @@ export default {
           roomId: this.room_id,
           sender: this.access_token,
           message: this.message,
+          gifId: this.gif_id
         }),
         {}
       );
