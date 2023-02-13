@@ -7,15 +7,28 @@
     <input
       type="text"
       class="edit-original-link"
-      placeholder="https://www.youtube.com/watch?v=sey8rFdvq6M"
+      v-model="relationsVideo"
     />
-    <font-awesome-icon icon="fa-solid fa-square-plus" class="plus-icon" />
+    <font-awesome-icon icon="fa-solid fa-square-plus" class="plus-icon" @click="updateVideo"/>
   </div>
 </template>
 
 <script>
 export default {
   name: "ZzalSourceVideo",
+  data() {
+    return {
+      relationsVideo : this.jjal_detail_data.relationsVideo
+    };
+  },
+  props: {
+    jjal_detail_data: Object,
+  },
+  methods: {
+    updateVideo() {
+      this.$emit('videoUpdate', this.relationsVideo)
+    }
+  }
 };
 </script>
 

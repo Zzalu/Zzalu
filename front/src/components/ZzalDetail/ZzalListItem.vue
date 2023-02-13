@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="bg-center">
-      <img :src="`${gifpath}`" alt="" class="col-span-2 justify-center" />
+      <img :src="`${gifpath}`" alt="" class="img-contain" />
     </div>
   </div>
 </template>
@@ -38,5 +38,10 @@ export default {
 <style lang="postcss" scoped>
 .view-count {
   @apply my-3 mx-2 text-zz-negative;
+}
+
+.img-contain{
+  max-height:10rem;
+  @apply col-span-2 justify-center
 }
 </style>
