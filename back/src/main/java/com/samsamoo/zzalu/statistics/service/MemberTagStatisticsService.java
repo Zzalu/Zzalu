@@ -19,8 +19,9 @@ public class MemberTagStatisticsService {
         return memberTagStatisticsRepository.findByTagAndMemberId(tag, memberId);
     }
 
-    public List<MemberTagStatistics> findAllByMemberId(Long memberId) {
-        return memberTagStatisticsRepository.findAllByMemberId(memberId);
+    public List<MemberTagStatistics> findTop5ByMemberId(Long memberId) {
+
+        return memberTagStatisticsRepository.findTop5ByMemberIdOrderByCountDesc(memberId);
     }
 
     public void save(MemberTagStatistics memberTagStatistics) {
