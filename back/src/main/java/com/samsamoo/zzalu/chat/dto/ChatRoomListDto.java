@@ -33,11 +33,6 @@ public class ChatRoomListDto {
         userNmae = chatRoom.getUserNmae();
         memberId = chatRoom.getMemberId();
         likeCount = chatRoom.getLikeCount();
-//        chatMessages = chatRoom.getChatMessages();
-        chatMessageId = new ArrayList<>();
-        for(ChatMessage chatMessage : chatRoom.getChatMessages()) {
-            chatMessageId.add(chatMessage.getId());
-        }
         likeMemberId = new ArrayList<>();
         for(Member member : chatRoom.getLikeMembers()) {
             likeMemberId.add(member.getId());
