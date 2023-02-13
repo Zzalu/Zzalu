@@ -157,7 +157,7 @@ const routes = [
   },
   // 프로필 정보 수정
   {
-    path: '/profile/edit',
+    path: '/edit-profile',
     name: 'edit-profile',
     component: () => import('@/views/Profile/EditProfileView'),
   },

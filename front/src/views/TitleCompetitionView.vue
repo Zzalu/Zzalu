@@ -193,6 +193,7 @@ export default {
           localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             console.log(message);
             let recv_like_data = JSON.parse(message.body);
+            document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
             console.log('recv_like_data: ' + recv_like_data);
           });
         },
@@ -274,5 +275,21 @@ export default {
 
 .zzal-fixed {
   @apply fixed;
+}
+
+.like-btn {
+  animation: heartbeat 1s 3 ease;
+}
+/* 크기가 변하는 아이콘 키프레임 애니메이션 */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>
