@@ -168,17 +168,15 @@ const userStore = {
 
     // 로그아웃
     logoutAction: async (context) => {
-      // console.log("store잘 들어옴", loginData)
-      // const response = await requestLogin(loginData)
-      // console.log("store 다시 잘 들어옴", response)
       context.commit('LOGOUT')
-      // console.log(response.data)
-      // localStorage.setItem('id', response.data.username)
-      // localStorage.setItem('token', response.data.accessToken)
-      // console.log("지금 접속유저 저장 잘 됨", response)
-      // return response
-
-
+      localStorage.removeItem('current_userid')
+      localStorage.removeItem('current_nickname')
+      localStorage.removeItem('stat_title')
+      localStorage.removeItem('temp_email')
+      localStorage.removeItem('profile_id')
+      localStorage.removeItem('profile_user')
+      localStorage.removeItem('isManager')
+      localStorage.removeItem('stat_num')
     },
     // ----------------------------------------------------------
     // 아이디찾기
@@ -203,8 +201,10 @@ const userStore = {
     // 회원정보수정
     patchUserInfoAction: async (context, changedData) => {
       // context.commit('PATCH_USER_INFO', changedData)
-      // const response = await requestChangeInfo(
-        await requestChangeInfo(
+      console.log(changedData)
+      
+      const response = await requestChangeInfo(
+        // await requestChangeInfo(
         changedData,
         (res) => {
           console.log("유저인포 잘고침?ㅇㅇ",res)
@@ -212,10 +212,10 @@ const userStore = {
         },
         (err) => {
           console.log("뭔가뭔가... 잘못됨")
+          console.log(err)
           return err.response
       })
-        // console.log(response, 'ㅎㅇ')
-        // return response
+      console.log('리스폰스', response)
     },
     // ----------------------------------------------------------
     // 매니저

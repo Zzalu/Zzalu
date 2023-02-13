@@ -148,26 +148,36 @@ export default {
     }
 
     const saveEditInfo = async function () {
-      const changedData = {
-        newNickname: this.state.newNickname,
-        profileImg : profile_Image,
-        profileIntro : this.state.profileIntro,
+      let changedData = new FormData();
+      changedData.append("nickname", this.state.newNickname)
+      console.log('이미지... 넣고싶어요', )
+      changedData.append("profileMultipartFile", this.send_image)
+      changedData.append("profileMessage", this.state.profileIntro)
+      console.log(changedData.entries, '폼데이터')
+      for (let key of changedData.keys()) {
+        console.log(key);
+      }
+
+      // FormData의 value 확인
+      for (let value of changedData.values()) {
+        console.log(value);
       }
       const result = await store.dispatch('userStore/patchUserInfoAction', changedData )
       console.log('제발', result)
-      if (result.status==200) {
-        state.newNicknameState = true
-        Swal.fire({
-          icon: "success",
-          text:"사용 가능한 닉네임입니다."
-          })
-      } else {
-        state.newNicknameState = false
-        Swal.fire({
-          icon: "error",
-          html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
-          })
-      }
+      // if (result.status==200) {
+      //   state.newNicknameState = true
+      //   Swal.fire({
+      //     icon: "success",
+      //     text:"사용 가능한 닉네임입니다."
+      //     })
+      // } else {
+      //   state.newNicknameState = false
+      //   Swal.fire({
+      //     icon: "error",
+      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
+      //     })
+      // }
+
     }
     let profile_Image = null;
     const test = (a1) => {
@@ -190,20 +200,25 @@ export default {
   data() {
     return {
       profileImg: '',
+      send_image:'',
     }
   },
   methods: {
     inputImage () {
-      this.profileImg = this.$refs.profilePic.files[0]
+      this.send_image = this.$refs.profilePic.files[0]
+      this.profileImg = this.send_image
       console.log(this.profileImg, "잘 들어왔는지")
       var image = this.$refs.profilePic.files[0]
-      console.log('이미지', image)
+      
+
+      console.log('이미지2', this.send_image)
       const url = URL.createObjectURL(image)
       console.log('유알엘', url)
       this.image = url
       this.profileImg = url
       console.log('this',this.profileImg)
-      
+
+      console.log('send_image',this.send_image)
 
       // test
       let asd = url

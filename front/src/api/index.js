@@ -29,8 +29,8 @@ function formApiInstance() {
     baseURL: process.env.VUE_APP_API_BASE_URL,
     headers: {
       'Content-Type': 'multipart/form-data',
-      // 'Authorization': `Bearer ${token}`,
-      'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzc2FmeSIsImF1dGgiOiJST0xFX01BTkFHRVIsUk9MRV9VU0VSIiwidXNlcm5hbWUiOiJzc2FmeSIsImV4cCI6MTY3NjMwOTQ5Nn0.K-lFgvLFXfDi0oiTNH8iwuFY9o3HZyqam62_sQQS6V4`,
+      'Authorization': `Bearer ${token}`,
+      // 'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzc2FmeSIsImF1dGgiOiJST0xFX01BTkFHRVIsUk9MRV9VU0VSIiwidXNlcm5hbWUiOiJzc2FmeSIsImV4cCI6MTY3NjMwOTQ5Nn0.K-lFgvLFXfDi0oiTNH8iwuFY9o3HZyqam62_sQQS6V4`,
     },
   });
   return instance;
