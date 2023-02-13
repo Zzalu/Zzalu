@@ -2,13 +2,32 @@
   <div v-if="user_id">
     <p class="focus-text">{{ user_id }}님을 위한 추천 짤</p>
     <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
-    <div class="items">
-      <div v-for="(RecommendJjal, i) in RecommendJjalListData" :key="i">
-        <RecommendedJjalListItem
-          :RecommendZzal="RecommendJjal"
-          :i="i"
-          @select_id="select_id"
-        />
+    <div>
+      <div v-if="RecommendJjalListData">
+        <div v-if="RecommendJjalListData.gifs.length > 0">
+          <div class="items">
+            <div
+              v-for="(RecommendJjal, i) in RecommendJjalListData.gifs"
+              :key="i"
+            >
+              <RecommendedJjalListItem
+                :RecommendZzal="RecommendJjal"
+                :i="i"
+                @select_id="select_id"
+              />
+            </div>
+          </div>
+        </div>
+        <div v-else>
+          <div class="empty_jjal">
+            짤을 스크랩하거나 고독방을 이용해보세요 !
+          </div>
+          <div class="empty_jjal">회원님을 위한 짤을 소개해드릴게요 !</div>
+        </div>
+      </div>
+      <div v-else>
+        <div class="empty_jjal">짤을 스크랩하거나 고독방을 이용해보세요 !</div>
+        <div class="empty_jjal">회원님을 위한 짤을 소개해드릴게요 !</div>
       </div>
     </div>
   </div>
@@ -58,5 +77,8 @@ export default {
 }
 .items::-webkit-scrollbar {
   display: none;
+}
+.empty_jjal {
+  @apply font-spoq dark:text-white;
 }
 </style>

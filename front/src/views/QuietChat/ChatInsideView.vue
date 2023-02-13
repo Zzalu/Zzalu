@@ -2,6 +2,7 @@
   <div>
     <ChatRoomTopNav :room_name="this.$route.query.room_name"
     :room_id="this.$route.query.room_id"
+    :like="this.$route.query.like"
     class="z-50" />
     <!-- {{ member_Id }}
       {{ my_member_Id }} -->

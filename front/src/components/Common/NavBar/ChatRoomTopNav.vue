@@ -25,7 +25,7 @@
     </span>
     <span class="inline-block px-4 absolute right-0">
       <font-awesome-icon
-        v-if="is_like"
+        v-if="is_like=='true'"
         icon="fa-solid fa-heart"
         class="toempty text-xl text-zz-s dark:text-zz-dark-s"
         @click="changelike"
@@ -59,10 +59,11 @@ export default {
   props: {
     room_name: String,
     room_id: Number,
+    like:String,
   },
   data() {
     return {
-      is_like: false,
+      is_like: this.like,
     };
   },
   methods: {

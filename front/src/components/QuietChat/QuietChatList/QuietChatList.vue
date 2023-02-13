@@ -17,7 +17,8 @@
         <div class="last-lane">
           <p class="updated-p">최근대화시간 : {{ date }}</p>
           <p class="like-p">
-            <font-awesome-icon icon="fa-solid fa-heart" class="text-zz-s" />
+            <font-awesome-icon v-if="like" icon="fa-solid fa-heart" class="text-zz-s" />
+            <font-awesome-icon v-else icon="fa-regular fa-heart" class="text-zz-s" />
             {{ room_data.likeCount }}
           </p>
         </div>
@@ -34,7 +35,11 @@ export default {
   },
   computed: {
     room_data() {
-      return this.room_datas;
+      return this.room_datas
+    },
+    like() {
+      let user_num = localStorage.getItem('profile_id')
+      return this.room_datas.likeMemberId.includes(Number(user_num))
     },
     hash() {
       if (this.room_datas.tags) {

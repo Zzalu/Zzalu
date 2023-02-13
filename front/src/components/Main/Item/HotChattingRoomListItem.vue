@@ -7,7 +7,13 @@
     <!-- 고독방 정보 -->
     <div class="quiet-chat-like-contain">
       <font-awesome-icon
+        v-if="like"
         icon="fa-solid fa-heart"
+        class="quiet-chat-like-icon"
+      />
+      <font-awesome-icon
+        v-else
+        icon="fa-regular fa-heart"
         class="quiet-chat-like-icon"
       />
       <p class="quiet-chat-like-text">{{ room_data.likeCount }}</p>
@@ -27,6 +33,15 @@ export default {
   props: {
     room_data: Object,
     b : Number,
+  },
+  computed: {
+    like() {
+      let user_num = null
+      if (localStorage.getItem('profile_id')) {
+        user_num = localStorage.getItem('profile_id')
+      }
+      return this.room_data.likeMemberId.includes(Number(user_num))
+    },
   },
   setup() {
     const store = useStore();
