@@ -30,8 +30,14 @@ function postTempGif(params, form, res, err) {
     if (form.updated_tags != "") {
         tempData.append("tags", form.updated_tags)
     }
+    if (form.origin_id != "") {
+        tempData.append("originId", form.origin_id)
+    }
+    if (form.updated_image != "") {
+        tempData.append("tempGifMultipartFile", form.updated_image)
+    }
     console.log(form)
-    tempData.append("originId", form.origin_id)
+    // tempData.append("originId", form.origin_id)
     formApi.post(`/temp`, tempData)
         .then(res).catch(err)
 }

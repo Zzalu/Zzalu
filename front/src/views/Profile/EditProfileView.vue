@@ -92,12 +92,12 @@ export default {
     //   }
     // })
     // 닉 바꾸는지 확인
-    watch(() => submit.nickname, (newValue, oldValue) => {
-      console.log(newValue,oldValue);
-      if (newValue != oldValue) {
-        submit.nicknameState = false
-        }
-    })
+    // watch(() => submit.nickname, (newValue, oldValue) => {
+    //   console.log(newValue,oldValue);
+    //   if (newValue != oldValue) {
+    //     submit.nicknameState = false
+    //     }
+    // })
     // // 닉네임 중복확인
     // const uniqueNickname = async function () {
     //   // 중복확인 전에 네이밍규칙 확인 ㄱㄱ
@@ -182,7 +182,7 @@ export default {
     background-size: contain;
     /* max-width: 100px;
     max-height: 100px; */
-  /* object-fit: cover; */
+  object-fit: cover;
   @apply rounded-full
 }
 </style>
