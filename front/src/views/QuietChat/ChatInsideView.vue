@@ -6,9 +6,10 @@
     class="z-50" />
     <!-- {{ member_Id }}
       {{ my_member_Id }} -->
-    {{ totalheight }}
+    <!-- {{ totalheight }} -->
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
+        {{ message }}
         <!-- 내가 보낸 메세지 -->
         <div v-if="user_nickname == message.sender">
           <!-- 짤 이미지 -->
@@ -51,7 +52,7 @@
           <div class="image-group">
             <img class="image-box" :src="`${message.message}`" alt="" />
             <!-- 작성 시간  -->
-            <span class="write-time">오후 6:00</span>
+            <span class="write-time">{{ message.sendDate}}</span>
           </div>
         </div>
       </div>
@@ -115,7 +116,7 @@ export default {
     console.log("token : " + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
 
-    this.socket = new SockJS("http://i8c109.p.ssafy.io:8080" + "/ws-stomp");
+    this.socket = new SockJS("http://i8c109.p.ssafy.io:8090" + "/ws-stomp");
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),
@@ -138,6 +139,7 @@ export default {
       reconnect: 0,
       message: "",
       messages: [],
+      gif_id: 0,
       search_modal: false,
 
       // 방장 확인
@@ -156,6 +158,8 @@ export default {
     gif_data(data) {
       this.message = data.gifPath;
       console.log(this.message, this.message);
+      console.log("gifId : ", data.id);
+      this.gif_id = data.id;
 
       this.sendMessage();
       // BE에 짤 유즈 메세지 보내기
@@ -167,6 +171,8 @@ export default {
     },
     gif_data2(data2) {
       this.message = data2.gifPath;
+      console.log("gifId : ", data2.id);
+      this.gif_id = data2.id;
       this.sendMessage();
       this.message = "";
       // console.log(data, "여기서데이터받음2");
@@ -182,6 +188,7 @@ export default {
           roomId: this.room_id,
           sender: this.access_token,
           message: this.message,
+          gifId: this.gif_id
         }),
         {}
       );
@@ -209,7 +216,6 @@ export default {
       let local_connect = this.connect;
       let local_socket = this.socket;
       let local_room_id = this.room_id;
-      let local_token = this.access_token;
 
       console.log("local_web_stomp : " + local_web_stomp);
       console.log("local_room_id : " + local_room_id);
@@ -224,15 +230,6 @@ export default {
               let recv = JSON.parse(message.body);
               local_recive_message(recv);
             }
-          );
-          local_web_stomp.send(
-            "/pub/chat/message",
-            JSON.stringify({
-              type: "ENTER",
-              roomId: local_room_id,
-              sender: local_token,
-            }),
-            {}
           );
         },
         function (error) {
