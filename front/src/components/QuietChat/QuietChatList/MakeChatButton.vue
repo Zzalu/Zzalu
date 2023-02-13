@@ -2,7 +2,7 @@
   <div>
     <router-link to="/make-chat" class="create-chat-button">
       <font-awesome-icon icon="fa-solid fa-comment-medical" />
-      <div to="/make-chat" class="create-chat">
+      <div @click="GoToMakeChat" class="create-chat">
         새로운 고독방 개설하기
       </div>
     </router-link>
@@ -12,6 +12,11 @@
 <script>
 export default {
   name: "MakeChatButton",
+  methods: {
+    GoToMakeChat() {
+      this.$router.push({ name: "make-chat" });
+    },
+  },
 };
 </script>
 
@@ -21,6 +26,6 @@ export default {
   @apply bg-zz-p rounded-lg w-9/12 h-10 text-white mx-auto py-2 flex items-center justify-center;
 }
 .create-chat {
-  @apply line-clamp-1 font-spoq ml-2
+  @apply line-clamp-1 font-spoq ml-2;
 }
 </style>
