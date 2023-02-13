@@ -23,6 +23,9 @@ public class ChatMessage {
     @Column(name = "CHAT_MESSAGE_ID")
     private Long id;
 
+    @Column(name = "GIF_ID")
+    private Long gifId;
+
     @Column(name = "TYPE")
     private ChatMessageDto.MessageType type;
 
