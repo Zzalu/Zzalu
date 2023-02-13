@@ -10,6 +10,7 @@
     <textarea
       ref="textArea"
       rows="{1}"
+      id="comment-textarea"
       @input="resize"
       v-if="isLogined"
       type="text"
@@ -102,6 +103,9 @@ export default {
           },
         );
       }
+      // input 비워주기
+      document.querySelector('#comment-textarea').value = '';
+      content = '';
     };
 
     return {

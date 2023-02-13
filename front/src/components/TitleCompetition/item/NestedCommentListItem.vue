@@ -2,12 +2,12 @@
   <div>
     <li>
       <div class="flex items-center mb-2">
-        <div class="w-3 h-3 rounded-full mr-2">
+        <div class="w-3 h-3 rounded-full mr-2" @click="goToProfile">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ new_time }}</p>
-        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
+        <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
     </li>
@@ -18,6 +18,7 @@
 import { reactive, toRefs } from '@vue/reactivity';
 import { deleteNestedComment } from '@/api/titleCompetition.js';
 import { computed } from 'vue-demi';
+import { useRouter } from 'vue-router';
 import Swal from 'sweetalert2';
 export default {
   name: 'NestedCommentListItem',
@@ -38,6 +39,11 @@ export default {
     });
 
     const username = window.localStorage.getItem('profile_user');
+    const router = useRouter();
+
+    const goToProfile = () => {
+      router.push(`/profile/${nested_comment_data.username}`);
+    };
 
     // 삭제 버튼
     const canDelete = computed(() => {
@@ -100,6 +106,7 @@ export default {
       canDelete,
       clickDeleteBtn,
       new_time,
+      goToProfile,
     };
   },
 };
