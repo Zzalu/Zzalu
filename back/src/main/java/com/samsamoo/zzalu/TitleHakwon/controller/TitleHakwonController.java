@@ -48,7 +48,7 @@ public class TitleHakwonController {
         }else{
             //타이틀 학원을 등록한다.
             TitleHakwon titleHakwon = new TitleHakwon();
-            titleHakwon.setZzulUrl(url);
+            titleHakwon.setZzalUrl(url);
             titleHakwon.setState(TitleHakwonState.NOT_OPEN);
             System.out.println("생성");
             System.out.println(TitleHakwonState.NOT_OPEN+"@@@@");
@@ -75,7 +75,7 @@ public class TitleHakwonController {
         }else{
             //타이틀 학원을 등록한다.
             TitleHakwon titleHakwon = new TitleHakwon();
-            titleHakwon.setZzulUrl(url);
+            titleHakwon.setZzalUrl(url);
             titleHakwon.setState(TitleHakwonState.NOT_OPEN);
             titleHackwonDao.save(titleHakwon);
 

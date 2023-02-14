@@ -33,7 +33,7 @@ public class TitleHakwon  {
     private Long id;
 
     @Column(length = 10000)
-    private String zzulUrl;
+    private String zzalUrl;
 
 
     @Column(nullable = false, unique = true)

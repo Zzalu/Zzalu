@@ -16,7 +16,7 @@ public class TitleHakwonResponse {
     private Long titleHakwonId;
     private String openData;
 
-    private String zzalurl;
+    private String zzalUrl;
 
     private TitleHakwonState state;
 
@@ -24,7 +24,7 @@ public class TitleHakwonResponse {
     public TitleHakwonResponse(TitleHakwon titleHakwon) {
         this.titleHakwonId = titleHakwon.getId();
         this.openData = titleHakwon.getOpenDate();
-        this.zzalurl = titleHakwon.getZzulUrl();
+        this.zzalUrl = titleHakwon.getZzalUrl();
         this.state = titleHakwon.getState();
 
     }
