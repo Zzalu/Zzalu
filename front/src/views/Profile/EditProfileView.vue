@@ -6,16 +6,16 @@
     <span class="inline-block px-4 absolute right-0 text-zz-s dark:text-white" @click="saveEditInfo(this.state.formdata)"> 완료 </span>
   </div>
   <div class="text-center-container">
-    <img class="profile-image" :style="{ backgroundImage: `url(${this.state.formdata.profileImg})` }" />
+    <img class="profile-image" :style="{ backgroundImage: `url(${this.state.profileImg})` }" />
     <!-- <div>이미지: {{ this.profileImg }}</div> -->
     <div class="flex" for="file_input">
       <div class="flex mt-10 mb-20 items-center justify-center bg-grey-lighter">
         <label
           class="px-4 flex flex-col items-center bg-white dark:bg-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
         >
-          <input type="file" ref="profilePic"  @change="this.inputImage" name="profile_image" id="profile_image"/>
+          <input type="file" ref="profilePic" class="hidden" @change="this.inputImage" name="profile_image" id="profile_image"/>
           <!-- <input type="file" name="profile_image" id="profile_image"/> -->
-          <button @click="profileUploadBtn"></button>
+          <!-- <button @click="profileUploadBtn"></button> -->
           <div class="flex">
             <font-awesome-icon icon="fa-solid fa-image" class="my-auto mr-2 dark:text-white" />
             <span class="text-base leading-normal dark:text-white">사진 수정</span>
@@ -223,6 +223,6 @@ export default {
   /* max-width: 100px;
     max-height: 100px; */
   /* object-fit: cover; */
-  @apply rounded-full;
+  @apply rounded-full border-2;
 }
 </style>

@@ -157,14 +157,26 @@ const userStore = {
     // 로그인
     loginAction: async (context, loginData ) => {
       // console.log("store잘 들어옴", loginData)
-      const response = await requestLogin(loginData)
+      const response = await requestLogin(
+        loginData,
+        (res) => {
+          console.log(res)
+          context.commit('SAVE_CURRENT_USER', res)
+          return res
+        },
+        (error) => {
+          console.log(error.response, "에러에러");
+          
+          return error.response
+        }
+        )
       // console.log("store 다시 잘 들어옴", response)
-      context.commit('SAVE_CURRENT_USER', response)
-      console.log(response.data)
+      
+
       // localStorage.setItem('id', response.data.username)
       // localStorage.setItem('token', response.data.accessToken)
-      console.log("지금 접속유저 저장 잘 됨", response)
       return response
+
     },
 
     // 로그아웃
