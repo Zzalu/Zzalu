@@ -5,7 +5,7 @@ const authapi = authApiInstance();
 const api = apiInstance();
 
 function getPopularGIF(res,err) {
-    api.get(`/gif/main/gifs`)
+    api.get(`/gif/popular`)
     .then(res).catch(err)
 }
 function getRecommendGIF(res,err) {
@@ -21,12 +21,11 @@ function getMoreRandomGIF(params,res,err) {
     .then(res).catch(err)
 }
 function getSearchZzal(params,res,err) {
-    console.log(params,'검색키워드')
+    console.log('검색키워드 : ',params)
     api.get(`gif/search?searchKeyword=${params}`)
     .then(res).catch(err)
 }
 function getDetailData(params,res,err) {
-    console.log(params,'디테일ID')
     api.get(`/gif/gif?gifId=${params}`)
     .then(res).catch(err)
 }

@@ -78,15 +78,17 @@ export default {
           comment_data,
           ({ data }) => {
             console.log(data);
-            store.dispatch('titleCompetitionStore/pushComment', data);
+            if (store.state.state != 'LATEST') {
+              store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
+            }
+            /*             else {
+              store.dispatch('titleCompetitionStore/pushComment', data);
+            } */
           },
           (error) => {
             console.log(error);
           },
         );
-        if (store.state.state != 'LATEST') {
-          store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
-        }
       } else {
         const nested_comment_data = {
           content: content,

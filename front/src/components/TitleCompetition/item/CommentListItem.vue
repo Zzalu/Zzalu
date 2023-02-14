@@ -79,14 +79,15 @@ export default {
       like_cnt: props.comment.likeNumber,
       is_liked: props.comment.pressed,
     });
-    const username = window.localStorage.getItem('profile_user');
+    const user_id = window.localStorage.getItem('current_userid');
     const router = useRouter();
     const goToProfile = () => {
       router.push(`/profile/${comment_data.username}`);
     };
+
     // 삭제 버튼
     const canDelete = computed(() => {
-      return (comment_data.username = username);
+      return comment_data.username == user_id;
     });
 
     // 시간표시: ~ 전

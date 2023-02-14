@@ -23,7 +23,8 @@ const profileStore = {
         count2nd: 0,
         count3nd: 0
       },
-      stats: []
+      stats: [],
+      typeMsg: ''
     },
   }),
   mutations: {
@@ -45,6 +46,26 @@ const profileStore = {
     },
     SET_PROFILE_STATS(state, data) {
       state.profile_user.stats = data
+      // console.log('이거이거', state.profile_user.stats.data[0].tag)
+      if (state.profile_user.stats.data[0].tag == "게임") {
+          state.profile_user.typeMsg = '는 컴퓨터랑 연애한다 ♥'
+        } else if (state.profile_user.stats.data[0].tag == "애니") {
+          state.profile_user.typeMsg = '정도면... 갓반인이죠'
+        } else if (state.profile_user.stats.data[0].tag == "TV") {
+          state.profile_user.typeMsg = '뭐해? 나 누워서 TV봐...'
+        } else if (state.profile_user.stats.data[0].tag == "연예인") {
+          state.profile_user.typeMsg = '는... 우리 최애 보려고 살아요 ♥'
+        } else if (state.profile_user.stats.data[0].tag == "일상") {
+          state.profile_user.typeMsg = '는... 감정표현의 대가'
+        } else if (state.profile_user.stats.data[0].tag == "스포츠") {
+          state.profile_user.typeMsg = '팀은 언제 이기냐?'
+        } else if (state.profile_user.stats.data[0].tag == "동물") {
+          state.profile_user.typeMsg = '의 신조: 귀여운 동물들이 세상을 구한다!'
+        } else if (state.profile_user.stats.data[0].tag == "싸피") {
+          state.profile_user.typeMsg = '는 진정한 개발자... 제법 멋져'
+        } else if (state.profile_user.stats.data[0].tag == "음식") {
+          state.profile_user.typeMsg = '는 살려고 먹는게 아니라 먹으려고 살아'
+        }
     }
   },
   getters: {

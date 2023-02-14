@@ -22,7 +22,13 @@
         </div>
         <div class="group">
           <font-awesome-icon
+          v-if="like"
             icon="fa-solid fa-heart"
+            class="text-zz-s dark:text-zz-p"
+          />
+          <font-awesome-icon
+          v-else
+            icon="fa-regular fa-heart"
             class="text-zz-s dark:text-zz-p"
           />
           <p class="first-line-content">{{ room_data.likeCount }}</p>
@@ -42,7 +48,7 @@
     </div>
     <div class="flex place-content-evenly">
       <button class="modal-create-btn">
-        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId, member_Id : room_data.memberId }}"> 입장하기 </router-link>
+        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId, member_Id : room_data.memberId, like : like}}"> 입장하기 </router-link>
       </button>
     </div>
   </div>
@@ -72,6 +78,7 @@ export default {
     room_data: Object,
     hashtag: String,
   },
+
   created() {
     this.hash = this.hashtag.split(",");
   },
@@ -83,6 +90,15 @@ export default {
       this.close_chat_info();
     },
   },
+  computed:{
+    like() {
+      let user_num = null
+      if (localStorage.getItem('profile_id')) {
+        user_num = localStorage.getItem('profile_id')
+      }
+      return this.room_data.likeMemberId.includes(Number(user_num))
+    },
+  }
 };
 </script>
 

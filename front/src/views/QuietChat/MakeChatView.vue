@@ -89,11 +89,6 @@ export default {
     KorGoBackTopNavBar,
     MainBottomNav
   },
-  created() {
-    if (localStorage.getItem("token") == null) {
-      this.$router.push({name: 'login-required'})
-    }
-  },
   methods: {
     upload(e) {
       let file = e.target.files;

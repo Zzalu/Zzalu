@@ -5,32 +5,71 @@
         <div v-if="open_search_modal">
           <div :class="open_list_modal ? 'hide-modal-items' : null"></div>
           <div class="dark:border-zz-dark-div">
-            <div class="modal">
+
+            <!-- 검색결과가 없을 때 -->
+            <!-- <div v-if="random_gif_data.length == 0 && search_gif_data[0].length == 0" class="modal"> -->
+              <!-- <div class="modal-items">
+                <div class="w-screen mt-12 text-lg text-center font-spoq dark:text-white z-50">
+                  <div class="flex justify-center mb-6 rounded-xl">
+                    <img class="h-40 overflow-hidden rounded-2xl" src="../components/QuietChat/QuietChatList/assets/sad_man.gif" alt="" />
+                  </div>
+                  <p>검색하신 검색 결과를 찾을 수 없어요..</p>
+                  <button class=" border p-4 mt-6 rounded-2xl bg-zz-s dark:border-zz-dark-input mb-80 " @click="getrandomgif">
+                    다른 짤 보러가기
+                  </button>
+                </div>
+              </div> -->
+            <!-- </div> -->
+
+            <!-- 랜덤짤모드 -->
+            <div v-if="random_gif_data" class="modal">
+              <SearchBar />
               <div
+                v-if="random_gif_data.length > 1"
                 class="modal-items"
                 ref="notification-list"
                 @scroll="handleNotificationListScroll"
               >
                 <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
-                <SearchBar />
-                <div v-if="random_gif_data.length == 0" class="w-screen mt-12 text-lg text-center font-spoq dark:text-white z-50">
-                  <div class="flex justify-center mb-6 rounded-xl">
-                  <img 
-                  class="h-40 overflow-hidden rounded-2xl"
-                  src="../components/QuietChat/QuietChatList/assets/sad_man.gif" alt="">
-                </div>
-                  <p>검색하신 검색 결과를 찾을 수 없어요..</p>
-
-                  <button class="border p-4 mt-6 rounded-2xl bg-zz-s dark:border-zz-dark-input mb-80"
-                  @click="getrandomgif"
-                  >다른 짤 보러가기</button>
-                </div>
                 <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                   <JjalListItem
                     :jjal_info="zzal_info"
                     :i="i"
                     @select_id="select_id"
                   />
+                </div>
+              </div>
+            </div>
+
+            <!-- 서치짤모드 -->
+            <div v-if="search_gif_data[0]" class="modal">
+              <SearchBar />
+              <div
+                v-if="search_gif_data[0].length > 1"
+                class="modal-items"
+                ref="notification-list"
+                @scroll="handleNotificationListScrolls"
+              >
+                <div v-if="load_state" id="loading" class="fixed top-1/2"></div>
+                <div v-for="(zzal_info, i) in search_gif_data[0]" :key="i">
+                  <JjalListItem
+                    :jjal_info="zzal_info"
+                    :i="i"
+                    @select_id="select_id"
+                  />
+                </div>
+              </div>
+              <div v-else>
+                <div class="modal-items">
+                <div class="w-screen mt-12 text-lg text-center font-spoq dark:text-white z-50">
+                  <div class="flex justify-center mb-6 rounded-xl">
+                    <img class="h-40 overflow-hidden rounded-2xl" src="../components/QuietChat/QuietChatList/assets/sad_man.gif" alt="" />
+                  </div>
+                  <p>검색하신 검색 결과를 찾을 수 없어요..</p>
+                  <button class=" border p-4 mt-6 rounded-2xl bg-zz-s dark:border-zz-dark-input mb-80 " @click="getrandomgif">
+                    다른 짤 보러가기
+                  </button>
+                </div>
                 </div>
               </div>
             </div>
@@ -69,12 +108,15 @@ export default {
     const random_gif_data = computed(
       () => store.state.zzalListStore.random_gif_data
     );
+    const search_gif_data = computed(
+      () => store.state.zzalListStore.search_gif_data
+    );
     const user_store_list = computed(
       () => store.state.boardListStore.user_store_list
     );
     const get_random_gif = () => {
-      store.dispatch("zzalListStore/getFirstRandomGIFList")
-    }
+      store.dispatch("zzalListStore/getFirstRandomGIFList");
+    };
 
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
@@ -88,6 +130,7 @@ export default {
       open_search_modal,
       open_list_modal,
       random_gif_data,
+      search_gif_data,
       user_store_list,
       send_select_jjal_num,
       MoreRandomGIF,
@@ -110,25 +153,47 @@ export default {
       this.send_select_jjal_num(a);
     },
     handleNotificationListScroll(e) {
+      // 랜덤짤일때, 서치짤일때 함수 분리
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      if (scrollTop + clientHeight > scrollHeight-1) {
+      console.log(scrollHeight, scrollTop, clientHeight);
+      if (scrollTop + clientHeight > scrollHeight - 1) {
         this.load_state = true;
         setTimeout(() => {
           this.MoreRandomGIF(this.gif_data);
           this.load_state = false;
-        }, 1000);}
+        }, 1000);
+      }
+    },
+    handleNotificationListScrolls(e) {
+      const { scrollHeight, scrollTop, clientHeight } = e.target;
+      if (scrollTop + clientHeight > scrollHeight - 1) {
+        this.load_state = true;
+        if (this.search_gif_data[1]) {
+          setTimeout(() => {
+            for (let i = 0; i < this.search_gif_data[1].length; i++) {
+              this.search_gif_data[0].push(this.search_gif_data[1][i]);
+            }
+            this.search_gif_data.splice(1, 1);
+            this.load_state = false;
+          }, 1000);
+        } else {
+          this.load_state = false;
+        }
+      }
     },
     getrandomgif() {
       this.get_random_gif();
-    }
+    },
   },
   watch: {
     random_gif_data(nv) {
-      let gif_id = [];
-      for (let i = 0; i < nv.length; i++) {
-        gif_id.push(parseInt(nv[i].id));
+      if (nv != []) {
+        let gif_id = [];
+        for (let i = 0; i < nv.length; i++) {
+          gif_id.push(parseInt(nv[i].id));
+        }
+        this.gif_data = gif_id;
       }
-      this.gif_data = gif_id;
     },
   },
 };

@@ -38,7 +38,7 @@ export default {
       // modified: false,
     });
 
-    const username = window.localStorage.getItem('profile_user');
+    const current_userid = window.localStorage.getItem('current_userid');
     const router = useRouter();
 
     const goToProfile = () => {
@@ -47,7 +47,7 @@ export default {
 
     // 삭제 버튼
     const canDelete = computed(() => {
-      return (nested_comment_data.username = username);
+      return (nested_comment_data.username = current_userid);
     });
 
     // 시간표시: ~ 전

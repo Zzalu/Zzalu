@@ -20,8 +20,8 @@
                   <SearchBar />
 
                   <!-- 내보드 -->
-                  <div class="my-board-contain" @click="view_board">
-                    <div class="text-white absolute z-20 font-spoq">
+                  <div class="my-board-contain border" @click="view_board">
+                    <div class="text-black dark:text-white absolute z-20 font-spoq">
                       내 보드
                     </div>
                     <div class="my-board">
@@ -32,8 +32,15 @@
                     </div>
                   </div>
                   <!-- 기본적으로 보이는 짤들 내 보드 들어갔을 시 안보이는 거 -->
-
                   <div v-for="(zzal_info, i) in random_gif_data" :key="i">
+                    <JjalListItemInChat
+                      :jjal_info="zzal_info"
+                      :i="i"
+                      @select_id="select_id"
+                      @path="path"
+                    />
+                  </div>
+                  <div v-for="(zzal_info, i) in search_gif_data[0]" :key="i">
                     <JjalListItemInChat
                       :jjal_info="zzal_info"
                       :i="i"
@@ -103,10 +110,10 @@
                     :key="i"
                   >
                     <div
-                      class="my-board-contain"
+                      class="my-board-contain border"
                       @click="view_detail(board_list.id, board_list.boardName)"
                     >
-                      <div class="text-white absolute z-20 font-spoq">
+                      <div class="text-black dark:text-white absolute z-20 font-spoq">
                         {{ board_list.boardName }}
                       </div>
                       <div class="my-board">
@@ -240,6 +247,9 @@ export default {
     const random_gif_data = computed(
       () => store.state.zzalListStore.random_gif_data
     );
+    const search_gif_data = computed(
+      () => store.state.zzalListStore.search_gif_data
+    );
     const user_store_list = computed(
       () => store.state.boardListStore.user_board_list
     );
@@ -251,8 +261,8 @@ export default {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
     const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal")
-    }
+      store.commit("searchModalStore/open_search_modal");
+    };
 
     onBeforeMount(() => {
       store.dispatch("zzalListStore/getFirstRandomGIFList");
@@ -271,12 +281,13 @@ export default {
       open_search_modal,
       open_list_modal,
       random_gif_data,
+      search_gif_data,
       user_store_list,
       user_detail_list,
       send_select_jjal_num,
       MoreRandomGIF,
       ViewBoardDetail,
-      close_search_modal
+      close_search_modal,
     };
   },
   components: {
@@ -302,11 +313,26 @@ export default {
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
       if (scrollTop + clientHeight > scrollHeight - 1) {
-        this.load_state = true;
-        setTimeout(() => {
-          this.MoreRandomGIF(this.gif_data);
-          this.load_state = false;
-        }, 1000);
+        if (this.search_gif_data[0] != []) {
+          this.load_state = true;
+          if (this.search_gif_data[1]) {
+            setTimeout(() => {
+              for (let i = 0; i < this.search_gif_data[1].length; i++) {
+                this.search_gif_data[0].push(this.search_gif_data[1][i]);
+              }
+              this.search_gif_data.splice(1, 1);
+              this.load_state = false;
+            }, 1000);
+          } else {
+            this.load_state = false;
+          }
+        } else {
+          this.load_state = true;
+          setTimeout(() => {
+            this.MoreRandomGIF(this.gif_data);
+            this.load_state = false;
+          }, 1000);
+        }
       }
     },
     view_board() {
@@ -344,11 +370,13 @@ export default {
   },
   watch: {
     random_gif_data(nv) {
-      let gif_id = [];
-      for (let i = 0; i < nv.length; i++) {
-        gif_id.push(parseInt(nv[i].id));
+      if (nv != []) {
+        let gif_id = [];
+        for (let i = 0; i < nv.length; i++) {
+          gif_id.push(parseInt(nv[i].id));
+        }
+        this.gif_data = gif_id;
       }
-      this.gif_data = gif_id;
     },
     open_search_modal(nv) {
       if (nv == false) {

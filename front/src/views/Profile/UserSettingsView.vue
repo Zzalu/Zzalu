@@ -15,20 +15,20 @@
         <div class="text-zz-light-p dark:text-white">비밀번호 변경</div>
         </button>
     </div>
-    <div class="flex" v-if="this.isManager==false">
-      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
-      <button class="settings-button" @click="managerApply">
-        <div class="text-zz-light-p dark:text-white">매니저 권한 신청하기</div>
-        </button>
-    </div>
 
-    <div class="flex" v-if="this.isManager">
+
+    <div class="flex" v-if="this.isManager=='true'">
       <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
       <button class="settings-button" @click="[GetTempGif(), goAdmin()]">
         <div class="text-zz-light-p dark:text-white">짤 승인하러 가기</div>
         </button>
     </div>
-
+    <div class="flex" v-if="this.isManager=='false'">
+      <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
+      <button class="settings-button" @click="managerApply">
+        <div class="text-zz-light-p dark:text-white">매니저 권한 신청하기</div>
+        </button>
+    </div>
     <!-- <div class="flex" v-if="this.isManager">
       <font-awesome-icon icon="fa-solid fa-crown" class='settings-icon-crown'/>
       <button class="settings-button" @click="goAdmin">
@@ -63,7 +63,7 @@
 import OnlyGoBackTopNav from "../../components/Common/NavBar/OnlyGoBackTopNav.vue"
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue"
 import { useDark, useToggle } from "@vueuse/core";
-
+import Swal from 'sweetalert2'
 const isDark = useDark();
 import { useStore } from "vuex";
 import { useRouter } from 'vue-router';
@@ -95,8 +95,15 @@ export default {
     const goChangePwd = () => {
       router.push({name: 'change-password'})
     }
-    const managerApply = () => {
-      store.dispatch('userStore/managerApplyAction')
+    const managerApply = async () => {
+      const response = await store.dispatch('userStore/managerApplyAction')
+      console.log(response);
+      if (response==500) {
+        Swal.fire({
+          icon: "error",
+          html:"짤 업로드 및 수정 허가 횟수가 3회 미만입니다 <br> 더 활발하게 활동해보세요."
+          })
+      }
     }
     const goAdmin = () => {
       router.push({name: 'admin'})
