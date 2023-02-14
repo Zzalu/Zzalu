@@ -1,7 +1,12 @@
 <template>
   <div class="dark:bg-zz-bd">
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
-    <OnlyBigLogoTopNav class="z-30" />
+    <div v-if="isLogged">
+      <OnlyBigLogoTopNav class="z-30" />
+    </div>
+    <div v-else>
+      <MainNotLoggedNav class="z-30" />
+    </div>
     <AcademyList />
     <RecommendedJjalList />
     <PopularJjalList />
@@ -22,6 +27,7 @@
 <script>
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav";
 import OnlyBigLogoTopNav from "../components/Common/NavBar/OnlyBigLogoTopNav";
+import MainNotLoggedNav from "../components/Common/NavBar/MainNotLoggedNav";
 import AcademyList from "../components/Main/AcademyList";
 import RecommendedJjalList from "../components/Main/RecommendedJjalList";
 import PopularJjalList from "../components/Main/PopularJjalList";
@@ -52,6 +58,13 @@ export default {
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
     };
+    let isLogged = computed(() => {
+      if (window.localStorage.getItem('token')) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     onBeforeMount(() => {
       // axios 요청
       store.dispatch("quietChatStore/getHotQuietList");
@@ -65,10 +78,12 @@ export default {
       open_chat_id,
       quiet_chat_data,
       close_chat_info,
+      isLogged
     };
   },
   components: {
     MainBottomNav,
+    MainNotLoggedNav,
     OnlyBigLogoTopNav,
     AcademyList,
     RecommendedJjalList,

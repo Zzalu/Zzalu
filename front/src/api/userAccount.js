@@ -52,17 +52,6 @@ const requestChangeInfo = (params, form, res, err) => {
     if (form.send_image != null) {
         tempData.append("profileMultipartFile", form.send_image)
     }
-    console.log(form)
-    console.log('api 요청 직전 데이터', tempData)
-    for (let key of tempData.keys()) {
-    console.log(key, "키값");
-    }
-
-//     // FormData의 value 확인
-    for (let value of tempData.values()) {
-    console.log(value, "밸류");
-    }
-    console.log(tempData,'test');
     form_api.patch(`/members`, tempData).then(res).catch(err)
 }
 
