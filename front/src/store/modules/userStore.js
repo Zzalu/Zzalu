@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete, requestChangeInfo } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete, requestChangeInfo, requestManager } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -42,8 +42,6 @@ const userStore = {
       localStorage.setItem('current_nickname', loginData.data.nickname)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
-      console.log('지금 접속한 사람 닉 출력', loginData.data.nickname)
-      console.log('지금 접속한 사람 출력', state.user)
     },
     DELETE_TEMP_USER(state) {
       state.temp.username = ''
@@ -77,6 +75,9 @@ const userStore = {
     //   console.log(state.nickname)
     //   console.log(state.myImg)
     // }
+    SAVE_MANAGER_STATE (state) {
+      state.isManager = true
+    }
   },
   getters: {
     // signupTempInfoGet(state) {
@@ -219,9 +220,30 @@ const userStore = {
     },
     // ----------------------------------------------------------
     // 매니저
-    // managerApplyAction: async (commit) => {
-      
-    // },
+    managerApplyAction: async (context) => {
+      console.log("여기는 언제들어와")
+      // let test = null
+      return new Promise((resolve, reject) => {
+        requestManager(
+          (res) => {
+            context.commit('SAVE_MANAGER_STATE')
+            console.log(res)
+            resolve(200)
+          },
+          (error) => {
+            console.log("여기는 언제들어와2")
+            console.log(error.response, '에러');
+            reject(500)
+          }
+        );
+        // setTimeout(() => {        
+        //   console.log('리턴값', test)
+        //   return
+        // }, 100);
+      }
+      )
+
+    },
   // --------------------------------------------------------------
   // 회원탈퇴
     userDeleteAction: async (context, pwd) => {
