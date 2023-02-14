@@ -1,12 +1,12 @@
-<template >
+<template>
   <div class="main-bg">
     <div class="main-margin">
       <div>
-        <router-view> </router-view>
+        <router-view :key="$route.fullPath"> </router-view>
         <!-- <router-view v-slot="{ Component, route }"  >
           <transition name="slide-fade" mode="out-in" >
           <component :is="Component" :key="route.path" />
-          </transition> 
+          </transition>
         </router-view> -->
       </div>
     </div>
@@ -20,11 +20,11 @@ window.oncontextmenu = function (event) {
   return false;
 };
 
-import { useDark } from "@vueuse/core";
+import { useDark } from '@vueuse/core';
 
 const isDark = useDark();
 export default {
-  name: "App",
+  name: 'App',
   data() {
     return {
       isDark,
@@ -40,7 +40,7 @@ export default {
 .main-bg {
   background-attachment: fixed;
   height: 90vh;
-  @apply dark:bg-zz-bd w-screen
+  @apply dark:bg-zz-bd w-screen;
 }
 .main-margin {
   padding: 0 1.25rem;

@@ -228,6 +228,10 @@ const routes = [
     name: 'error-404',
     component: () => import('@/views/Error/Error404View'),
   },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/error-404',
+  },
   // 에러 500 internal server error
   {
     path: '/error-500',
