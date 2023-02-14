@@ -30,17 +30,24 @@
 
 <script>
 import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
+
 export default {
   name: "CannotEditModal",
   setup() {
     const store = useStore();
+
+    const image_path = computed(
+      () => store.state.quietChatStore.image_path
+    )
 
     const create_quiet_room = (room_data) => {
       store.dispatch("quietChatStore/noSearchAllRecent")
       store.dispatch("quietChatStore/create_quiet_room", room_data)
     };
     return {
-      create_quiet_room
+      create_quiet_room,
+      image_path
     }
   },
   props : {
@@ -64,8 +71,8 @@ export default {
       }
       let room_data = {
         "userName" : localStorage.getItem("current_nickname"),
-        "memberId" : localStorage.getItem("current_userpk"),
-        "imagePath" : null,
+        "memberId" : localStorage.getItem("current_pk"),
+        "imagePath" : this.image_path,
         "tags" : this.tags,
         "roomName" : this.room_name,
         "description" : this.description
