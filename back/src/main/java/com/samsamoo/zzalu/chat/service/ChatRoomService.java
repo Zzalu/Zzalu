@@ -50,8 +50,8 @@ public class ChatRoomService {
         return chatRoomRepository.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword1, keyword2);
     }
 
-    public List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(String keyword1, String keyword2){
-        return chatRoomRepository.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword1, keyword2);
+    public List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(String keyword1, String keyword2){
+        return chatRoomRepository.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword1, keyword2);
     }
 
     public List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Long memberId, String keyword1, String keyword2){
