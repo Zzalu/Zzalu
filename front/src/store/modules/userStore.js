@@ -31,9 +31,6 @@ const userStore = {
       window.localStorage.setItem("temp_email", credentialsEmailCode.email)
     },
     SAVE_CURRENT_USER(state, loginData ) {
-      console.log('지금 접속한 사람 저장')
-      console.log(loginData)
-      console.log(loginData.data)
       state.user = loginData.data.username
       state.accessToken = loginData.data.accessToken
       state.refreshToken = loginData.data.refreshToken
@@ -45,7 +42,6 @@ const userStore = {
       localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
-      localStorage.setItem('current_nickname', loginData.data.isManager)
     },
     DELETE_TEMP_USER(state) {
       state.temp.username = ''
@@ -204,22 +200,19 @@ const userStore = {
     },
     // ----------------------------------------------------------
     // 회원정보수정
-    patchUserInfoAction: (params, changedData) => {
-      // context.commit('PATCH_USER_INFO', changedData)
-      console.log(changedData)
+    patchUserInfoAction: (params, form) => {
+      console.log(form)
       requestChangeInfo(
-        // await requestChangeInfo(
         params,
-        changedData,
-        (res) => {
+        form,
+        ({data}) => {
           localStorage.removeItem('current_nickname')
-          console.log(res)
-          localStorage.setItem('current_nickname', res.data.nickname)
-          return res
+          console.log(data, "성공입니다")
+          localStorage.setItem('current_nickname', data.nickname)
         },
         (err) => {
-          console.log(err)
-          return err.response
+          console.log(err, "실패입니다")
+          alert(err.response.data.message);
       })
     },
     // ----------------------------------------------------------

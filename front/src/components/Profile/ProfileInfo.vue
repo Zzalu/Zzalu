@@ -1,6 +1,8 @@
 <template>
     <div class="ml-4 flex">
-      <img class="profile-image" :style="{ backgroundImage: `url(${this.profileImg})` }" />
+      <img v-if="this.profile_user_data.profilePath != null" class="profile-image" :style="{ backgroundImage: `url(${this.profile_user_data.profilePath})` }" />
+      <img v-else class="profile-image" src="@/assets/zzalu_logo_light.png" />
+      <!-- <img src="" alt=""> -->
       <div class="mx-auto">
         <div class="flex">
           <div
@@ -137,7 +139,7 @@ export default {
 .profile-image {
   width: 100px;
   height: 100px;
-  background-size: contain;
+  background-size: cover;
   /* max-width: 100px;
     max-height: 100px; */
   /* object-fit: cover; */

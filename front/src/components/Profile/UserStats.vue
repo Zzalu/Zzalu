@@ -191,10 +191,12 @@ data: function() {
 }
 
 .result-stat {
+  word-break: keep-all;
   @apply text-white font-spoq font-bold mx-4;
 }
 
 .stat-title {
+  word-break: keep-all;
   @apply text-xl font-bold font-spoq dark:text-white
 }
 
