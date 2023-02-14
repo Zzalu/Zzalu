@@ -66,6 +66,7 @@ const titleCompetitionStore = {
     },
 
     PUSH_SOCKET_COMMENTS(state) {
+      console.log('모인 댓글들 넣어요');
       state.comments.unshift(...state.socket_comments.reverse());
     },
 
@@ -84,6 +85,7 @@ const titleCompetitionStore = {
 
     // 댓글 추가하기
     ADD_COMMENTS(state, new_comments) {
+      console.log('댓글 추가하기');
       state.comments.push(...new_comments);
     },
 
@@ -105,8 +107,10 @@ const titleCompetitionStore = {
     // 댓글
 
     PUSH_COMMENT(state, comment) {
+      console.log('댓글 넣어요');
       state.comments.unshift(comment);
     },
+
     // 대댓글 작성 관련
     SET_COMMENT_WRITER(state, comment_writer) {
       state.comment_writer.comment_id = comment_writer.comment_id;
