@@ -16,6 +16,7 @@ const userStore = {
     refreshToken: "",
     nickname: "",
     isManager: false,
+    pk: null
   }),
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
@@ -38,10 +39,13 @@ const userStore = {
       state.refreshToken = loginData.data.refreshToken
       state.nickname = loginData.data.nickname
       state.isManager = loginData.data.isManager
+      state.pk = loginData.data.id
       localStorage.setItem('current_userid', loginData.data.username)
       localStorage.setItem('current_nickname', loginData.data.nickname)
+      localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
+      localStorage.setItem('current_nickname', loginData.data.isManager)
     },
     DELETE_TEMP_USER(state) {
       state.temp.username = ''
@@ -208,6 +212,9 @@ const userStore = {
         params,
         changedData,
         (res) => {
+          localStorage.removeItem('current_nickname')
+          console.log(res)
+          localStorage.setItem('current_nickname', res.data.nickname)
           return res
         },
         (err) => {
