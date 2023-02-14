@@ -8,6 +8,7 @@
       {{ my_member_Id }} -->
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
+        <!-- {{ message }} -->
         <div v-if="message.type != 'ENTER'">
         <!-- 내가 보낸 메세지 -->
           <div v-if="user_nickname == message.sender">
@@ -18,7 +19,7 @@
               class="my-message-balloon"
             />
             <div class="my-image-group">
-              <span class="my-write-time">{{ message.send_date }}</span>
+              <span class="my-write-time">{{ message.sendDate }}</span>
               <img class="my-image-box" :src="`${message.message}`" alt="" />
             </div>
           </div>
@@ -52,7 +53,7 @@
           <div class="image-group">
             <img class="image-box" :src="`${message.message}`" alt="" />
             <!-- 작성 시간  -->
-            <span class="write-time">{{ message.send_date }}</span>
+            <span class="write-time">{{ message.sendDate }}</span>
           </div>
         </div>
       </div>
@@ -90,6 +91,8 @@ import MainBottomNavInChat from "../../components/Common/NavBar/MainBottomNavInC
 import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav";
 import Stomp from "webstomp-client";
 import SockJS from "sockjs-client";
+import { useStore } from "vuex";
+import { computed } from "@vue/runtime-core";
 // import { findQuiteChatRoom } from '@/api/quietChatList.js'
 
 export default {
@@ -100,18 +103,31 @@ export default {
     ChatRoomTopNav,
   },
   setup() {
+    const store = useStore();
     const token = localStorage.getItem("token");
+
+    const get_past_message = (room_id) => {
+      store.dispatch("quietChatStore/getPastMessage",room_id)
+    }
+    const user_stat = (e) => {
+      store.dispatch("quietChatStore/postUserStat",e)
+    }
+
+    const messages = computed(
+      () => store.state.quietChatStore.past_message
+    );
 
     return {
       token,
+      messages,
+      get_past_message,
+      user_stat
     };
   },
   created() {
-    if (localStorage.getItem("token") == null) {
-      this.$router.push({name: 'login-required'})
-    }
     // this.findQuiteChatList = findQuiteChatRoom;
     this.room_id = this.$route.query.room_id;
+    this.get_past_message(this.room_id)
     this.access_token = this.token;
     console.log("token : " + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
@@ -127,6 +143,8 @@ export default {
     this.reconnect = 0;
     this.connect();
     console.log("created_end");
+
+    
   },
   data() {
     return {
@@ -138,7 +156,7 @@ export default {
       web_stomp: "",
       reconnect: 0,
       message: "",
-      messages: [],
+      // messages: [],
       gif_id: 0,
       search_modal: false,
 
@@ -162,6 +180,7 @@ export default {
       this.gif_id = data.id;
 
       this.sendMessage();
+      this.user_stat(this.gif_id);
       // BE에 짤 유즈 메세지 보내기
       // gifId => data.id
       // header에 AccessToken 넣어서 보내야함
@@ -196,9 +215,9 @@ export default {
     reciveMessage(recv) {
       console.log("receive message: " + recv);
       console.log("test", recv);
+      let totalheight = document.body.scrollHeight;
       let tmp = ""
       let sendtime = ""
-      let totalheight = document.body.scrollHeight;
       tmp += recv.sendDate[11]
       tmp += recv.sendDate[12]
       if (Number(tmp) >= 12) {
@@ -218,7 +237,7 @@ export default {
         sender: recv.sender,
         message: recv.message,
         // send_date: recv.sendDate,
-        send_date : sendtime,
+        sendDate : sendtime,
         profilePath: recv.profilePath,
       });
       setTimeout(() => {

@@ -47,8 +47,8 @@
       </div>
     </div>
     <div class="flex place-content-evenly">
-      <button class="modal-create-btn">
-        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId, member_Id : room_data.memberId, like : like}}"> 입장하기 </router-link>
+      <button class="modal-create-btn" @click="into_chat">
+        입장하기
       </button>
     </div>
   </div>
@@ -89,6 +89,14 @@ export default {
     close_modal() {
       this.close_chat_info();
     },
+    into_chat() {
+      if (localStorage.getItem("token") == null) {
+      this.$router.push({name: 'login-required'})
+      }else {
+        this.$router.push({ name: 'chat', params: { chat_id: this.room_data.roomId }, query: { room_name: this.room_data.roomName, room_id : this.room_data.roomId, member_Id : this.room_data.memberId, like : this.like}})
+      }
+    }
+
   },
   computed:{
     like() {
