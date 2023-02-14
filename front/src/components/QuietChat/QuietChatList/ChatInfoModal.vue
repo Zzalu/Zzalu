@@ -18,7 +18,7 @@
       <div class="modal-first-line">
         <div class="group">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="first-line-content">{{ room_data.userNmae }}</p>
+          <p class="first-line-content">{{ room_data.userName }}</p>
         </div>
         <div class="group">
           <font-awesome-icon

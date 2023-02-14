@@ -110,24 +110,28 @@ export default {
     const select_gif_id = computed(
       () => store.state.boardListStore.select_gif_id
     );
-    // const get_user_list = (data) => {
-    //   store.dispatch("boardListStore/getUserStoreList", data);
-    // };
+    const user_store_list = computed(
+      () => store.state.boardListStore.user_store_list
+    )
+    const get_user_list = (data) => {
+      store.dispatch("boardListStore/getUserStoreList", data);
+    };
     const put_boards_data = (data) => {
       store.dispatch("boardListStore/putBoardData", data);
     };
     return {
       close_list_modal,
-      // get_user_list,
+      get_user_list,
       CreateBoard,
       put_boards_data,
       open_list_modal,
       select_gif_id,
+      user_store_list,
     };
   },
-  props: {
-    user_store_list: Object,
-  },
+  // props: {
+  //   user_store_list: Object,
+  // },
   data() {
     return {
       creating: false,
@@ -224,7 +228,9 @@ export default {
       };
 
       this.CreateBoard(board_name);
-      this.get_user_list(this.select_gif_id);
+      setTimeout(() => {
+        this.get_user_list(this.select_gif_id);
+      }, 500);
     },
     ChangeCreate() {
       this.creating = true;

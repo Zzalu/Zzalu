@@ -36,6 +36,7 @@ export default {
     const store = useStore();
 
     const create_quiet_room = (room_data) => {
+      store.dispatch("quietChatStore/noSearchAllRecent")
       store.dispatch("quietChatStore/create_quiet_room", room_data)
     };
     return {
@@ -62,8 +63,8 @@ export default {
         this.tags += ','
       }
       let room_data = {
-        "userName" : localStorage.getItem("profile_user"),
-        "memberId" : localStorage.getItem("profile_id"),
+        "userName" : localStorage.getItem("current_nickname"),
+        "memberId" : localStorage.getItem("current_userpk"),
         "imagePath" : null,
         "tags" : this.tags,
         "roomName" : this.room_name,

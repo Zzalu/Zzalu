@@ -14,8 +14,8 @@
     <div class="image-container">
       <div v-if="url != null" class="preview-image" :style="`background-image:url(${this.url})`"></div>
       <div v-else class="preview-image"></div>
-      <input @change="upload" type="file" id="file" class="select-image" />
-      <label class="select-image-text" for="file"> <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label>
+      <input @change="upload" type="file" name="image" id="image" class="select-image" />
+      <label class="select-image-text" for="image"> <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label>
     </div>
 
     <p class="guide">고독방 이름</p>
@@ -67,6 +67,7 @@
 import CannotEditModal from '../../components/QuietChat/MakeChat/CannotEditModal.vue';
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
 import KorGoBackTopNavBar from "../../components/Common/NavBar/KorGoBackTopNavBar"
+// var imageFile = document.getElementById("image");
 
 export default {
   name: 'MakeChatView',
@@ -89,15 +90,11 @@ export default {
     KorGoBackTopNavBar,
     MainBottomNav
   },
-  created() {
-    if (localStorage.getItem("token") == null) {
-      this.$router.push({name: 'login-required'})
-    }
-  },
   methods: {
     upload(e) {
       let file = e.target.files;
       this.url = URL.createObjectURL(file[0]);
+      // 여기서 api 요청
       console.log(file);
       console.log(this.url);
     },
