@@ -1,6 +1,5 @@
 package com.samsamoo.zzalu.gifs.dto;
 
-import com.samsamoo.zzalu.gifs.entity.Gifs;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

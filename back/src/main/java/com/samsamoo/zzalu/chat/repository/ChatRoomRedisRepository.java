@@ -61,12 +61,8 @@ public class ChatRoomRedisRepository {
     // Created 2023.01.27 by Hye Sung
     @Cacheable(cacheNames = "ChatMessages", key = "#id + #id")
     public List<ChatMessageDto> findAllChatMessage(String id) {
-        System.out.println("ChatRoomRepository - findAllChatMessage : " + opsListChatMessage.size(id + id));
-        System.out.println("Cache 미적용");
         long size = opsListChatMessage.size(id + id);
-        System.out.println(1);
         List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, 0, size);
-        System.out.println(2);
        return chatMessageDtos;
     }
 

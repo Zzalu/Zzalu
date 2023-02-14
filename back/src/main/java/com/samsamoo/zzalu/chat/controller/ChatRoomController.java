@@ -156,7 +156,7 @@ public class ChatRoomController {
     @GetMapping("/search-order-likecount")
     @ResponseBody
     public List<ChatRoomListDto> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(@RequestParam(name = "keyword") String keyword){
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
@@ -286,10 +286,16 @@ public class ChatRoomController {
                 chatRoomService.save(chatRoom);
                 return true;
             } else {
-                requestMember.getLikeChatRooms().remove(requestMember);
+                List<ChatRoom> likeChatRoom = requestMember.getLikeChatRooms();
+                likeChatRoom.remove(requestMember);
+                requestMember.setLikeChatRooms(likeChatRoom);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() - 1);
+                List<Member> likeMembers = chatRoom.getLikeMembers();
+                likeMembers.remove(chatRoom);
+                chatRoom.setLikeMembers(likeMembers);
+                chatRoomService.save(chatRoom);
                 memberRepository.save(requestMember);
-                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
+//                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
             }
         }
@@ -298,12 +304,14 @@ public class ChatRoomController {
             return false;
         }
     }
+
     @GetMapping("/messages")
     @ResponseBody
-    public String findAllChatMessage(@RequestParam String roomId) {
-        System.out.println(1234);
-        List<ChatMessageDto> returnValue = chatRoomRedisRepository.findAllChatMessage(roomId);
-        System.out.println(returnValue);
-        return "1234";
+    public List<ChatMessageDto> findAllChatMessage(@RequestHeader(value = "Authorization")String bearerToken, @RequestParam String roomId) {
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+
+        List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
+        return chatMessageDtos;
     }
 }

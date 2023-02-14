@@ -1,18 +1,14 @@
 package com.samsamoo.zzalu.gifs.service;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.board.dto.GifInfo;
 import com.samsamoo.zzalu.board.dto.GifList;
-import com.samsamoo.zzalu.gifs.dto.GifsUpdateDto;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.statistics.entity.GifStatistics;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
 import com.samsamoo.zzalu.statistics.repository.GifStatisticsRepository;
 import com.samsamoo.zzalu.statistics.repository.MemberTagStatisticsRepository;
-import com.samsamoo.zzalu.statistics.service.MemberTagStatisticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +34,9 @@ public class GifsService {
         return gifRepository.findById(id);
     }
 
-    public List<Gifs> findTop30ByOrderByLikeCountDesc() {
-        return gifRepository.findTop30ByOrderByLikeCountDesc();
-    }
+//    public List<Gifs> findTop30ByOrderByLikeCountDesc() {
+//        return gifRepository.findTop30ByOrderByLikeCountDesc();
+//    }
 
     public List<Gifs> findByTags(String searchKeyword) { return gifRepository.findByTagsContains(searchKeyword); }
 
@@ -55,7 +51,7 @@ public class GifsService {
     public GifList recommendCustomGif(String token) {
         Member member = jwtTokenProvider.getMember(token);
         // 사용자가 많이 사용한 태그 상위 4개
-        List<MemberTagStatistics> memberTagStatisticsList = memberTagStatisticsRepository.findTop5ByMemberIdOrderByCountDesc(member.getId());
+        List<MemberTagStatistics> memberTagStatisticsList = memberTagStatisticsRepository.findTop4ByMemberIdOrderByCountDesc(member.getId());
         // 정렬
         List<Gifs> gifList = new ArrayList<>();
         for (MemberTagStatistics statistics: memberTagStatisticsList) {
@@ -77,6 +73,7 @@ public class GifsService {
         }
         return new GifList(gifInfos);
     }
+
 
 //    public Gifs gifDetailUpdate(GifsUpdateDto gifsUpdateDto){
 //        Optional<Gifs> optionalGifs = findById(gifsUpdateDto.getId());

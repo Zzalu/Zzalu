@@ -6,12 +6,8 @@ import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.AuthorizationException;
-import com.samsamoo.zzalu.member.exception.NotMatchException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
-import com.samsamoo.zzalu.member.service.MemberService;
 import com.samsamoo.zzalu.tempGif.dto.TempGifRequest;
-import com.samsamoo.zzalu.tempGif.dto.TempGifDTO;
 import com.samsamoo.zzalu.tempGif.entity.TempGif;
 import com.samsamoo.zzalu.tempGif.enums.RequestType;
 import com.samsamoo.zzalu.tempGif.repo.TempGifRepository;
@@ -66,6 +62,7 @@ public class TempGifService {
             if (tempGif.getRequestType().equals(RequestType.CREATE)) {
                 Gifs gifs = Gifs.builder()
                         .gifPath(tempGif.getGifPath())
+                        .sourceType(4)
                         .tags(tempGif.getTags())
                         .relationsVideo(tempGif.getRelationsVideo())
                         .description(tempGif.getDescription())

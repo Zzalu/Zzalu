@@ -36,6 +36,7 @@ public class ChatMessageDto implements Serializable {
 
     public ChatMessage toEntity(){
         return ChatMessage.builder()
+                .gifId(gifId)
                 .type(type)
                 .roomId(roomId)
                 .sender(sender)
