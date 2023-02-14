@@ -25,7 +25,7 @@ public class TitleHakwonDetailResponse {
 
     public TitleHakwonDetailResponse(TitleHakwon titleHakwon) {
         this.titleHakwonId = titleHakwon.getId();
-        this.zzalUrl = titleHakwon.getZzulUrl();
+        this.zzalUrl = titleHakwon.getZzalUrl();
         this.state = titleHakwon.getState();
         this.totalComment = titleHakwon.getComments().size();
     }
