@@ -33,7 +33,7 @@
     <div class="mt-4 mb-4">
       <div class="flex">
         <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
-          <div v-if="this.profile_user_data.isManager == 'true'">
+          <div v-if="this.profile_user_data.isManager == true">
             <font-awesome-icon icon="fa-solid fa-crown" class="text-zz-p ml-2"/>
         </div>
       </div>
@@ -143,7 +143,7 @@ export default {
   /* max-width: 100px;
     max-height: 100px; */
   /* object-fit: cover; */
-  @apply rounded-full;
+  @apply rounded-full bg-center bg-no-repeat;
 }
 
 </style>

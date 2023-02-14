@@ -5,6 +5,9 @@
       상세 스탯 보기 🔍
       <!-- <font-awesome-icon icon="fa-solid fa-magnifying-glass-chart"/> -->
     </button>
+    <!-- <div v-if="stat_dirty.data.length<4" class="profile-title">채팅방에 활발히 참여해보세요!</div>
+    <div v-if="stat_dirty.data.length<4" class="profile-title">상세 스탯은 활동을 열심히 하면 자동으로 나타납니다</div> -->
+    
     <div>
       <div id="chart" class="mb-10">
         <apexchart
@@ -18,6 +21,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 export default {
@@ -104,15 +108,29 @@ data: function() {
     const profile_user_data = computed(
       () => store.state.profileStore.profile_user
     );
+    const my_username = localStorage.getItem("current_userid")
     
     return {
       stat_dirty,
       zzalMBTI,
       profile_user_data,
+      my_username
     };
   },
   methods: {
     test() {
+      if (this.stat_dirty.data.length<4 && this.profile_user_data.username == this.my_username) {
+        Swal.fire({
+          icon: "warning",
+          html:"더 활동을 열심히 하셔야 스탯이 보입니다 <br> 채팅에 참여해보세요!"
+          })
+      } else if (this.stat_dirty.data.length<4) {
+        Swal.fire({
+          icon: "warning",
+          html:"아직 많은 활동을 하지 않은 유저입니다. <br> 함께 채팅에 참여해보세요!"
+          })
+      } else {
+      
       this.series= [
         {
           name: "짤 저장 횟수",
@@ -166,6 +184,7 @@ data: function() {
             },
           },
         },
+      }
       }
     },
   },
