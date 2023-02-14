@@ -8,10 +8,6 @@
     :jjal_detail_data="jjal_detail_data"
     @infoUpdateRequest="changeInfo"
     ></zzal-info>
-    <zzal-source-video
-    :jjal_detail_data="jjal_detail_data"
-    @videoUpdate="changeVideo"
-    ></zzal-source-video>
     <div class="flex justify-center dark:text-white">
       <button
         class="
@@ -51,7 +47,7 @@
         <div v-if="jjal_detail_data">
           <div class="flex items-center">
             <font-awesome-icon icon="fa-solid fa-eye" class="view-count" />
-            <div class="ml-2 dark:text-white">{{ visitedCount }}</div>
+            <div class="ml-1 text-zz-negative">{{ visitedCount }}</div>
           </div>
           <div class="grid grid-cols-3 gap-4">
             <img :src="`${gif_path}`" alt="" class="col-span-2 justify-center" />
@@ -87,8 +83,8 @@
             [편집하기]
           </button>
           <div class="mt-6">
-            <div class="last-edited">마지막으로 수정한 사람: {{ 누구 }}</div>
-            <div class="last-edited">마지막으로 수정한 날짜: {{ 날짜 }}</div>
+            <div class="last-edited">마지막으로 수정한 사람: {{ lastUpdateUsername }}</div>
+            <div class="last-edited">마지막으로 수정한 날짜: {{ lastUpdateTime }}</div>
           </div>
 
           <div class="hashtag-contain">
@@ -113,9 +109,13 @@
           </div>
 
           <!-- 푸터 -->
+          <div class="mt-6 mb-2 font-bold font-spoq text-zz-p"> 관련 링크</div>
           <div class="edit-original-vid">
-            <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" />
-            <input
+            <font-awesome-icon icon="fa-solid fa-link" class="text-zz-s text-sm mt-1" />
+            <!-- <iframe :src="sourcesPostUrl"> dfgdfgf</iframe> -->
+            <a :href="'//'+sourcesPostUrl" target="_blank" class="text-zz-s font-bold font-spoq mx-3 ">원본 링크가 궁금하다면?</a>
+            <!-- <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" /> -->
+            <!-- <input
               type="text"
               class="edit-original-link"
               placeholder="https://www.youtube.com/watch?v=sey8rFdvq6M"
@@ -123,7 +123,8 @@
             <font-awesome-icon
               icon="fa-solid fa-square-plus"
               class="plus-icon"
-            />
+            /> -->
+            
           </div>
         </div>
       </div>
@@ -140,7 +141,6 @@ import DetailKorGoBackTopNavBar from "../components/Common/NavBar/DetailKorGoBac
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav.vue";
 import ZzalListItem from "../components/ZzalDetail/ZzalListItem.vue";
 import ZzalInfo from "@/components/ZzalDetail/ZzalInfo.vue";
-import ZzalSourceVideo from "../components/ZzalDetail/ZzalSourceVideo.vue";
 import { useStore } from "vuex";
 import { computed } from "@vue/runtime-core";
 
@@ -180,7 +180,6 @@ export default {
   components: {
     ZzalListItem,
     ZzalInfo,
-    ZzalSourceVideo,
     MainBottomNav,
     OnlyGoBackTopNav,
     DetailKorGoBackTopNavBar,
@@ -203,8 +202,8 @@ export default {
     id() {
       return this.jjal_detail_data.id;
     },
-    relationsVideo() {
-      return this.jjal_detail_data.relationsVideo;
+    sourcesPostUrl() {
+      return this.jjal_detail_data.sourcesPostUrl;
     },
     description() {
       return this.jjal_detail_data.description;
@@ -217,6 +216,12 @@ export default {
     },
     gif_path() {
       return this.jjal_detail_data.gifPath
+    },
+    lastUpdateTime() {
+      return this.jjal_detail_data.lastUpdateTime
+    },
+    lastUpdateUsername() {
+      return this.jjal_detail_data.lastUpdateUsername
     }
   },
   mounted() {
@@ -229,15 +234,12 @@ export default {
     notEditMode() {
       this.edit_mode = false;
     },
-    changeInfo(newDescription, newTags) {
-      this.request_form.updated_description = newDescription;
-      this.request_form.updated_tags = newTags;
-      console.log(this.request_form.updated_description)
-    },
-    changeVideo(newRelationsVideo) {
-      this.request_form.updated_relationsVideo = newRelationsVideo;
-      console.log(this.request_form)
-    }
+    // changeInfo(newDescription, newTags, newRelationsVideo) {
+    //   this.request_form.updated_description = newDescription;
+    //   this.request_form.updated_tags = newTags;
+    //   this.request_form.updated_relationsVideo = newRelationsVideo;
+    //   console.log(this.request_form.updated_description)
+    // }
   },
 };
 </script>
@@ -273,7 +275,7 @@ export default {
 }
 
 .edit-original-vid {
-  @apply mt-6 flex mb-20;
+  @apply mt-2 flex mb-10;
 }
 
 .edit-original-link {

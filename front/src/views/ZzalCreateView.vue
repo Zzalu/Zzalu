@@ -105,6 +105,7 @@ export default {
   setup() {
     const store = useStore();
     const update_request = (form) => {
+      console.log(imageFile,"g")
       form.created_image = imageFile
       // form.created_tags = this.tags.join()
       store.dispatch("tempGifStore/postTempGif", form)
