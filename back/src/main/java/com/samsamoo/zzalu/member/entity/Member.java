@@ -175,4 +175,11 @@ public class Member implements UserDetails {
 //        this.isManager = true;
         this.getRoles().add("MANAGER");
     }
+
+    public void deleteLikeChatRoom(ChatRoom chatRoom) {
+        this.likeChatRooms.remove(chatRoom);
+        if(chatRoom.getLikeMembers().contains(this)){
+            chatRoom.deleteLikeMember(this);
+        }
+    }
 }
