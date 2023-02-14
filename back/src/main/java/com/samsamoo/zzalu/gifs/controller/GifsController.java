@@ -1,8 +1,7 @@
 package com.samsamoo.zzalu.gifs.controller;
 
 import com.samsamoo.zzalu.advice.NotFoundException;
-import com.samsamoo.zzalu.board.dto.GifInfo;
-import com.samsamoo.zzalu.board.dto.GifList;
+
 
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
@@ -103,20 +102,20 @@ public class GifsController {
     @GetMapping("/recommend")
     public ResponseEntity recommendCustomGif(@RequestHeader(value = "Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
-         GifList response = gifsService.recommendCustomGif(token);
+         List<Gifs> response = gifsService.recommendCustomGif(token);
         return ResponseEntity.ok().body(response);
     }
     //------------------------------------------- 인기짤 API-----------------------------------------------
     @GetMapping("/popular")
     public ResponseEntity popularGif() {
         List<GifStatistics> statisticsList = gifStatisticsRepository.findTop30ByOrderByUseCountDesc();
-        List<GifInfo> gifInfos = new ArrayList<>();
+        List<Gifs> gifs = new ArrayList<>();
         for(GifStatistics statistics : statisticsList) {
             Gifs gif = gifsRepository.findById(statistics.getGifId())
                     .orElseThrow(()-> new NotFoundException("해당 gif는 찾을 수 없습니다."));
-            gifInfos.add(new GifInfo(gif.getId(), gif.getGifPath()));
+            gifs.add(gif);
         }
-        return ResponseEntity.ok().body(new GifList(gifInfos));
+        return ResponseEntity.ok().body(gifs);
     }
 }
 

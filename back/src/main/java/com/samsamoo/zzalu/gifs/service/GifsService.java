@@ -48,7 +48,7 @@ public class GifsService {
         return gifRepository.findByIdIn(gifIds);
     }
 
-    public GifList recommendCustomGif(String token) {
+    public List<Gifs> recommendCustomGif(String token) {
         Member member = jwtTokenProvider.getMember(token);
         // 사용자가 많이 사용한 태그 상위 4개
         List<MemberTagStatistics> memberTagStatisticsList = memberTagStatisticsRepository.findTop4ByMemberIdOrderByCountDesc(member.getId());
@@ -64,14 +64,14 @@ public class GifsService {
             gifList = gifList.subList(0,30);
         }
 
-        List<GifInfo> gifInfos = new ArrayList<>();
+//        List<GifInfo> gifInfos = new ArrayList<>();
 
-        for (Gifs gif : gifList) {
-//            Gifs gif = gifRepository.findById(statistics.getGifId())
-//                    .orElseThrow(()-> new NotFoundException("gif를 찾을 수 없습니다."));
-            gifInfos.add(new GifInfo(gif.getId(), gif.getGifPath()));
-        }
-        return new GifList(gifInfos);
+//        for (Gifs gif : gifList) {
+////            Gifs gif = gifRepository.findById(statistics.getGifId())
+////                    .orElseThrow(()-> new NotFoundException("gif를 찾을 수 없습니다."));
+//            gifInfos.add(new GifInfo(gif.getId(), gif.getGifPath()));
+//        }
+        return gifList;
     }
 
 
