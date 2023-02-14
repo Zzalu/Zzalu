@@ -15,10 +15,10 @@
           <div v-if="user_nickname == message.sender">
             <div class="mb-4"></div>
             <!-- 짤 이미지 -->
-
+            
             <font-awesome-icon
-              icon="fa-solid fa-play"
-              class="my-message-balloon"
+            icon="fa-solid fa-play"
+            class="my-message-balloon"
             />
             <div class="my-image-group">
               <span class="my-write-time">{{ message.sendDate }}</span>
@@ -33,6 +33,13 @@
           <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
           <div class="profile-image" v-if="user_nickname != message.sender">
             <!-- 만약 방장이라면"  -->
+            <div v-if="message.profilePath" class="h-12 w-12 rounded-full bg-no-repeat absolute bg-contain text-zz-p" 
+            :style="`background-image:url(${message.profilePath})`"
+            @click="GoToProfile(message.userid)"
+            ></div>
+            <font-awesome-icon v-if="message.profilePath == null" class="text-4xl ml-2 mt-1 absolute text-zz-p" icon="fa-solid fa-user"
+            @click="GoToProfile(message.userid)"
+            />
             <div v-if="message.member_id == member_Id">
               <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
               <p class="profile-nickname dark:text-white">
@@ -180,8 +187,11 @@ export default {
   },
 
   methods: {
+    GoToProfile(user_id) {
+      this.$router.push({name : 'profile', params : {username : user_id}})
+    },
     GoToDetail(gifid) {
-      this.get_user_store()
+      this.get_user_store(gifid)
       this.$router.push({name : 'zzal', params : {zzal_id : gifid},})
     },
     open_search_modal() {
@@ -334,12 +344,12 @@ export default {
 
 /* 상대방 메세지 */
 .message-contain {
-  @apply flex flex-col-reverse relative pt-4 font-spoq pt-8;
+  @apply flex flex-col-reverse relative pt-4 font-spoq;
 }
 
 /* 프로필 */
 .profile-image {
-  @apply w-12 h-12 rounded-full bg-zz-dark-input flex inset-x-0 text-sm border dark:border-zz-dark-s;
+  @apply w-12 h-12 rounded-full bg-zz-light-input flex inset-x-0 text-sm border dark:border-zz-dark-s;
 }
 .profile-nickname {
   transform: translateY(-1.4rem);
@@ -350,7 +360,7 @@ export default {
 }
 
 .message-balloon {
-  transform: rotate(180deg) translate(-2rem, -2rem);
+  transform: rotate(180deg) translate(-2.1rem, -1.7rem);
   @apply text-zz-p text-2xl;
 }
 
@@ -359,7 +369,7 @@ export default {
   @apply text-zz-p text-2xl;
 }
 .master-icon {
-  transform: translate(3.5rem, -1.2rem);
+  transform: translate(3.4rem, -0.9rem);
   @apply text-zz-dark-p text-sm;
 }
 

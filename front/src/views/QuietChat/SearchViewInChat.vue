@@ -20,7 +20,7 @@
                   <SearchBar />
 
                   <!-- 내보드 -->
-                  <div class="my-board-contain border" @click="view_board" v-if="user_store_list">
+                  <div class="my-board-contain border dark:border-zz-dark-input" @click="view_board" v-if="user_store_list">
                     <div class="text-black dark:text-white absolute z-20 font-spoq">
                       내 보드
                     </div>
@@ -112,7 +112,7 @@
                     :key="i"
                   >
                     <div
-                      class="my-board-contain border"
+                      class="my-board-contain border dark:border-zz-dark-input"
                       @click="view_detail(board_list.id, board_list.boardName)"
                     >
                       <div class="text-black dark:text-white absolute z-20 font-spoq">
