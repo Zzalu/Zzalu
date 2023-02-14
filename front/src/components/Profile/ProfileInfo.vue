@@ -1,6 +1,6 @@
 <template>
     <div class="ml-4 flex">
-      <div class="bg-black w-32 h-32 rounded-full mr-6"></div>
+      <img class="profile-image" :style="{ backgroundImage: `url(${this.profileImg})` }" />
       <div class="mx-auto">
         <div class="flex">
           <div
@@ -29,11 +29,17 @@
       </div>
     </div>
     <div class="mt-4 mb-4">
-      <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
+      <div class="flex">
+        <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
+          <div v-if="this.profile_user_data.isManager == 'true'">
+            <font-awesome-icon icon="fa-solid fa-crown" class="text-zz-p ml-2"/>
+        </div>
+      </div>
+
       <div class="text-zz-negative font-spoq text-xs my-auto">
         @{{ this.profile_user_data.username }}
       </div>
-      <div class="mt-2 line-clamp-2">
+      <div class="mt-2 line-clamp-2 font-spoq text-zz-dark-input dark:text-white">
         {{ this.profile_user_data.profileMessage }}
       </div>
     </div>
@@ -128,6 +134,14 @@ export default {
   @apply mt-10 text-center mx-2 text-zz-s font-spoq;
 }
 
-
+.profile-image {
+  width: 100px;
+  height: 100px;
+  background-size: contain;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply rounded-full;
+}
 
 </style>

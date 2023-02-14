@@ -55,6 +55,7 @@
 import { mapState } from "vuex";
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import Swal from 'sweetalert2'
 // import { reactive } from 'vue'
 // import { computed } from '@vue/runtime-core'
 
@@ -70,19 +71,17 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
-    // const state = reactive({
-    //   credentials: {
-    //     email: '',
-    //     code: ''
-    //   }
-    // })
+
     // 이메일 중복확인 및 코드 요청 보내기
     const sendCode = async function () {
       const signup_user_email = window.localStorage.getItem("temp_email")
         // console.log(this.userInfo)
         const result = await store.dispatch('userStore/sendEmailAction', signup_user_email )
         if (result.status == 400) {
-          alert("이미 사용중인 이메일입니다.\n다른 이메일을 입력해주세요.")
+          Swal.fire({
+            icon: "error",
+            html:"사용 중인 이메일입니다. <br>다른 이메일을 등록해주세요."
+            })
         } else if (result.status == 200) {
           const credentialsEmailCode = {
             email: signup_user_email,
@@ -117,20 +116,23 @@ export default {
           nickname: this.userInfo.nickname,
           userEmail: this.userInfo.email,
         };
-        const result = await this.$store.dispatch(
-          "userStore/signupFinalAction",
-          userData
-        );
+        const result = await this.$store.dispatch("userStore/signupFinalAction",userData);
         console.log(result);
         if (result.status == 400) {
-          alert("야 넌 회원가입 다시해라");
+          Swal.fire({
+            icon: "error",
+            html:"오류가 일어났습니다.<br> 회원정보를 확인해주세요."
+            })
         } else {
           clearTimeout(this.min, this.sec)
           console.log('멈춤')
           this.$router.push({ name: "complete" });
         }
       } else {
-        alert("님 코드 틀렸음");
+          Swal.fire({
+            icon: "error",
+            html:"인증코드가 틀렸습니다. <br> 다시 메일을 확인해주세요."
+          })
       }
     },
 
@@ -139,12 +141,11 @@ export default {
     },
     countDownTimer() {
         setTimeout(() => {
-          console.log('1초 지남')
           if (this.sec==0 && this.min == 0) {
             if ( this.$route.name == 'input-signup-code') {
               this.$router.push({ name: "input-signup-email" })
             } else {
-              console.log('타이머끝남...')
+              return 
             }
           } else if (this.sec == 0) {
             this.min -= 1,

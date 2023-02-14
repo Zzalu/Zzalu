@@ -35,6 +35,7 @@ const titleCompetitionStore = {
     getCommentCount: (state) => state.total_comment_cnt,
     getComments: (state) => state.comments,
     getLastCommentId: (state) => state.last_comment_id,
+    getState: (state) => state.state,
   },
   mutations: {
     // 날짜 바꾸기
@@ -47,6 +48,7 @@ const titleCompetitionStore = {
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
       state.state = title_competition_data.state;
+      // state.state = 'abc';
     },
 
     // 댓글 sort 수정하기
@@ -129,7 +131,7 @@ const titleCompetitionStore = {
   },
   actions: {
     async init({ state, dispatch }, data) {
-      // console.log(data);
+      console.log('init: ' + data);
       await dispatch('getTitleCompetition', data.open_date);
       await dispatch('getBestComments');
       await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
@@ -141,6 +143,7 @@ const titleCompetitionStore = {
         getTitleCompetition(
           open_date,
           ({ data }) => {
+            console.log('action/getTitleCompetition: ' + data);
             commit('SET_TITLE_COMPETITION', data);
             resolve();
           },

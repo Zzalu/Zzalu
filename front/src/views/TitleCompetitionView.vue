@@ -91,7 +91,7 @@
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { computed, ref } from 'vue';
+import { computed, onUnmounted, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
@@ -105,13 +105,24 @@ export default {
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
+    console.log(JSON.parse(JSON.stringify(store.state.titleCompetitionStore)));
+    console.log(store.state.titleCompetitionStore);
     const route = useRoute();
     const router = useRouter();
     const open_date = route.params.open_date; // 제목학원 날짜
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
     let is_top = computed(() => store.state.titleCompetitionStore.is_top);
-    let state = computed(() => store.state.titleCompetitionStore.state);
+    // const state = ref(store.state.titleCompetitionStore.state);
+    document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
+    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
+      console.log('init이후 then에서...: ' + state.value);
+      if (state.value == 'PROCEED') {
+        console.log('값: ' + state.value);
+        connect();
+      }
+    });
+    const state = computed(() => store.getters['titleCompetitionStore/getState']);
     let socket_comment_cnt = computed(() => store.state.titleCompetitionStore.socket_comment_cnt);
     let socket_comments = computed(() => store.state.titleCompetitionStore.socket_comments);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
@@ -121,9 +132,6 @@ export default {
       router.push(`/whole-of-frame`);
     };
     let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
-
-    document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
-    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
 
     const clickSortBtn = (sort_type) => {
       is_top.value = true;
@@ -162,12 +170,12 @@ export default {
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
-      let start = new Date();
-      console.log(`시작: ` + start);
-      console.log('connect 시작');
+      // let start = new Date();
+      // console.log(`시작: ` + start);
+      // console.log('connect 시작');
       let localWs = ws;
       let localSock = sock;
       localWs.connect(
@@ -185,13 +193,13 @@ export default {
               if (is_top.value) {
                 store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
               } else {
-                console.log('어딘디');
+                // console.log('어딘디');
                 store.dispatch('titleCompetitionStore/addSocketCommentCnt');
                 store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
               }
             } else {
               // 과거순 or 인기순 정렬
-              console.log('어딘디22');
+              // console.log('어딘디22');
               store.dispatch('titleCompetitionStore/addSocketCommentCnt');
             }
           });
@@ -210,19 +218,34 @@ export default {
           console.log('error: ' + error);
           setTimeout(function () {
             console.log('connection reconnect');
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+            localSock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
         },
       );
     }
     // connect();
+    /*     console.log(state.value);
     setTimeout(function () {
+      console.log(state.value);
       if (state.value == 'PROCEED') {
         console.log('값: ' + state.value);
         connect();
       }
-    }, 100);
+    }, 1); */
+    /*     onMounted(() => {
+      console.log('온마운티드');
+      console.log(state);
+      console.log(state.value);
+      if (state.value == 'PROCEED') {
+        console.log('값: ' + state.value);
+        connect();
+      }
+    }); */
+    onUnmounted(() => {
+      ws.disconnect();
+      console.log('끊습니다');
+    });
     /*     onMounted(() => {
       setTimeout(function () {
         if (state.value == 'PROCEED') {
