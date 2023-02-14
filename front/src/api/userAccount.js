@@ -40,7 +40,8 @@ const checkNickname = (payload) => {
 }
 
 // 회원정보변경 (7)
-const requestChangeInfo = (payload, res, err) => {
+const requestChangeInfo = (params, payload, res, err) => {
+    console.log(params)
     console.log('api 요청 직전 데이터', payload)
     form_api.patch(`members`, payload).then(res).catch(err)
 }

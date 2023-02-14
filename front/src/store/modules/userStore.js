@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete, requestChangeInfo, requestManager } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestChangeInfo, requestDelete, requestManager } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -102,9 +102,9 @@ const userStore = {
     },
     // 닉네임 중복확인
     uniqueNicknameAction: async (commit, nickname) => {
-        // console.log(nickname);
+        console.log(nickname);
         const response = await checkNickname({"nickname": nickname});
-        // console.log(response)
+        console.log(response)
         return response
     },
     // 이메일 중복확인
@@ -200,23 +200,20 @@ const userStore = {
     },
     // ----------------------------------------------------------
     // 회원정보수정
-    patchUserInfoAction: async (context, changedData) => {
+    patchUserInfoAction: (params, changedData) => {
       // context.commit('PATCH_USER_INFO', changedData)
       console.log(changedData)
-      
-      const response = await requestChangeInfo(
+      requestChangeInfo(
         // await requestChangeInfo(
+        params,
         changedData,
         (res) => {
-          console.log("유저인포 잘고침?ㅇㅇ",res)
           return res
         },
         (err) => {
-          console.log("뭔가뭔가... 잘못됨")
           console.log(err)
           return err.response
       })
-      console.log('리스폰스', response)
     },
     // ----------------------------------------------------------
     // 매니저
