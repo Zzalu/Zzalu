@@ -113,11 +113,13 @@ public class ChatRoomRedisRepository {
         System.out.println("setChatMessage ===");
         message.setSendDate(sendDate);
 
+        System.out.println("setChatMessage Enter");
         // Redis에 저장
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
 //         DB에 저장
         Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomId(message.getRoomId());
         if(optionalChatRoom.isPresent()) {
+            System.out.println("chatMessage Save");
             ChatRoom chatRoom = optionalChatRoom.get();
             ChatMessage chatMessage = message.toEntity();
             chatMessage.setChatRoom(chatRoom);
@@ -125,6 +127,7 @@ public class ChatRoomRedisRepository {
             chatRoom.setLastActivation(sendDate);
             chatRepository.save(chatMessage);
             chatRoomRepository.save(chatRoom);
+            System.out.println("chatMessage Save Complete");
         } else {
             System.out.println("need chat room not found exception throw");
         }
