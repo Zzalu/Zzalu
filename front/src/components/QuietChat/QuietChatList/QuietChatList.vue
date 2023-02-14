@@ -5,7 +5,7 @@
       <div class="card-content">
         <div class="flex">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="master-p">{{ room_data.userNmae }}</p>
+          <p class="master-p">{{ room_data.userName }}</p>
         </div>
         <p class="title-p">{{ room_data.roomName }} 고독방</p>
         <p class="content-p">{{ room_data.description }}</p>

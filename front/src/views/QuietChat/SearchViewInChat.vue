@@ -20,11 +20,13 @@
                   <SearchBar />
 
                   <!-- 내보드 -->
-                  <div class="my-board-contain border" @click="view_board">
+                  <div class="my-board-contain border" @click="view_board" v-if="user_store_list">
                     <div class="text-black dark:text-white absolute z-20 font-spoq">
                       내 보드
                     </div>
-                    <div class="my-board">
+                    <div class="my-board"
+                    v-if="user_store_list.borads"
+                    >
                       <div
                         class="my-board-thumb"
                         :style="`background-image:url(${user_store_list.boards[0].thumbnailPath})`"

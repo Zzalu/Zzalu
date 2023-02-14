@@ -43,6 +43,9 @@ export default {
     const open_chat_id = computed(
       () => store.state.quietChatStore.open_chat_id
     );
+    const open_list_modal = computed(
+      () => store.state.searchModalStore.open_list_modal
+    );
     const quiet_chat_data = computed(
       () => store.state.quietChatStore.hot_quiet_list
     )
@@ -58,6 +61,7 @@ export default {
     });
     return {
       open_chat_info,
+      open_list_modal,
       open_chat_id,
       quiet_chat_data,
       close_chat_info,
@@ -85,12 +89,19 @@ export default {
       this.close_chat_info();
     },
   },
-  get watch() {
-    return this._watch;
-  },
-  set watch(value) {
-    this._watch = value;
-  },
+  // get watch() {
+  //   return this._watch;
+  // },
+  // set watch(value) {
+  //   this._watch = value;
+  // },
+  watch: {
+    open_list_modal: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
+  }
 };
 </script>
 

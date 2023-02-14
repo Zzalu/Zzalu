@@ -1,4 +1,5 @@
-import { getQuiet, createQuietChat, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike } from "@/api/quietChatList";
+import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom,
+  noSearchallrecentroom, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike } from "@/api/quietChatList";
 
 const quietChatStore = {
   namespaced: true,
@@ -114,8 +115,45 @@ const quietChatStore = {
         }
       )
     },
+    noSearchAllRecent({ commit }) {
+      noSearchallrecentroom(
+        (data) => {
+          console.log(data, '검색x, 전체고독, 최신대화 성공');
+          commit('GET_ONLY_SEARCH', data)
+        },
+        (err) => {
+          console.log(err, '검색x, 전체고독, 최신대화 실패');
+        }
+      )
+    },
+    nosearchAllLike({ commit }) {
+      nosearchAllLikeroom(
+        (data) => {
+          console.log(data, '검색x 전체고독, 좋아요순 성공');
+          commit('GET_ONLY_SEARCH', data)
+        }, 
+        (err) =>
+        {
+          console.log(err, '검색x 전체고독, 좋아요순 실패');
+        }
+      )
+    },
+
+
 
     // 검색x + 
+    SearchCreatedRecent({ commit }, params) {
+      SearchCreatedRecentroom(
+        params,
+        (data) => {
+          console.log(data, '검색, 내가만든, 최신대화순 성공');
+          commit('GET_NOSEARCH_CRATED_RECENT', data)
+        },
+        (err) => {
+          console.log(err, '검색, 내가만든, 최신대화순 실패');
+        }
+      )
+    },
     noSearchCreatedRecent({ commit }, params) {
       noSearchCreatedRecentroom(
         params,
