@@ -122,6 +122,10 @@ export default {
         connect();
       }
     });
+    /* .catch(() => {
+        ws.disconnect();
+        router.push({ name: 'error-404' });
+      }); */
     const state = computed(() => store.getters['titleCompetitionStore/getState']);
     let socket_comment_cnt = computed(() => store.state.titleCompetitionStore.socket_comment_cnt);
     let socket_comments = computed(() => store.state.titleCompetitionStore.socket_comments);
