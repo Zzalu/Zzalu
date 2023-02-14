@@ -27,7 +27,7 @@ public class TempGif {
     private String description;
     private String writerUsername;
     @Builder.Default
-    private int permittedCount = 0;
+    private Integer permittedCount = 0;
     @Convert(converter =  RequestTypeConverter.class)
     private RequestType requestType;
     @Builder.Default
