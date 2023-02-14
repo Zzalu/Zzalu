@@ -142,16 +142,16 @@ public class BoardService {
     private void deleteGif(Board board, Gifs gif) {
         board.getGifs().remove(gif);
         boardRepository.save(board);
-        gif.decreaseScrap();
-        gifsRepository.save(gif);
+//        gif.decreaseScrap();
+//        gifsRepository.save(gif);
     }
 
     private void insertGif(Board board, Gifs gif, Member member) {
         // member 회원 통계 로직 추가
         board.getGifs().add(0, gif);
         boardRepository.save(board);
-        gif.increaseScrap();
-        gifsRepository.save(gif);
+//        gif.increaseScrap();
+//        gifsRepository.save(gif);
     }
 
     public void deleteGifFromBoard(Long boardId, List<Long> gifList) {

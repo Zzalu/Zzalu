@@ -128,7 +128,7 @@ public class StatisticsController {
     public List<MemberTagStatistics> findAllByMemberId(@RequestParam("username") String username){
         Member member = memberRepository.findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
-        return memberTagStatisticsService.findTop5ByMemberId(member.getId());
+        return memberTagStatisticsService.findTop4ByMemberId(member.getId());
     }
 
     @GetMapping("/gif")

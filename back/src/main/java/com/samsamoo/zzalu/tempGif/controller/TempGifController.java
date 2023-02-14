@@ -1,7 +1,6 @@
 package com.samsamoo.zzalu.tempGif.controller;
 
 import com.samsamoo.zzalu.tempGif.dto.TempGifRequest;
-import com.samsamoo.zzalu.tempGif.dto.TempGifDTO;
 import com.samsamoo.zzalu.tempGif.entity.TempGif;
 import com.samsamoo.zzalu.tempGif.service.TempGifService;
 import lombok.RequiredArgsConstructor;
@@ -49,7 +48,4 @@ public class TempGifController {
         tempGifService.deleteTempGif(tempId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-
 }

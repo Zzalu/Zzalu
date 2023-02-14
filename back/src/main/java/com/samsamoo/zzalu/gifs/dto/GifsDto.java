@@ -13,11 +13,11 @@ public class GifsDto {
 
     private String gifPath;
 
-    private Long useCount;
+//    private Long useCount;
 
-    private Long downloadCount;
+//    private Long downloadCount;
 
-    private Long likeCount;
+//    private Long likeCount;
 
     private String tags;
 
@@ -35,14 +35,14 @@ public class GifsDto {
 
     private long visitedCount;
 
-    private long scrapCount;
+//    private long scrapCount;
 
     public GifsDto(Gifs giphyGif) {
         this.id = giphyGif.getId();
         this.gifPath = giphyGif.getGifPath();
-        this.useCount = giphyGif.getUseCount();
-        this.downloadCount = giphyGif.getDownloadCount();
-        this.likeCount = giphyGif.getLikeCount();
+//        this.useCount = giphyGif.getUseCount();
+//        this.downloadCount = giphyGif.getDownloadCount();
+//        this.likeCount = giphyGif.getLikeCount();
         this.tags = giphyGif.getTags();
         this.sources = giphyGif.getSources();
         this.sourcesPostUrl = giphyGif.getSourcesPostUrl();
@@ -50,7 +50,7 @@ public class GifsDto {
         this.importDatetime = giphyGif.getImportDatetime();
         this.relationsVideo = giphyGif.getRelationsVideo();
         this.visitedCount = giphyGif.getVisitedCount();
-        this.scrapCount = giphyGif.getScrapCount();
+//        this.scrapCount = giphyGif.getScrapCount();
     }
 
 }

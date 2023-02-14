@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface MemberTagStatisticsRepository extends JpaRepository<MemberTagStatistics, Long> {
     Optional<MemberTagStatistics> findByTagAndMemberId(String Tag, Long memberId);
 //    List<MemberTagStatistics> findAllByMemberUsername(String username);
-    List<MemberTagStatistics> findTop5ByMemberIdOrderByCountDesc(Long memberId);
+    List<MemberTagStatistics> findTop4ByMemberIdOrderByCountDesc(Long memberId);
 }

@@ -72,6 +72,7 @@ public class JwtTokenProvider {
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .id(member.getId())
                 .username(username)
                 .nickname(nickname)
                 .isManager(isManager)
