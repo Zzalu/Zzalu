@@ -47,7 +47,7 @@ export default {
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openData,
-      zzal_url: props.title_competition.zzalurl,
+      zzal_url: props.title_competition.zzalUrl,
       state: props.title_competition.state,
     });
 
