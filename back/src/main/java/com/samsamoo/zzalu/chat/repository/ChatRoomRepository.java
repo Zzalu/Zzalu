@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.chat.repository;
 
+import com.samsamoo.zzalu.chat.entity.ChatMessage;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

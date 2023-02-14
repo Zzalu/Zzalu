@@ -306,7 +306,6 @@ public class ChatRoomController {
         Member requestMember = jwtTokenProvider.getMember(token);
 
         List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
-        System.out.println(chatMessageDtos);
         return chatMessageDtos;
     }
 }
