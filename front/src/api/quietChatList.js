@@ -8,6 +8,10 @@ function getQuiet(res, err) {
     api.get(`/chat/rooms`)
         .then(res).catch(err)
 }
+function UserStats(params, datas, res, err) {
+    authapi.post(`/statistics/use?gifId=${datas}`)
+    .then(res).catch(err)   
+}
 
 function createQuietChat(params, datas, res, err) {
     console.log(datas, 'datas'),
@@ -18,6 +22,12 @@ function createQuietChat(params, datas, res, err) {
 function getHotQuietList(res, err) {
     api.get('/chat/rooms-top10')
         .then(res).catch(err)
+}
+
+function PastMessage(params, res, err) {
+    console.log('방이름',params);
+    authapi.get(`/chat/messages?roomId=${params}`)
+    .then(res).catch(err)
 }
 
 // 필터
@@ -69,4 +79,5 @@ function RoomLike(data, datas, res, err) {
         .then(res).catch(err)
 }
 
-export { getQuiet, createQuietChat, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedRecentroom, SearchCreatedLikeroom, RoomLike, noSearchallrecentroom, nosearchAllLikeroom }
+export { getQuiet, createQuietChat, UserStats,
+    getHotQuietList, PastMessage, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedRecentroom, SearchCreatedLikeroom, RoomLike, noSearchallrecentroom, nosearchAllLikeroom }

@@ -1,4 +1,4 @@
-import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom,
+import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom, PastMessage, UserStats,
   noSearchallrecentroom, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike } from "@/api/quietChatList";
 
 const quietChatStore = {
@@ -8,6 +8,7 @@ const quietChatStore = {
     open_chat_id: null,
     quiet_list: null,
     hot_quiet_list: null,
+    past_message : [],
   }),
   mutations: {
     open_chat_info(state) {
@@ -40,9 +41,61 @@ const quietChatStore = {
     },
     GET_SEARCH_CREATED_LIKE(state, searchCreatedLike) {
       state.quiet_list = searchCreatedLike.data
+    },
+    GET_PAST_MESSAGE(state, pastMessage) {
+      for (let i =0; i<pastMessage.data.length; i++) {
+        if (pastMessage.data[i].type == 'TALK') {
+          let tmp = ""
+          let sendtime = ""
+          tmp += pastMessage.data[i].sendDate[11]
+          tmp += pastMessage.data[i].sendDate[12]
+          if (Number(tmp) >= 12) {
+            sendtime += '오후 '
+            sendtime += Number(tmp-12)
+          } else {
+            sendtime += '오전 '
+            sendtime += pastMessage.data[i].sendDate[11]
+            sendtime += pastMessage.data[i].sendDate[12]
+          }
+          sendtime += ':'
+          sendtime += pastMessage.data[i].sendDate[14]
+          sendtime += pastMessage.data[i].sendDate[15]
+
+          pastMessage.data[i].sendDate = JSON.parse(JSON.stringify(sendtime));
+        } else {
+          continue
+        }
+      }
+      pastMessage.data = [...pastMessage.data].reverse()
+      state.past_message = pastMessage.data
     }
   },
   actions: {
+    // 유저 스탯
+    postUserStat(params,datas) {
+      UserStats(
+        params,
+        datas,
+        (data) => {
+          console.log('스탯보내기 성공', data)
+        },
+        (err) => {
+          console.log('스탯보내기 실패',err);
+        }
+      )
+    },
+    getPastMessage({ commit }, params) {
+      PastMessage(
+        params,
+        (data) => {
+          console.log(data, '과거 데이터 가져오기 성공');
+          commit('GET_PAST_MESSAGE',data)
+        },
+        (err) => {
+          console.log(err, '과거 데이터 가져오기 실패');
+        }
+      )
+    },
     getQuietList({ commit }) {
       getQuiet(
         (data) => {

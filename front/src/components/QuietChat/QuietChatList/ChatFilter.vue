@@ -185,14 +185,18 @@ export default {
       if (this.filter2 == 0) {
         if (this.input_data == null) {
           console.log("검색x + 즐겨찾기 + 최신 대화순");
+          this.nosearch_bookmark_recent()
         } else {
           console.log("검색 + 즐겨찾기 + 최신 대화순");
+          this.search_bookmark_recent()
         }
       } else if (this.filter2 == 1) {
         if (this.input_data == null) {
           console.log("검색x +즐겨찾기 + 좋아요 순");
+          this.nosearch_bookmark_like(this.input_data)
         } else {
           console.log("검색 +즐겨찾기 + 좋아요 순");
+          this.search_bookmark_like(this.input_data)
         }
       }
     },

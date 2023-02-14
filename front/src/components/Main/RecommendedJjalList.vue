@@ -4,10 +4,10 @@
     <hr class="mb-5 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
     <div>
       <div v-if="RecommendJjalListData">
-        <div v-if="RecommendJjalListData.gifs.length > 0">
+        <div v-if="RecommendJjalListData.length > 0">
           <div class="items">
             <div
-              v-for="(RecommendJjal, i) in RecommendJjalListData.gifs"
+              v-for="(RecommendJjal, i) in RecommendJjalListData"
               :key="i"
             >
               <RecommendedJjalListItem
