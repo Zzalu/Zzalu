@@ -81,7 +81,7 @@
       <div v-if="open_list_modal">
         <div class="list-view-bg"></div>
 
-        <StoreList class="list-view" :user_store_list="user_store_list" />
+        <StoreList class="list-view" :user_store_lists="user_store_list" />
       </div>
     </div>
     <!-- </transition> -->

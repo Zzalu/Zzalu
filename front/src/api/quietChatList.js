@@ -27,7 +27,22 @@ function getOnlySearch(data, res, err) {
         .then(res).catch(err)
 }
 
+function noSearchallrecentroom(res,err) {
+    api.get(`/chat/search-order-lastactivation?keyword`)
+    .then(res).catch(err)
+}
+
+function nosearchAllLikeroom(res,err) {
+    api.get(`/chat/search-order-likecount?keyword`)
+    .then(res).catch(err)
+}
+
 function noSearchCreatedRecentroom(data, res, err) {
+    authapi.get(`/chat/member-order-lastactivation?memberId=${data}`)
+        .then(res).catch(err)
+}
+
+function SearchCreatedRecentroom(data, res, err) {
     authapi.get(`/chat/member-order-lastactivation?memberId=${data}`)
         .then(res).catch(err)
 }
@@ -54,4 +69,4 @@ function RoomLike(data, datas, res, err) {
         .then(res).catch(err)
 }
 
-export { getQuiet, createQuietChat, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike }
+export { getQuiet, createQuietChat, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedRecentroom, SearchCreatedLikeroom, RoomLike, noSearchallrecentroom, nosearchAllLikeroom }

@@ -71,7 +71,7 @@ export default {
     };
 
     onBeforeMount(() => {
-      store.dispatch("quietChatStore/getQuietList");
+      store.dispatch("quietChatStore/noSearchAllRecent");
     });
     return {
       open_chat_info,

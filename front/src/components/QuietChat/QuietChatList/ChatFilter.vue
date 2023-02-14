@@ -67,14 +67,17 @@ export default {
     const store = useStore();
     const user_id = window.localStorage.getItem("profile_id");
 
-    const get_all_rooms = () => {
-      store.dispatch("quietChatStore/getQuietList");
+    const nosearch_all_recent = () => {
+      store.dispatch("quietChatStore/noSearchAllRecent");
     };
     const only_search_room = (nv) => {
       store.dispatch("quietChatStore/onlySearchRoom", nv);
     };
     const nosearch_created_recent = () => {
       store.dispatch("quietChatStore/noSearchCreatedRecent", user_id);
+    };
+    const search_created_recent = (e) => {
+      store.dispatch("quietChatStore/SearchCreatedRecent", e);
     }
     const nosearch_created_like = () => {
       store.dispatch("quietChatStore/noSearchCreatedLike", user_id)
@@ -85,14 +88,19 @@ export default {
     const search_created_like = (e) => {
       store.dispatch("quietChatStore/searchCreatedLike", e)
     }
+    const nosearch_all_like = () => {
+      store.dispatch("quietChatStore/nosearchAllLike")
+    }
 
     return {
       only_search_room,
-      get_all_rooms,
+      nosearch_all_recent,
       nosearch_created_recent,
+      search_created_recent,
       nosearch_created_like,
       search_all_like,
-      search_created_like
+      search_created_like,
+      nosearch_all_like
     };
   },
   data() {
@@ -135,7 +143,7 @@ export default {
       if (this.filter2 == 0) {
         if (this.input_data == null) {
           console.log("검색x + 전체 고독 + 최신 대화 //완료");
-          this.get_all_rooms()
+          this.nosearch_all_recent()
         } else {
           console.log("검색 + 전체 고독 + 최신 대화 //완료");
           this.only_search_room(this.input_data)
@@ -143,6 +151,7 @@ export default {
       } else if (this.filter2 == 1) {
         if (this.input_data == null) {
           console.log("검색x + 전체 고독 + 좋아요순" );
+          this.nosearch_all_like()
         } else {
           console.log("검색 + 전체 고독 + 좋아요순 //완료");
           this.search_all_like(this.input_data)
@@ -158,6 +167,7 @@ export default {
           this.nosearch_created_recent()
         } else {
           console.log("검색 + 내가 개설 + 최신 대화");
+          this.search_created_recent(this.input_data)
         }
       } else if (this.filter2 == 1) {
         if(this.input_data == null) {

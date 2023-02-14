@@ -36,6 +36,7 @@ export default {
     const store = useStore();
 
     const create_quiet_room = (room_data) => {
+      store.dispatch("quietChatStore/noSearchAllRecent")
       store.dispatch("quietChatStore/create_quiet_room", room_data)
     };
     return {
