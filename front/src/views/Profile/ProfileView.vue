@@ -7,7 +7,7 @@
       <only-go-back-top-nav></only-go-back-top-nav>
     </div>
     <profile-info></profile-info>
-    <user-stats></user-stats>
+    <!-- <user-stats></user-stats> -->
     <user-award></user-award>
     <user-board></user-board>
     
@@ -20,7 +20,7 @@
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue";
 import MyProfileTopNav from "../../components/Common/NavBar/MyProfileTopNav.vue";
 import ProfileInfo from "../../components/Profile/ProfileInfo.vue";
-import UserStats from "../../components/Profile/UserStats.vue";
+// import UserStats from "../../components/Profile/UserStats.vue";
 import UserAward from "../../components/Profile/UserAward.vue";
 import UserBoard from "../../components/Profile/UserBoard.vue";
 import OnlyGoBackTopNav from '@/components/Common/NavBar/OnlyGoBackTopNav.vue';
@@ -35,7 +35,7 @@ export default {
     MyProfileTopNav,
     OnlyGoBackTopNav,
     ProfileInfo,
-    UserStats,
+    // UserStats,
     UserAward,
     UserBoard,
   },

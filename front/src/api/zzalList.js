@@ -5,7 +5,7 @@ const authapi = authApiInstance();
 const api = apiInstance();
 
 function getPopularGIF(res,err) {
-    api.get(`/gif/main/gifs`)
+    api.get(`/gif/popular`)
     .then(res).catch(err)
 }
 function getRecommendGIF(res,err) {

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <router-link to="/make-chat" class="create-chat-button">
+    <div class="create-chat-button">
       <font-awesome-icon icon="fa-solid fa-comment-medical" />
       <div @click="GoToMakeChat" class="create-chat">
         새로운 고독방 개설하기
       </div>
-    </router-link>
+    </div>
   </div>
 </template>
 
@@ -14,7 +14,12 @@ export default {
   name: "MakeChatButton",
   methods: {
     GoToMakeChat() {
-      this.$router.push({ name: "make-chat" });
+      let isLogin = localStorage.getItem("token")
+        if (isLogin) {
+          this.$router.push({ name: "make-chat" });
+        } else {
+          this.$router.push({ name: "login-required" });
+        }
     },
   },
 };

@@ -6,10 +6,8 @@
     class="z-50" />
     <!-- {{ member_Id }}
       {{ my_member_Id }} -->
-    {{ totalheight }}
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
-
         <div v-if="message.type != 'ENTER'">
         <!-- 내가 보낸 메세지 -->
           <div v-if="user_nickname == message.sender">
@@ -20,7 +18,7 @@
               class="my-message-balloon"
             />
             <div class="my-image-group">
-              <span class="my-write-time">오후 6:00</span>
+              <span class="my-write-time">{{ message.send_date }}</span>
               <img class="my-image-box" :src="`${message.message}`" alt="" />
             </div>
           </div>
@@ -54,7 +52,7 @@
           <div class="image-group">
             <img class="image-box" :src="`${message.message}`" alt="" />
             <!-- 작성 시간  -->
-            <span class="write-time">오후 6:00</span>
+            <span class="write-time">{{ message.send_date }}</span>
           </div>
         </div>
       </div>
@@ -198,13 +196,29 @@ export default {
     reciveMessage(recv) {
       console.log("receive message: " + recv);
       console.log("test", recv);
+      let tmp = ""
+      let sendtime = ""
       let totalheight = document.body.scrollHeight;
+      tmp += recv.sendDate[11]
+      tmp += recv.sendDate[12]
+      if (Number(tmp) >= 12) {
+        sendtime += '오후 '
+        sendtime += Number(tmp-12)
+      } else {
+        sendtime += '오전 '
+        sendtime += recv.sendDate[11]
+        sendtime += recv.sendDate[12]
+      }
+      sendtime += ':'
+      sendtime += recv.sendDate[14],
+      sendtime += recv.sendDate[15],
       this.messages.unshift({
         type: recv.type,
         member_id: recv.memberId,
         sender: recv.sender,
         message: recv.message,
-        send_date: recv.sendDate,
+        // send_date: recv.sendDate,
+        send_date : sendtime,
         profilePath: recv.profilePath,
       });
       setTimeout(() => {
