@@ -14,7 +14,7 @@ public class TitleHakwonResponse {
     /** 제목학원 open 날짜 **/
 
     private Long titleHakwonId;
-    private String openData;
+    private String openDate;
 
     private String zzalUrl;
 
@@ -23,7 +23,7 @@ public class TitleHakwonResponse {
 
     public TitleHakwonResponse(TitleHakwon titleHakwon) {
         this.titleHakwonId = titleHakwon.getId();
-        this.openData = titleHakwon.getOpenDate();
+        this.openDate = titleHakwon.getOpenDate();
         this.zzalUrl = titleHakwon.getZzalUrl();
         this.state = titleHakwon.getState();
 
