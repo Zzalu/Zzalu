@@ -18,8 +18,7 @@
         class="mb-1"
         :id="'comment-' + comment.commentId"
       >
-        <CommentListItem :comment="comment" :index="index" />
-        <span class="w-full h-divider-height bg-zz-light-div dark:border-b-zz-dark-div"></span>
+        <CommentListItem :comment="comment" :index="index" :sort_type="sort_type" />
       </li>
     </ol>
   </div>

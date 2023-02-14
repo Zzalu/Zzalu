@@ -29,7 +29,7 @@
         <!-- 댓글 main -->
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
-          <nav class="flex justify-between">
+          <nav class="fixed w-10/12 flex justify-between bg-white py-1 border-b-2 border-zz-light-input">
             <div class="flex">
               <h2 class="text-xl text-zz-p">댓글</h2>
               <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
@@ -60,7 +60,7 @@
           <div
             v-show="!is_top"
             @click="goToTop"
-            class="fixed left-1/2 transform flex flex-col justify-center items-center text-zz-p"
+            class="fixed top-1/2 left-1/2 transform flex flex-col justify-center items-center text-zz-p"
           >
             <font-awesome-icon icon="fa-solid fa-circle-arrow-up" class="text-3xl" />
             <div v-show="sort_type == 'LATEST' && socket_comment_cnt" class="flex items-center">
@@ -77,6 +77,7 @@
             <p class="text-ls">{{ socket_comment_cnt }}</p>
           </div>
           <!-- 댓글 리스트 -->
+          >
           <comment-list ref="commentListComponent" class="comment-list"></comment-list>
         </div>
       </div>
@@ -140,8 +141,12 @@ export default {
     const clickSortBtn = (sort_type) => {
       is_top.value = true;
       document.documentElement.scrollTop = 0;
-      store.dispatch('titleCompetitionStore/setSocketDataInit');
-      store.dispatch('titleCompetitionStore/modifySortType', sort_type);
+      if (sort_type == 'TOP5') {
+        store.dispatch('titleCompetitionStore/modifySortType', sort_type);
+      } else {
+        store.dispatch('titleCompetitionStore/setSocketDataInit');
+        store.dispatch('titleCompetitionStore/modifySortType', sort_type);
+      }
     };
 
     //! 스크롤 관련
@@ -301,10 +306,10 @@ export default {
 }
 
 .comment-main {
-  @apply fixed bottom-0 w-11/12 mb-14 overflow-y-scroll h-1/2;
+  @apply fixed bottom-0 w-11/12 mb-20 overflow-y-scroll h-1/2;
 }
 .comment-list {
-  @apply w-full mb-10  h-auto;
+  @apply w-full mt-5  h-auto;
 }
 
 .comment-list ::-webkit-scrollbar {
