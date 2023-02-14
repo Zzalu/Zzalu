@@ -111,6 +111,7 @@ export default {
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
     let is_top = computed(() => store.state.titleCompetitionStore.is_top);
+    let state = computed(() => store.state.titleCompetitionStore.state);
     let socket_comment_cnt = computed(() => store.state.titleCompetitionStore.socket_comment_cnt);
     let socket_comments = computed(() => store.state.titleCompetitionStore.socket_comments);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
@@ -125,6 +126,8 @@ export default {
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
 
     const clickSortBtn = (sort_type) => {
+      is_top.value = true;
+      document.documentElement.scrollTop = 0;
       store.dispatch('titleCompetitionStore/setSocketDataInit');
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
@@ -162,32 +165,35 @@ export default {
     let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
+      let start = new Date();
+      console.log(`시작: ` + start);
       console.log('connect 시작');
       let localWs = ws;
       let localSock = sock;
       localWs.connect(
         {},
         function () {
+          console.log('댓글 받을준비');
           // 댓글 관련
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
             console.log(message);
             let recv_comment_data = JSON.parse(message.body);
             console.log('recv_comment_data: ' + recv_comment_data);
-            // 자기가 보낸 댓글이 아닐 때 저장시킨다.
-            // if (recv_comment_data.username != window.localStorage.getItem('profile_user')) {
+
             if (sort_type.value == 'LATEST') {
               // 최신순 정렬
               if (is_top.value) {
                 store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
               } else {
+                console.log('어딘디');
                 store.dispatch('titleCompetitionStore/addSocketCommentCnt');
                 store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
               }
             } else {
               // 과거순 or 인기순 정렬
+              console.log('어딘디22');
               store.dispatch('titleCompetitionStore/addSocketCommentCnt');
             }
-            // }
           });
           // 좋아요 관련
           localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
@@ -198,6 +204,9 @@ export default {
           });
         },
         function (error) {
+          console.log(error);
+          let end = new Date();
+          console.log(`에러: ` + end);
           console.log('error: ' + error);
           setTimeout(function () {
             console.log('connection reconnect');
@@ -207,8 +216,20 @@ export default {
         },
       );
     }
-
-    connect();
+    // connect();
+    setTimeout(function () {
+      if (state.value == 'PROCEED') {
+        console.log('값: ' + state.value);
+        connect();
+      }
+    }, 100);
+    /*     onMounted(() => {
+      setTimeout(function () {
+        if (state.value == 'PROCEED') {
+          connect();
+        }
+      }, 100);
+    }); */
 
     return {
       sock,

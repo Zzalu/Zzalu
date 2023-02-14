@@ -10,6 +10,7 @@
     <textarea
       ref="textArea"
       rows="{1}"
+      id="comment-textarea"
       @input="resize"
       v-if="isLogined"
       type="text"
@@ -77,15 +78,17 @@ export default {
           comment_data,
           ({ data }) => {
             console.log(data);
-            store.dispatch('titleCompetitionStore/pushComment', data);
+            if (store.state.state != 'LATEST') {
+              store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
+            }
+            /*             else {
+              store.dispatch('titleCompetitionStore/pushComment', data);
+            } */
           },
           (error) => {
             console.log(error);
           },
         );
-        if (store.state.state != 'LATEST') {
-          store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
-        }
       } else {
         const nested_comment_data = {
           content: content,
@@ -102,6 +105,9 @@ export default {
           },
         );
       }
+      // input 비워주기
+      document.querySelector('#comment-textarea').value = '';
+      content = '';
     };
 
     return {

@@ -2,7 +2,7 @@
   <li>
     <div class="dark:text-white">
       <div class="flex items-center mb-2">
-        <div class="w-3 h-3 rounded-full mr-2">
+        <div class="w-3 h-3 rounded-full mr-2" @click="goToProfile">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
@@ -55,6 +55,7 @@ import NestedCommentList from '@/components/TitleCompetition/NestedCommentList.v
 import { plusLike, minusLike, deleteComment } from '@/api/titleCompetition.js';
 import { computed } from 'vue-demi';
 import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 export default {
   components: { NestedCommentList },
   name: 'CommentListItem',
@@ -78,11 +79,15 @@ export default {
       like_cnt: props.comment.likeNumber,
       is_liked: props.comment.pressed,
     });
-    const username = window.localStorage.getItem('profile_user');
+    const user_id = window.localStorage.getItem('current_userid');
+    const router = useRouter();
+    const goToProfile = () => {
+      router.push(`/profile/${comment_data.username}`);
+    };
 
     // 삭제 버튼
     const canDelete = computed(() => {
-      return (comment_data.username = username);
+      return comment_data.username == user_id;
     });
 
     // 시간표시: ~ 전
@@ -192,6 +197,7 @@ export default {
       canDelete,
       clickDeleteBtn,
       new_time,
+      goToProfile,
     };
   },
 };
