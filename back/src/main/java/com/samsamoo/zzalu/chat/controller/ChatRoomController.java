@@ -156,7 +156,7 @@ public class ChatRoomController {
     @GetMapping("/search-order-likecount")
     @ResponseBody
     public List<ChatRoomListDto> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(@RequestParam(name = "keyword") String keyword){
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
