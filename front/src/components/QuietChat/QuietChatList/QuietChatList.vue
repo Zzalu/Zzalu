@@ -78,10 +78,10 @@ export default {
 <style scoped lang="postcss">
 .card-container {
   box-shadow: 0 0 7px black;
-  @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq rounded-lg dark:border-zz-dark-div;
+  @apply grid grid-cols-12 text-white mt-5 font-spoq rounded-lg dark:border-zz-dark-div h-full;
 }
 .card-img-contanier {
-  background-image: url(./assets/zzalu_logo_light.png);
+  background-image: url(./assets/zzalu_logo_dark.png);
   @apply col-span-4 border-2 bg-contain bg-center bg-no-repeat rounded-l-lg dark:border-zz-dark-div;
 }
 .card-content {

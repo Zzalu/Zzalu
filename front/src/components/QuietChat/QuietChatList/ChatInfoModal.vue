@@ -16,7 +16,7 @@
       />
       <img 
       v-else
-      src="../QuietChatList/assets/zzalu_logo_light.png" alt="">
+      src="../QuietChatList/assets/zzalu_logo_dark.png" alt="">
     </div>
     <div class="modal-content-box">
       <div class="modal-first-line">

@@ -71,6 +71,7 @@ import { useStore } from "vuex";
 import CannotEditModal from '../../components/QuietChat/MakeChat/CannotEditModal.vue';
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
 import KorGoBackTopNavBar from "../../components/Common/NavBar/KorGoBackTopNavBar"
+import Swal from 'sweetalert2'
 // var imageFile = document.getElementById("image");
 
 export default {
@@ -124,10 +125,16 @@ export default {
     AddHashtag() {
       const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
       if (this.hash_input=='') {
-        alert('내용을 입력해주세요')
+        Swal.fire({
+            icon: "warnning",
+            text:"해시태그 내용을 반드시 입력해주세요."
+            })
         this.hashtags_input_mode = false
       } else if (regex.test(this.hash_input) == false) {
-        alert('한글과 숫자와 영어만 입력해주세요')
+        Swal.fire({
+            icon: "warnning",
+            text:"한글과 숫자와 영어만 입력해주세요."
+            })
       } else {
         this.hashtags.push(this.hash_input)
         this.hash_input = ''
