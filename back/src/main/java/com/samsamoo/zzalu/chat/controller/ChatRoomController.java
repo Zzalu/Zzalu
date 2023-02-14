@@ -286,8 +286,14 @@ public class ChatRoomController {
                 chatRoomService.save(chatRoom);
                 return true;
             } else {
-                requestMember.getLikeChatRooms().remove(requestMember);
+                List<ChatRoom> likeChatRoom = requestMember.getLikeChatRooms();
+                likeChatRoom.remove(requestMember);
+                requestMember.setLikeChatRooms(likeChatRoom);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() - 1);
+                List<Member> likeMembers = chatRoom.getLikeMembers();
+                likeMembers.remove(chatRoom);
+                chatRoom.setLikeMembers(likeMembers);
+                chatRoomService.save(chatRoom);
                 memberRepository.save(requestMember);
 //                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
