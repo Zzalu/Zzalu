@@ -38,6 +38,31 @@ const titleCompetitionStore = {
     getState: (state) => state.state,
   },
   mutations: {
+    INIT_STORE_DATA(state) {
+      state.open_date = '';
+      state.total_comment_cnt = 0;
+      state.title_competition_id = 0;
+      state.zzal_url = '';
+      state.state = '';
+
+      // 댓글
+      state.sort_typ = 'POPULAR';
+      state.comments = [];
+      state.last_comment_id = Number.MAX_SAFE_INTEGER;
+
+      // 대댓글
+      state.new_nested_comments = [];
+      state.isNested = false;
+      state.comment_writer = {
+        comment_id: '',
+        nickname: '',
+      };
+
+      // 소켓 관련
+      state.is_top = true;
+      state.socket_comment_cnt = 0;
+      state.socket_comments = [];
+    },
     // 날짜 바꾸기
     SET_OPEN_DATE(state, open_date) {
       state.open_date = open_date;
@@ -130,6 +155,10 @@ const titleCompetitionStore = {
     },
   },
   actions: {
+    async initStoreData({ commit }) {
+      commit('INIT_STORE_DATA');
+      console.log('이닛!');
+    },
     async init({ state, dispatch }, data) {
       console.log('init: ' + data);
       await dispatch('getTitleCompetition', data.open_date);

@@ -245,6 +245,7 @@ export default {
     onUnmounted(() => {
       ws.disconnect();
       console.log('끊습니다');
+      store.dispatch('titleCompetitionStore/initStoreData');
     });
     /*     onMounted(() => {
       setTimeout(function () {
