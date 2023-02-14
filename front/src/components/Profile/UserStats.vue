@@ -1,6 +1,6 @@
 <template>
   <div class="profile-title mb-3"> 짤BTI: {{ profile_user_data.nickname }} {{ zzalMBTI }} </div>
-    <!-- <button @click="test">보기</button> -->
+    <button @click="test">보기</button>
     <div>
       <div id="chart" class="mb-10">
         <apexchart
@@ -91,20 +91,6 @@ data: function() {
       () => store.state.profileStore.profile_user.typeMsg
     );
 
-    // const title1 = computed(
-    //   () => store.state.profileStore.profile_user.stats.data[0].tag
-    // ); 
-    // const title2 = computed(
-    //   () => store.state.profileStore.profile_user.stats.data[0].tag
-    // ); 
-    // const title3 = computed(
-    //   () => store.state.profileStore.profile_user.stats.data[0].tag
-    // ); 
-    // const title4 = computed(
-    //   () => store.state.profileStore.profile_user.stats.data[0].tag
-    // ); 
-
-    // const title_array = [title1, title2, title3, title4]
     const stat_dirty = computed(
       () => store.state.profileStore.profile_user.stats
     );
@@ -116,68 +102,64 @@ data: function() {
       stat_dirty,
       zzalMBTI,
       profile_user_data,
-      // title_array,
     };
   },
   
   methods: {
-    // showch () {setTimeout( () => {
-    //   this.showChart = true
-    // }, 1000)},
-  //   test() {
-  //     this.series= [
-  //       {
-  //         data: [
-  //           this.stat_dirty.data[0].count,
-  //           this.stat_dirty.data[1].count,
-  //           this.stat_dirty.data[2].count,
-  //           this.stat_dirty.data[3].count,
-  //         ],
-  //       },
-  //     ],
-  //     this.chartOptions = {
-  //       grid: {
-  //         show: false,
-  //       },
-  //       chart: {
-  //         type: "bar",
-  //         height: 200,
-  //         // width: 1,
-  //         background: "#AA8AD4",
-  //       },
-  //       colors: ["#6750A4"],
-  //       plotOptions: {
-  //         bar: {
-  //           borderRadius: 4,
-  //           horizontal: true,
-  //         },
-  //       },
-  //       dataLabels: {
-  //         enabled: true,
-  //       },
-  //       xaxis: {
-  //         categories: [
-  //           this.stat_dirty.data[0].tag,
-  //           this.stat_dirty.data[1].tag,
-  //           this.stat_dirty.data[2].tag,
-  //           this.stat_dirty.data[3].tag,
-  //         ],
-  //         labels: {
-  //           show: false,
-  //           style: {
-  //             colors: ["#FFFFFF"],
-  //           },
-  //         },
-  //       },
-  //       yaxis: {
-  //         labels: {
-  //           style: {
-  //             colors: ["#FFFFFF"],
-  //           },
-  //         },
-  //       },
-  //     }
-  //   },
+    test() {
+      this.series= [
+        {
+          data: [
+            this.stat_dirty.data[0].count,
+            this.stat_dirty.data[1].count,
+            this.stat_dirty.data[2].count,
+            this.stat_dirty.data[3].count,
+          ],
+        },
+      ],
+      this.chartOptions = {
+        grid: {
+          show: false,
+        },
+        chart: {
+          type: "bar",
+          height: 200,
+          // width: 1,
+          background: "#AA8AD4",
+        },
+        colors: ["#6750A4"],
+        plotOptions: {
+          bar: {
+            borderRadius: 4,
+            horizontal: true,
+          },
+        },
+        dataLabels: {
+          enabled: true,
+        },
+        xaxis: {
+          categories: [
+            this.stat_dirty.data[0].tag,
+            this.stat_dirty.data[1].tag,
+            this.stat_dirty.data[2].tag,
+            this.stat_dirty.data[3].tag,
+          ],
+          labels: {
+            show: false,
+            style: {
+              colors: ["#FFFFFF"],
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: ["#FFFFFF"],
+            },
+          },
+        },
+      }
+    },
   },
 };
 </script>
