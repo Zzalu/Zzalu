@@ -1,7 +1,7 @@
 <template>
   <div class="h-nav-height fixed inset-x-0 top-0 bg-white flex items-center justify-center dark:bg-zz-bd">
     <span class="inline-block px-4 absolute left-0">
-      <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl dark:text-white" />
+      <font-awesome-icon icon="fa-solid fa-chevron-left" class="text-2xl dark:text-white" @click="goSettings"/>
     </span>
     <span class="inline-block px-4 absolute right-0 text-zz-s dark:text-white" @click="saveEditInfo"> 완료 </span>
   </div>
@@ -13,8 +13,8 @@
         <label
           class="px-4 flex flex-col items-center bg-white dark:bg-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
         >
-          <!-- <input type="file" ref="profilePic"  @change="inputImage()" name="profile_image" id="profile_image"/> -->
-          <input type="file" name="profile_image" id="profile_image"/>
+          <input type="file" ref="profilePic"  @change="inputImage()" name="profile_image" id="profile_image"/>
+          <!-- <input type="file" name="profile_image" id="profile_image"/> -->
           <button @click="profileUploadBtn"></button>
           <div class="flex">
             <font-awesome-icon icon="fa-solid fa-image" class="my-auto mr-2 dark:text-white" />
@@ -105,6 +105,7 @@ export default {
       const result = await store.dispatch('userStore/uniqueNicknameAction', state.newNickname )
       if (result.data.unique==true) {
         state.newNicknameState = true
+        errorMsgs.err.nickname = ''
         Swal.fire({
           icon: "success",
           text:"사용 가능한 닉네임입니다."
@@ -192,6 +193,10 @@ export default {
       const url = URL.createObjectURL(this.send_image)
       this.profileImg = url
     },
+
+    goSettings() {
+      this.$router.push({name: "account-settings"})
+    }
   },
 };
 </script>
