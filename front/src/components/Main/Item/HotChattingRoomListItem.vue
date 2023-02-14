@@ -93,7 +93,7 @@ export default {
 }
 .quiet-chat-card-contain {
   box-shadow: 0 0 5px black;
-  background-image: url("../../QuietChat/QuietChatList/assets/zzalu_logo_dark.png");
+  background-image: url("../../QuietChat/QuietChatList/assets/favicon.png");
   @apply border-2 h-48 w-36 bg-center bg-contain bg-no-repeat rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
 }
 

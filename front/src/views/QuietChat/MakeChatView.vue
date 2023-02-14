@@ -80,7 +80,6 @@ export default {
     const store = useStore();
 
     const get_img_path = (e) => {
-      console.log('이미지이거보냄',e);
       store.dispatch("quietChatStore/getImagePath",e)
     }
     return {
@@ -112,7 +111,6 @@ export default {
       this.url = URL.createObjectURL(file[0]);
       // 여기서 api 요청
       this.img_file = this.$refs.serveyImage.files[0]
-      console.log(this.img_file);
       let image_file = { data : this.img_file}
       this.get_img_path(image_file)
 
@@ -185,7 +183,7 @@ export default {
   @apply text-center mb-4 ;
 }
 .preview-image {
-  background-image: url(../../components/QuietChat/QuietChatList/assets/zzalu_logo_dark.png);
+  background-image: url(../../components/QuietChat/QuietChatList/assets/favicon.png);
   @apply bg-contain bg-center bg-no-repeat rounded-l-lg h-48 w-24 mx-auto bg-transparent;
 }
 .select-image {
