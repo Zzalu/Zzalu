@@ -5,9 +5,13 @@
     <div>
         <div class="bg-center">
         <!-- <img :src="`${gifpath}`" alt="" class="img-contain" /> -->
-          <img class="profile-image" :style="{backgroundImage : `url(${this.image})`}">
-          <input type="file" class="bg-red-200" ref="profilePic" name="image" id="image">
-          <button @click="profileUploadBtn"></button>
+          <!-- <img class="profile-image" :style="{backgroundImage : `url(${this.image})`}"> -->
+          <form>
+
+            <input type="file" ref="serveyImage" @change="onInputImage()">
+            <!-- <input type="file" :v-model="request_form.updated_image"> -->
+          </form>
+          <!-- <button @click="profileUploadBtn"></button> -->
         </div>
     </div>
 
@@ -93,7 +97,12 @@ import MainBottomNav from "../components/Common/NavBar/MainBottomNav.vue"
 
 import { useStore } from "vuex";
 // import { computed } from "@vue/runtime-core";
-var imageFile = document.getElementById("image");
+// var imageFile = document.querySelector("#image111");
+// imageFile.addEventListener("change", function (event) {
+//   var fileList = imageFile.files || event.target.files
+//   var file = fileList[0]
+//   this.request_form.updated_image = file
+// } )
 
 
 export default {
@@ -105,10 +114,16 @@ export default {
   setup() {
     const store = useStore();
     const update_request = (form) => {
-      console.log(imageFile,"g")
-      form.created_image = imageFile
-      // form.created_tags = this.tags.join()
-      store.dispatch("tempGifStore/postTempGif", form)
+      // form.updated_image = imageFile.files[0];
+      console.log(form.updated_image)
+      if (form.updated_image == "") {
+        alert("gif를 업로드 해주세요.")
+      } else if (form.updated_tags == ""){
+        alert("태그를 한 개 이상 넣어주세요.")
+      } else {
+        store.dispatch("tempGifStore/postTempGif", form)
+      }
+    
       // 이전 페이지로
 
     }
@@ -139,6 +154,11 @@ export default {
     // this.get_detail_data(this.$route.params.zzal_id)
   },
   methods: {
+    onInputImage() {
+      this.request_form.updated_image = this.$refs.serveyImage.files[0]
+      console.log(this.request_form.updated_image, "gg")
+
+    },
     RemoveHashtag(i) {
       this.tags.splice(i, 1);
     },
@@ -153,15 +173,19 @@ export default {
       } else if (regex.test(this.hash_input) == false) {
         alert('한글과 숫자와 영어만 입력해주세요')
       } else {
+        
+        
+        this.tags.push(this.hash_input)
+        console.log(this.tags, "태그다")
+        this.hash_input = ''
+        
         var strTag = this.tags.join();
         if (strTag.indexOf(',') == 0) {
           // this.request_form.updated_tags = strTag.substr(1);
           this.tags.shift()
         }
-        this.tags.push(this.hash_input)
-        console.log(this.tags, "태그다")
-        this.hash_input = ''
         this.request_form.updated_tags = this.tags.join()
+        
       }
     },
   },
