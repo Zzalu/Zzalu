@@ -13,7 +13,6 @@
         <div v-if="message.type == 'TALK' ">
           <!-- 내가 보낸 메세지 -->
           <div v-if="user_nickname == message.sender">
-            {{ message }}
             <div class="mb-4"></div>
             <!-- 짤 이미지 -->
 
@@ -123,6 +122,9 @@ export default {
     const user_stat = (e) => {
       store.dispatch("quietChatStore/postUserStat", e);
     };
+    const get_user_store = (data) => {
+      store.dispatch("boardListStore/getUserStoreList", data);
+    }
 
     const messages = computed(() => store.state.quietChatStore.past_message);
 
@@ -131,6 +133,7 @@ export default {
       messages,
       get_past_message,
       user_stat,
+      get_user_store
     };
   },
   created() {
@@ -178,7 +181,7 @@ export default {
 
   methods: {
     GoToDetail(gifid) {
-      console.log(gifid);
+      this.get_user_store()
       this.$router.push({name : 'zzal', params : {zzal_id : gifid},})
     },
     open_search_modal() {

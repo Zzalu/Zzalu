@@ -164,6 +164,9 @@ export default {
       console.log('실행?',gif_id);
       store.dispatch("zzalListStore/getDetailData",gif_id);
     };
+    const open_list_modals = computed(
+      () => store.state.searchModalStore.open_list_modal
+    );
     const update_request = (form) => {
       form.origin_id = jjal_detail_data.value.id;
       store.dispatch("tempGifStore/postTempGif", form)
@@ -174,7 +177,8 @@ export default {
       open_list_modal,
       get_detail_data,
       jjal_detail_data,
-      update_request
+      update_request,
+      open_list_modals,
     };
   },
   components: {
@@ -241,6 +245,13 @@ export default {
     //   console.log(this.request_form.updated_description)
     // }
   },
+  watch: {
+    open_list_modals: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
+  }
 };
 </script>
 

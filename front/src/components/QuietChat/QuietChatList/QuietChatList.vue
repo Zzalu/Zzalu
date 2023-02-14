@@ -1,7 +1,11 @@
 <template>
   <div>
     <div class="card-container">
-      <div class="card-img-contanier"></div>
+      <div v-if="room_data.imagePath" class="card-img-contanier"
+      :style="`background-image:url(${this.room_data.imagePath})`"
+      ></div>
+      <div v-else class="card-img-contanier">
+      </div>
       <div class="card-content">
         <div class="flex">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
@@ -77,8 +81,8 @@ export default {
   @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq rounded-lg dark:border-zz-dark-div;
 }
 .card-img-contanier {
-  background-image: url(./assets/nyang.gif);
-  @apply col-span-4 border-2 bg-cover bg-center bg-no-repeat rounded-l-lg dark:border-zz-dark-div;
+  background-image: url(./assets/zzalu_logo_light.png);
+  @apply col-span-4 border-2 bg-contain bg-center bg-no-repeat rounded-l-lg dark:border-zz-dark-div;
 }
 .card-content {
   word-break: keep-all;

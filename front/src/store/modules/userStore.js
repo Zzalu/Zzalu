@@ -45,7 +45,7 @@ const userStore = {
       localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
-      localStorage.setItem('current_nickname', loginData.data.isManager)
+    
     },
     DELETE_TEMP_USER(state) {
       state.temp.username = ''

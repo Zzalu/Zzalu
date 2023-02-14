@@ -10,9 +10,13 @@
     </div>
     <div class="img-container">
       <img
-        src="../../QuietChat/QuietChatList/assets/9_16img.jpg"
+        v-if="room_data.imagePath"
+        :src="`${room_data.imagePath}`"
         class="modal-img"
       />
+      <img 
+      v-else
+      src="../QuietChatList/assets/zzalu_logo_light.png" alt="">
     </div>
     <div class="modal-content-box">
       <div class="modal-first-line">

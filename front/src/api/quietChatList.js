@@ -1,8 +1,10 @@
 import { apiInstance } from './index.js';
+import { formApiInstance } from './index.js';
 import { authApiInstance } from './index.js';
 
 const authapi = authApiInstance();
 const api = apiInstance();
+const formApi = formApiInstance();
 
 function getQuiet(res, err) {
     api.get(`/chat/rooms`)
@@ -100,5 +102,10 @@ function searchBookmarkLikeroom(keywords,res,err) {
     .then(res).catch(err)
 }
 
-export { getQuiet, createQuietChat, UserStats, noSearchBookmarkRecentroom, SearchBookmarkRecentroom, nosearchBookmarkLikeroom, searchBookmarkLikeroom,
+function getimgpath(image,res,err) {
+    formApi.post(`/s3/upload`, image)
+    .then(res).catch(err)
+}
+
+export { getQuiet, createQuietChat, UserStats, noSearchBookmarkRecentroom, SearchBookmarkRecentroom, nosearchBookmarkLikeroom, searchBookmarkLikeroom, getimgpath,
     getHotQuietList, PastMessage, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedRecentroom, SearchCreatedLikeroom, RoomLike, noSearchallrecentroom, nosearchAllLikeroom }

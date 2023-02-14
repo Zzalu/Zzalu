@@ -87,11 +87,11 @@ const profileStore = {
     getProfileStat(
       params,
       (res) => {
-        console.log('유저 보관함 요청 성공', res)
+        console.log('유저 스탯 요청 성공', res)
         commit('SET_PROFILE_STATS', res)
       },
       (err) => {
-        console.log('유저 보관함 요청 실패', err);
+        console.log('유저 스탯 요청 실패', err);
       }
     )
   }, 

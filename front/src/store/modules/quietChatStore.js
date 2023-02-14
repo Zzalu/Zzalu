@@ -1,4 +1,4 @@
-import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom, PastMessage, UserStats, noSearchBookmarkRecentroom, SearchBookmarkRecentroom, nosearchBookmarkLikeroom, searchBookmarkLikeroom,
+import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom, PastMessage, UserStats, noSearchBookmarkRecentroom, SearchBookmarkRecentroom, nosearchBookmarkLikeroom, searchBookmarkLikeroom, getimgpath,
   noSearchallrecentroom, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike } from "@/api/quietChatList";
 
 const quietChatStore = {
@@ -9,8 +9,12 @@ const quietChatStore = {
     quiet_list: null,
     hot_quiet_list: null,
     past_message : [],
+    image_path: null,
   }),
   mutations: {
+    GET_IMG_PATH(state,data) {
+      state.image_path = data.data.urlPath
+    },
     open_chat_info(state) {
       state.open_chat_info = true
     },
@@ -70,19 +74,32 @@ const quietChatStore = {
       state.past_message = pastMessage.data
     },
     GET_NOSEARCH_BOOKMARK_RECENT(state, nosearchbookmarkrecent) {
-      state.hot_quiet_list = nosearchbookmarkrecent.data
+      state.quiet_list = nosearchbookmarkrecent.data
     },
     GET_SEARCH_BOOKMARK_RECENT(state, searchbookmarkrecent) {
-      state.hot_quiet_list = searchbookmarkrecent.data
+      state.quiet_list = searchbookmarkrecent.data
     },
     GET_NOSEARCH_BOOKMARK_LIKE(state, nosearchbookmarklike) {
-      state.hot_quiet_list = nosearchbookmarklike
+      state.quiet_list = nosearchbookmarklike
     },
     SEARCHBOOKMARKLIKE(state, searchbookmarklike){ 
-      state.hot_quiet_list = searchbookmarklike
+      state.quiet_list = searchbookmarklike
     }
   },
   actions: {
+    // 이미지 패스 얻기
+    getImagePath({commit},img) {
+      getimgpath(
+        img,
+        (data) => {
+          console.log(data, '패스얻기 성공');
+          commit('GET_IMG_PATH',data)
+        },
+        (err) => {
+          console.log(err, '패스얻기 실패');
+        }
+      )
+    },
     // 유저 스탯
     postUserStat(params,datas) {
       UserStats(
