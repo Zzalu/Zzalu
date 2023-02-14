@@ -1,7 +1,9 @@
 <template>
     <div class="ml-4 flex">
       <img v-if="this.profile_user_data.profilePath != null" class="profile-image" :style="{ backgroundImage: `url(${this.profile_user_data.profilePath})` }" />
-      <img v-else class="profile-image" src="@/assets/zzalu_logo_light.png" />
+      <!-- <img v-else class="profile-image" src="@/assets/zzalu_logo_light.png" />
+      <div></div> -->
+      <font-awesome-icon v-else class="profile-image-none" icon="fa-solid fa-user"   />
       <!-- <img src="" alt=""> -->
       <div class="mx-auto">
         <div class="flex">
@@ -144,6 +146,16 @@ export default {
     max-height: 100px; */
   /* object-fit: cover; */
   @apply rounded-full bg-center bg-no-repeat;
+}
+
+.profile-image-none {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
 }
 
 </style>

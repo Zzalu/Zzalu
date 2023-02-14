@@ -54,7 +54,7 @@
             <div class="grid grid-rows-2 gap-2">
               <div
                 class="flex place-items-end"
-                @click="this.open_list_modal(gif_id)"
+                @click="this.open_list_modal(gif_id.id)"
               >
                 <font-awesome-icon
                   icon="fa-solid fa-star"
@@ -161,7 +161,6 @@ export default {
       () => store.state.zzalListStore.jjal_data
     );
     const get_detail_data = (gif_id) => {
-      console.log('실행?',gif_id);
       store.dispatch("zzalListStore/getDetailData",gif_id);
     };
     const open_list_modals = computed(
@@ -192,7 +191,7 @@ export default {
     return {
       edit_mode: false,
       zzal_origin_content: "",
-      gif_id : this.$store.state.zzalListStore.jjal_data,
+      // gif_id : this.$store.state.zzalListStore.jjal_data,
       request_form : {
         origin_id : "",
         updated_description : "",
@@ -203,6 +202,9 @@ export default {
     };
   },
   computed: {
+    gif_id() {
+      return this.$store.state.zzalListStore.jjal_data
+    },
     id() {
       return this.jjal_detail_data.id;
     },
