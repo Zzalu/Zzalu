@@ -41,6 +41,7 @@ public class ChatController {
 
         // kafka topic 발행
         kafkaProducer.sendMessage(message);
+        chatRoomRedisRepository.setChatMessage(message);
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
 }

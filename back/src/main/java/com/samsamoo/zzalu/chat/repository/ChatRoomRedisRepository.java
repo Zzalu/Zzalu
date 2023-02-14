@@ -59,10 +59,9 @@ public class ChatRoomRedisRepository {
     }
 
     // Created 2023.01.27 by Hye Sung
-    @Cacheable(cacheNames = "ChatMessages", key = "#id + #id")
     public List<ChatMessageDto> findAllChatMessage(String id) {
         long size = opsListChatMessage.size(id + id);
-        List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, 0, size);
+        List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, 0, 100);
        return chatMessageDtos;
     }
 
@@ -107,8 +106,7 @@ public class ChatRoomRedisRepository {
     }
 
 
-    @CachePut(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()")
-    public List<ChatMessageDto> setChatMessage(ChatMessageDto message) {
+    public void setChatMessage(ChatMessageDto message) {
         LocalDateTime sendDate = LocalDateTime.now();
         System.out.println("setChatMessage ===");
         message.setSendDate(sendDate);
@@ -131,13 +129,6 @@ public class ChatRoomRedisRepository {
         } else {
             System.out.println("need chat room not found exception throw");
         }
-        LinkedList<ChatMessageDto> chatMessageDtos = new LinkedList<>();
-        chatMessageDtos = (LinkedList<ChatMessageDto>) findAllChatMessage(message.getRoomId() + message.getRoomId());
-        if(chatMessageDtos.size() >= 100)
-            chatMessageDtos.pollFirst();
-        chatMessageDtos.addLast(message);
-        List<ChatMessageDto> retunValue = chatMessageDtos;
-        return retunValue;
     }
 
     /**
