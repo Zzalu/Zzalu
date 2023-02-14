@@ -81,7 +81,7 @@ export default {
   @apply grid grid-cols-12 text-white mt-5 font-spoq rounded-lg dark:border-zz-dark-div h-full;
 }
 .card-img-contanier {
-  background-image: url(./assets/zzalu_logo_dark.png);
+  background-image: url(./assets/favicon.png);
   @apply col-span-4 border-2 bg-contain bg-center bg-no-repeat rounded-l-lg dark:border-zz-dark-div;
 }
 .card-content {

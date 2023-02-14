@@ -54,17 +54,16 @@
   <div class="flex justify-center dark:text-white">
     <button
       class="text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto cursor-pointer font-spoq dark:border-zz-dark-div"
-      @click="update_request(this.request_form)"
+      @click="updateRequest(this.request_form)"
     >
       저장하기
     </button>
   </div>
-  <div>
-    <button @click="updateRequest">완료</button>
-  </div>
 </template>
 
 <script>
+import Swal from 'sweetalert2'
+
 export default {
   name: "ZzalInfo",
   data() {
@@ -74,6 +73,7 @@ export default {
       hash_input: "",
       description: this.jjal_detail_data.description,
       relationsVideo: this.jjal_detail_data.relationsVideo,
+      tags: this.jjal_detail_data.tags.split(","),
       request_form : {
         origin_id : "",
         updated_description : "",
@@ -87,9 +87,9 @@ export default {
     jjal_detail_data: Object,
   },
   computed: {
-    tags() {
-      return this.jjal_detail_data.tags.split(",");
-    },
+    // tags() {
+    //   return this.jjal_detail_data.tags.split(",");
+    // },
     visitedcount() {
       return this.jjal_detail_data.visitedcount;
     },
@@ -110,10 +110,16 @@ export default {
     AddHashtag() {
       const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
       if (this.hash_input == "") {
-        alert("내용을 입력해주세요");
+        Swal.fire({
+            icon: "warnning",
+            text:"해시태그 내용을 반드시 입력해주세요."
+            })
         this.hashtags_input_mode = false;
       } else if (regex.test(this.hash_input) == false) {
-        alert("한글과 숫자와 영어만 입력해주세요");
+        Swal.fire({
+            icon: "warnning",
+            text:"한글과 숫자와 영어만 입력해주세요."
+            })
       } else {
         this.tags.push(this.hash_input);
         this.hash_input = "";
