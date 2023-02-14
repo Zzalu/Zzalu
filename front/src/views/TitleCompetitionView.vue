@@ -16,8 +16,8 @@
           </div>
           <!-- 짤 -->
 
-          <div ref="zzalComponent" class="w-2/5 h-2/5">
-            <img :src="zzal_url" alt="짤" class="w-full h-full" />
+          <div ref="zzalComponent" class="w-60 h-60">
+            <img :src="zzal_url" alt="짤" class="w-full h-full contain" />
             <div v-if="isScrolled" class="zzal-fixed">
               <img :src="zzal_url" alt="짤" />
             </div>
@@ -334,6 +334,11 @@ export default {
 .like-btn {
   animation: heartbeat 1s 3 ease;
 }
+
+.contain {
+  object-fit: contain;
+}
+
 /* 크기가 변하는 아이콘 키프레임 애니메이션 */
 @keyframes heartbeat {
   0% {
