@@ -23,9 +23,10 @@ public class TempGifController {
 
     //--------------------------------모든 임시 게시물 조회---------------------------------
     @GetMapping("/all")
-    public ResponseEntity getAllTempGif() {
+    public ResponseEntity getAllTempGif(@RequestHeader(value = "Authorization") String bearerToken) {
         // 시큐리티에서 체크
-        List<TempGif> tempGifList = tempGifService.getAllTempGif();
+        String token = bearerToken.substring(7);
+        List<TempGif> tempGifList = tempGifService.getAllTempGif(token);
         return new ResponseEntity<>(Map.of("tempGifList", tempGifList),HttpStatus.OK);
     }
     //--------------------------------임시 게시물 생성 요청---------------------------------
