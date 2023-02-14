@@ -139,7 +139,7 @@ export default {
     };
   },
   mounted() {
-    // this.get_user_list(this.select_gif_id);
+    this.get_user_list(this.select_gif_id);
     if (this.open_list_modal) {
       setTimeout(() => {
         document.addEventListener("click", this.ListoutClick);

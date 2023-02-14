@@ -91,6 +91,18 @@ export default {
     const nosearch_all_like = () => {
       store.dispatch("quietChatStore/nosearchAllLike")
     }
+    const nosearch_bookmark_recent = () => {
+      store.dispatch("quietChatStore/noSearchBookmarkRecent")
+    }
+    const search_bookmark_recent = (e) => {
+      store.dispatch("quietChatStore/SearchBookmarkRecent",e)
+    }
+    const nosearch_bookmark_like = () => {
+      store.dispatch("quietChatStore/nosearchBookmarkLike", user_id)
+    }
+    const search_bookmark_like = (e) => {
+      store.dispatch("quietChatStore/searchBookmarkLike",[e,user_id])
+    }
 
     return {
       only_search_room,
@@ -100,7 +112,12 @@ export default {
       nosearch_created_like,
       search_all_like,
       search_created_like,
-      nosearch_all_like
+      nosearch_all_like,
+      nosearch_bookmark_recent,
+      search_bookmark_recent,
+      nosearch_bookmark_like,
+      search_bookmark_like
+
     };
   },
   data() {
@@ -163,7 +180,7 @@ export default {
       this.filter1 = 1;
       if (this.filter2 == 0) {
         if (this.input_data == null) {
-          console.log("검색x + 내가 개설 + 최신 대화",'//완료');
+          console.log("검색x + 내가 개설 + 최신 대화");
           this.nosearch_created_recent()
         } else {
           console.log("검색 + 내가 개설 + 최신 대화");
@@ -188,12 +205,12 @@ export default {
           this.nosearch_bookmark_recent()
         } else {
           console.log("검색 + 즐겨찾기 + 최신 대화순");
-          this.search_bookmark_recent()
+          this.search_bookmark_recent(this.input_data)
         }
       } else if (this.filter2 == 1) {
         if (this.input_data == null) {
           console.log("검색x +즐겨찾기 + 좋아요 순");
-          this.nosearch_bookmark_like(this.input_data)
+          this.nosearch_bookmark_like()
         } else {
           console.log("검색 +즐겨찾기 + 좋아요 순");
           this.search_bookmark_like(this.input_data)

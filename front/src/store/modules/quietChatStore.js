@@ -1,4 +1,4 @@
-import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom, PastMessage, UserStats,
+import { getQuiet, createQuietChat, nosearchAllLikeroom, SearchCreatedRecentroom, PastMessage, UserStats, noSearchBookmarkRecentroom, SearchBookmarkRecentroom, nosearchBookmarkLikeroom, searchBookmarkLikeroom,
   noSearchallrecentroom, getHotQuietList, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedLikeroom, RoomLike } from "@/api/quietChatList";
 
 const quietChatStore = {
@@ -68,6 +68,18 @@ const quietChatStore = {
       }
       pastMessage.data = [...pastMessage.data].reverse()
       state.past_message = pastMessage.data
+    },
+    GET_NOSEARCH_BOOKMARK_RECENT(state, nosearchbookmarkrecent) {
+      state.hot_quiet_list = nosearchbookmarkrecent.data
+    },
+    GET_SEARCH_BOOKMARK_RECENT(state, searchbookmarkrecent) {
+      state.hot_quiet_list = searchbookmarkrecent.data
+    },
+    GET_NOSEARCH_BOOKMARK_LIKE(state, nosearchbookmarklike) {
+      state.hot_quiet_list = nosearchbookmarklike
+    },
+    SEARCHBOOKMARKLIKE(state, searchbookmarklike){ 
+      state.hot_quiet_list = searchbookmarklike
     }
   },
   actions: {
@@ -191,6 +203,7 @@ const quietChatStore = {
         }
       )
     },
+    
 
 
 
@@ -252,6 +265,56 @@ const quietChatStore = {
         },
         (err) => {
           console.log(err, '검색, 내가 만든, 좋아요순 실패');
+        }
+      )
+    },
+
+    // 즐겨찾기
+
+    noSearchBookmarkRecent({ commit }) {
+      noSearchBookmarkRecentroom (
+        (data) => {
+          console.log(data,'검색x, 즐겨찾기, 최근활동순 성공');
+          commit('GET_NOSEARCH_BOOKMARK_RECENT',data)
+        },
+        (err) => {
+          console.log(err,'검색x, 즐겨찾기, 최근활동순 실패');
+        }
+      )
+    },
+    SearchBookmarkRecent({ commit } , params) {
+      SearchBookmarkRecentroom (
+        params,
+        (data) => {
+          console.log(data, '검색, 즐겨찾기, 최근활동순 성공');
+          commit('GET_SEARCH_BOOKMARK_RECENT',data)
+        },
+        (err) => {
+          console.log(err, '검색, 즐겨찾기, 최근활동순 실패');
+        }
+      )
+    },
+    nosearchBookmarkLike({ commit },params) {
+      nosearchBookmarkLikeroom (
+        params,
+        (data) => {
+          console.log(data,'검색x, 즐겨찾기, 좋아요순 성공');
+          commit('GET_NOSEARCH_BOOKMARK_LIKE',data)
+        },
+        (err) => {
+          console.log(err,'검색x, 즐겨찾기, 좋아요순 실패');
+        }
+      )
+    },
+    searchBookmarkLike({ commit }, params) {
+      searchBookmarkLikeroom (
+        params,
+        (data) => {
+          console.log(data,'검색, 즐겨찾기, 좋아요순 성공');
+          commit('SEARCHBOOKMARKLIKE', data)
+        },
+        (err) => {
+          console.log(err, '검색, 즐겨찾기 좋아요순 실패');
         }
       )
     }

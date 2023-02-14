@@ -1,17 +1,20 @@
 <template>
   <div>
-    <ChatRoomTopNav :room_name="this.$route.query.room_name"
-    :room_id="this.$route.query.room_id"
-    :like="this.$route.query.like"
-    class="z-50" />
+    <ChatRoomTopNav
+      :room_name="this.$route.query.room_name"
+      :room_id="this.$route.query.room_id"
+      :like="this.$route.query.like"
+      class="z-50"
+    />
     <!-- {{ member_Id }}
       {{ my_member_Id }} -->
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
-        <!-- {{ message }} -->
-        <div v-if="message.type != 'ENTER'">
-        <!-- 내가 보낸 메세지 -->
+        <div v-if="message.type == 'TALK' ">
+          <!-- 내가 보낸 메세지 -->
           <div v-if="user_nickname == message.sender">
+            {{ message }}
+            <div class="mb-4"></div>
             <!-- 짤 이미지 -->
 
             <font-awesome-icon
@@ -20,7 +23,9 @@
             />
             <div class="my-image-group">
               <span class="my-write-time">{{ message.sendDate }}</span>
-              <img class="my-image-box" :src="`${message.message}`" alt="" />
+              <img class="my-image-box" :src="`${message.message}`" alt="" 
+              @click="GoToDetail(message.gifId)"
+              />
             </div>
           </div>
           <!-- ---------------------------------------------------------------------------------- -->
@@ -28,18 +33,21 @@
 
           <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
           <div class="profile-image" v-if="user_nickname != message.sender">
-            <!-- 만약 방장이라면
-  "  -->    
+            <!-- 만약 방장이라면"  -->
             <div v-if="message.member_id == member_Id">
               <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
-              <p class="profile-nickname dark:text-white">{{ message.sender }}</p>
+              <p class="profile-nickname dark:text-white">
+                {{ message.sender }}
+              </p>
               <font-awesome-icon
                 icon="fa-solid fa-play"
                 class="message-balloon"
               />
             </div>
             <div v-else>
-              <p class="profile-nicknames dark:text-white">{{ message.sender }}</p>
+              <p class="profile-nicknames dark:text-white">
+                {{ message.sender }}
+              </p>
               <font-awesome-icon
                 icon="fa-solid fa-play"
                 class="message-balloons"
@@ -47,13 +55,16 @@
             </div>
           </div>
         </div>
-
-        <!-- 짤 이미지 -->
-        <div class="image-contain" v-if="user_nickname != message.sender">
-          <div class="image-group">
-            <img class="image-box" :src="`${message.message}`" alt="" />
-            <!-- 작성 시간  -->
-            <span class="write-time">{{ message.sendDate }}</span>
+        <div v-if="message.type == 'TALK'">
+          <!-- 짤 이미지 -->
+          <div class="image-contain" v-if="user_nickname != message.sender">
+            <div class="image-group">
+              <img class="image-box" :src="`${message.message}`" alt="" 
+              @click="GoToDetail(message.gifId)"
+              />
+              <!-- 작성 시간  -->
+              <span class="write-time">{{ message.sendDate }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -107,27 +118,25 @@ export default {
     const token = localStorage.getItem("token");
 
     const get_past_message = (room_id) => {
-      store.dispatch("quietChatStore/getPastMessage",room_id)
-    }
+      store.dispatch("quietChatStore/getPastMessage", room_id);
+    };
     const user_stat = (e) => {
-      store.dispatch("quietChatStore/postUserStat",e)
-    }
+      store.dispatch("quietChatStore/postUserStat", e);
+    };
 
-    const messages = computed(
-      () => store.state.quietChatStore.past_message
-    );
+    const messages = computed(() => store.state.quietChatStore.past_message);
 
     return {
       token,
       messages,
       get_past_message,
-      user_stat
+      user_stat,
     };
   },
   created() {
     // this.findQuiteChatList = findQuiteChatRoom;
     this.room_id = this.$route.query.room_id;
-    this.get_past_message(this.room_id)
+    this.get_past_message(this.room_id);
     this.access_token = this.token;
     console.log("token : " + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
@@ -143,8 +152,6 @@ export default {
     this.reconnect = 0;
     this.connect();
     console.log("created_end");
-
-    
   },
   data() {
     return {
@@ -170,6 +177,10 @@ export default {
   },
 
   methods: {
+    GoToDetail(gifid) {
+      console.log(gifid);
+      this.$router.push({name : 'zzal', params : {zzal_id : gifid},})
+    },
     open_search_modal() {
       this.search_modal = !this.search_modal;
     },
@@ -207,7 +218,7 @@ export default {
           roomId: this.room_id,
           sender: this.access_token,
           message: this.message,
-          gifId: this.gif_id
+          gifId: this.gif_id,
         }),
         {}
       );
@@ -216,30 +227,31 @@ export default {
       console.log("receive message: " + recv);
       console.log("test", recv);
       let totalheight = document.body.scrollHeight;
-      let tmp = ""
-      let sendtime = ""
-      tmp += recv.sendDate[11]
-      tmp += recv.sendDate[12]
+      let tmp = "";
+      let sendtime = "";
+      tmp += recv.sendDate[11];
+      tmp += recv.sendDate[12];
       if (Number(tmp) >= 12) {
-        sendtime += '오후 '
-        sendtime += Number(tmp-12)
+        sendtime += "오후 ";
+        sendtime += Number(tmp - 12);
       } else {
-        sendtime += '오전 '
-        sendtime += recv.sendDate[11]
-        sendtime += recv.sendDate[12]
+        sendtime += "오전 ";
+        sendtime += recv.sendDate[11];
+        sendtime += recv.sendDate[12];
       }
-      sendtime += ':'
-      sendtime += recv.sendDate[14],
-      sendtime += recv.sendDate[15],
-      this.messages.unshift({
-        type: recv.type,
-        member_id: recv.memberId,
-        sender: recv.sender,
-        message: recv.message,
-        // send_date: recv.sendDate,
-        sendDate : sendtime,
-        profilePath: recv.profilePath,
-      });
+      sendtime += ":";
+      (sendtime += recv.sendDate[14]),
+        (sendtime += recv.sendDate[15]),
+        this.messages.unshift({
+          type: recv.type,
+          member_id: recv.memberId,
+          sender: recv.sender,
+          message: recv.message,
+          // send_date: recv.sendDate,
+          sendDate: sendtime,
+          profilePath: recv.profilePath,
+          gifId: this.gif_id,
+        });
       setTimeout(() => {
         window.scrollTo({ top: totalheight, left: 0, behavior: "smooth" });
       }, 100);
