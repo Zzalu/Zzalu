@@ -79,5 +79,26 @@ function RoomLike(data, datas, res, err) {
         .then(res).catch(err)
 }
 
-export { getQuiet, createQuietChat, UserStats,
+function noSearchBookmarkRecentroom(res, err) {
+    authapi.get(`/chat/search-like-order-likecount?keyword=`)
+    .then(res).catch(err)
+}
+
+function SearchBookmarkRecentroom(params,res,err) {
+    authapi.get(`/chat/search-like-order-likecount?keyword=${params}`)
+    .then(res).catch(err)
+}
+
+function nosearchBookmarkLikeroom(user_id,res,err) {
+    authapi.get(`/chat/search-like-order-likecount?keyword=&memberId=${user_id}`)
+    .then(res).catch(err)
+    
+}
+
+function searchBookmarkLikeroom(keywords,res,err) {
+    authapi.get(`/chat/search-like-order-likecount?keyword=${keywords[0]}&memberId=${keywords[1]}`)
+    .then(res).catch(err)
+}
+
+export { getQuiet, createQuietChat, UserStats, noSearchBookmarkRecentroom, SearchBookmarkRecentroom, nosearchBookmarkLikeroom, searchBookmarkLikeroom,
     getHotQuietList, PastMessage, getOnlySearch, noSearchCreatedRecentroom, noSearchCreatedLikeroom, SearchAllLikeroom, SearchCreatedRecentroom, SearchCreatedLikeroom, RoomLike, noSearchallrecentroom, nosearchAllLikeroom }

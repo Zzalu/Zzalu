@@ -51,7 +51,7 @@ export default {
     date() {
       let date1 = new Date(this.room_data.lastActivation);
       const betweenTime =
-        Math.floor((new Date().getTime() - date1.getTime()) / 1000 / 60) - 540;
+        Math.floor((new Date().getTime() - date1.getTime()) / 1000 / 60);
       const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
       const betweenTimeHour = Math.floor(betweenTime / 60);
 
