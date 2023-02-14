@@ -289,7 +289,7 @@ public class ChatRoomController {
                 requestMember.getLikeChatRooms().remove(requestMember);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() - 1);
                 memberRepository.save(requestMember);
-                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
+//                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
             }
         }
@@ -298,12 +298,14 @@ public class ChatRoomController {
             return false;
         }
     }
+
     @GetMapping("/messages")
     @ResponseBody
-    public String findAllChatMessage(@RequestParam String roomId) {
-        System.out.println(1234);
-        List<ChatMessageDto> returnValue = chatRoomRedisRepository.findAllChatMessage(roomId);
-        System.out.println(returnValue);
-        return "1234";
+    public List<ChatMessageDto> findAllChatMessage(@RequestHeader(value = "Authorization")String bearerToken, @RequestParam String roomId) {
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+
+        List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
+        return chatMessageDtos;
     }
 }
