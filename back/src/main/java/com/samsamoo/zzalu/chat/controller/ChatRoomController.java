@@ -237,10 +237,12 @@ public class ChatRoomController {
 
     @GetMapping("/search-like-order-lastactivation")
     @ResponseBody
-    public List<ChatRoomListDto> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember, keyword, keyword);
+        List<Member> member = new ArrayList<>();
+        member.add(requestMember);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(member, keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
@@ -251,10 +253,12 @@ public class ChatRoomController {
 
     @GetMapping("/search-like-order-likecount")
     @ResponseBody
-    public List<ChatRoomListDto> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember, keyword, keyword);
+        List<Member> member = new ArrayList<>();
+        member.add(requestMember);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(member, keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);

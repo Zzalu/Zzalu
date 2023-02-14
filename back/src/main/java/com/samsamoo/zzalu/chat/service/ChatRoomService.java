@@ -67,11 +67,11 @@ public class ChatRoomService {
         chatRoomRepository.save(chatRoom);
     }
 
-    public List<ChatRoom> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Member member, String keyword1, String keyword2) {
-        return chatRoomRepository.findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(member, keyword1, keyword2);
+    public List<ChatRoom> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(List<Member> member, String keyword1, String keyword2) {
+        return chatRoomRepository.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(member, keyword1, keyword2);
     }
 
-    public List<ChatRoom> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Member member, String keyword1, String keyword2) {
-        return chatRoomRepository.findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(member, keyword1, keyword2);
+    public List<ChatRoom> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(List<Member> member, String keyword1, String keyword2) {
+        return chatRoomRepository.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(member, keyword1, keyword2);
     }
 }
