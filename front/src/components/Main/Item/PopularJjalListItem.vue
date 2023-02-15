@@ -5,7 +5,7 @@
         <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
         <p class="view-count">{{ PopularJjal.visitedCount }}</p>
       </div>
-      <div>
+      <div v-if="token">
         <font-awesome-icon
           v-if="already"
           class="scrap-icon"
@@ -43,6 +43,7 @@ import { computed } from "@vue/runtime-core";
 export default {
   name: "PopularJjalListItem",
   setup() {
+    const token = localStorage.getItem("token");
     const store = useStore();
 
     const select_popular_jjal_num = computed(
@@ -69,6 +70,7 @@ export default {
       get_user_list,
       select_popular_jjal_num,
       user_store_list,
+      token
     };
   },
   props: {

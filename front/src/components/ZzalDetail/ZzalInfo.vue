@@ -36,10 +36,10 @@
     />
   </div>
   <div class="mt-6 mb-1 font-bold font-spoq text-zz-p">
-    관련 유튜브 소개하기
+    관련 영상 소개하기
   </div>
   <div class="edit-original-vid">
-    <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" />
+    <font-awesome-icon icon="fa-solid fa-link" class="yt-icon" />
     <input type="text" class="edit-original-link" v-model="relationsVideos" />
   </div>
   <div class="flex justify-center dark:text-white">
@@ -235,7 +235,7 @@ export default {
 }
 
 .yt-icon {
-  @apply my-auto mr-3 text-zz-error;
+  @apply my-auto mr-3 text-zz-p;
 }
 
 .plus-icon {
