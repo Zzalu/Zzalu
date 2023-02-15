@@ -62,12 +62,20 @@ public class JwtTokenProvider {
                 .compact();
 
         String username = authentication.getName();
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new MemberNotFoundException("사용자를 찾을 수 없습니다."));
+        String nickname = member.getNickname();
+        Boolean isManager = member.getRoles().contains("MANAGER");
+
 
         return TokenInfo.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .id(member.getId())
                 .username(username)
+                .nickname(nickname)
+                .isManager(isManager)
                 .build();
     }
 
@@ -94,17 +102,14 @@ public class JwtTokenProvider {
     // 토큰 정보를 검증하는 메서드
     public boolean validateToken(String token) {
         log.info("token = {}", token);
-
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-
         }catch(ExpiredJwtException e) {   // Token이 만료된 경우 Exception이 발생한다.
             log.error("Token Expired");
 
         }catch(JwtException e) {        // Token이 변조된 경우 Exception이 발생한다.
             log.error("Token Error");
-
         }
         return false;
     }

@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.chat.controller;
 
 import com.nimbusds.oauth2.sdk.token.AccessToken;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
 import com.samsamoo.zzalu.chat.dto.ChatRoomListDto;
@@ -10,6 +11,8 @@ import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
 import com.samsamoo.zzalu.chat.service.ChatRoomService;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.repo.MemberRepository;
+import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +30,7 @@ public class ChatRoomController {
 
     private final ChatRoomRedisRepository chatRoomRedisRepository;
     private final ChatRoomService chatRoomService;
+    private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -152,7 +156,7 @@ public class ChatRoomController {
     @GetMapping("/search-order-likecount")
     @ResponseBody
     public List<ChatRoomListDto> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(@RequestParam(name = "keyword") String keyword){
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
             ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
@@ -231,6 +235,38 @@ public class ChatRoomController {
         return chatRoomListDtos;
     }
 
+    @GetMapping("/search-like-order-lastactivation")
+    @ResponseBody
+    public List<ChatRoomListDto> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+        List<Member> member = new ArrayList<>();
+        member.add(requestMember);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            if(chatRoom.getLikeMembers().contains(requestMember))
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
+        }
+        return chatRoomListDtos;
+    }
+
+    @GetMapping("/search-like-order-likecount")
+    @ResponseBody
+    public List<ChatRoomListDto> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+        List<Member> member = new ArrayList<>();
+        member.add(requestMember);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
+        List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
+        for(ChatRoom chatRoom : chatRoomList) {
+            if(chatRoom.getLikeMembers().contains(requestMember))
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
+        }
+        return chatRoomListDtos;
+    }
+
     // 사용자 인증 정보 식별을 위한 Token 필요
     // 좋아요를 누른 방 아이디 필요
     // Dto 구성해서 수행
@@ -247,14 +283,18 @@ public class ChatRoomController {
         Optional<ChatRoom> optionalChatRoom = chatRoomService.findByRoomId(roomId);
         if(optionalChatRoom.isPresent()) {
             ChatRoom chatRoom = optionalChatRoom.get();
-            System.out.println("chatRoom.getLikeMembers() : " + chatRoom.getLikeMembers());
             if(!chatRoom.getLikeMembers().contains(requestMember)) {
                 requestMember.addLikeChatRoom(chatRoom);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() + 1);
+                memberRepository.save(requestMember);
                 chatRoomService.save(chatRoom);
                 return true;
             } else {
-                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
+                chatRoom.deleteLikeMember(requestMember);
+                chatRoom.setLikeCount(chatRoom.getLikeCount() - 1);
+                chatRoomService.save(chatRoom);
+                memberRepository.save(requestMember);
+//                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
                 return false;
             }
         }
@@ -262,5 +302,15 @@ public class ChatRoomController {
             System.out.println("Can't find chatRoom Error");
             return false;
         }
+    }
+
+    @GetMapping("/messages")
+    @ResponseBody
+    public List<ChatMessageDto> findAllChatMessage(@RequestHeader(value = "Authorization")String bearerToken, @RequestParam String roomId) {
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+
+        List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
+        return chatMessageDtos;
     }
 }

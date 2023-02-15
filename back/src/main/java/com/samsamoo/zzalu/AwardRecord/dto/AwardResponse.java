@@ -12,10 +12,12 @@ public class AwardResponse {
 
     int rank;
     Long titleHakwonId;
+    String openDate;
 
     public AwardResponse(AwardRecord awardRecord) {
         this.rank = awardRecord.getRank();
         this.titleHakwonId = awardRecord.getTitleHakwon().getId();
+        this.openDate = awardRecord.getTitleHakwon().getOpenDate();
     }
 
     public static List<AwardResponse> converToDtoList(List<AwardRecord> awardRecordList){

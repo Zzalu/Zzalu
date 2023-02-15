@@ -1,7 +1,7 @@
 export default class Validations {
 
   static lengthRange(name, minLength, maxLength) {
-    if (name.length < minLength && name.length > maxLength) {
+    if (name.length < minLength || name.length > maxLength) {
       return false;
     }
     return true;

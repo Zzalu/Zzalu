@@ -30,7 +30,7 @@ public class ChatRoom {
     private String roomName;
 
     @Column(name = "USER_NAME")
-    private String userNmae;
+    private String userName;
 
     @Column(name = "MEMBER_ID")
     private Long memberId;
@@ -67,6 +67,13 @@ public class ChatRoom {
         this.chatMessages.add(chatMessage);
         if(chatMessage.getChatRoom() != this) {
             chatMessage.setChatRoom(this);
+        }
+    }
+
+    public void deleteLikeMember(Member member) {
+        this.likeMembers.remove(member);
+        if(member.getLikeChatRooms().contains(this)) {
+            member.deleteLikeChatRoom(this);
         }
     }
 

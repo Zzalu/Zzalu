@@ -1,4 +1,5 @@
 <template>
+  <only-small-logo-top-nav></only-small-logo-top-nav>
   <div class="text-center-container">
     <!-- 500 -->
     <div class="error-title-container">
@@ -19,12 +20,15 @@
 </template>
 
 <script>
+import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue'
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 
 export default {
   name: "Error500View",
   components: {
     MainBottomNav,
+    OnlySmallLogoTopNav,
+
   },
   methods: {
     goBack () {
@@ -41,12 +45,12 @@ export default {
   .sad-face {
     transform: rotate(90deg);
     left: 5.5rem;
-    @apply relative top-8 font-pop text-4xl
+    @apply relative top-8 font-pop text-4xl dark:text-white
   }
 
   .resting-face {
     transform: rotate(90deg);
-    @apply relative right-4 top-4 font-pop text-4xl
+    @apply relative right-4 top-4 font-pop text-4xl dark:text-white
   }
 
 </style>

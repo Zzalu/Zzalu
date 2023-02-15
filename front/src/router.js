@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import Signup from '@/views/Accounts/SignUpView';
 import FindId from '@/views/Accounts/FindIdView';
+import ResetPassword from '@/views/Accounts/ResetPasswordView';
 
 const routes = [
   {
@@ -69,7 +70,30 @@ const routes = [
   {
     path: '/reset-password',
     name: 'reset-password',
-    component: () => import('@/views/Accounts/ResetPasswordView'),
+    component: ResetPassword,
+    children: [
+      {
+        path: '',
+        name: 'input-reset-email',
+        component: () => import('@/components/Accounts/InputEmail.vue'),
+        props: true,
+      },
+      {
+        path: 'code',
+        name: 'input-reset-code',
+        component: () => import('@/components/Accounts/InputCodeForm.vue'),
+      },
+      {
+        path: 'change-password',
+        name: 'reset-password',
+        component: () => import('@/views/Accounts/ChangePasswordView'),
+      },
+      {
+        path: 'complete',
+        name: 'reset-complete',
+        component: () => import('@/components/Accounts/SignUp/WelcomeToZzalu.vue'),
+      },
+    ],
   },
   // 탈퇴
   {
@@ -133,7 +157,7 @@ const routes = [
   },
   // 프로필 정보 수정
   {
-    path: '/profile/edit',
+    path: '/edit-profile',
     name: 'edit-profile',
     component: () => import('@/views/Profile/EditProfileView'),
   },
@@ -145,9 +169,16 @@ const routes = [
     component: () => import('@/views/TitleCompetitionView'),
   },
   // --------------------------------------------------------------------
+  // 명예의 전당
+  {
+    path: '/whole-of-frame',
+    name: 'whole-of-frame',
+    component: () => import('@/views/WholeOfFrameView'),
+  },
+  // --------------------------------------------------------------------
   // 수상기록
   {
-    path: '/award-record/:username',
+    path: '/award-record/:member_id',
     name: 'award-record',
     component: () => import('@/views/AwardRecordView'),
   },
@@ -157,6 +188,12 @@ const routes = [
     path: '/zzal/:zzal_id',
     name: 'zzal',
     component: () => import('@/views/ZzalDetailView'),
+  },
+  // 짤 업로드
+  {
+    path: '/zzal/create',
+    name: 'create-zzal',
+    component: () => import('@/views/ZzalCreateView'),
   },
   // ----------------------------------------------------------------
   // 보드 디테일
@@ -172,17 +209,28 @@ const routes = [
     name: 'delete-account',
     component: () => import('@/views/Profile/AccountDeleteView'),
   },
+  // -----------------------------------------------------------
+  // 관리자계정
+  {
+    path: '/admin',
+    name: 'admin',
+    component: () => import('@/views/Accounts/AdminInfoView'),
+  },
   // -------------------------------------------------------------------
   // ERROR
   // 에러404 페이지X
-  {
-    path: '/:pathMatch(.*)*',
-    redirect: '/error-404',
-  },
+  // {
+  //   path: '/:pathMatch(.*)*',
+  //   redirect: '/error-404',
+  // },
   {
     path: '/error-404',
     name: 'error-404',
     component: () => import('@/views/Error/Error404View'),
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/error-404',
   },
   // 에러 500 internal server error
   {
@@ -201,6 +249,9 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+  scrollBehavior() {
+    return { top: 0 };
+  },
 });
 
 export default router;

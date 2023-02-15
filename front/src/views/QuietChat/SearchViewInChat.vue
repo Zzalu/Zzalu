@@ -3,7 +3,7 @@
     <div>
       <transition name="fade">
         <div v-if="open_search_modal">
-          <!-- 즐겨찾기 + 30 -->
+          <!-- 내보드 + 30 -->
           <div v-if="view_list_full == true">
             <div class="dark:border-zz-dark-div">
               <div class="modal">
@@ -20,11 +20,13 @@
                   <SearchBar />
 
                   <!-- 내보드 -->
-                  <div class="my-board-contain" @click="view_board">
-                    <div class="text-white absolute z-20 font-spoq">
+                  <div class="my-board-contain border dark:border-zz-dark-input" @click="view_board" v-if="user_store_list">
+                    <div class="text-black dark:text-white absolute z-20 font-spoq">
                       내 보드
                     </div>
-                    <div class="my-board">
+                    <div class="my-board"
+                    v-if="user_store_list.borads"
+                    >
                       <div
                         class="my-board-thumb"
                         :style="`background-image:url(${user_store_list.boards[0].thumbnailPath})`"
@@ -32,10 +34,17 @@
                     </div>
                   </div>
                   <!-- 기본적으로 보이는 짤들 내 보드 들어갔을 시 안보이는 거 -->
-
                   <div v-for="(zzal_info, i) in random_gif_data" :key="i">
                     <JjalListItemInChat
-                      :zzal_info="zzal_info"
+                      :jjal_info="zzal_info"
+                      :i="i"
+                      @select_id="select_id"
+                      @path="path"
+                    />
+                  </div>
+                  <div v-for="(zzal_info, i) in search_gif_data[0]" :key="i">
+                    <JjalListItemInChat
+                      :jjal_info="zzal_info"
                       :i="i"
                       @select_id="select_id"
                       @path="path"
@@ -103,10 +112,10 @@
                     :key="i"
                   >
                     <div
-                      class="my-board-contain"
+                      class="my-board-contain border dark:border-zz-dark-input"
                       @click="view_detail(board_list.id, board_list.boardName)"
                     >
-                      <div class="text-white absolute z-20 font-spoq">
+                      <div class="text-black dark:text-white absolute z-20 font-spoq">
                         {{ board_list.boardName }}
                       </div>
                       <div class="my-board">
@@ -177,7 +186,7 @@
                   >
                     <!-- 선택짤 -->
                     <div v-if="this.is_select == i" class="select-jjal-box">
-                      <div >
+                      <div>
                         <font-awesome-icon
                           class="scrap-icon"
                           icon="fa-solid fa-paper-plane"
@@ -229,7 +238,7 @@ export default {
   name: "SearchViewInChat",
   setup() {
     const store = useStore();
-    const user_id = window.localStorage.getItem("id");
+    const user_id = window.localStorage.getItem("current_userid");
 
     const open_search_modal = computed(
       () => store.state.searchModalStore.open_search_modal
@@ -239,6 +248,9 @@ export default {
     );
     const random_gif_data = computed(
       () => store.state.zzalListStore.random_gif_data
+    );
+    const search_gif_data = computed(
+      () => store.state.zzalListStore.search_gif_data
     );
     const user_store_list = computed(
       () => store.state.boardListStore.user_board_list
@@ -250,6 +262,9 @@ export default {
     const send_select_jjal_num = (e) => {
       store.commit("searchModalStore/send_select_jjal_num", e);
     };
+    const close_search_modal = () => {
+      store.commit("searchModalStore/open_search_modal");
+    };
 
     onBeforeMount(() => {
       store.dispatch("zzalListStore/getFirstRandomGIFList");
@@ -257,7 +272,6 @@ export default {
     });
 
     function ViewBoardDetail(board_id) {
-      console.log("실행됨?");
       store.dispatch("boardListStore/getBoardData", board_id);
     }
 
@@ -269,11 +283,13 @@ export default {
       open_search_modal,
       open_list_modal,
       random_gif_data,
+      search_gif_data,
       user_store_list,
       user_detail_list,
       send_select_jjal_num,
       MoreRandomGIF,
       ViewBoardDetail,
+      close_search_modal,
     };
   },
   components: {
@@ -289,7 +305,7 @@ export default {
       view_list_detail: false,
       list_name: "",
       is_select: null,
-      gif_path: '',
+      gif_path: "",
     };
   },
   methods: {
@@ -298,14 +314,27 @@ export default {
     },
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      const isAtTheBottom = scrollHeight === scrollTop + clientHeight;
-      // 일정 한도 밑으로 내려오면 함수 실행
-      if (isAtTheBottom) {
-        this.load_state = true;
-        setTimeout(() => {
-          this.MoreRandomGIF(this.gif_data);
-          this.load_state = false;
-        }, 1000);
+      if (scrollTop + clientHeight > scrollHeight - 1) {
+        if (this.search_gif_data[0] != []) {
+          this.load_state = true;
+          if (this.search_gif_data[1]) {
+            setTimeout(() => {
+              for (let i = 0; i < this.search_gif_data[1].length; i++) {
+                this.search_gif_data[0].push(this.search_gif_data[1][i]);
+              }
+              this.search_gif_data.splice(1, 1);
+              this.load_state = false;
+            }, 1000);
+          } else {
+            this.load_state = false;
+          }
+        } else {
+          this.load_state = true;
+          setTimeout(() => {
+            this.MoreRandomGIF(this.gif_data);
+            this.load_state = false;
+          }, 1000);
+        }
       }
     },
     view_board() {
@@ -331,21 +360,23 @@ export default {
       this.is_select = b;
     },
     send_message() {
-      this.$emit('gif_path',this.gif_path)
-      console.log(this.gif_path,'여기서보냄 gif_path');
+      this.$emit("gif_path", this.gif_path);
+      this.close_search_modal();
     },
     path(gifpath) {
-      this.$emit('gif_path',gifpath)
-      console.log(gifpath,'보낼 gif_path');
-    }
+      this.$emit("gif_path", gifpath);
+      this.close_search_modal();
+    },
   },
   watch: {
     random_gif_data(nv) {
-      let gif_id = [];
-      for (let i = 0; i < nv.length; i++) {
-        gif_id.push(parseInt(nv[i].id));
+      if (nv != []) {
+        let gif_id = [];
+        for (let i = 0; i < nv.length; i++) {
+          gif_id.push(parseInt(nv[i].id));
+        }
+        this.gif_data = gif_id;
       }
-      this.gif_data = gif_id;
     },
     open_search_modal(nv) {
       if (nv == false) {
@@ -361,23 +392,7 @@ export default {
 <style scoped lang="postcss">
 /* 로딩 애니메이션 */
 @import url(https://fonts.googleapis.com/css?family=Roboto:100);
-.modal {
-  box-shadow: 0px 0px 7px;
-  @apply fixed top-20 inset-x-0 border bg-white border-t-2 rounded-t-2xl z-10 dark:bg-zz-bd;
-}
-.my-board-contain {
-  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
-}
-.my-board {
-  filter: opacity(0.1) drop-shadow(0 0 0 rgb(221, 218, 218));
-  @apply h-full w-full rounded-2xl bg-cover;
-}
-.detail {
-  @apply h-full w-full rounded-2xl bg-cover;
-}
-.my-board-thumb {
-  @apply w-32 h-24 rounded-2xl flex items-center justify-center bg-cover bg-center;
-}
+
 body {
   margin-top: 100px;
   background-color: #137b85;
@@ -411,6 +426,7 @@ h1 {
     -webkit-transform: rotate(360deg);
   }
 }
+
 /* 모달창 애니메이션 */
 .fade-enter-active {
   transform: translateY(90vh);
@@ -432,6 +448,24 @@ h1 {
   transform: translateY(0px);
   position: fixed;
   opacity: 1;
+}
+
+.modal {
+  box-shadow: 0px 0px 7px;
+  @apply fixed top-20 inset-0 border bg-white border-t-2 rounded-t-2xl z-10 dark:bg-zz-bd;
+}
+.my-board-contain {
+  @apply w-32 h-24 m-2 rounded-2xl flex items-center justify-center;
+}
+.my-board {
+  filter: opacity(0.1) drop-shadow(0 0 0 rgb(221, 218, 218));
+  @apply h-full w-full rounded-2xl bg-cover;
+}
+.detail {
+  @apply h-full w-full rounded-2xl bg-cover;
+}
+.my-board-thumb {
+  @apply w-32 h-24 rounded-2xl flex items-center justify-center bg-cover bg-center;
 }
 /* 보관함 모달창 외부 클릭범위 */
 .list-view-bg {

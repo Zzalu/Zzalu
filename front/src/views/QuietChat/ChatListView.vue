@@ -9,8 +9,7 @@
       <div v-if="quiet_chat_data.length >= 1">
         <div v-for="(datas, i) in quiet_chat_data" :key="i">
           <QuietChatList
-            :room_data="datas"
-            :hashtag="datas.tags"
+            :room_datas="datas"
             @click="chat_data(i)"
           />
         </div>
@@ -72,7 +71,7 @@ export default {
     };
 
     onBeforeMount(() => {
-      store.dispatch("quietChatStore/getQuietList");
+      store.dispatch("quietChatStore/noSearchAllRecent");
     });
     return {
       open_chat_info,

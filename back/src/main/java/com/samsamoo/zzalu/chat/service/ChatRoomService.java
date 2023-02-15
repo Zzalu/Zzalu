@@ -2,6 +2,7 @@ package com.samsamoo.zzalu.chat.service;
 
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
+import com.samsamoo.zzalu.member.entity.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,8 +50,8 @@ public class ChatRoomService {
         return chatRoomRepository.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword1, keyword2);
     }
 
-    public List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(String keyword1, String keyword2){
-        return chatRoomRepository.findAllByTagsContainsOrRoomNameContainsOrderByLikeCount(keyword1, keyword2);
+    public List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(String keyword1, String keyword2){
+        return chatRoomRepository.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword1, keyword2);
     }
 
     public List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Long memberId, String keyword1, String keyword2){
@@ -64,5 +65,13 @@ public class ChatRoomService {
 
     public void save(ChatRoom chatRoom) {
         chatRoomRepository.save(chatRoom);
+    }
+
+    public List<ChatRoom> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(List<Member> member, String keyword1, String keyword2) {
+        return chatRoomRepository.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(member, keyword1, keyword2);
+    }
+
+    public List<ChatRoom> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(List<Member> member, String keyword1, String keyword2) {
+        return chatRoomRepository.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(member, keyword1, keyword2);
     }
 }

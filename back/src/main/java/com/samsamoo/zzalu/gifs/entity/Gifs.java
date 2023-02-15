@@ -22,26 +22,26 @@ public class Gifs {
     @Column(name="GIF_ID")
     private Long id;
 
-    @Column(name="GIF_PATH", nullable = false, unique = true)
+    @Column(name="GIF_PATH", nullable = false, unique = true ,length = 10000)
     private String gifPath;
 
-    @Column(name="USE_COUNT", nullable = false)
-    @ColumnDefault("0")
-    @Builder.Default
-    @NotNull
-    private Long useCount = 0L;
-
-    @Column(name="DOWNLOAD_COUNT", nullable = false)
-    @ColumnDefault("0")
-    @Builder.Default
-    @NotNull
-    private Long downloadCount = 0L;
-
-    @Column(name="LIKE_COUNT", nullable = false)
-    @ColumnDefault("0")
-    @Builder.Default
-    @NotNull
-    private Long likeCount = 0L;
+//    @Column(name="USE_COUNT", nullable = false)
+//    @ColumnDefault("0")
+//    @Builder.Default
+//    @NotNull
+//    private Long useCount = 0L;
+//
+//    @Column(name="DOWNLOAD_COUNT", nullable = false)
+//    @ColumnDefault("0")
+//    @Builder.Default
+//    @NotNull
+//    private Long downloadCount = 0L;
+//
+//    @Column(name="LIKE_COUNT", nullable = false)
+//    @ColumnDefault("0")
+//    @Builder.Default
+//    @NotNull
+//    private Long likeCount = 0L;
 
     @Column(name="TAGS")
     private String tags;
@@ -67,11 +67,11 @@ public class Gifs {
     @NotNull
     private Long visitedCount = 0L;
 
-    @Column(name="SCRAP_COUNT", nullable = false)
-    @ColumnDefault("0")
-    @Builder.Default
-    @NotNull
-    private Long scrapCount = 0L;
+//    @Column(name="SCRAP_COUNT", nullable = false)
+//    @ColumnDefault("0")
+//    @Builder.Default
+//    @NotNull
+//    private Long scrapCount = 0L;
 
     @Column(name="SOURCE_TYPE")
     @ColumnDefault("0")
@@ -96,13 +96,18 @@ public class Gifs {
         if (tempGif.getRelationsVideo() != null) {
             this.relationsVideo = tempGif.getRelationsVideo();
         }
+        this.lastUpdateTime = LocalDateTime.now();
+        this.lastUpdateUsername = tempGif.getWriterUsername();
     }
+//    public void increaseScrap() {
+//        this.scrapCount++;
+//    }
 
-    public void increaseScrap() {
-        this.scrapCount++;
-    }
+//    public void decreaseScrap() {
+//        this.scrapCount--;
+//    }
 
-    public void decreaseScrap() {
-        this.scrapCount--;
+    public void increaseVisitedCount() {
+        this.visitedCount++;
     }
 }

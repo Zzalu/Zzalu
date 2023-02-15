@@ -52,8 +52,8 @@ export default {
       if (e == '') {
         return
       } else {
+        this.input_search_data = ""
         this.search_data(e)
-
       }
     }, 1000),
     // input_search_data(nv)  {

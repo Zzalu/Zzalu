@@ -1,6 +1,6 @@
 <template>
   <div>
-    <only-go-back-top-nav></only-go-back-top-nav>>
+    <only-go-back-top-nav></only-go-back-top-nav>
     <!-- 로고랑 제목 -->
     <img
       alt="ZZalu Light logo"
@@ -25,6 +25,7 @@
         class="account-input"
         placeholder="아이디를 입력하세요"
         v-model="state.creds.username"
+        autocomplete="off"
       />
     </div>
     <!-- <div class="error" v-if = "errors.username"> {{ errors.username }} </div> -->
@@ -34,10 +35,12 @@
       <input
         type="password"
         class="account-input"
+        id="password"
         placeholder="비밀번호를 입력하세요"
         v-model='state.creds.password'
+        autocomplete="off"
       />
-      <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" />
+      <font-awesome-icon icon="fa-solid fa-eye" class="icon-aligned-right" @click="showPwd" />
       <!-- <font-awesome-icon icon="fa-solid fa-eye-slash" class='icon-aligned-left'/> -->
     </div>
     <!-- <div class="error" v-if = "errors.password"> {{ errors.password }} </div> -->
@@ -45,8 +48,8 @@
 
     <!-- 아이디 비번찾기 -->
     <div class="redir-accounts">
-      <router-link to="/find-id" class="find-id">아이디 |</router-link>
-      <router-link to="/reset-password">비밀번호 찾기</router-link>
+      <router-link to="/find-id" class="find-id">아이디를 잊으셨다면?</router-link>
+      <!-- <router-link to="/reset-password">비밀번호 찾기</router-link> -->
     </div>
     <!-- 소셜로그인 -->
     <!-- <div class="divide-social">
@@ -73,6 +76,7 @@
   import { useDark } from '@vueuse/core';
   import { reactive } from 'vue'
   import { useRouter } from 'vue-router';
+  import Swal from 'sweetalert2'
 
   const isDark = useDark();
   export default {
@@ -100,22 +104,37 @@
           }
         
         if (!loginData.username | !loginData.password) {
-          console.log("인풋값 입력 다 해야지;")
+          Swal.fire({
+            icon: "error",
+            text:"아이디와 비밀번호를 모두 입력해주세요."
+            })
         } else {
-        console.log('로그인 데이터', loginData)
+        // console.log('로그인 데이터', loginData)
         const res = await store.dispatch('userStore/loginAction', loginData)
-        if (res) {
-          console.log("로그인 요청 잘 갔음")
+        if (res.status==200) {
           router.push({name: 'main'})
+          } else {
+          Swal.fire({
+            icon: "error",
+            html: "회원이 존재하지 않습니다. <br> 회원정보를 확인해주세요."
+            })
         }
         }
         
       }
 
+      const showPwd = function() {
+        var pwd = document.getElementById("password");
+        if (pwd.type=="text") {
+          pwd.type = "password"
+        } else {
+          pwd.type="text"
+        }
+      }
       return {
         state,
         loginSubmit,
-        
+        showPwd
       }
     },
     data() {

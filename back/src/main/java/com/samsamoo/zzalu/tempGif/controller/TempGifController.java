@@ -1,7 +1,6 @@
 package com.samsamoo.zzalu.tempGif.controller;
 
 import com.samsamoo.zzalu.tempGif.dto.TempGifRequest;
-import com.samsamoo.zzalu.tempGif.dto.TempGifDTO;
 import com.samsamoo.zzalu.tempGif.entity.TempGif;
 import com.samsamoo.zzalu.tempGif.service.TempGifService;
 import lombok.RequiredArgsConstructor;
@@ -24,9 +23,10 @@ public class TempGifController {
 
     //--------------------------------모든 임시 게시물 조회---------------------------------
     @GetMapping("/all")
-    public ResponseEntity getAllTempGif() {
+    public ResponseEntity getAllTempGif(@RequestHeader(value = "Authorization") String bearerToken) {
         // 시큐리티에서 체크
-        List<TempGif> tempGifList = tempGifService.getAllTempGif();
+        String token = bearerToken.substring(7);
+        List<TempGif> tempGifList = tempGifService.getAllTempGif(token);
         return new ResponseEntity<>(Map.of("tempGifList", tempGifList),HttpStatus.OK);
     }
     //--------------------------------임시 게시물 생성 요청---------------------------------
@@ -49,7 +49,4 @@ public class TempGifController {
         tempGifService.deleteTempGif(tempId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-
 }

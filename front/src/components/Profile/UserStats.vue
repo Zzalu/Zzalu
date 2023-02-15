@@ -1,43 +1,148 @@
 <template>
-  <!-- <div class="profile-title">스탯</div>
-  <div class="user-stats">
-    <div class="flex">
-      <div class="stat-hashtag">#고양이들</div>
-      <div class="graph">100%</div>
+  <div class="stat-title"> 짤BTI: {{ profile_user_data.nickname }} {{ zzalMBTI }} </div>
+    <button class="profile-title"  @click="test">
+      <font-awesome-icon icon="fa-solid fa-circle-plus" class="text-sm"/>
+      상세 스탯 보기 🔍
+      <!-- <font-awesome-icon icon="fa-solid fa-magnifying-glass-chart"/> -->
+    </button>
+    <!-- <div v-if="stat_dirty.data.length<4" class="profile-title">채팅방에 활발히 참여해보세요!</div>
+    <div v-if="stat_dirty.data.length<4" class="profile-title">상세 스탯은 활동을 열심히 하면 자동으로 나타납니다</div> -->
+    
+    <div>
+      <div id="chart" class="mb-10">
+        <apexchart
+          v-if="chartOptions&&series"
+          type="bar"
+          :options="chartOptions"
+          :series="series"
+        ></apexchart>
+      </div>
     </div>
-    <div class="flex">
-      <div class="stat-hashtag">#겁나긴해시태그</div>
-      <div class="graph">10%</div>
-    </div>
-    <div class="flex">
-      <div class="stat-hashtag">#hello~</div>
-      <div class="graph">1%</div>
-    </div>
-    <div class="flex justify-end">
-      <div class="result-stat">{{}}님은 00 입니다</div>
-    </div>
-  </div> -->
-  <div id="chart" class="rounded-lg">
-    <!-- <div>{{ stat_dirty }}</div> -->
-    <apexchart type="bar" :options="chartOptions" :series="series"></apexchart>
-  </div>
 </template>
 
 <script>
+import Swal from 'sweetalert2'
 import { useStore } from "vuex";
-import { computed, onBeforeMount } from "@vue/runtime-core";
-import { watch } from 'vue'
+import { computed } from "@vue/runtime-core";
 export default {
-  name: "UserStats",
-  // components: {
-  //   apexcharts: VueApexCharts,
-  // },
-  data: function () {
+data: function() {
     return {
-      series: [{
-        data: this.nums_data
-        }],
-      chartOptions: {
+      series:null,
+      chartOptions: null,
+    //   chartShow: false,
+    //   series: [{
+    //       data: [
+    //         this.stat_dirty.data[0].count,
+    //         this.stat_dirty.data[1].count,
+    //         this.stat_dirty.data[2].count,
+    //         this.stat_dirty.data[3].count,
+    //       ],
+    //     }],
+    //     chartOptions: {
+    //             grid: {
+    //               show: false,
+    //             },
+    //             chart: {
+    //               type: "bar",
+    //               height: 200,
+    //               // width: 1,
+    //               background: "#AA8AD4",
+    //             },
+    //             colors: ["#6750A4"],
+    //             plotOptions: {
+    //               bar: {
+    //                 borderRadius: 4,
+    //                 horizontal: true,
+    //               },
+    //             },
+    //             dataLabels: {
+    //               enabled: true,
+    //             },
+    //             xaxis: {
+    //               categories: [
+    //                 this.stat_dirty.data[0].tag,
+    //                 this.stat_dirty.data[1].tag,
+    //                 this.stat_dirty.data[2].tag,
+    //                 this.stat_dirty.data[3].tag,
+    //               ],
+    //               labels: {
+    //                 show: false,
+    //                 style: {
+    //                   colors: ["#FFFFFF"],
+    //                 },
+    //               },
+    //             },
+    //             yaxis: {
+    //               labels: {
+    //                 style: {
+    //                   colors: ["#FFFFFF"],
+    //                 },
+    //               },
+    //             },
+    //             title: {
+    //               text: '짤 통계',
+    //               align: 'left',
+    //               margin: 10,
+    //               offsetX: 10,
+    //               offsetY: 10,
+    //               floating: false,
+    //               style: {
+    //                 fontSize:  '14px',
+    //                 fontWeight:  'bold',
+    //                 color:  '#FFFFFF'
+    //               },
+    //           }
+    //           }
+  
+    }
+  },
+  setup() {
+    const store = useStore();
+    const zzalMBTI = computed(
+      () => store.state.profileStore.profile_user.typeMsg
+    );
+
+    const stat_dirty = computed(
+      () => store.state.profileStore.profile_user.stats
+    );
+    const profile_user_data = computed(
+      () => store.state.profileStore.profile_user
+    );
+    const my_username = localStorage.getItem("current_userid")
+    
+    return {
+      stat_dirty,
+      zzalMBTI,
+      profile_user_data,
+      my_username
+    };
+  },
+  methods: {
+    test() {
+      if (this.stat_dirty.data.length<4 && this.profile_user_data.username == this.my_username) {
+        Swal.fire({
+          icon: "warning",
+          html:"더 활동을 열심히 하셔야 스탯이 보입니다 <br> 채팅에 참여해보세요!"
+          })
+      } else if (this.stat_dirty.data.length<4) {
+        Swal.fire({
+          icon: "warning",
+          html:"아직 많은 활동을 하지 않은 유저입니다. <br> 함께 채팅에 참여해보세요!"
+          })
+      } else {
+      
+      this.series= [
+        {
+          name: "짤 저장 횟수",
+          data: [
+            this.stat_dirty.data[0].count,
+            this.stat_dirty.data[1].count,
+            this.stat_dirty.data[2].count,
+            this.stat_dirty.data[3].count,
+          ],
+        },
+      ],
+      this.chartOptions = {
         grid: {
           show: false,
         },
@@ -45,7 +150,7 @@ export default {
           type: "bar",
           height: 200,
           // width: 1,
-          background: "#AA8AD4",
+          // background: "#AA8AD4",
         },
         colors: ["#6750A4"],
         plotOptions: {
@@ -58,81 +163,30 @@ export default {
           enabled: true,
         },
         xaxis: {
-          categories: [this.title_data],
+          categories: [
+            this.stat_dirty.data[0].tag,
+            this.stat_dirty.data[1].tag,
+            this.stat_dirty.data[2].tag,
+            this.stat_dirty.data[3].tag,
+          ],
           labels: {
             show: false,
             style: {
-              colors: ["#FFFFFF"],
+              colors: ["#6750A4"],
             },
           },
         },
         yaxis: {
           labels: {
             style: {
-              colors: ["#FFFFFF"],
+              colors: ["#AA8AD4"],
+              fontSize: '12px',
             },
           },
         },
-      },
-    };
-  },
-  setup() {
-    const store = useStore();
-    const user_id = window.localStorage.getItem("profile_id");
-    onBeforeMount(() => {
-      store.dispatch("profileStore/getProfileStats", user_id);
-      console.log("이게뭐임");
-      // stat_dirty.value.forEach((value, index, array) => {
-      //   console.log(`${index} ${value}`);
-      //   titles.push(value);
-      // });
-    });
-    const stat_dirty = computed(
-      () => store.state.profileStore.profile_user.stats
-    );
-
-    var titles = new Array();
-    var nums = new Array();
-
-    watch(stat_dirty, (nv) => {
-      if (nv) {
-        nv.data.forEach((value, index, array) => {
-          console.log(array);
-          console.log(`${index} ${value}`);
-          titles.push(value.tag);
-          nums.push(value.count)
-          console.log(titles,'titles');
-        })
       }
-    })
-    
-    const title_data = localStorage.getItem('stat_title')
-    const nums_data = localStorage.getItem('stat_nums')
-    return {
-      stat_dirty,
-      title_data,
-      nums_data
-
-    };
-  },
-  watch: {
-    stat_dirty: function (nv) {
-      console.log(nv.data,"test");
-      var titles = new Array();
-      var nums = new Array();
-      if (nv) {
-        nv.data.forEach((value, index, array) => {
-          console.log(array);
-          console.log(`${index} ${value}`);
-          titles.push(value.tag);
-          nums.push(value.count)
-          console.log(titles,'titles');
-          localStorage.setItem('stat_num', nums)
-          localStorage.setItem('stat_title', titles)
-        });
       }
     },
-
   },
 };
 </script>
@@ -156,6 +210,16 @@ export default {
 }
 
 .result-stat {
+  word-break: keep-all;
   @apply text-white font-spoq font-bold mx-4;
+}
+
+.stat-title {
+  word-break: keep-all;
+  @apply text-xl font-bold font-spoq dark:text-white
+}
+
+.see-stat-button {
+  @apply font-spoq font-bold
 }
 </style>

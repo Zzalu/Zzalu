@@ -8,6 +8,7 @@ import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.listener.ChannelTopic;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,12 +59,9 @@ public class ChatRoomRedisRepository {
     }
 
     // Created 2023.01.27 by Hye Sung
-    @Cacheable(cacheNames = "ChatMessages", key = "#id + #id")
     public List<ChatMessageDto> findAllChatMessage(String id) {
-        System.out.println("ChatRoomRepository - findAllChatMessage : " + opsListChatMessage.size(id + id));
-        System.out.println("Cache 미적용");
         long size = opsListChatMessage.size(id + id);
-        List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, 0, size);
+        List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, size - 200 > 0 ? size - 200 : 0, size);
        return chatMessageDtos;
     }
 
@@ -107,24 +106,26 @@ public class ChatRoomRedisRepository {
     }
 
 
-    @CacheEvict(value = "ChatMessages", key = "#message.getRoomId() + #message.getRoomId()", allEntries = true)
     public void setChatMessage(ChatMessageDto message) {
         LocalDateTime sendDate = LocalDateTime.now();
         System.out.println("setChatMessage ===");
         message.setSendDate(sendDate);
 
+        System.out.println("setChatMessage Enter");
         // Redis에 저장
         opsListChatMessage.rightPush(message.getRoomId() + message.getRoomId(), message);
 //         DB에 저장
         Optional<ChatRoom> optionalChatRoom = chatRoomRepository.findByRoomId(message.getRoomId());
         if(optionalChatRoom.isPresent()) {
+            System.out.println("chatMessage Save");
             ChatRoom chatRoom = optionalChatRoom.get();
             ChatMessage chatMessage = message.toEntity();
             chatMessage.setChatRoom(chatRoom);
-            chatRoom.addChatMessage(message.toEntity());
+            chatRoom.addChatMessage( message.toEntity());
             chatRoom.setLastActivation(sendDate);
             chatRepository.save(chatMessage);
             chatRoomRepository.save(chatRoom);
+            System.out.println("chatMessage Save Complete");
         } else {
             System.out.println("need chat room not found exception throw");
         }

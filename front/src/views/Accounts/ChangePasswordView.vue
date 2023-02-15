@@ -5,6 +5,13 @@
       alt="ZZalu Light logo"
       class="logo"
       src="../../assets/zzalu_logo_light.png"
+      v-if="isDark==false"
+    />
+    <img
+      alt="ZZalu Dark logo"
+      class="logo"
+      src="../../assets/zzalu_logo_dark.png"
+      v-if="isDark==true"
     />
     <div class="account-title mb-10">ChangePassword</div>
   </div>
@@ -15,6 +22,8 @@
 </template>
 
 <script>
+import { useDark } from '@vueuse/core';
+const isDark = useDark();
 import OnlyGoBackTopNavBar from '../../components/Common/NavBar/OnlyGoBackTopNav.vue'
 import InputCurrentPassword from '../../components/Accounts/ChangePassword/InputCurrentPassword.vue'
 // import ChangePassword from '../../components/Accounts/ChangePassword.vue'
@@ -29,6 +38,11 @@ export default {
     // ChangePassword,
     // ResetComplete,
     MainBottomNav,
+  },
+  data() {
+    return {
+      isDark,
+    };
   },
 }
 </script>

@@ -15,7 +15,7 @@ import java.util.List;
 public class ChatRoomListDto {
     private String roomId;
     private String roomName;
-    private String userNmae;
+    private String userName;
     private Long memberId;
     private Long likeCount;
 
@@ -30,14 +30,9 @@ public class ChatRoomListDto {
     public ChatRoomListDto(ChatRoom chatRoom) {
         roomId = chatRoom.getRoomId();
         roomName = chatRoom.getRoomName();
-        userNmae = chatRoom.getUserNmae();
+        userName = chatRoom.getUserName();
         memberId = chatRoom.getMemberId();
         likeCount = chatRoom.getLikeCount();
-//        chatMessages = chatRoom.getChatMessages();
-        chatMessageId = new ArrayList<>();
-        for(ChatMessage chatMessage : chatRoom.getChatMessages()) {
-            chatMessageId.add(chatMessage.getId());
-        }
         likeMemberId = new ArrayList<>();
         for(Member member : chatRoom.getLikeMembers()) {
             likeMemberId.add(member.getId());

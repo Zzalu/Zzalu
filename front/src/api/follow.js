@@ -19,7 +19,6 @@ function getFollowingList(member_id, success, fail) {
 
 // 팔로워 리스트 보기 (헤더 필요)
 function getFollowerList(member_id, success, fail) {
-    console.log(member_id)
     api.get(`/follower/${member_id}`).then(success).catch(fail);
 }
 

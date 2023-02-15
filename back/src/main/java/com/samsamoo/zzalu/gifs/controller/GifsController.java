@@ -1,12 +1,15 @@
 package com.samsamoo.zzalu.gifs.controller;
 
-import com.samsamoo.zzalu.board.dto.GifList;
-import com.samsamoo.zzalu.gifs.dto.GifsDto;
-import com.samsamoo.zzalu.gifs.dto.GifsUpdateDto;
+import com.samsamoo.zzalu.advice.NotFoundException;
+
+
 import com.samsamoo.zzalu.gifs.entity.Gifs;
+import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.gifs.service.GifsService;
+import com.samsamoo.zzalu.statistics.entity.GifStatistics;
+import com.samsamoo.zzalu.statistics.repository.GifStatisticsRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,8 @@ import java.util.*;
 public class GifsController {
 
     private final GifsService gifsService;
+    private final GifStatisticsRepository gifStatisticsRepository;
+    private final GifsRepository gifsRepository;
 
     @GetMapping("/gifs")
     public ResponseEntity<List<Gifs>> mainPage() {
@@ -28,14 +33,17 @@ public class GifsController {
 
     @GetMapping("/gif")
     public ResponseEntity<Optional<Gifs>> findById(@RequestParam("gifId") Long gifId) {
-        Optional<Gifs> gif = gifsService.findById(gifId);
-        return ResponseEntity.ok().body(gif);
+        Gifs gif = gifsService.findById(gifId)
+                .orElseThrow(() -> new NotFoundException("gif를 찾을 수 없습니다."));
+        gif.increaseVisitedCount();
+        gifsRepository.save(gif);
+        return ResponseEntity.ok().body(Optional.of(gif));
     }
 
-    @GetMapping("/main/gifs")
-    public ResponseEntity<List<Gifs>> findTop30ByOrderByLikeCountDesc() {
-        return ResponseEntity.ok().body(gifsService.findTop30ByOrderByLikeCountDesc());
-    }
+//    @GetMapping("/main/gifs")
+//    public ResponseEntity<List<Gifs>> findTop30ByOrderByLikeCountDesc() {
+//        return ResponseEntity.ok().body(gifsService.findTop30ByOrderByLikeCountDesc());
+//    }
 
     @GetMapping("/search")
     public ResponseEntity<List<Gifs>> findByTags(@RequestParam("searchKeyword") String searchKeyword) {
@@ -89,13 +97,28 @@ public class GifsController {
 //        Gifs gifs = gifsService.gifDetailUpdate(gifsUpdateDto);
 //        return ResponseEntity.ok().body(gifs);
 //    }
+
+    //--------------------------------------- 사용자 맞춤 추천 ---------------------------------------------
     @GetMapping("/recommend")
     public ResponseEntity recommendCustomGif(@RequestHeader(value = "Authorization") String bearerToken) {
         String token = bearerToken.substring(7);
-         GifList response = gifsService.recommendCustomGif(token);
+         List<Gifs> response = gifsService.recommendCustomGif(token);
         return ResponseEntity.ok().body(response);
     }
-
-
+    //------------------------------------------- 인기짤 API-----------------------------------------------
+    @GetMapping("/popular")
+    public ResponseEntity popularGif() {
+        List<GifStatistics> useList = gifStatisticsRepository.findTop15ByOrderByUseCountDesc();
+        List<GifStatistics> downList = gifStatisticsRepository.findTop15ByOrderByDownloadCountDesc();
+        Set<GifStatistics> set = new HashSet<>(useList);
+        set.addAll(downList);
+        List<Gifs> gifs = new ArrayList<>();
+        for(GifStatistics statistics : set) {
+            Gifs gif = gifsRepository.findById(statistics.getGifId())
+                    .orElseThrow(()-> new NotFoundException("해당 gif는 찾을 수 없습니다."));
+            gifs.add(gif);
+        }
+        return ResponseEntity.ok().body(gifs);
+    }
 }
 

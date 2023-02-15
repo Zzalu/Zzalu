@@ -1,6 +1,5 @@
 package com.samsamoo.zzalu.statistics.entity;
 
-import com.samsamoo.zzalu.member.entity.Member;
 import lombok.*;
 
 import javax.persistence.*;

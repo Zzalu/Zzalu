@@ -6,8 +6,8 @@ import store from '@/store';
 import Vue3TouchEvents from "vue3-touch-events";
 // import Vue from 'vue'
 import VueApexCharts from 'vue3-apexcharts';
-// Vue.use(VueApexCharts)
-// Vue.component('apexchart', VueApexCharts)
+import VueSweetAlert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 
@@ -35,3 +35,4 @@ app.component('font-awesome-icon', FontAwesomeIcon);
 app.mount('#app');
 app.use(Vue3TouchEvents)
 app.use(VueApexCharts)
+app.use(VueSweetAlert2);

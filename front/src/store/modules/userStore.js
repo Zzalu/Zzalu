@@ -1,5 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername} from "@/api/userAccount";
-// import createPersistedState from "vuex-persistedstate";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestChangeInfo, requestDelete, requestManager } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -15,31 +14,42 @@ const userStore = {
     user: null,
     accessToken: "",
     refreshToken: "",
-    // isLogin: false,
+    nickname: "",
+    isManager: false,
+    pk: null
   }),
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
       state.temp.username = credentialsData.username
-      state.temp.nickname = credentialsData.username
+      state.temp.nickname = credentialsData.nickname
       state.temp.password = credentialsData.password
       state.temp.passwordCheck = credentialsData.passwordCheck
-      console.log(state.temp.username)
     },
     SAVE_EMAIL_TEMP(state, credentialsEmailCode) {
       state.temp.email = credentialsEmailCode.email
       state.temp.code = credentialsEmailCode.code
+      window.localStorage.setItem("temp_email", credentialsEmailCode.email)
     },
     SAVE_CURRENT_USER(state, loginData ) {
-      console.log('지금 접속한 사람 저장')
-      console.log(loginData)
-      console.log(loginData.data)
       state.user = loginData.data.username
       state.accessToken = loginData.data.accessToken
       state.refreshToken = loginData.data.refreshToken
-      localStorage.setItem('id', loginData.data.username)
+      state.nickname = loginData.data.nickname
+      state.isManager = loginData.data.isManager
+      state.pk = loginData.data.id
+      localStorage.setItem('current_userid', loginData.data.username)
+      localStorage.setItem('current_nickname', loginData.data.nickname)
+      localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
-      console.log('지금 접속한 사람 출력', loginData.data.username)
-      console.log('지금 접속한 사람 출력', state.user)
+      localStorage.setItem('isManager', loginData.data.isManager)
+    },
+    DELETE_TEMP_USER(state) {
+      state.temp.username = ''
+      state.temp.nickname = ''
+      state.temp.password = ''
+      state.temp.passwordCheck = ''
+      state.temp.email = ''
+      state.temp.code = ''
     },
     LOGOUT (state) {
       localStorage.removeItem('id')
@@ -49,6 +59,25 @@ const userStore = {
       state.refreshToken = ''
       state.isLogin = false
     },
+    // PATCH_USER_INFO (state, changedData) {
+    //   if (changedData.profileIntro) {
+    //     console.log('아이고')
+    //     state.myIntro = changedData.profileIntro
+    //   }
+    //   if (changedData.profileImg) {state.myImg = changedData.profileImg}
+    //   if (changedData.newNickname) {
+    //     state.nickname = changedData.newNickname
+    //     localStorage.setItem('current_nickname', changedData.newNickname)
+    //   }
+    //   // state.myImg = changedData.profileImg,
+    //   // state.nickname = changedData.newNickname
+    //   console.log('데이터 바꾼거', changedData)
+    //   console.log(state.nickname)
+    //   console.log(state.myImg)
+    // }
+    SAVE_MANAGER_STATE (state) {
+      state.isManager = true
+    }
   },
   getters: {
     // signupTempInfoGet(state) {
@@ -73,13 +102,12 @@ const userStore = {
     },
     // 닉네임 중복확인
     uniqueNicknameAction: async (commit, nickname) => {
-        // console.log(nickname);
         const response = await checkNickname({"nickname": nickname});
-        // console.log(response)
         return response
     },
     // 이메일 중복확인
     sendEmailAction: async (commit, email) => {
+      
       const data = JSON.stringify({"userEmail": email})
       const response = await checkEmail(
         data,
@@ -101,12 +129,11 @@ const userStore = {
     },
     // 회원정보 세이브 2
     signupSecondAction: async (context, credentialsEmailCode) => {
-      console.log(credentialsEmailCode)
       context.commit('SAVE_EMAIL_TEMP', credentialsEmailCode)
+      
       return true
     },
     signupFinalAction: async (context, signupUser ) => {
-        console.log(signupUser)
         const response = await requestRegister(
           signupUser,
           (res) => {
@@ -117,56 +144,117 @@ const userStore = {
         })
         return response
     },
+    signupInfoDelete: (context) => {
+      context.commit('DELETE_USER_TEMP')
+    },
     // -----------------------------------------------------------
     // 로그인
     loginAction: async (context, loginData ) => {
-      console.log("store잘 들어옴", loginData)
-      const response = await requestLogin(loginData)
-      console.log("store 다시 잘 들어옴", response)
-      context.commit('SAVE_CURRENT_USER', response)
-      console.log(response.data)
+      // console.log("store잘 들어옴", loginData)
+      const response = await requestLogin(
+        loginData,
+        (res) => {
+          context.commit('SAVE_CURRENT_USER', res)
+          return res
+        },
+        (error) => {
+          return error.response
+        }
+        )
+      // console.log("store 다시 잘 들어옴", response)
+      
+
       // localStorage.setItem('id', response.data.username)
       // localStorage.setItem('token', response.data.accessToken)
-      console.log("지금 접속유저 저장 잘 됨", response)
       return response
+
     },
 
     // 로그아웃
     logoutAction: async (context) => {
-      // console.log("store잘 들어옴", loginData)
-      // const response = await requestLogin(loginData)
-      // console.log("store 다시 잘 들어옴", response)
       context.commit('LOGOUT')
-      // console.log(response.data)
-      // localStorage.setItem('id', response.data.username)
-      // localStorage.setItem('token', response.data.accessToken)
-      // console.log("지금 접속유저 저장 잘 됨", response)
-      // return response
-
-
+      localStorage.removeItem('current_userid')
+      localStorage.removeItem('current_nickname')
+      localStorage.removeItem('stat_title')
+      localStorage.removeItem('temp_email')
+      localStorage.removeItem('profile_id')
+      localStorage.removeItem('profile_user')
+      localStorage.removeItem('isManager')
+      localStorage.removeItem('stat_num')
     },
     // ----------------------------------------------------------
     // 아이디찾기
     sendUsernameAction: async (commit, email) => {
-      console.log(email);
+      localStorage.setItem('temp_email', email)
       const data = JSON.stringify({"userEmail": email})
-      const response = await requestUsername(data);
-      // console.log("이안에 코드있음",response)
+      const response = await requestUsername(
+        data,
+        (res) => {
+          return res
+        },
+        (error) => {
+          return error.response
+        }
+      );
       return response
+      // console.log("이안에 코드있음",response)
+    },
+    // ----------------------------------------------------------
+    // 회원정보수정
+    patchUserInfoAction: (params, form) => {
+      requestChangeInfo(
+        params,
+        form,
+        ({data}) => {
+          localStorage.removeItem('current_nickname')
+          localStorage.setItem('current_nickname', data.nickname)
+        },
+        (err) => {
+          alert(err.response.data.message);
+      })
+    },
+    // ----------------------------------------------------------
+    // 매니저
+    managerApplyAction: async (context) => {
+      // let test = null
+      return new Promise((resolve, reject) => {
+        requestManager(
+          (res) => {
+            console.log(res)
+            context.commit('SAVE_MANAGER_STATE')
+            resolve(200)
+          },
+          (error) => {
+            console.log(error)
+            reject(500)
+          }
+        );
+        // setTimeout(() => {        
+        //   console.log('리턴값', test)
+        //   return
+        // }, 100);
+      }
+      )
+
     },
   // --------------------------------------------------------------
   // 회원탈퇴
-    // userDeleteAction: async (commit, pwd) => {
-    //   const response = 
-    // }
+    userDeleteAction: async (context, pwd) => {
+      const response = requestDelete(
+        pwd,
+        (res) => {
+          window.localStorage.clear()
+          console.log(res)
+          return res
+        },
+        (err) => {
+          console.log(err.response.status)
+          return 400
+        })
+      return response
+    }
   },
 
-  
-  // plugins: [
-  //   createPersistedState({
-  //     paths: ['temp'],
-  //   })
-  // ],
 };
 
 export default userStore;

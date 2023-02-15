@@ -1,11 +1,11 @@
-import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal } from "@/api/boardList"
+import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal, userstatistics } from "@/api/boardList"
 
 const boardListStore = {
   namespaced: true,
   state: () => ({
     // 나의 보관함 리스트
     user_store_list: null,
-
+    // 선택된 GIF Id
     select_gif_id: null,
 
     // 유저의 보드 리스트
@@ -24,6 +24,12 @@ const boardListStore = {
     SELECT_GIF(state, gif_id) {
       state.select_gif_id = gif_id
     },
+    SELECT_POPULAR_GIF(state, gif_id) {
+      state.select_gif_id = gif_id
+    },
+    SELECT_RECOMMEND_GIF(state, gif_id) {
+      state.select_gif_id = gif_id
+    },
     GET_USER_BOARD(state, user_board) {
       state.user_board_list = user_board.data
     },
@@ -35,12 +41,23 @@ const boardListStore = {
     }
   },
   actions: {
+    userStat({commit}, params) {
+      userstatistics(
+        commit,
+        params,
+        (res) => {
+          console.log(res, '유저스탯전달성공');
+        },
+        (err) => {
+          console.log(err, '유저스탯전달실패');
+        }
+      )
+    },
     getUserStoreList({ commit }, params, data) {
       getStoreList(
         params,
         data,
         (res) => {
-          console.log('유저 보관함 요청 성공', res)
           commit('GET_USER_STORE_LIST', res)
         },
         (err) => {
@@ -76,7 +93,7 @@ const boardListStore = {
       getUserBoard(
         params,
         (data) => {
-          console.log(data, '보드 요청 성공');
+          // console.log(data, '보드 요청 성공');
           commit('GET_USER_BOARD', data)
         },
         (err) => {
@@ -88,7 +105,6 @@ const boardListStore = {
       getBoard(
         params,
         (data) => {
-          console.log(data, '보드 디테일 요청 성공');
           commit('GET_BOARD', data)
         },
         (err) => {
@@ -100,7 +116,6 @@ const boardListStore = {
       nameChange(
         params,
         (data) => {
-          console.log(data, '보드 타이틀 변경 성공');
           commit('NAME_CHANGE', data)
         },
         (err) => {

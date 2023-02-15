@@ -1,4 +1,5 @@
 <template>
+<only-small-logo-top-nav></only-small-logo-top-nav>
   <div class="text-center-container">
     <!-- 404 -->
     <div class="error-title-container">
@@ -24,12 +25,14 @@
 </template>
 
 <script>
+import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue'
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 
 export default {
   name: "Error404View",
   components: {
     MainBottomNav,
+    OnlySmallLogoTopNav
   },
   methods: {
     goBack () {
@@ -46,6 +49,6 @@ export default {
 
 .sad-face {
   transform: rotate(90deg);
-  @apply relative mt-12 font-pop text-4xl
+  @apply relative mt-12 font-pop text-4xl dark:text-white 
 }
 </style>y

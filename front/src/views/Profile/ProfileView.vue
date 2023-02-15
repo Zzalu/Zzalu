@@ -10,6 +10,7 @@
     <user-stats></user-stats>
     <user-award></user-award>
     <user-board></user-board>
+    
     <div class="h-6"></div>
     <main-bottom-nav></main-bottom-nav>
   </div>
@@ -48,7 +49,9 @@ export default {
     const route = useRoute();
     const username = route.params.username;
     store.dispatch("profileStore/getProfileUser", username);
-    const current_user = localStorage.getItem("id");
+    store.dispatch("boardListStore/getUserBoardList", username);
+    store.dispatch("profileStore/getProfileStats", username);
+    const current_user = localStorage.getItem("current_userid");
     return {
       current_user
     };

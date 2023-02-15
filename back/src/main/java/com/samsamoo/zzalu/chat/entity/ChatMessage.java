@@ -1,5 +1,9 @@
 package com.samsamoo.zzalu.chat.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import lombok.*;
 
@@ -19,6 +23,9 @@ public class ChatMessage {
     @Column(name = "CHAT_MESSAGE_ID")
     private Long id;
 
+    @Column(name = "GIF_ID")
+    private Long gifId;
+
     @Column(name = "TYPE")
     private ChatMessageDto.MessageType type;
 
@@ -31,8 +38,13 @@ public class ChatMessage {
     @Column(name = "MESSAGE")
     private String message;
 
-    @Column(name = "SEMD_DATE")
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
+    @Column(name = "SEND_DATE")
     private LocalDateTime sendDate;
+
+    @Column(name = "MEMBER_ID")
+    private Long memberId;
 
     @ManyToOne
     @JoinColumn(name = "CHAT_ROOM_ID")

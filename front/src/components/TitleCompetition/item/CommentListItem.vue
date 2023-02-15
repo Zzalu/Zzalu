@@ -1,13 +1,27 @@
 <template>
   <li>
-    <div class="dark:text-white">
+    <div class="dark:text-white border-b-2 p-1 border-zz-light-input">
+      <!-- best -->
+      <div
+        v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
+        class="bg-zz-light-p rounded flex flex-row justify-center items-center w-14 my-2 text-white"
+      >
+        <p>BEST {{ index + 1 }}</p>
+      </div>
+      <div
+        v-if="sort_type == 'POPULAR' && (index == 3 || index == 4)"
+        class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
+      >
+        <p>BEST {{ index + 1 }}</p>
+      </div>
       <div class="flex items-center mb-2">
-        <div class="w-3 h-3 rounded-full mr-2">
+        <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
-        <p class="text-xs mr-1">{{ time }}</p>
-        <p v-if="canDelete" class="text-xs" @click="clickDeleteBtn">삭제</p>
+        <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
+
+        <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
       <div class="flex flex-row mb-2">
@@ -24,12 +38,12 @@
             <span class="text-center" @click="nested_active = !nested_active">답글 접기</span>
           </button>
         </div>
-
+        <!-- 좋아요 -->
         <div class="flex items-center text-zz-p">
-          <span class="text-xs mr-1">
+          <span class="text-xs mr-1" :id="'comment-id-' + comment_id + '-like-cnt'">
             {{ like_cnt }}
           </span>
-          <button class="my-auto" @click="clickLikeBtn">
+          <button class="my-auto like-btn" @click="clickLikeBtn" :id="'comment-id-' + comment_id + '-like-btn'">
             <font-awesome-icon v-if="!is_liked" icon="fa-regular fa-heart" class="text-xs" />
             <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
           </button>
@@ -54,15 +68,19 @@ import { reactive, toRefs } from '@vue/reactivity';
 import NestedCommentList from '@/components/TitleCompetition/NestedCommentList.vue';
 import { plusLike, minusLike, deleteComment } from '@/api/titleCompetition.js';
 import { computed } from 'vue-demi';
+import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 export default {
   components: { NestedCommentList },
   name: 'CommentListItem',
   props: {
     comment: Object,
+    index: Number,
+    id: String,
+    sort_type: String,
   },
   setup(props) {
     const store = useStore();
-    // TODO: time ~~전으로 출력하기
     const comment_data = reactive({
       profile_image: 'profile.jpg',
       username: props.comment.username,
@@ -76,11 +94,40 @@ export default {
       like_cnt: props.comment.likeNumber,
       is_liked: props.comment.pressed,
     });
-
-    // TODO: 나중에 로그인 기능 완성되면 username 수정하기
+    const user_id = window.localStorage.getItem('current_userid');
+    const router = useRouter();
+    const goToProfile = () => {
+      router.push(`/profile/${comment_data.username}`);
+    };
+    // 삭제 버튼
     const canDelete = computed(() => {
-      return (comment_data.username = 'c109');
+      return comment_data.username == user_id;
     });
+
+    // 시간표시: ~ 전
+    const new_time = timeForToday(new Date(comment_data.time));
+    function timeForToday(value) {
+      const today = new Date();
+      const timeValue = new Date(value);
+
+      const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+      if (betweenTime < 1) return '방금 전';
+      if (betweenTime < 60) {
+        return `${betweenTime}분 전`;
+      }
+
+      const betweenTimeHour = Math.floor(betweenTime / 60);
+      if (betweenTimeHour < 24) {
+        return `${betweenTimeHour}시간 전`;
+      }
+
+      const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+      if (betweenTimeDay < 365) {
+        return `${betweenTimeDay}일 전`;
+      }
+
+      return `${Math.floor(betweenTimeDay / 365)}년 전`;
+    }
 
     // 답글쓰기 버튼 클릭
     const writeNestedComment = () => {
@@ -93,47 +140,68 @@ export default {
 
     // 좋아요 버튼 클릭
     const clickLikeBtn = () => {
-      console.log(`isLike 버튼 클릭 전: ${comment_data.is_liked}`);
       const comment_id = comment_data.comment_id;
       if (comment_data.is_liked) {
-        console.log('음별로');
         minusLike(
           comment_id,
           ({ data }) => {
-            console.log(data);
+            console.log(data)
             comment_data.is_liked = false;
+            comment_data.like_cnt -= 1;
           },
           (error) => {
             console.log(error);
           },
         );
       } else {
-        console.log('좋아요!');
         plusLike(
           comment_id,
           ({ data }) => {
-            console.log(data);
+            console.log(data)
             comment_data.is_liked = true;
+            comment_data.like_cnt += 1;
           },
           (error) => {
             console.log(error);
           },
         );
       }
-      console.log(`is_like 버튼 클릭 후: ${comment_data.is_liked}`);
     };
 
+    // 삭제버튼 클릭
     const clickDeleteBtn = () => {
+      Swal.fire({
+        icon: 'warning',
+        text: '삭제하시겠습니까?',
+        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
+        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
+        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
+        confirmButtonText: '승인', // confirm 버튼 텍스트 지정
+        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+      }).then((result) => {
+        if (result.isConfirmed) {
+          store.dispatch('titleCompetitionStore/deleteComment', props.index);
+          deleteComment(
+            comment_data.comment_id,
+            ((data) => {
+              console.log(data);
+            },
+            (error) => {
+              console.log(error);
+            }),
+          );
+        }
+      });
+      /*       store.dispatch('titleCompetitionStore/deleteComment', props.index);
       deleteComment(
         comment_data.comment_id,
-        (({ data }) => {
+        ((data) => {
           console.log(data);
-          //TODO: 데이터 삭제 후 store의 comments 배열에서 삭제하기
         },
         (error) => {
           console.log(error);
         }),
-      );
+      ); */
     };
 
     return {
@@ -142,6 +210,8 @@ export default {
       clickLikeBtn,
       canDelete,
       clickDeleteBtn,
+      new_time,
+      goToProfile,
     };
   },
 };

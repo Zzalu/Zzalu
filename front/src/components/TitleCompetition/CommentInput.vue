@@ -1,13 +1,32 @@
 <template>
   <!-- 댓글 input -->
-  <div class="comment_write flex">
+  <div v-if="state == 'PROCEED'" class="comment_write">
     <div v-show="canWriteNested.value" class="absolute bottom-10 bg-zz-p px-2 py-1 text-xs rounded-xl">
       <span class="mr-1">{{ comment_writer_nickname }}에게 답글</span>
       <button @click="undoWriteNestedComment">
         <font-awesome-icon icon="fa-solid fa-circle-xmark" class="text-zz-light-p" />
       </button>
     </div>
-    <input type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." />
+    <textarea
+      ref="textArea"
+      rows="{1}"
+      id="comment-textarea"
+      @input="resize"
+      v-if="isLogined"
+      type="text"
+      class="comment_textarea"
+      @change="changeInput"
+      placeholder="글 남기기..."
+    />
+    <!-- <input v-if="isLogined" type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." /> -->
+    <input
+      v-else
+      type="text"
+      class="comment_input"
+      @change="changeInput"
+      placeholder="로그인 후에 참여하실 수 있습니다 :)"
+      disabled
+    />
 
     <button class="comment_submit" @click="clicksubmitBtn">등록</button>
   </div>
@@ -26,7 +45,14 @@ export default {
     let comment_writer_nickname = computed(() => ref(store.state.titleCompetitionStore.comment_writer.nickname));
 
     let canWriteNested = computed(() => ref(store.state.titleCompetitionStore.isNested));
-
+    let state = computed(() => store.state.titleCompetitionStore.state);
+    let isLogined = computed(() => {
+      if (window.localStorage.getItem('token')) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     const undoWriteNestedComment = async () => {
       await store.dispatch('titleCompetitionStore/deleteCommentWriter');
     };
@@ -34,31 +60,40 @@ export default {
     const changeInput = (e) => {
       return (content = e.target.value);
     };
+
+    const textArea = ref(null);
+    const resize = () => {
+      textArea.value.style.height = '1.5rem';
+      textArea.value.style.height = textArea.value.scrollHeight + 'px';
+    };
+
     // 등록버튼 눌렀을 때
     const clicksubmitBtn = () => {
       if (!canWriteNested.value.value) {
         const comment_data = {
-          username: 'c109',
           content: content,
           titleHakwonId: store.state.titleCompetitionStore.title_competition_id,
         };
         addComment(
           comment_data,
           ({ data }) => {
-            console.log(data);
+            console.log(data)
+            if (store.state.state != 'LATEST') {
+              store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
+            }
+            /*             else {
+              store.dispatch('titleCompetitionStore/pushComment', data);
+            } */
           },
           (error) => {
             console.log(error);
           },
         );
-        console.log('댓글입니다');
       } else {
         const nested_comment_data = {
-          username: 'c109',
           content: content,
           parentCommentId: store.state.titleCompetitionStore.comment_writer.comment_id,
         };
-        console.log(nested_comment_data);
         addNestedComment(
           nested_comment_data,
           ({ data }) => {
@@ -68,8 +103,10 @@ export default {
             console.log(error);
           },
         );
-        console.log('답글입니다');
       }
+      // input 비워주기
+      document.querySelector('#comment-textarea').value = '';
+      content = '';
     };
 
     return {
@@ -80,6 +117,10 @@ export default {
       canWriteNested,
       clicksubmitBtn,
       changeInput,
+      state,
+      isLogined,
+      resize,
+      textArea,
     };
   },
 };
@@ -89,14 +130,16 @@ export default {
 .comment_write {
   @apply w-11/12 bg-zz-light-input flex rounded-lg p-1 fixed bottom-14;
 }
-.nested_comment_input {
-  @apply w-auto bg-transparent  text-xs h-7 px-2 focus:outline-none;
+
+.comment_textarea {
+  @apply w-10/12 bg-transparent text-xs h-6 px-2 focus:outline-none;
+  min-height: 0.75rem;
 }
 .comment_input {
-  @apply w-full bg-transparent  text-xs h-7 px-2 focus:outline-none;
+  @apply w-full bg-transparent text-xs h-7 px-2 focus:outline-none;
 }
 
 .comment_submit {
-  @apply text-xs w-14 px-2 bg-zz-light-p rounded-xl text-white;
+  @apply absolute bottom-1 right-1 text-xs w-14 h-7 px-2 bg-zz-light-p rounded-xl text-white;
 }
 </style>

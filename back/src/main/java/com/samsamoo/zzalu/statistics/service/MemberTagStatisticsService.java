@@ -1,6 +1,5 @@
 package com.samsamoo.zzalu.statistics.service;
 
-import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
 import com.samsamoo.zzalu.statistics.repository.MemberTagStatisticsRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +18,9 @@ public class MemberTagStatisticsService {
         return memberTagStatisticsRepository.findByTagAndMemberId(tag, memberId);
     }
 
-    public List<MemberTagStatistics> findAllByMemberId(Long memberId) {
-        return memberTagStatisticsRepository.findAllByMemberId(memberId);
+    public List<MemberTagStatistics> findTop4ByMemberId(Long memberId) {
+
+        return memberTagStatisticsRepository.findTop4ByMemberIdOrderByCountDesc(memberId);
     }
 
     public void save(MemberTagStatistics memberTagStatistics) {

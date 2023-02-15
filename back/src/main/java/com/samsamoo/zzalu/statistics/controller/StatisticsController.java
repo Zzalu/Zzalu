@@ -1,9 +1,11 @@
 package com.samsamoo.zzalu.statistics.controller;
 
+import com.samsamoo.zzalu.advice.NotFoundException;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.service.GifsService;
 import com.samsamoo.zzalu.member.entity.Member;
+import com.samsamoo.zzalu.member.repo.MemberRepository;
 import com.samsamoo.zzalu.statistics.entity.GifStatistics;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
 import com.samsamoo.zzalu.statistics.repository.MemberTagStatisticsRepository;
@@ -26,7 +28,7 @@ public class StatisticsController {
     private final GifStatisticsService gifStatisticsService;
     private final MemberTagStatisticsService memberTagStatisticsService;
     private final JwtTokenProvider jwtTokenProvider;
-    private final MemberTagStatisticsRepository memberTagStatisticsRepository;
+    private final MemberRepository memberRepository;
 
     @PostMapping("/use")
     @ResponseBody
@@ -123,8 +125,10 @@ public class StatisticsController {
     // AccessToken이 아니라 MemberId로 받도록 수정
     @GetMapping("/member")
     @ResponseBody
-    public List<MemberTagStatistics> findAllByMemberId(@RequestParam("memberId") Long memberId){
-        return memberTagStatisticsService.findAllByMemberId(memberId);
+    public List<MemberTagStatistics> findAllByMemberId(@RequestParam("username") String username){
+        Member member = memberRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("회원을 찾을 수 없습니다."));
+        return memberTagStatisticsService.findTop4ByMemberId(member.getId());
     }
 
     @GetMapping("/gif")

@@ -65,22 +65,59 @@ export default {
   name: "ChatFilter",
   setup() {
     const store = useStore();
-    const user_id = window.localStorage.getItem("id");
+    const user_id = window.localStorage.getItem("current_pk");
 
-    const get_all_rooms = () => {
-      store.dispatch("quietChatStore/getQuietList");
+    const nosearch_all_recent = () => {
+      store.dispatch("quietChatStore/noSearchAllRecent");
     };
     const only_search_room = (nv) => {
       store.dispatch("quietChatStore/onlySearchRoom", nv);
     };
     const nosearch_created_recent = () => {
       store.dispatch("quietChatStore/noSearchCreatedRecent", user_id);
+    };
+    const search_created_recent = (e) => {
+      store.dispatch("quietChatStore/SearchCreatedRecent", e);
+    }
+    const nosearch_created_like = () => {
+      store.dispatch("quietChatStore/noSearchCreatedLike", user_id)
+    }
+    const search_all_like = (e) => {
+      store.dispatch("quietChatStore/searchAllLike", e)
+    }
+    const search_created_like = (e) => {
+      store.dispatch("quietChatStore/searchCreatedLike", e)
+    }
+    const nosearch_all_like = () => {
+      store.dispatch("quietChatStore/nosearchAllLike")
+    }
+    const nosearch_bookmark_recent = () => {
+      store.dispatch("quietChatStore/noSearchBookmarkRecent")
+    }
+    const search_bookmark_recent = (e) => {
+      store.dispatch("quietChatStore/SearchBookmarkRecent",e)
+    }
+    const nosearch_bookmark_like = () => {
+      store.dispatch("quietChatStore/nosearchBookmarkLike", user_id)
+    }
+    const search_bookmark_like = (e) => {
+      store.dispatch("quietChatStore/searchBookmarkLike",[e,user_id])
     }
 
     return {
       only_search_room,
-      get_all_rooms,
-      nosearch_created_recent
+      nosearch_all_recent,
+      nosearch_created_recent,
+      search_created_recent,
+      nosearch_created_like,
+      search_all_like,
+      search_created_like,
+      nosearch_all_like,
+      nosearch_bookmark_recent,
+      search_bookmark_recent,
+      nosearch_bookmark_like,
+      search_bookmark_like
+
     };
   },
   data() {
@@ -100,11 +137,11 @@ export default {
         this.get_all_rooms();
         this.filter1 = 0;
         this.filter2 = 0;
+        this.input_data = null
       } else {
         (this.filter1 = 0), (this.filter2 = 0), this.only_search_room(nv);
-        console.log("검색으로만 필터링", nv);
+        this.input_data = nv
       }
-      this.input_data = nv
     },
     filter1(newvalue, oldvalue) {
       if (oldvalue == 0) {
@@ -117,34 +154,58 @@ export default {
     },
   },
   methods: {
+    //  전체고독방 눌렀을 때
     AllViewRoom() {
       this.filter1 = 0;
       if (this.filter2 == 0) {
-        console.log("전체 고독 + 최신 대화");
+        if (this.input_data == null) {
+          this.nosearch_all_recent()
+        } else {
+          this.only_search_room(this.input_data)
+        }
       } else if (this.filter2 == 1) {
-        console.log("전체 고독 + 좋아요순");
+        if (this.input_data == null) {
+          this.nosearch_all_like()
+        } else {
+          this.search_all_like(this.input_data)
+        }
       }
     },
+    // 내가 개설 한
     CreatedByMe() {
       this.filter1 = 1;
       if (this.filter2 == 0) {
         if (this.input_data == null) {
-          console.log("내가 개설 + 최신 대화");
+          this.nosearch_created_recent()
         } else {
-          console.log("검색필터 + 내가 개설 + 최신 대화");
+          this.search_created_recent(this.input_data)
         }
       } else if (this.filter2 == 1) {
-        console.log("내가 개설 + 좋아요순");
+        if(this.input_data == null) {
+          this.nosearch_created_like()
+        } else {
+          this.search_created_like(this.input_data)
+        }
       }
     },
+    // 즐겨찾기 눌렀을 때
     ILoveItRoom() {
       this.filter1 = 2;
       if (this.filter2 == 0) {
-        console.log("즐겨찾기 + 최신 대화순");
+        if (this.input_data == null) {
+          this.nosearch_bookmark_recent()
+        } else {
+          this.search_bookmark_recent(this.input_data)
+        }
       } else if (this.filter2 == 1) {
-        console.log("즐겨찾기 + 좋아요 순");
+        if (this.input_data == null) {
+          this.nosearch_bookmark_like()
+        } else {
+          this.search_bookmark_like(this.input_data)
+        }
       }
     },
+    // 최신대화 순
     RecentSort() {
       this.filter2 = 0;
       if (this.filter1 == 0) {
@@ -155,12 +216,21 @@ export default {
         this.ILoveItRoom();
       }
     },
+    // 좋아요 순
     LikeSort() {
       this.filter2 = 1;
       if (this.filter1 == 0) {
-        this.AllViewRoom();
+        if (this.input_data == null) {
+          this.AllViewRoom();
+        } else {
+          this.search_all_like(this.input_data)
+        }
       } else if (this.filter1 == 1) {
-        this.CreatedByMe();
+        if (this.input_data == null) {
+          this.nosearch_created_like();
+        } else {
+          this.search_created_like(this.input_data)
+        }
       } else if (this.filter1 == 2) {
         this.ILoveItRoom();
       }

@@ -17,6 +17,8 @@ import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.*;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
+import com.samsamoo.zzalu.tempGif.entity.TempGif;
+import com.samsamoo.zzalu.tempGif.repo.TempGifRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,6 +51,7 @@ public class MemberService {
     private final MailService mailService;
     private final S3Uploader s3Uploader;
     private final AwardRecordRepository awardRecordRepository;
+    private final TempGifRepository tempGifRepository;
 
     @Value("${jwt.token.secret}")
     private String secretKey;
@@ -251,6 +254,10 @@ public class MemberService {
             // 나를 삭제
             you.getFollowing().remove(me);
             memberRepository.save(you);
+        }
+        List<TempGif> tempGifs = tempGifRepository.findAllByAllowedMembersContaining(me);
+        for (TempGif tempGif : tempGifs) {
+            tempGif.getAllowedMembers().remove(me);
         }
         memberRepository.delete(me);
     }

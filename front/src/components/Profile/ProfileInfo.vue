@@ -1,6 +1,10 @@
 <template>
     <div class="ml-4 flex">
-      <div class="bg-black w-32 h-32 rounded-full mr-6"></div>
+      <img v-if="this.profile_user_data.profilePath != null" class="profile-image" :style="{ backgroundImage: `url(${this.profile_user_data.profilePath})` }" />
+      <!-- <img v-else class="profile-image" src="@/assets/zzalu_logo_light.png" />
+      <div></div> -->
+      <font-awesome-icon v-else class="profile-image-none" icon="fa-solid fa-user"   />
+      <!-- <img src="" alt=""> -->
       <div class="mx-auto">
         <div class="flex">
           <div
@@ -29,11 +33,17 @@
       </div>
     </div>
     <div class="mt-4 mb-4">
-      <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
+      <div class="flex">
+        <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
+          <div v-if="this.profile_user_data.isManager == true">
+            <font-awesome-icon icon="fa-solid fa-crown" class="text-zz-p ml-2"/>
+        </div>
+      </div>
+
       <div class="text-zz-negative font-spoq text-xs my-auto">
         @{{ this.profile_user_data.username }}
       </div>
-      <div class="mt-2 line-clamp-2">
+      <div class="mt-2 line-clamp-2 font-spoq text-zz-dark-input dark:text-white">
         {{ this.profile_user_data.profileMessage }}
       </div>
     </div>
@@ -48,7 +58,7 @@ export default {
   name: "ProfileInfo",
   data() {
     return {
-      me: localStorage.getItem("id")
+      me: localStorage.getItem("current_userid")
       // myProfile: false,
     };
   },
@@ -58,14 +68,15 @@ export default {
     const profile_user_data = computed(
       () => store.state.profileStore.profile_user
     );
+    // const my_data = computed(
+    //   () => store.state.userStore
+    // );
     const get_follower = (member_id) => {
-      console.log("member_id", member_id)
       store.dispatch("followStore/getFollowerList", member_id)
     };
     
 
     const get_following = (member_id) => {
-      console.log("member_id", member_id)
       store.dispatch("followStore/getFollowingList", member_id)
     
     };
@@ -103,8 +114,6 @@ export default {
   methods: {
     GetFollower() {
       let member_id = this.profile_user_data.id
-      console.log(this.profile_user_data)
-      console.log(member_id, "멤버")
       this.get_follower(member_id)
       this.goFollow
       // console.log("followers=", this.followers) // undefined
@@ -124,6 +133,25 @@ export default {
 .follower-and-following {
   @apply mt-10 text-center mx-2 text-zz-s font-spoq;
 }
-/* 내프로필이면 my-auto */
+
+.profile-image {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply rounded-full bg-center bg-no-repeat;
+}
+
+.profile-image-none {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
+}
 
 </style>

@@ -110,11 +110,15 @@ export default {
     const select_gif_id = computed(
       () => store.state.boardListStore.select_gif_id
     );
+    const user_store_list = computed(
+      () => store.state.boardListStore.user_store_list
+    )
     const get_user_list = (data) => {
       store.dispatch("boardListStore/getUserStoreList", data);
     };
-    const put_boards_data = (data) => {
+    const put_boards_data = (data,gif_id) => {
       store.dispatch("boardListStore/putBoardData", data);
+      store.dispatch("boardListStore/userStat",gif_id)
     };
     return {
       close_list_modal,
@@ -123,11 +127,12 @@ export default {
       put_boards_data,
       open_list_modal,
       select_gif_id,
+      user_store_list,
     };
   },
-  props: {
-    user_store_list: Object,
-  },
+  // props: {
+  //   user_store_list: Object,
+  // },
   data() {
     return {
       creating: false,
@@ -204,11 +209,10 @@ export default {
         boards.push(tmp);
       }
       let data = { boards: boards };
-      console.log("요청할 데이터", data);
       let datas = [];
       datas.push(this.select_gif_id);
       datas.push(data);
-      this.put_boards_data(datas);
+      this.put_boards_data(datas,this.select_gif_id);
       this.close_list_modal();
     },
     CancelCreateList() {
@@ -224,7 +228,9 @@ export default {
       };
 
       this.CreateBoard(board_name);
-      this.get_user_list(this.select_gif_id);
+      setTimeout(() => {
+        this.get_user_list(this.select_gif_id);
+      }, 500);
     },
     ChangeCreate() {
       this.creating = true;

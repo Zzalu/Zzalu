@@ -1,7 +1,10 @@
 package com.samsamoo.zzalu.amazonS3.upLoader;
 
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -62,6 +65,7 @@ public class S3Uploader {
         //전환된 File을 S3 에 Public 읽기 권한으로 put 한다.  외부에서 정적 파일을 읽을 수 있도록 하기 위함이다.
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         //업로드된 주소를 반환한다.
+
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
@@ -87,6 +91,16 @@ public class S3Uploader {
             log.info("파일이 삭제되었습니다.");
         } else {
             log.info("파일이 삭제되지 못했습니다.");
+        }
+    }
+    public void delete(String filePath) {
+        try {
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket, filePath));
+            System.out.println(String.format("[%s] deletion complete", filePath));
+        } catch (AmazonServiceException e) {
+            e.printStackTrace();
+        } catch (SdkClientException e) {
+            e.printStackTrace();
         }
     }
 }
