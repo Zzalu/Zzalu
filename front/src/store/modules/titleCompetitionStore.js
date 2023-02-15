@@ -158,6 +158,10 @@ const titleCompetitionStore = {
     DELETE_COMMENT(state, comment_index) {
       state.comments.splice(comment_index, 1);
     },
+
+    SET_IS_TOP_TRUE(state) {
+      state.is_top = true;
+    },
   },
   actions: {
     async initStoreData({ commit }) {
@@ -203,6 +207,13 @@ const titleCompetitionStore = {
     setIsTop({ commit }) {
       commit('SET_IS_TOP');
     },
+
+    setIsTopTrue({ commit }) {
+      return new Promise(() => {
+        commit('SET_IS_TOP_TRUE');
+      });
+    },
+
     // 댓글
     async getComments({ commit, state, dispatch }, size) {
       const params = {

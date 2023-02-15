@@ -127,9 +127,11 @@ export default {
         connect();
       }
     });
-    /* .catch(() => {
+    /*       .catch((error) => {
+        console.log(error);
+        setTimeout()
+        router.push(`/error-404`);
         ws.disconnect();
-        router.push({ name: 'error-404' });
       }); */
     // const state = computed(() => store.getters['titleCompetitionStore/getState']);
     const state = computed(() => store.state.titleCompetitionStore.state);
@@ -145,14 +147,12 @@ export default {
     let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
 
     const clickSortBtn = (sort_type) => {
-      is_top.value = true;
+      // is_top.value = true;
+      store.dispatch('titleCompetitionStore/setIsTopTrue');
       document.documentElement.scrollTop = 0;
-      if (sort_type == 'TOP5') {
-        store.dispatch('titleCompetitionStore/modifySortType', sort_type);
-      } else {
-        store.dispatch('titleCompetitionStore/setSocketDataInit');
-        store.dispatch('titleCompetitionStore/modifySortType', sort_type);
-      }
+
+      store.dispatch('titleCompetitionStore/setSocketDataInit');
+      store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
 
     //! 스크롤 관련
