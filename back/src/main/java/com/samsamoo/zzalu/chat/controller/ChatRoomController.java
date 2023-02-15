@@ -242,11 +242,11 @@ public class ChatRoomController {
         Member requestMember = jwtTokenProvider.getMember(token);
         List<Member> member = new ArrayList<>();
         member.add(requestMember);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(member, keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
-            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
-            chatRoomListDtos.add(chatRoomListDto);
+            if(chatRoom.getLikeMembers().contains(requestMember))
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
         }
         return chatRoomListDtos;
     }
@@ -258,11 +258,11 @@ public class ChatRoomController {
         Member requestMember = jwtTokenProvider.getMember(token);
         List<Member> member = new ArrayList<>();
         member.add(requestMember);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(member, keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
-            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
-            chatRoomListDtos.add(chatRoomListDto);
+            if(chatRoom.getLikeMembers().contains(requestMember))
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
         }
         return chatRoomListDtos;
     }
