@@ -20,7 +20,6 @@ const tempGifStore = {
       getAllTempGif(
         params,
         ({ data }) => {
-          console.log("확인", data)
           commit('SET_TEMP_GIF_LIST', data.tempGifList);
         },
         (error) => {
@@ -37,11 +36,10 @@ const tempGifStore = {
           params,
           temp_id,
           ({ data }) => {
-            console.log(data, "성공입니다.");
+            console.log(data)
             resolve("sucess");
           },
           (error) => {
-            console.log(error, "실패입니다.");
             alert(error.response.data.message);
             reject("fail");
           },
@@ -59,7 +57,6 @@ const tempGifStore = {
           console.log(data, "성공입니다.");
         },
         (error) => {
-          console.log(error, "실패입니다.");
           alert(error.response.data.message);
         },
       )
@@ -73,7 +70,6 @@ const tempGifStore = {
           console.log(data, "성공입니다.");
         },
         (error) => {
-          console.log(error, "실패입니다.");
           alert(error.response.data.message);
         },
       )

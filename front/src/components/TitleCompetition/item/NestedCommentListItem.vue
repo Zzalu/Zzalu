@@ -76,7 +76,6 @@ export default {
     }
 
     const clickDeleteBtn = () => {
-      console.log(props.index);
       Swal.fire({
         icon: 'warning',
         text: '삭제하시겠습니까?',

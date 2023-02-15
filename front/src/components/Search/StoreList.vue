@@ -209,7 +209,6 @@ export default {
         boards.push(tmp);
       }
       let data = { boards: boards };
-      console.log("요청할 데이터", data);
       let datas = [];
       datas.push(this.select_gif_id);
       datas.push(data);

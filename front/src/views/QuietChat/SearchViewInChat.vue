@@ -362,12 +362,10 @@ export default {
     send_message() {
       this.$emit("gif_path", this.gif_path);
       this.close_search_modal();
-      console.log(this.gif_path, "여기서보냄 gif_path");
     },
     path(gifpath) {
       this.$emit("gif_path", gifpath);
       this.close_search_modal();
-      console.log(gifpath, "보낼 gif_path");
     },
   },
   watch: {

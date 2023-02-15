@@ -93,7 +93,6 @@ const titleCompetitionStore = {
     },
 
     PUSH_SOCKET_COMMENTS(state) {
-      console.log('모인 댓글들 넣어요');
       state.comments.unshift(...state.socket_comments.reverse());
     },
 
@@ -112,12 +111,10 @@ const titleCompetitionStore = {
 
     PLUS_TOTAL_COMMENT_CNT(state) {
       state.total_comment_cnt += 1;
-      console.log(state.total_comment_cnt);
     },
 
     // 댓글 추가하기
     ADD_COMMENTS(state, new_comments) {
-      console.log('댓글 추가하기');
       state.comments.push(...new_comments);
     },
 
@@ -139,7 +136,6 @@ const titleCompetitionStore = {
     // 댓글
 
     PUSH_COMMENT(state, comment) {
-      console.log('댓글 넣어요');
       state.comments.unshift(comment);
     },
 
@@ -166,10 +162,8 @@ const titleCompetitionStore = {
   actions: {
     async initStoreData({ commit }) {
       commit('INIT_STORE_DATA');
-      console.log('이닛!');
     },
     async init({ state, dispatch }, data) {
-      console.log('init: ' + data);
       await dispatch('getTitleCompetition', data.open_date);
       await dispatch('getBestComments');
       await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
@@ -181,12 +175,11 @@ const titleCompetitionStore = {
         getTitleCompetition(
           open_date,
           ({ data }) => {
-            console.log('action/getTitleCompetition: ' + data);
             commit('SET_TITLE_COMPETITION', data);
             resolve();
           },
           (error) => {
-            console.log(error);
+            console.log(error)
             reject();
           },
         );
@@ -260,7 +253,6 @@ const titleCompetitionStore = {
 
     // 대댓글
     getNestedCommentList({ commit }, datas) {
-      console.log(datas);
       const comment_id = datas.comment_id;
       const params = {
         lastCid: datas.lastCid,
@@ -276,7 +268,7 @@ const titleCompetitionStore = {
             resolve();
           },
           (error) => {
-            console.log(error);
+            console.log(error)
             reject();
           },
         );

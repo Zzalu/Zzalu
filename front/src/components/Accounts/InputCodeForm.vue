@@ -75,7 +75,6 @@ export default {
     // 이메일 중복확인 및 코드 요청 보내기
     const sendCode = async function () {
       const signup_user_email = window.localStorage.getItem("temp_email")
-        // console.log(this.userInfo)
         const result = await store.dispatch('userStore/sendEmailAction', signup_user_email )
         if (result.status == 400) {
           Swal.fire({
@@ -104,11 +103,7 @@ export default {
   methods: {
     signupFinal: async function () {
       const code_try = this.inputCode
-      // const result = await store.dispatch('userStore/signupFinalAction', this.userInfo )
-      // console.log(result.data.authKey)
       if (code_try == this.userInfo.code) {
-        console.log(this.userInfo);
-        console.log(code_try);
         const userData = {
           username: this.userInfo.username,
           password: this.userInfo.password,
@@ -117,7 +112,6 @@ export default {
           userEmail: this.userInfo.email,
         };
         const result = await this.$store.dispatch("userStore/signupFinalAction",userData);
-        console.log(result);
         if (result.status == 400) {
           Swal.fire({
             icon: "error",
@@ -125,7 +119,6 @@ export default {
             })
         } else {
           clearTimeout(this.min, this.sec)
-          console.log('멈춤')
           this.$router.push({ name: "complete" });
         }
       } else {

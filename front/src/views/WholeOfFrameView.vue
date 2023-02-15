@@ -68,7 +68,6 @@ export default {
       '2023-02-15',
       (data) => {
         //제목학원 출력
-        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
 
         // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
         title_competition.value = data.data;
@@ -86,8 +85,6 @@ export default {
 
     //해당 날짜의 제목학원 페이지로 이동
     const goToTitleCompetition = (open_date) => {
-      console.log(JSON.stringify(title_competition.value));
-      console.log(open_date);
       router.push(`/title-competition/${open_date}`);
     };
 
@@ -98,7 +95,6 @@ export default {
         '2023-02-15',
         (data) => {
           //제목학원 출력
-          console.log('[제목학원 ddddddddddrespose] ' + JSON.stringify(data.data));
 
           // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
           title_competition.value = data.data;

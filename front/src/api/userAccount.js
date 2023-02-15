@@ -11,7 +11,6 @@ const requestRegister = (payload,res,err) => {
 
 // 로그인 (2)
 const requestLogin = (payload, res, err) => {
-    console.log('api요청 할거임',payload)
     return api.post(`members/login`, payload)
     .then(res).catch(err)
 }
@@ -29,8 +28,6 @@ const getProfileUser = (username, success, fail) => {
 
 // 아이디 중복체크 (5)
 const checkUsername = (payload) => {
-    // console.log(payload)
-    // console.log('데이터 이제 api 요청 보낸다')
     return api.get(`members/exists`, {params: payload})
 }
 
@@ -41,7 +38,6 @@ const checkNickname = (payload) => {
 
 // 회원정보변경 (7)
 const requestChangeInfo = (params, form, res, err) => {
-    console.log('폼데이터 이제 넣음', form)
     const tempData = new FormData();
     if (form.newNickname != null) {
         tempData.append("nickname", form.newNickname)
@@ -69,7 +65,6 @@ const requestManager = (res, err) => {
 // -----------------------------------------------------------
 // 회원가입시 이메일인증 (2-1)
 const checkEmail = (data,res,err) => {
-    // console.log(data)
     return api.post(`mail/signup`, data )
     .then(res).catch(err)
 }
@@ -82,7 +77,6 @@ const changePasswordEmail  = (payload, res, err) => {
 
 // 아이디찾기시 이메일 인증 (2-3)
 const requestUsername = (data,res,err) => {
-    // console.log('유저이메일 나와야됨',data)
     return api.post(`mail/username`, data )
     .then(res).catch(err)
 }

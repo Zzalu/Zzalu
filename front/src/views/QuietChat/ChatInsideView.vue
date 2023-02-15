@@ -128,20 +128,17 @@ export default {
     this.room_id = this.$route.query.room_id;
     this.get_past_message(this.room_id);
     this.access_token = this.token;
-    console.log('token : ' + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
 
-    this.socket = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    this.socket = new SockJS('http://i8c109.p.ssafy.io:8089' + '/ws-stomp');
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),
     };
-    console.log(this.socket);
     this.web_stomp = Stomp.over(this.socket, options);
 
     this.reconnect = 0;
     this.connect();
-    console.log('created_end');
   },
   data() {
     return {
@@ -179,8 +176,6 @@ export default {
     },
     gif_data(data) {
       this.message = data.gifPath;
-      console.log(this.message, this.message);
-      console.log('gifId : ', data.id);
       this.gif_id = data.id;
 
       this.sendMessage();
@@ -194,7 +189,6 @@ export default {
     },
     gif_data2(data2) {
       this.message = data2.gifPath;
-      console.log('gifId : ', data2.id);
       this.gif_id = data2.id;
       this.sendMessage();
       this.message = '';
@@ -217,8 +211,6 @@ export default {
       );
     },
     reciveMessage(recv) {
-      console.log('receive message: ' + recv);
-      console.log('test', recv);
       let totalheight = document.body.scrollHeight;
       let tmp = '';
       let sendtime = '';
@@ -257,19 +249,13 @@ export default {
     connect() {
       let local_web_stomp = this.web_stomp;
       let local_recive_message = this.reciveMessage;
-      let local_reconnect = this.reconnect;
-      let local_connect = this.connect;
-      let local_socket = this.socket;
       let local_room_id = this.room_id;
       let local_token = this.access_token;
-
-      console.log('local_web_stomp : ' + local_web_stomp);
-      console.log('local_room_id : ' + local_room_id);
 
       local_web_stomp.connect(
         {},
         function (frame) {
-          console.log('frame : ' + frame);
+          console.log(frame)
           local_web_stomp.subscribe('/sub/chat/room/' + local_room_id, function (message) {
             let recv = JSON.parse(message.body);
             local_recive_message(recv);
@@ -286,9 +272,6 @@ export default {
         },
         function (error) {
           console.log(error);
-          console.log(local_reconnect);
-          console.log(local_connect);
-          console.log(local_socket);
           // if(local_reconnect++ <= 5) {
           //   setTimeout(function() {
           //     local_socket = new SockJS("/ws-stomp");
