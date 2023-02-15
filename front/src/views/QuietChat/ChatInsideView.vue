@@ -10,20 +10,23 @@
       {{ my_member_Id }} -->
     <div class="message-contain">
       <div v-for="message in messages" :key="message">
-        <div v-if="message.type == 'TALK' ">
+        <div v-if="message.type == 'TALK'">
           <!-- 내가 보낸 메세지 -->
-          <div v-if="user_nickname == message.sender">
+          <div v-if="that_member_Id == message.memberId">
             <div class="mb-4"></div>
             <!-- 짤 이미지 -->
-            
+
             <font-awesome-icon
-            icon="fa-solid fa-play"
-            class="my-message-balloon"
+              icon="fa-solid fa-play"
+              class="my-message-balloon"
             />
             <div class="my-image-group">
               <span class="my-write-time">{{ message.sendDate }}</span>
-              <img class="my-image-box" :src="`${message.message}`" alt="" 
-              @click="GoToDetail(message.gifId)"
+              <img
+                class="my-image-box"
+                :src="`${message.message}`"
+                alt=""
+                @click="GoToDetail(message.gifId)"
               />
             </div>
           </div>
@@ -31,16 +34,29 @@
           <!-- 상대방이 보낸 메세지 -->
 
           <!-- Sender : {{ message.sender }} ProfilePath : {{ message.profilePath }} -->
-          <div class="profile-image" v-if="user_nickname != message.sender">
+          <div class="profile-image" v-if="that_member_Id != message.memberId">
             <!-- 만약 방장이라면"  -->
-            <div v-if="message.profilePath" class="h-12 w-12 rounded-full bg-no-repeat absolute bg-contain text-zz-p" 
-            :style="`background-image:url(${message.profilePath})`"
-            @click="GoToProfile(message.userid)"
+            <div
+              v-if="message.profilePath"
+              class="
+                h-12
+                w-12
+                rounded-full
+                bg-center bg-no-repeat
+                absolute
+                bg-contain
+                text-zz-p
+              "
+              :style="`background-image:url(${message.profilePath})`"
+              @click="GoToProfile(message.memberId)"
             ></div>
-            <font-awesome-icon v-if="message.profilePath == null" class="text-4xl ml-2 mt-1 absolute text-zz-p" icon="fa-solid fa-user"
-            @click="GoToProfile(message.userid)"
+            <font-awesome-icon
+              v-if="message.profilePath == null"
+              class="text-4xl ml-2 mt-1 absolute text-zz-p"
+              icon="fa-solid fa-user"
+              @click="GoToProfile(message.memberId)"
             />
-            <div v-if="message.member_id == member_Id">
+            <div v-if="message.memberId == master_Id">
               <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
               <p class="profile-nickname dark:text-white">
                 {{ message.sender }}
@@ -63,10 +79,13 @@
         </div>
         <div v-if="message.type == 'TALK'">
           <!-- 짤 이미지 -->
-          <div class="image-contain" v-if="user_nickname != message.sender">
+          <div class="image-contain" v-if="that_member_Id != message.memberId">
             <div class="image-group">
-              <img class="image-box" :src="`${message.message}`" alt="" 
-              @click="GoToDetail(message.gifId)"
+              <img
+                class="image-box"
+                :src="`${message.message}`"
+                alt=""
+                @click="GoToDetail(message.gifId)"
               />
               <!-- 작성 시간  -->
               <span class="write-time">{{ message.sendDate }}</span>
@@ -131,7 +150,7 @@ export default {
     };
     const get_user_store = (data) => {
       store.dispatch("boardListStore/getUserStoreList", data);
-    }
+    };
 
     const messages = computed(() => store.state.quietChatStore.past_message);
 
@@ -140,7 +159,7 @@ export default {
       messages,
       get_past_message,
       user_stat,
-      get_user_store
+      get_user_store,
     };
   },
   created() {
@@ -178,8 +197,8 @@ export default {
       search_modal: false,
 
       // 방장 확인
-      member_Id: this.$route.query.member_Id,
-      that_member_Id: localStorage.getItem("profile_id"),
+      master_Id: this.$route.query.member_Id,
+      that_member_Id: localStorage.getItem("current_pk"),
 
       // 본인 확인
       user_nickname: localStorage.getItem("current_nickname"),
@@ -187,12 +206,12 @@ export default {
   },
 
   methods: {
-    GoToProfile(user_id) {
-      this.$router.push({name : 'profile', params : {username : user_id}})
+    GoToProfile(member_id) {
+      this.$router.push({ name: "profile", params: { username: member_id } });
     },
     GoToDetail(gifid) {
-      this.get_user_store(gifid)
-      this.$router.push({name : 'zzal', params : {zzal_id : gifid},})
+      this.get_user_store(gifid);
+      this.$router.push({ name: "zzal", params: { zzal_id: gifid } });
     },
     open_search_modal() {
       this.search_modal = !this.search_modal;
@@ -244,9 +263,13 @@ export default {
       let sendtime = "";
       tmp += recv.sendDate[11];
       tmp += recv.sendDate[12];
-      if (Number(tmp) >= 12) {
+      if (Number(tmp) > 12) {
         sendtime += "오후 ";
         sendtime += Number(tmp - 12);
+      } else if (Number(tmp) == 12) {
+        sendtime += "오후 ";
+        sendtime += recv.sendDate[11];
+        sendtime += recv.sendDate[12];
       } else {
         sendtime += "오전 ";
         sendtime += recv.sendDate[11];
@@ -264,6 +287,7 @@ export default {
           sendDate: sendtime,
           profilePath: recv.profilePath,
           gifId: this.gif_id,
+          memberId: recv.memberId,
         });
       setTimeout(() => {
         window.scrollTo({ top: totalheight, left: 0, behavior: "smooth" });
@@ -369,7 +393,7 @@ export default {
   @apply text-zz-p text-2xl;
 }
 .master-icon {
-  transform: translate(3.4rem, -0.9rem);
+  transform: translate(3.4rem, -1rem);
   @apply text-zz-dark-p text-sm;
 }
 

@@ -1,8 +1,10 @@
 import { apiInstance } from './index.js';
 import { authApiInstance } from './index.js';
+import { formApiInstance } from './index.js';
 
 const authapi = authApiInstance();
 const api = apiInstance();
+const formApi = formApiInstance();
 
 function getPopularGIF(res,err) {
     api.get(`/gif/popular`)
@@ -30,4 +32,10 @@ function getDetailData(params,res,err) {
     .then(res).catch(err)
 }
 
-export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal, getDetailData }
+function putRequest(params,datas,res,err) {
+    console.log(datas,'요청데이터');
+    formApi.post(`/temp`,datas)
+    .then(res).catch(err)
+}
+
+export { getPopularGIF,getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal, getDetailData, putRequest }

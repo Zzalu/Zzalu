@@ -1,4 +1,4 @@
-import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal } from "@/api/boardList"
+import { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal, userstatistics } from "@/api/boardList"
 
 const boardListStore = {
   namespaced: true,
@@ -41,6 +41,18 @@ const boardListStore = {
     }
   },
   actions: {
+    userStat({commit}, params) {
+      userstatistics(
+        commit,
+        params,
+        (res) => {
+          console.log(res, '유저스탯전달성공');
+        },
+        (err) => {
+          console.log(err, '유저스탯전달실패');
+        }
+      )
+    },
     getUserStoreList({ commit }, params, data) {
       getStoreList(
         params,

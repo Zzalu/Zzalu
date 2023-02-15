@@ -53,9 +53,13 @@ const quietChatStore = {
           let sendtime = ""
           tmp += pastMessage.data[i].sendDate[11]
           tmp += pastMessage.data[i].sendDate[12]
-          if (Number(tmp) >= 12) {
+          if (Number(tmp) > 12) {
             sendtime += '오후 '
             sendtime += Number(tmp-12)
+          } else if (Number(tmp) == 12) {
+            sendtime += '오후 '
+            sendtime += pastMessage.data[i].sendDate[11]
+            sendtime += pastMessage.data[i].sendDate[12]
           } else {
             sendtime += '오전 '
             sendtime += pastMessage.data[i].sendDate[11]

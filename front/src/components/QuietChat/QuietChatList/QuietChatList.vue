@@ -42,7 +42,7 @@ export default {
       return this.room_datas
     },
     like() {
-      let user_num = localStorage.getItem('profile_id')
+      let user_num = localStorage.getItem('current_pk')
       return this.room_datas.likeMemberId.includes(Number(user_num))
     },
     hash() {
