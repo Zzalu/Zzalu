@@ -14,15 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-
 @Getter
 @Setter
 @EntityListeners(AuditingEntityListener.class)
 
-/**
- *
- * 게시판 (1)
- */
 public class TitleHakwon  {
 
 

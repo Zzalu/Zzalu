@@ -170,7 +170,7 @@ public class TitleHakwonController {
         String token = jwtTokenProvider.getToken(bearerToken);
         //code 200
         if(sort.equals("POPULAR")){
-            List<CommentResponse> commentResponseList = commentService.getBest50CommentList(titleHakwonId, token);
+            List<CommentResponse> commentResponseList = commentService.getBestLikesCommentList(titleHakwonId, token,limit);
             return new ResponseEntity<>(commentResponseList,HttpStatus.OK);
         }
         return null;
