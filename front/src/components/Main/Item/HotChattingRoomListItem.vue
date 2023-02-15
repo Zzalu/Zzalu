@@ -39,8 +39,8 @@ export default {
   computed: {
     like() {
       let user_num = null
-      if (localStorage.getItem('profile_id')) {
-        user_num = localStorage.getItem('profile_id')
+      if (localStorage.getItem('current_pk')) {
+        user_num = localStorage.getItem('current_pk')
       }
       return this.room_data.likeMemberId.includes(Number(user_num))
     },

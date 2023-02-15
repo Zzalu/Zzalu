@@ -6,9 +6,9 @@
     ></zzal-list-item>
     <zzal-info
     :jjal_detail_data="jjal_detail_data"
-    @infoUpdateRequest="changeInfo"
+    @view_mode="view_mode"
     ></zzal-info>
-    <div class="flex justify-center dark:text-white">
+    <!-- <div class="flex justify-center dark:text-white">
       <button
         class="
           text-center
@@ -28,7 +28,7 @@
         저장하기
       </button>
       
-    </div>
+    </div> -->
 
     <DetailKorGoBackTopNavBar @notEditMode="notEditMode" />
   </div>
@@ -240,6 +240,9 @@ export default {
     notEditMode() {
       this.edit_mode = false;
     },
+    view_mode() {
+      this.edit_mode = false;
+    }
     // changeInfo(newDescription, newTags, newRelationsVideo) {
     //   this.request_form.updated_description = newDescription;
     //   this.request_form.updated_tags = newTags;

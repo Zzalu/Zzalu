@@ -29,56 +29,53 @@
   <div class="mt-6 mb-2 font-bold font-spoq text-zz-p">이 짤의 유래는?</div>
   <div class="zzal-origin-edit">
     <input
-      v-if="description"
-      type="textarea"
-      class="input-box"
-      v-model="description"
-    />
-    <input
-      v-else
       type="textarea"
       class="input-box"
       placeholder="이 짤의 유래를 입력해주세요!"
+      v-model="descriptions"
     />
   </div>
-  <div class="mt-6 mb-1 font-bold font-spoq text-zz-p">관련 영상 추가하기</div>
+  <div class="mt-6 mb-1 font-bold font-spoq text-zz-p">관련 유튜브 소개하기</div>
   <div class="edit-original-vid">
     <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" />
-    <input type="text" class="edit-original-link" v-model="relationsVideo" />
-    <font-awesome-icon
-      icon="fa-solid fa-square-plus"
-      class="plus-icon"
-      @click="updateVideo"
-    />
+    <input type="text" class="edit-original-link" v-model="relationsVideos" />
   </div>
   <div class="flex justify-center dark:text-white">
     <button
       class="text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto cursor-pointer font-spoq dark:border-zz-dark-div"
       @click="updateRequest(this.request_form)"
     >
-      저장하기
+      수정 요청 보내기
     </button>
   </div>
 </template>
 
 <script>
 import Swal from 'sweetalert2'
+import { useStore } from "vuex";
 
 export default {
   name: "ZzalInfo",
+  setup() {
+    const store = useStore();
+
+    const PutRequestEdit = (form) => {
+      store.dispatch("zzalListStore/putRequestEdit",form)
+    }
+    return {
+      PutRequestEdit
+    }
+  },
   data() {
     return {
       hashtags_input_mode: false,
       hash_input_err: false,
       hash_input: "",
-      description: this.jjal_detail_data.description,
-      relationsVideo: this.jjal_detail_data.relationsVideo,
+      descriptions: '',
+      relationsVideos: '',
       tags: this.jjal_detail_data.tags.split(","),
       request_form : {
-        origin_id : "",
-        updated_description : "",
-        updated_relationsVideo : "",
-        updated_tags : "",
+        originId : this.jjal_detail_data.id,
       }
     };
   },
@@ -87,8 +84,15 @@ export default {
     jjal_detail_data: Object,
   },
   computed: {
-    // tags() {
-    //   return this.jjal_detail_data.tags.split(",");
+    hash_tags() {
+      return this.tags
+    },
+    // relationsVideo() {
+    //   if (this.this.jjal_detail_data.relationsVideo) {
+    //     return this.this.jjal_detail_data.relationsVideo
+    //   } else {
+    //     return null
+    //   }
     // },
     visitedcount() {
       return this.jjal_detail_data.visitedcount;
@@ -96,9 +100,9 @@ export default {
     id() {
       return this.jjal_detail_data.id;
     },
-    // description() {
-    //   return this.jjal_detail_data.description
-    // }
+    description() {
+      return this.jjal_detail_data.description
+    }
   },
   methods: {
     RemoveHashtag(i) {
@@ -129,11 +133,22 @@ export default {
       }
     },
     updateRequest() {
-      this.request_form.updated_description = this.description;
-      this.request_form.updated_tags = this.tags.join();
-      this.request_form.updated_relationsVideo = this.relationsVideo;
-      console.log(this.request_form.updated_description)
-      // this.$emit("infoUpdateRequest", this.description, this.tags.join(), this.relationsVideo);
+      if (this.descriptions) {
+        this.request_form.description = this.descriptions;
+      }
+      if (this.hash_tags) {
+        this.request_form.tags = this.hash_tags.join();
+      }
+      if (this.relationsVideos) {
+        this.request_form.relationsVideo = this.relationsVideos;
+      }
+      // console.log(this.request_form.updated_description,  this.request_form.updated_tags, this.request_form.updated_relationsVideo, this.request_form)
+      this.PutRequestEdit(this.request_form)
+      Swal.fire({
+            icon: "success",
+            html:"짤 수정요청을 보냈습니다. <br> 관리자 혹은 매니저가 검토 후 <br> 수정내용이 반영됩니다."
+            })
+      this.$emit('view_mode')
     },
 
   },

@@ -65,7 +65,7 @@ export default {
   name: "ChatFilter",
   setup() {
     const store = useStore();
-    const user_id = window.localStorage.getItem("profile_id");
+    const user_id = window.localStorage.getItem("current_pk");
 
     const nosearch_all_recent = () => {
       store.dispatch("quietChatStore/noSearchAllRecent");
