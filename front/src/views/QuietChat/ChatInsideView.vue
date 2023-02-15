@@ -32,13 +32,13 @@
               v-if="message.profilePath"
               class="h-12 w-12 rounded-full bg-center bg-no-repeat absolute bg-contain text-zz-p"
               :style="`background-image:url(${message.profilePath})`"
-              @click="GoToProfile(message.memberId)"
+              @click="GoToProfile(message.memberName)"
             ></div>
             <font-awesome-icon
               v-if="message.profilePath == null"
               class="text-4xl ml-2 mt-1 absolute text-zz-p"
               icon="fa-solid fa-user"
-              @click="GoToProfile(message.memberId)"
+              @click="GoToProfile(message.memberName)"
             />
             <div v-if="message.memberId == master_Id">
               <font-awesome-icon icon="fa-solid fa-crown" class="master-icon" />
@@ -164,8 +164,9 @@ export default {
   },
 
   methods: {
-    GoToProfile(member_id) {
-      this.$router.push({ name: 'profile', params: { username: member_id } });
+    GoToProfile(member_name) {
+      console.log(member_name);
+      this.$router.push({ name: 'profile', params: { username: member_name } });
     },
     GoToDetail(gifid) {
       this.get_user_store(gifid);
@@ -233,7 +234,7 @@ export default {
         (sendtime += recv.sendDate[15]),
         this.messages.unshift({
           type: recv.type,
-          member_id: recv.memberId,
+          member_name: recv.memberName,
           sender: recv.sender,
           message: recv.message,
           // send_date: recv.sendDate,

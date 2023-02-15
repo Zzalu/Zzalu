@@ -120,6 +120,7 @@ const quietChatStore = {
       PastMessage(
         params,
         (data) => {
+          console.log(data);
           commit('GET_PAST_MESSAGE',data)
         },
         (err) => {
