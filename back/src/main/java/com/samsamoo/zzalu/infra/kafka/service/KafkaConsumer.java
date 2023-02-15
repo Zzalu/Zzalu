@@ -1,6 +1,5 @@
-package com.samsamoo.zzalu.kafka.service;
+package com.samsamoo.zzalu.infra.kafka.service;
 
-import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
 @Service

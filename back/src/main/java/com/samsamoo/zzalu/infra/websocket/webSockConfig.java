@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.websocket.config;
+package com.samsamoo.zzalu.infra.websocket;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

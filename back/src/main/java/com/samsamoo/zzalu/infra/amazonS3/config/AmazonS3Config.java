@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.amazonS3.config;
+package com.samsamoo.zzalu.infra.amazonS3.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

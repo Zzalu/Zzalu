@@ -4,15 +4,14 @@ package com.samsamoo.zzalu.chat.controller;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
-import com.samsamoo.zzalu.kafka.service.KafkaProducer;
+import com.samsamoo.zzalu.infra.kafka.service.KafkaProducer;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.redis.service.RedisPublisher;
+import com.samsamoo.zzalu.infra.redis.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 
 @RequiredArgsConstructor

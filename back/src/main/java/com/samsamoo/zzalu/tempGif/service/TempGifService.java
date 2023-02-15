@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.tempGif.service;
 
 import com.samsamoo.zzalu.advice.NotFoundException;
-import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
+import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
@@ -15,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Iterator;

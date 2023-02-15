@@ -5,7 +5,7 @@ import com.samsamoo.zzalu.award.dto.AwardCountResponse;
 import com.samsamoo.zzalu.award.dto.AwardResponse;
 import com.samsamoo.zzalu.award.entity.AwardRecord;
 import com.samsamoo.zzalu.award.repository.AwardRecordRepository;
-import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
+import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.board.dto.MembersBoardInfo;

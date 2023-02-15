@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.amazonS3.upLoader;
+package com.samsamoo.zzalu.infra.amazonS3.upLoader;
 
 import com.amazonaws.AmazonServiceException;
 import com.amazonaws.SdkClientException;

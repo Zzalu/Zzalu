@@ -10,7 +10,7 @@ import com.samsamoo.zzalu.titlehakwon.repository.TitleHackwonRepository;
 import com.samsamoo.zzalu.titlehakwon.entity.TitleHakwon;
 import com.samsamoo.zzalu.titlehakwon.service.CommentService;
 import com.samsamoo.zzalu.titlehakwon.service.TitleHakwonService;
-import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
+import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

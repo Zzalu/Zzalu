@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.titlehakwon.repository;
 
-import com.samsamoo.zzalu.redis.service.RedisSubscriber;
+import com.samsamoo.zzalu.infra.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;

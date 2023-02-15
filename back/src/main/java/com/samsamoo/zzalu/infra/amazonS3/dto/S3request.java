@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.amazonS3.dto;
+package com.samsamoo.zzalu.infra.amazonS3.dto;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

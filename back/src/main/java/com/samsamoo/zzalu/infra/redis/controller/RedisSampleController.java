@@ -1,6 +1,6 @@
-package com.samsamoo.zzalu.redis.controller;
+package com.samsamoo.zzalu.infra.redis.controller;
 
-import com.samsamoo.zzalu.redis.service.RedisSampleService;
+import com.samsamoo.zzalu.infra.redis.service.RedisSampleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;

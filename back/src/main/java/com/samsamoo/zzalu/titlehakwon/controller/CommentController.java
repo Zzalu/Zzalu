@@ -6,7 +6,7 @@ import com.samsamoo.zzalu.titlehakwon.service.CommentService;
 import com.samsamoo.zzalu.advice.BadRequestException;
 import com.samsamoo.zzalu.advice.ConflictException;
 import com.samsamoo.zzalu.advice.NotFoundException;
-import com.samsamoo.zzalu.redis.service.RedisPublisher;
+import com.samsamoo.zzalu.infra.redis.service.RedisPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

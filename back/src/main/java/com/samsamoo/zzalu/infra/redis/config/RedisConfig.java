@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.redis.config;
+package com.samsamoo.zzalu.infra.redis.config;
 
 
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;

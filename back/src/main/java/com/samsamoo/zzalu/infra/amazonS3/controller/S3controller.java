@@ -1,7 +1,7 @@
-package com.samsamoo.zzalu.amazonS3.controller;
+package com.samsamoo.zzalu.infra.amazonS3.controller;
 
-import com.samsamoo.zzalu.amazonS3.dto.S3request;
-import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
+import com.samsamoo.zzalu.infra.amazonS3.dto.S3request;
+import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

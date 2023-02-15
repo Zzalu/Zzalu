@@ -1,6 +1,6 @@
-package com.samsamoo.zzalu.kafka.controller;
+package com.samsamoo.zzalu.infra.kafka.controller;
 
-import com.samsamoo.zzalu.kafka.service.KafkaProducer;
+import com.samsamoo.zzalu.infra.kafka.service.KafkaProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

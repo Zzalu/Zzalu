@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.redis.service;
+package com.samsamoo.zzalu.infra.redis.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.samsamoo.zzalu.titlehakwon.dto.CommentResponse;

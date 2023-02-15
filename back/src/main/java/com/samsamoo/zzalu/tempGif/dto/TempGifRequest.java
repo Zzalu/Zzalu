@@ -1,17 +1,12 @@
 package com.samsamoo.zzalu.tempGif.dto;
 
-import com.amazonaws.services.ec2.model.CreateEgressOnlyInternetGatewayRequest;
-import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.tempGif.entity.TempGif;
 import com.samsamoo.zzalu.tempGif.enums.RequestType;
-import com.samsamoo.zzalu.tempGif.enums.RequestTypeConverter;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Getter
 @Setter

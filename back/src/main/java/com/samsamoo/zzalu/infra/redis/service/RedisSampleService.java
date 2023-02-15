@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.redis.service;
+package com.samsamoo.zzalu.infra.redis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.kafka.config;
+package com.samsamoo.zzalu.infra.kafka.config;
 
 
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
