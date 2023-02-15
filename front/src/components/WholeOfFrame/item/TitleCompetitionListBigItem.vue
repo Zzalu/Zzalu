@@ -40,12 +40,12 @@ import { toRefs } from '@vueuse/shared';
 import { getBestComments } from '@/api/titleCompetition';
 import { onMounted } from 'vue';
 export default {
-  name: 'TitleCompetitionListItem',
+  name: 'TitleCompetitionListBigItem',
   props: {
     title_competition: Object,
   },
   setup(props) {
-    console.log(props);
+    console.log('poooooooooo 이 씨ㅃ썌끼가 먼저 부ㅡㄹ림');
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
