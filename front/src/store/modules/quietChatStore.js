@@ -84,10 +84,10 @@ const quietChatStore = {
       state.quiet_list = searchbookmarkrecent.data
     },
     GET_NOSEARCH_BOOKMARK_LIKE(state, nosearchbookmarklike) {
-      state.quiet_list = nosearchbookmarklike
+      state.quiet_list = nosearchbookmarklike.data
     },
     SEARCHBOOKMARKLIKE(state, searchbookmarklike){ 
-      state.quiet_list = searchbookmarklike
+      state.quiet_list = searchbookmarklike.data
     }
   },
   actions: {
