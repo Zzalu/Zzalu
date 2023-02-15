@@ -5,7 +5,7 @@
         <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
         <p class="view-count">{{ RecommendJjal.visitedCount }}</p>
       </div>
-      <div>
+      <div v-if="token">
         <font-awesome-icon
           v-if="already"
           class="scrap-icon"
@@ -44,6 +44,7 @@ export default {
   name: "RecommendedJjalListItem",
   setup() {
     const store = useStore();
+    const token = localStorage.getItem("token");
 
     const select_recommend_jjal_num = computed(
       () => store.state.searchModalStore.select_recommend_jjal_num
@@ -68,7 +69,8 @@ export default {
       open_list_modal,
       get_user_list,
       select_recommend_jjal_num,
-      user_store_list
+      user_store_list,
+      token
     };
   },
   props: {

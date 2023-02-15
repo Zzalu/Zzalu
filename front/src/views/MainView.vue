@@ -41,6 +41,7 @@ import { onBeforeMount } from "@vue/runtime-core";
 export default {
   name: "MainView",
   setup() {
+    const token = localStorage.getItem('token')
     const store = useStore();
 
     const open_chat_info = computed(
@@ -54,6 +55,9 @@ export default {
     );
     const quiet_chat_data = computed(
       () => store.state.quietChatStore.hot_quiet_list
+    )
+    const recommend_data = computed(
+      () => store.state.zzalListStore.recommend_gif_data
     )
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
@@ -69,8 +73,11 @@ export default {
       // axios 요청
       store.dispatch("quietChatStore/getHotQuietList");
       store.dispatch("zzalListStore/getPopularGIFList");
-      store.dispatch("zzalListStore/getRecommendGIFList");
-      store.commit("searchModalStore/default_select_num")
+      store.commit("searchModalStore/default_select_num");
+      if (token) {
+        console.log(token,'token');
+        store.dispatch("zzalListStore/getRecommendGIFList");
+      }
     });
     return {
       open_chat_info,
@@ -78,7 +85,9 @@ export default {
       open_chat_id,
       quiet_chat_data,
       close_chat_info,
-      isLogged
+      isLogged,
+      token,
+      recommend_data
     };
   },
   components: {

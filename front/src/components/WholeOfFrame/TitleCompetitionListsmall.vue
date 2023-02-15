@@ -9,6 +9,7 @@
         />
       </li>
     </ol>
+    <div class="pb-10"></div>
   </div>
 </template>
 
@@ -52,6 +53,6 @@ export default {
 <style scoped lang="postcss">
 .academy-list {
   box-shadow: 0 0 7px black;
-  @apply m-4;
+  @apply m-2;
 }
 </style>

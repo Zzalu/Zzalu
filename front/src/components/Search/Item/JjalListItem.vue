@@ -6,7 +6,7 @@
         <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
         <p class="view-count">{{ zzal_info.visitedCount }}</p>
       </div>
-      <div>
+      <div v-if="toke">
         <font-awesome-icon
           v-if="already"
           class="scrap-icon"
@@ -46,6 +46,7 @@ export default {
   name: "JjalListItem",
   setup() {
     const store = useStore();
+    const token = localStorage.getItem("token");
 
     const open_list_modal = () => {
       store.commit("searchModalStore/open_list_modal");
@@ -73,6 +74,7 @@ export default {
       get_user_list,
       select_jjal_num,
       user_store_list,
+      token
     };
   },
   data() {
