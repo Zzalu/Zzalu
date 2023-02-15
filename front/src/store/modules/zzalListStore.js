@@ -33,7 +33,6 @@ const zzalListStore = {
         state.search_gif_data = [[]]
       }else if (SearchJjal.data.length < 30) {
         state.search_gif_data = [SearchJjal.data]
-        console.log([SearchJjal.data]);
       } else {
         // 2차원배열로 저장
         let count = Math.ceil(SearchJjal.data.length / 30)
@@ -60,7 +59,6 @@ const zzalListStore = {
     getPopularGIFList({ commit }) {
       getPopularGIF(
         (data) => {
-          console.log(data, '인기짤 get 성공');
           commit('GET_POPULAR_GIF', data)
         },
         (err) => {
@@ -71,7 +69,6 @@ const zzalListStore = {
     getRecommendGIFList({ commit }) {
       getRecommendGIF(
         (data) => {
-          console.log(data, '추천짤 get 성공');
           commit('GET_RECOMMEND_GIF', data)
         },
         (err) => {
@@ -82,7 +79,6 @@ const zzalListStore = {
     getFirstRandomGIFList({ commit }) {
       getFirstRandomGIF(
         (data) => {
-          console.log(data, '서치 모달 데이터 받아옴');
           commit('GET_FIRST_RANDOM_GIF', data)
         },
         (err) => {
@@ -94,7 +90,6 @@ const zzalListStore = {
       getMoreRandomGIF(
         params,
         (data) => {
-          console.log(data, '추가 랜덤짤 로딩')
           commit('GET_MORE_RANDOM_GIF', data)
         },
         (err) => {
@@ -106,7 +101,6 @@ const zzalListStore = {
       getSearchZzal(
         params,
         (data) => {
-          console.log(data, '짤 검색 성공')
           commit('GET_SEARCH_JJAL', data)
         },
         (err) => {
@@ -118,7 +112,6 @@ const zzalListStore = {
       getDetailData(
         params,
         (data) => {
-          console.log(data, '짤 디테일 get 성공');
           commit('GET_JJAL_DETAIL', data)
         },
         (err) => {

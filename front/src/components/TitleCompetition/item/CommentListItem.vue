@@ -145,7 +145,7 @@ export default {
         minusLike(
           comment_id,
           ({ data }) => {
-            console.log(data);
+            console.log(data)
             comment_data.is_liked = false;
             comment_data.like_cnt -= 1;
           },
@@ -157,7 +157,7 @@ export default {
         plusLike(
           comment_id,
           ({ data }) => {
-            console.log(data);
+            console.log(data)
             comment_data.is_liked = true;
             comment_data.like_cnt += 1;
           },

@@ -45,7 +45,6 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    console.log('poooooooooo 이 씨ㅃ썌끼가 먼저 부ㅡㄹ림');
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
@@ -78,7 +77,6 @@ export default {
     const date = open_date_obj.getDate();
 
     onMounted(() => {
-      console.log('[on mounted in list item]' + JSON.stringify(props));
     });
 
     return {

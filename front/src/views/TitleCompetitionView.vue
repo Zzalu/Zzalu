@@ -110,8 +110,6 @@ export default {
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
-    console.log(JSON.parse(JSON.stringify(store.state.titleCompetitionStore)));
-    console.log(store.state.titleCompetitionStore);
     const route = useRoute();
     const router = useRouter();
     const open_date = route.params.open_date; // 제목학원 날짜
@@ -121,9 +119,7 @@ export default {
     // const state = ref(store.state.titleCompetitionStore.state);
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
-      console.log('init이후 then에서...: ' + state.value);
       if (state.value == 'PROCEED') {
-        console.log('값: ' + state.value);
         connect();
       }
     });
@@ -196,12 +192,9 @@ export default {
       localWs.connect(
         {},
         function () {
-          console.log('댓글 받을준비');
           // 댓글 관련
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
-            console.log(message);
             let recv_comment_data = JSON.parse(message.body);
-            console.log('recv_comment_data: ' + recv_comment_data);
 
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
             if (sort_type.value == 'LATEST') {
@@ -222,19 +215,13 @@ export default {
           });
           // 좋아요 관련
           localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
-            console.log(message);
             let recv_like_data = JSON.parse(message.body);
             document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
-            console.log('recv_like_data: ' + recv_like_data);
           });
         },
         function (error) {
-          console.log(error);
-          let end = new Date();
-          console.log(`에러: ` + end);
-          console.log('error: ' + error);
+          console.log(error)
           setTimeout(function () {
-            console.log('connection reconnect');
             localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
@@ -261,7 +248,6 @@ export default {
     }); */
     onUnmounted(() => {
       ws.disconnect();
-      console.log('끊습니다');
       store.dispatch('titleCompetitionStore/initStoreData');
     });
     /*     onMounted(() => {

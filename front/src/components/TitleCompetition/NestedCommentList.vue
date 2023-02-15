@@ -31,7 +31,6 @@ export default {
     nested_comment_cnt: Number,
   },
   setup(props) {
-    console.log(props);
     const store = useStore();
     const size = 3;
     const state = reactive({
@@ -48,7 +47,6 @@ export default {
     // 답글 읽기
     // TODO: 과거순 정렬이면 답글도 과거순으로
     const loadMoreNestedComments = async () => {
-      console.log(props);
       await store.dispatch('titleCompetitionStore/getNestedCommentList', {
         comment_id: props.comment_id,
         lastCid: state.last_nested_comment_id,
@@ -62,7 +60,6 @@ export default {
     // 답글 삭제
     const popNestedComment = (index) => {
       state.nested_comments.splice(index, 1);
-      console.log(state.nested_comments);
     };
 
     loadMoreNestedComments();

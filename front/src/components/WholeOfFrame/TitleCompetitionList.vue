@@ -37,7 +37,6 @@ export default {
     );
 
     const goToTitleCompetition = (open_date) => {
-      console.log(open_date);
       router.push(`/title-competition/${open_date}`);
     };
 

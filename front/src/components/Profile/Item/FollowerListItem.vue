@@ -27,7 +27,6 @@ export default {
       if (followState.value == false) {
         store.dispatch("followStore/requsetFollow", id.value)
         .then((res) => {
-          console.log(res)
           followState.value = true;
         })
         .catch((err) => {
@@ -36,7 +35,6 @@ export default {
       } else {
         store.dispatch("followStore/requestUnfollow", id.value)
         .then((res) => {
-          console.log(res)
           followState.value = false;
         })
         .catch((err) => {

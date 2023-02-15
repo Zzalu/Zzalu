@@ -159,18 +159,14 @@ export default {
       this.filter1 = 0;
       if (this.filter2 == 0) {
         if (this.input_data == null) {
-          console.log("검색x + 전체 고독 + 최신 대화 //완료");
           this.nosearch_all_recent()
         } else {
-          console.log("검색 + 전체 고독 + 최신 대화 //완료");
           this.only_search_room(this.input_data)
         }
       } else if (this.filter2 == 1) {
         if (this.input_data == null) {
-          console.log("검색x + 전체 고독 + 좋아요순" );
           this.nosearch_all_like()
         } else {
-          console.log("검색 + 전체 고독 + 좋아요순 //완료");
           this.search_all_like(this.input_data)
         }
       }
@@ -180,18 +176,14 @@ export default {
       this.filter1 = 1;
       if (this.filter2 == 0) {
         if (this.input_data == null) {
-          console.log("검색x + 내가 개설 + 최신 대화");
           this.nosearch_created_recent()
         } else {
-          console.log("검색 + 내가 개설 + 최신 대화");
           this.search_created_recent(this.input_data)
         }
       } else if (this.filter2 == 1) {
         if(this.input_data == null) {
-          console.log("검색x + 내가 개설 + 좋아요순 //완료");
           this.nosearch_created_like()
         } else {
-          console.log("검색 + 내가 개설 + 좋아요");
           this.search_created_like(this.input_data)
         }
       }
@@ -201,18 +193,14 @@ export default {
       this.filter1 = 2;
       if (this.filter2 == 0) {
         if (this.input_data == null) {
-          console.log("검색x + 즐겨찾기 + 최신 대화순");
           this.nosearch_bookmark_recent()
         } else {
-          console.log("검색 + 즐겨찾기 + 최신 대화순");
           this.search_bookmark_recent(this.input_data)
         }
       } else if (this.filter2 == 1) {
         if (this.input_data == null) {
-          console.log("검색x +즐겨찾기 + 좋아요 순");
           this.nosearch_bookmark_like()
         } else {
-          console.log("검색 +즐겨찾기 + 좋아요 순");
           this.search_bookmark_like(this.input_data)
         }
       }
@@ -233,18 +221,14 @@ export default {
       this.filter2 = 1;
       if (this.filter1 == 0) {
         if (this.input_data == null) {
-          console.log('검색x + 전체고독방 + 좋아요순');
           this.AllViewRoom();
         } else {
-          console.log('검색 + 전체고독방 + 좋아요순 //완료');
           this.search_all_like(this.input_data)
         }
       } else if (this.filter1 == 1) {
         if (this.input_data == null) {
-          console.log('검색x + 내가 개설한 + 좋아요순 //완료');
           this.nosearch_created_like();
         } else {
-          console.log('검색 + 내가 개설한 + 좋아요순');
           this.search_created_like(this.input_data)
         }
       } else if (this.filter1 == 2) {

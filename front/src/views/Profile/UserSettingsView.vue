@@ -97,7 +97,6 @@ export default {
     }
     const managerApply = async () => {
       const response = await store.dispatch('userStore/managerApplyAction')
-      console.log(response);
       if (response==500) {
         Swal.fire({
           icon: "error",

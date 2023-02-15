@@ -81,7 +81,6 @@ export default {
       state.profileImg = state.formdata.send_image
       const url = URL.createObjectURL(state.formdata.send_image)
       state.profileImg = url
-      console.log(state.profileImg)
     }
     // inputImage () {
     //   this.send_image = this.$refs.profilePic.files[0]
