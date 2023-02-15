@@ -102,9 +102,7 @@ const userStore = {
     },
     // 닉네임 중복확인
     uniqueNicknameAction: async (commit, nickname) => {
-        console.log(nickname);
         const response = await checkNickname({"nickname": nickname});
-        console.log(response)
         return response
     },
     // 이메일 중복확인
@@ -114,11 +112,9 @@ const userStore = {
       const response = await checkEmail(
         data,
         (res) => {
-          console.log("삭제잘됨?")
           return res
         },
         (err) => {
-          console.log("비번 틀렷거나..")
           return err.response
       }
         );
@@ -133,13 +129,11 @@ const userStore = {
     },
     // 회원정보 세이브 2
     signupSecondAction: async (context, credentialsEmailCode) => {
-      console.log(credentialsEmailCode)
       context.commit('SAVE_EMAIL_TEMP', credentialsEmailCode)
       
       return true
     },
     signupFinalAction: async (context, signupUser ) => {
-        console.log(signupUser)
         const response = await requestRegister(
           signupUser,
           (res) => {
@@ -160,13 +154,10 @@ const userStore = {
       const response = await requestLogin(
         loginData,
         (res) => {
-          console.log(res)
           context.commit('SAVE_CURRENT_USER', res)
           return res
         },
         (error) => {
-          console.log(error.response, "에러에러");
-          
           return error.response
         }
         )
@@ -199,11 +190,9 @@ const userStore = {
       const response = await requestUsername(
         data,
         (res) => {
-          console.log(res)
           return res
         },
         (error) => {
-          console.log(error.response);
           return error.response
         }
       );
@@ -213,35 +202,30 @@ const userStore = {
     // ----------------------------------------------------------
     // 회원정보수정
     patchUserInfoAction: (params, form) => {
-      console.log(form)
       requestChangeInfo(
         params,
         form,
         ({data}) => {
           localStorage.removeItem('current_nickname')
-          console.log(data, "성공입니다")
           localStorage.setItem('current_nickname', data.nickname)
         },
         (err) => {
-          console.log(err, "실패입니다")
           alert(err.response.data.message);
       })
     },
     // ----------------------------------------------------------
     // 매니저
     managerApplyAction: async (context) => {
-      console.log("여기는 언제들어와")
       // let test = null
       return new Promise((resolve, reject) => {
         requestManager(
           (res) => {
-            context.commit('SAVE_MANAGER_STATE')
             console.log(res)
+            context.commit('SAVE_MANAGER_STATE')
             resolve(200)
           },
           (error) => {
-            console.log("여기는 언제들어와2")
-            console.log(error.response, '에러');
+            console.log(error)
             reject(500)
           }
         );
@@ -256,12 +240,11 @@ const userStore = {
   // --------------------------------------------------------------
   // 회원탈퇴
     userDeleteAction: async (context, pwd) => {
-      console.log('여기도 들어옴?')
       const response = requestDelete(
         pwd,
         (res) => {
           window.localStorage.clear()
-          console.log("삭제 잘 되었다는 뜻",res);
+          console.log(res)
           return res
         },
         (err) => {

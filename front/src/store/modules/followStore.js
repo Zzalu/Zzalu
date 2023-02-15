@@ -21,7 +21,6 @@ const followStore = {
     actions: {
       // 팔로잉 리스트 가져오기
       getFollowingList: ({ commit }, member_id) => {
-        console.log("member_id=", member_id)
         getFollowingList(
             member_id,
             ({ data }) => {
@@ -38,7 +37,6 @@ const followStore = {
         getFollowerList(
             member_id,
             ({ data }) => {
-                console.log(data);
                 commit('SET_FOLLOWER_LIST', data.followers);
             },
             (error) => console.log(error),
@@ -47,17 +45,15 @@ const followStore = {
 
       // 팔로우 요청
       requsetFollow (params, your_id) {
-        console.log(your_id)
         return new Promise((resolve, reject) => {
           follow(
             params,
             your_id,
             ({ data }) => {
-              console.log(data, "성공입니다.");
+              console.log(data)
               resolve("sucess");
             },
             (error) => {
-              console.log(error, "실패입니다.");
               alert(error.response.data.message);
               reject("fail");
             },
@@ -72,11 +68,10 @@ const followStore = {
             params,
             your_id,
             ({ data }) => {
-                console.log(data, "성공입니다.");
+              console.log(data)
                 resolve("1");
             },
             (error) => {
-              console.log(error, "실패입니다.");
               alert(error.response.data.message);
               reject("2");
             }

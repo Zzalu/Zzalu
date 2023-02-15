@@ -83,7 +83,6 @@ const profileStore = {
         username,
         ({ data }) => {
           commit('SET_PROFILE_USER', data);
-          console.log(data)
         },
         (error) => console.log(error),
       );
@@ -94,7 +93,6 @@ const profileStore = {
     getProfileStat(
       params,
       (res) => {
-        console.log('유저 스탯 요청 성공', res)
         commit('SET_PROFILE_STATS', res)
       },
       (err) => {

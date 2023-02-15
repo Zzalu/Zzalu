@@ -111,7 +111,6 @@ export default {
           }
           flag = false
         }
-        console.log(flag);
         if (flag) {
           this.already = true
         } else {

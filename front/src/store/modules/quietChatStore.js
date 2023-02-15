@@ -96,7 +96,6 @@ const quietChatStore = {
       getimgpath(
         img,
         (data) => {
-          console.log(data, '패스얻기 성공');
           commit('GET_IMG_PATH',data)
         },
         (err) => {
@@ -121,7 +120,6 @@ const quietChatStore = {
       PastMessage(
         params,
         (data) => {
-          console.log(data, '과거 데이터 가져오기 성공');
           commit('GET_PAST_MESSAGE',data)
         },
         (err) => {
@@ -132,7 +130,6 @@ const quietChatStore = {
     getQuietList({ commit }) {
       getQuiet(
         (data) => {
-          console.log(data, '고독방 리스트 get 성공');
           commit('GET_QUIET_CHAT', data)
         },
         (err) => {
@@ -156,7 +153,6 @@ const quietChatStore = {
     getHotQuietList({ commit }) {
       getHotQuietList(
         (data) => {
-          console.log(data, '고독방 인기 리스트 get 성공');
           commit('GET_HOT_QUIET', data)
         },
         (err) => {
@@ -193,7 +189,6 @@ const quietChatStore = {
       getOnlySearch(
         params,
         (data) => {
-          console.log(data, 'only search 고독방 get 성공');
           commit('GET_ONLY_SEARCH', data)
         },
         (err) => {
@@ -204,7 +199,6 @@ const quietChatStore = {
     noSearchAllRecent({ commit }) {
       noSearchallrecentroom(
         (data) => {
-          console.log(data, '검색x, 전체고독, 최신대화 성공');
           commit('GET_ONLY_SEARCH', data)
         },
         (err) => {
@@ -215,7 +209,6 @@ const quietChatStore = {
     nosearchAllLike({ commit }) {
       nosearchAllLikeroom(
         (data) => {
-          console.log(data, '검색x 전체고독, 좋아요순 성공');
           commit('GET_ONLY_SEARCH', data)
         }, 
         (err) =>
@@ -233,7 +226,6 @@ const quietChatStore = {
       SearchCreatedRecentroom(
         params,
         (data) => {
-          console.log(data, '검색, 내가만든, 최신대화순 성공');
           commit('GET_NOSEARCH_CRATED_RECENT', data)
         },
         (err) => {
@@ -245,7 +237,6 @@ const quietChatStore = {
       noSearchCreatedRecentroom(
         params,
         (data) => {
-          console.log(data, '검색x, 내가만든, 최신대화순 성공');
           commit('GET_NOSEARCH_CRATED_RECENT', data)
         },
         (err) => {
@@ -257,7 +248,6 @@ const quietChatStore = {
       noSearchCreatedLikeroom(
         params,
         (data) => {
-          console.log(data, '검색x, 내가만든, 좋아요순 성공');
           commit('GET_NOSEARCH_CREATED_LIKE', data)
         },
         (err) => {
@@ -269,7 +259,6 @@ const quietChatStore = {
       SearchAllLikeroom(
         params,
         (data) => {
-          console.log(data, '검색, 전체고독방, 좋아요순 성공');
           commit('GET_SEARCH_ALL_LIKE', data)
         },
         (err) => {
@@ -281,7 +270,6 @@ const quietChatStore = {
       SearchCreatedLikeroom(
         params,
         (data) => {
-          console.log(data, '검색, 내가 만든, 좋아요순 성공');
           commit('GET_SEARCH_CREATED_LIKE', data)
         },
         (err) => {
@@ -295,7 +283,6 @@ const quietChatStore = {
     noSearchBookmarkRecent({ commit }) {
       noSearchBookmarkRecentroom (
         (data) => {
-          console.log(data,'검색x, 즐겨찾기, 최근활동순 성공');
           commit('GET_NOSEARCH_BOOKMARK_RECENT',data)
         },
         (err) => {
@@ -307,7 +294,6 @@ const quietChatStore = {
       SearchBookmarkRecentroom (
         params,
         (data) => {
-          console.log(data, '검색, 즐겨찾기, 최근활동순 성공');
           commit('GET_SEARCH_BOOKMARK_RECENT',data)
         },
         (err) => {
@@ -319,7 +305,6 @@ const quietChatStore = {
       nosearchBookmarkLikeroom (
         params,
         (data) => {
-          console.log(data,'검색x, 즐겨찾기, 좋아요순 성공');
           commit('GET_NOSEARCH_BOOKMARK_LIKE',data)
         },
         (err) => {
@@ -331,7 +316,6 @@ const quietChatStore = {
       searchBookmarkLikeroom (
         params,
         (data) => {
-          console.log(data,'검색, 즐겨찾기, 좋아요순 성공');
           commit('SEARCHBOOKMARKLIKE', data)
         },
         (err) => {

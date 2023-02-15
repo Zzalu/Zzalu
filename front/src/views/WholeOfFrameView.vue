@@ -96,8 +96,6 @@ export default {
 
     //해당 날짜의 제목학원 페이지로 이동
     const goToTitleCompetition = (open_date) => {
-      console.log(JSON.stringify(title_competition.value));
-      console.log(open_date);
       router.push(`/title-competition/${open_date}`);
     };
 

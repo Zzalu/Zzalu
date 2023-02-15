@@ -96,7 +96,6 @@ export default {
     // 내가 잊은 아이디를 메일로 보내기
     const sendUsername = async function () {
       const result = await store.dispatch('userStore/sendUsernameAction', state.credentials.email )
-      console.log(result)
       if (result.status == 200 ) {
         router.push({name: 'check-email'})
       } else {

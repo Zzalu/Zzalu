@@ -17,11 +17,8 @@ export default {
         password: ""
     })
     const deleteAccount = async function () {
-      console.log('들어옴?')
       const result = await store.dispatch('userStore/userDeleteAction', state.password)
-      console.log("거의끝",result)
       if (result == 400) {
-        console.log("알러트띄워봐;")
         alert("다시해")
       }
     }

@@ -16,9 +16,8 @@ function UserStats(params, datas, res, err) {
 }
 
 function createQuietChat(params, datas, res, err) {
-    console.log(datas, 'datas'),
-        api.post(`/chat/room`, datas)
-            .then(res).catch(err);
+    api.post(`/chat/room`, datas)
+        .then(res).catch(err);
 }
 
 function getHotQuietList(res, err) {
@@ -27,7 +26,6 @@ function getHotQuietList(res, err) {
 }
 
 function PastMessage(params, res, err) {
-    console.log('방이름',params);
     authapi.get(`/chat/messages?roomId=${params}`)
     .then(res).catch(err)
 }
@@ -60,7 +58,6 @@ function SearchCreatedRecentroom(data, res, err) {
 }
 
 function noSearchCreatedLikeroom(data, res, err) {
-    console.log(data, 'dd')
     authapi.get(`/chat/member-order-likecount?memberId=${data}`)
         .then(res).catch(err)
 }
@@ -76,7 +73,6 @@ function SearchCreatedLikeroom(data, res, err) {
 }
 
 function RoomLike(data, datas, res, err) {
-    console.log('좋아요데이터', datas)
     authapi.post(`chat/like`, datas)
         .then(res).catch(err)
 }

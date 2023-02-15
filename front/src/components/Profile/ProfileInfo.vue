@@ -72,13 +72,11 @@ export default {
     //   () => store.state.userStore
     // );
     const get_follower = (member_id) => {
-      console.log("member_id", member_id)
       store.dispatch("followStore/getFollowerList", member_id)
     };
     
 
     const get_following = (member_id) => {
-      console.log("member_id", member_id)
       store.dispatch("followStore/getFollowingList", member_id)
     
     };
@@ -116,8 +114,6 @@ export default {
   methods: {
     GetFollower() {
       let member_id = this.profile_user_data.id
-      console.log(this.profile_user_data)
-      console.log(member_id, "멤버")
       this.get_follower(member_id)
       this.goFollow
       // console.log("followers=", this.followers) // undefined

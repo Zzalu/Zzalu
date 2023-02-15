@@ -124,7 +124,6 @@ export default {
     const store = useStore();
     const update_request = (form) => {
       // form.updated_image = imageFile.files[0];
-      console.log(form.updated_image);
       if (form.updated_image == "") {
         alert("gif를 업로드 해주세요.");
       } else if (form.updated_tags == "") {
@@ -167,7 +166,6 @@ export default {
       this.request_form.updated_image = this.$refs.serveyImage.files[0];
       const url = URL.createObjectURL(this.request_form.updated_image);
       this.update_zzal = url;
-      console.log(this.request_form.updated_image, "gg");
     },
     RemoveHashtag(i) {
       this.tags.splice(i, 1);
@@ -184,7 +182,6 @@ export default {
         alert("한글과 숫자와 영어만 입력해주세요");
       } else {
         this.tags.push(this.hash_input);
-        console.log(this.tags, "태그다");
         this.hash_input = "";
 
         var strTag = this.tags.join();

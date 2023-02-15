@@ -58,7 +58,6 @@ const boardListStore = {
         params,
         data,
         (res) => {
-          console.log('유저 보관함 요청 성공', res)
           commit('GET_USER_STORE_LIST', res)
         },
         (err) => {
@@ -106,7 +105,6 @@ const boardListStore = {
       getBoard(
         params,
         (data) => {
-          console.log(data, '보드 디테일 요청 성공');
           commit('GET_BOARD', data)
         },
         (err) => {
@@ -118,7 +116,6 @@ const boardListStore = {
       nameChange(
         params,
         (data) => {
-          console.log(data, '보드 타이틀 변경 성공');
           commit('NAME_CHANGE', data)
         },
         (err) => {

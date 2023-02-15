@@ -77,7 +77,7 @@ export default {
         addComment(
           comment_data,
           ({ data }) => {
-            console.log(data);
+            console.log(data)
             if (store.state.state != 'LATEST') {
               store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
             }
@@ -94,7 +94,6 @@ export default {
           content: content,
           parentCommentId: store.state.titleCompetitionStore.comment_writer.comment_id,
         };
-        console.log(nested_comment_data);
         addNestedComment(
           nested_comment_data,
           ({ data }) => {
