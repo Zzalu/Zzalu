@@ -55,10 +55,11 @@ public class ChatRoomRedisRepository {
     }
 
     // Created 2023.01.27 by Hye Sung
+
     public List<ChatMessageDto> findAllChatMessage(String id) {
         long size = opsListChatMessage.size(id + id);
         List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, size - 200 > 0 ? size - 200 : 0, size);
-       return chatMessageDtos;
+        return chatMessageDtos;
     }
 
     public List<ChatRoomDto> findAllRoom() {
