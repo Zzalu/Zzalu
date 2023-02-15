@@ -1,9 +1,11 @@
 <template>
-  <h1>er item</h1>
-  <div>{{ this.Followers }}</div>
-  <div>{{ this.id }}</div>
-  <div>{{ this.username }}</div>
-  <button @click="follow_request">{{ this.followState }}</button>
+  <div class="flex">
+    <h1>er item</h1>
+    <div>{{ this.Followers }}</div>
+    <div>{{ this.id }}</div>
+    <div>{{ this.username }}</div>
+    <button @click="follow_request">{{ this.followState }}</button>
+  </div>
 </template>
 
 <script>
