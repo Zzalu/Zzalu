@@ -181,7 +181,7 @@ export default {
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
       // let start = new Date();
@@ -222,7 +222,7 @@ export default {
         function (error) {
           console.log(error)
           setTimeout(function () {
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
+            localSock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
         },
