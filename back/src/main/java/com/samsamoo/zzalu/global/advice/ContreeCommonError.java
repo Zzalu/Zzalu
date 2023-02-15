@@ -14,7 +14,7 @@ public class ContreeCommonError implements ErrorController {
 
     @GetMapping(ERROR_PATH)
     public String redirectRoot(){
-        return "/static/index.html";
+        return "/index.html";
     }
 
     public String getErrorPath(){
