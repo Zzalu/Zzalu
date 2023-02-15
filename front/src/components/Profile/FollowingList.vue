@@ -1,9 +1,8 @@
 <template>
   <div>
-    <h1>팔로잉 리스트</h1>
     <div class="items">
-      <div v-for="(Followings, i) in FollowingListItemData" :key="i">
-        <following-list-item :Followings="Followings" />
+      <div v-for="(following, index) in followings" :key="index">
+        <following-list-item :following="following" :index="index" />
       </div>
     </div>
   </div>
@@ -18,9 +17,10 @@ export default {
   name: 'FollowingList',
   setup() {
     const store = useStore();
-    const FollowingListItemData = computed(() => store.state.followStore.following_list);
+    const followings = computed(() => store.state.followStore.following_list);
+
     return {
-      FollowingListItemData,
+      followings,
     };
   },
   components: {

@@ -73,7 +73,8 @@
 
 <script>
 import { useStore } from 'vuex';
-import { useRouter, useRoute } from 'vue-router';
+// import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 // import { computed } from '@vue/runtime-core';
 import { computed, ref } from 'vue';
 import { follow, unfollow, checkFollowState } from '@/api/follow.js';
@@ -90,7 +91,7 @@ export default {
     const my_id = localStorage.getItem('current_userid');
     const store = useStore();
     const router = useRouter();
-    const route = useRoute();
+    // const route = useRoute();
     const profile_user_data = computed(() => store.state.profileStore.profile_user);
     // const username = route.params.username; // 팔로우 페이지
 
@@ -109,11 +110,14 @@ export default {
     };
 
     const goToFollowList = async () => {
-      await store.dispatch('followStore/getFollowerList', profile_user_data.value.id);
-      await store.dispatch('followStore/getFollowingList', profile_user_data.value.id);
-
-      console.log('오ㅐ안감');
-      router.push(`/follow/${route.params.username}`);
+      /*       store
+        .dispatch('followStore/getFollowerList', profile_user_data.value.id)
+        .then(store.dispatch('followStore/getFollowingList', profile_user_data.value.id))
+        .then(router.push(`/follow/${route.params.username}`)); */
+      store
+        .dispatch('followStore/getFollowerList', profile_user_data.value.id)
+        .then(store.dispatch('followStore/getFollowingList', profile_user_data.value.id))
+        .then(router.push(`/follow`));
     };
     /*
     const goFollow = () => {
@@ -169,7 +173,7 @@ export default {
       // followState();
       setTimeout(() => followState(), 20);
     }); */
-    setTimeout(() => followState(), 100);
+    setTimeout(() => followState(), 50);
     /* const store = useStore();
     const router = useRouter();
     const profile_user_data = computed(() => store.state.profileStore.profile_user);

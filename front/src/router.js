@@ -144,7 +144,8 @@ const routes = [
   },
   // 팔로우 팔로잉
   {
-    path: '/follow/:username',
+    // path: '/follow/:username',
+    path: '/follow',
     name: 'follow',
     component: () => import('@/views/Profile/FollowView'),
   },

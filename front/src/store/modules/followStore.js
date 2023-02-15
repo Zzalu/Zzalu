@@ -13,12 +13,29 @@ const followStore = {
     SET_FOLLOWER_LIST(state, data) {
       state.follower_list = data;
     },
+    MODIFY_FOLLOWING_STATE(state, index) {
+      console.log(index);
+
+      console.log(state.following_list[index].followState);
+      state.following_list[index].followState = !state.following_list[index].followState;
+      console.log(state.following_list[index].followState);
+    },
+    MODIFY_FOLLOWER_STATE(state, index) {
+      state.follower_list[index].followState = !state.follower_list[index].followState;
+    },
   },
   getters: {
     getFollowings: (state) => state.following_list,
     getFollowers: (state) => state.follower_list,
   },
   actions: {
+    modifyFollowingState: ({ commit }, index) => {
+      commit('MODIFY_FOLLOWING_STATE', index);
+    },
+    modifyFollowerState: ({ commit }, index) => {
+      commit('MODIFY_FOLLOWER_STATE', index);
+    },
+
     // 팔로잉 리스트 가져오기
     getFollowingList: ({ commit }, member_id) => {
       return new Promise(() => {

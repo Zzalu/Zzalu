@@ -2,19 +2,11 @@
   <div>
     <follow-top-nav></follow-top-nav>
     <div class="grid grid-cols-2 text-center">
-      <div class="py-2 border-b-2">
-        팔로워
-        <!-- <follower-list> -->
-        <!-- {{ this.followers }} -->
-        <!-- </follower-list> -->
-      </div>
-      <div class="py-2 border-b-2">
-        팔로잉
-        <!-- <following-list> -->
-        <!-- {{ this.followings }} -->
-        <!-- </following-list> -->
-      </div>
+      <button class="py-2 border-b-2" @click="clickFollowers">팔로워</button>
+      <button class="py-2 border-b-2" @click="clickFollowings">팔로잉</button>
     </div>
+    <follower-list v-if="isFollwers"></follower-list>
+    <following-list v-else> </following-list>
     <main-bottom-nav></main-bottom-nav>
   </div>
 </template>
@@ -23,19 +15,25 @@
 // import { useStore } from 'vuex';
 import FollowTopNav from '@/components/Common/NavBar/FollowTopNav.vue';
 import MainBottomNav from '../../components/Common/NavBar/MainBottomNav.vue';
-// import FollowingList from "@/components/Profile/FollowingList"
-// import FollowerList from "@/components/Profile/FollowerList"
-
+import FollowerList from '@/components/Profile/FollowerList.vue';
+import FollowingList from '@/components/Profile/FollowingList';
+import { ref } from 'vue-demi';
 export default {
   name: 'FollowView',
   components: {
     FollowTopNav,
     MainBottomNav,
-    // FollowingList,
-    // FollowerList,
+    FollowerList,
+    FollowingList,
   },
   setup() {
-    // const store = useStore();
+    let isFollwers = ref(true);
+    const clickFollowers = () => {
+      isFollwers.value = true;
+    };
+    const clickFollowings = () => {
+      isFollwers.value = false;
+    };
     // const router = useRouter();
 
     // const followings = store.getters['followStore/getFollowings']
@@ -44,6 +42,9 @@ export default {
 
     return {
       // followings, followers
+      isFollwers,
+      clickFollowers,
+      clickFollowings,
     };
   },
   methods: {
@@ -61,4 +62,4 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped></style>
