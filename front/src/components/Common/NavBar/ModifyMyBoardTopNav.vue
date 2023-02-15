@@ -43,7 +43,7 @@
         px-4
         absolute
         right-14
-        text-zz-s text-xs text-zz-error
+        text-xs text-zz-error
         font-spoq
       "
       @click="this.delete_mode = true"
