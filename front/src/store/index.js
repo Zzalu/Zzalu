@@ -28,7 +28,7 @@ const store = new Vuex.Store({
   // vuex plugin 명시
   plugins: [
     createPersistedState({
-      paths: ['userStore.temp'],
+      paths: ['userStore.temp', 'followStore'],
     }),
   ],
 });
