@@ -14,10 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * @Author 홍금비
- * 댓글 Entity
-**/
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
