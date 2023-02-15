@@ -48,8 +48,8 @@
 
     <!-- 아이디 비번찾기 -->
     <div class="redir-accounts">
-      <router-link to="/find-id" class="find-id">아이디 |</router-link>
-      <router-link to="/reset-password">비밀번호 찾기</router-link>
+      <router-link to="/find-id" class="find-id">아이디를 잊으셨다면?</router-link>
+      <!-- <router-link to="/reset-password">비밀번호 찾기</router-link> -->
     </div>
     <!-- 소셜로그인 -->
     <!-- <div class="divide-social">

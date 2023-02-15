@@ -1,17 +1,23 @@
 <template>
   <div>
-    <div v-if="this.isDisplay" class="bg-red-300 p-8 m-2">
-      <div>요청 번호: {{ this.id }}</div>
-      <div>요청 타입: {{ this.requestType }}</div>
-      <img v-if="gifPath" :src="`${this.gifPath}`" alt="" class="col-span-2 justify-center h-40">
-      <div v-if="tags">태그: {{ this.tags }}</div>
-      <div v-if="relationsVideo">관련 동영상: {{ this.relationsVideo }}</div>
-      <div v-if="description">짤 설명: {{ this.description }}</div>
-      <div>작성자 ID: {{ this.writerUsername }}</div>
-      <div v-if="originGifsId">원본 gif 게시글: {{ this.originGifsId }}</div>
-      <button class="bg-zz-s" @click="put_temp_gif">승인 횟수: {{ this.permittedCount }}</button>
-      <button @click="delete_temp_gif">삭제</button>
-      <div>{{ this.isDisplay }}</div>
+    <div v-if="this.isDisplay" class="bg-zz-p rounded-xl p-8 m-2">
+      <div class="text-white font-spoq">
+        <button class="bg-zz-s px-2 rounded-sm mb-4" @click="put_temp_gif">승인 횟수 추가하기
+          <font-awesome-icon icon="fa-solid fa-thumbs-up" />
+          : 
+          {{ this.permittedCount }}</button>
+        <div>{{ this.requestType }} 요청  # {{this.id}}</div>
+        <img v-if="gifPath" :src="`${this.gifPath}`" alt="" class="col-span-2 justify-center h-40">
+        <div v-if="tags">태그: {{ this.tags }}</div>
+        <div v-if="relationsVideo">관련 동영상: {{ this.relationsVideo }}</div>
+        <div v-if="description">짤 설명: {{ this.description }}</div>
+        <div>작성자 ID: {{ this.writerUsername }}</div>
+        <div v-if="originGifsId" class="mb-2">원본 gif 게시글: {{ this.originGifsId }}</div>
+        <button  class="bg-zz-error px-2 rounded-sm" @click="delete_temp_gif">
+          <font-awesome-icon icon="fa-solid fa-circle-xmark" />
+          승인 거부하기
+          </button>
+      </div>
     </div>
   </div>
 </template>
