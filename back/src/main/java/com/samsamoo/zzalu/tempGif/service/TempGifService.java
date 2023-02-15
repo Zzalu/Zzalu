@@ -1,8 +1,8 @@
 package com.samsamoo.zzalu.tempGif.service;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
 import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.member.entity.Member;

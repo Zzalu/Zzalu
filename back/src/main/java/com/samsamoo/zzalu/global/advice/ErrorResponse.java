@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.advice;
+package com.samsamoo.zzalu.global.advice;
 
 import lombok.Getter;
 

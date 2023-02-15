@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.gifs.controller;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
 
 
 import com.samsamoo.zzalu.gifs.entity.Gifs;

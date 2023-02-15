@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.titlehakwon.exception;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
 
 public class TitleHakwonException extends NotFoundException {
     private static final String MESSAGE = "[ERROR] 해당 제목학원이 존재하지 않습니다.";

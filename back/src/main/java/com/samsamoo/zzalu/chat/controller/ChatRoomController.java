@@ -1,9 +1,7 @@
 package com.samsamoo.zzalu.chat.controller;
 
-import com.nimbusds.oauth2.sdk.token.AccessToken;
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
-import com.samsamoo.zzalu.chat.dto.ChatRoomDto;
 import com.samsamoo.zzalu.chat.dto.ChatRoomEnroll;
 import com.samsamoo.zzalu.chat.dto.ChatRoomListDto;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
@@ -12,7 +10,6 @@ import com.samsamoo.zzalu.chat.repository.ChatRoomRepository;
 import com.samsamoo.zzalu.chat.service.ChatRoomService;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
-import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

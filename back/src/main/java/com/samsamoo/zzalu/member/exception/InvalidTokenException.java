@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.member.exception;
 
-import com.samsamoo.zzalu.advice.ForbiddenException;
+import com.samsamoo.zzalu.global.advice.ForbiddenException;
 
 public class InvalidTokenException extends ForbiddenException {
     private static final String MESSAGE = "토큰이 유효하지 않습니다.";

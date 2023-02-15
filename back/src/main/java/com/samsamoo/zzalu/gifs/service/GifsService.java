@@ -1,8 +1,6 @@
 package com.samsamoo.zzalu.gifs.service;
 
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
-import com.samsamoo.zzalu.board.dto.GifInfo;
-import com.samsamoo.zzalu.board.dto.GifList;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.member.entity.Member;

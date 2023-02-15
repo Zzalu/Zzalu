@@ -2,8 +2,8 @@ package com.samsamoo.zzalu.member.controller;
 
 import com.samsamoo.zzalu.award.dto.AwardCountResponse;
 import com.samsamoo.zzalu.award.dto.AwardResponse;
-import com.samsamoo.zzalu.auth.dto.LoginRequest;
-import com.samsamoo.zzalu.auth.dto.TokenInfo;
+import com.samsamoo.zzalu.global.auth.dto.LoginRequest;
+import com.samsamoo.zzalu.global.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.service.MemberService;
 import lombok.RequiredArgsConstructor;

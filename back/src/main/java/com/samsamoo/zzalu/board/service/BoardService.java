@@ -1,15 +1,13 @@
 package com.samsamoo.zzalu.board.service;
 
-import com.samsamoo.zzalu.advice.BadRequestException;
-import com.samsamoo.zzalu.advice.NotFoundException;
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.board.dto.*;
 import com.samsamoo.zzalu.board.entity.Board;
 import com.samsamoo.zzalu.board.repo.BoardRepository;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
 import com.samsamoo.zzalu.member.exception.NotMatchException;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import com.samsamoo.zzalu.member.service.MemberService;

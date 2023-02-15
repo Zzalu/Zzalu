@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.member.exception;
 
-import com.samsamoo.zzalu.advice.BadRequestException;
+import com.samsamoo.zzalu.global.advice.BadRequestException;
 
 public class NotMatchException extends BadRequestException {
     public NotMatchException(String message) {

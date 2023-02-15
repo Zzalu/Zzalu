@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.auth.dto;
+package com.samsamoo.zzalu.global.auth.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

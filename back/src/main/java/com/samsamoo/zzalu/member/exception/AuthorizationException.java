@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.member.exception;
 
-import com.samsamoo.zzalu.advice.ForbiddenException;
+import com.samsamoo.zzalu.global.advice.ForbiddenException;
 
 public class AuthorizationException extends ForbiddenException {
     private static final String MESSAGE = "권한이 없습니다.";

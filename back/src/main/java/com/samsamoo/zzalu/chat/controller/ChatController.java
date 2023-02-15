@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.chat.controller;
 
 
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
 import com.samsamoo.zzalu.infra.kafka.service.KafkaProducer;

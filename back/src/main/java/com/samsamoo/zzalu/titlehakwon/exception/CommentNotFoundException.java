@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.titlehakwon.exception;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
 
 public class CommentNotFoundException  extends NotFoundException {
     private static final String MESSAGE = "[ERROR] 해당 댓글이 존재하지 않습니다.";

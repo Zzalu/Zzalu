@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.auth.sevice;
+package com.samsamoo.zzalu.global.auth.sevice;
 
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.repo.MemberRepository;

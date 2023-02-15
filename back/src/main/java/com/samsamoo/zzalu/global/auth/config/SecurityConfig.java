@@ -1,6 +1,6 @@
-package com.samsamoo.zzalu.auth.config;
+package com.samsamoo.zzalu.global.auth.config;
 
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

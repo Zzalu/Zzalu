@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.member.exception;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
 
 public class MemberNotFoundException extends NotFoundException {
 

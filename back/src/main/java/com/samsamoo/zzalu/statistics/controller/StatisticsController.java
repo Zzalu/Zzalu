@@ -1,17 +1,15 @@
 package com.samsamoo.zzalu.statistics.controller;
 
-import com.samsamoo.zzalu.advice.NotFoundException;
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.advice.NotFoundException;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.gifs.entity.Gifs;
 import com.samsamoo.zzalu.gifs.service.GifsService;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.repo.MemberRepository;
 import com.samsamoo.zzalu.statistics.entity.GifStatistics;
 import com.samsamoo.zzalu.statistics.entity.MemberTagStatistics;
-import com.samsamoo.zzalu.statistics.repository.MemberTagStatisticsRepository;
 import com.samsamoo.zzalu.statistics.service.GifStatisticsService;
 import com.samsamoo.zzalu.statistics.service.MemberTagStatisticsService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

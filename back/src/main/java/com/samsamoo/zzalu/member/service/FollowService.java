@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.member.service;
 
-import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
+import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.member.dto.follow.*;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.member.exception.NotMatchException;
