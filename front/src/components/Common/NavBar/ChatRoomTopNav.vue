@@ -63,13 +63,20 @@ export default {
   },
   data() {
     return {
-      is_like: this.like,
+      is_like: null,
     };
+  },
+  created() {
+    this.is_like = this.like
   },
   methods: {
     changelike() {
+      if (this.is_like == 'true') {
+        this.is_like = 'false'
+      } else {
+        this.is_like = 'true'
+      }
       this.chat_room_like(this.room_id)
-      this.is_like = !this.is_like;
     },
   },
 };

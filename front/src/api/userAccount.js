@@ -40,9 +40,19 @@ const checkNickname = (payload) => {
 }
 
 // 회원정보변경 (7)
-const requestChangeInfo = (payload, res, err) => {
-    console.log('api 요청 직전 데이터', payload)
-    form_api.patch(`members`, payload).then(res).catch(err)
+const requestChangeInfo = (params, form, res, err) => {
+    console.log('폼데이터 이제 넣음', form)
+    const tempData = new FormData();
+    if (form.newNickname != null) {
+        tempData.append("nickname", form.newNickname)
+    }
+    if (form.profileIntro != null) {
+        tempData.append("profileMessage", form.profileIntro)
+    }
+    if (form.send_image != null) {
+        tempData.append("profileMultipartFile", form.send_image)
+    }
+    form_api.patch(`/members`, tempData).then(res).catch(err)
 }
 
 // 계정 삭제 (8)

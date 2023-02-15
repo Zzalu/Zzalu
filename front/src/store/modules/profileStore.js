@@ -11,6 +11,7 @@ const profileStore = {
       nickname: "",
       userEmail: "",
       enrollDate: "",
+      isManager: "",
       profileMessage: null,
       profilePath: null,
       followingCnt: 0,
@@ -43,9 +44,14 @@ const profileStore = {
       state.profile_user.boardList = data.boardList;
       state.profile_user.enrollDate = data.enrollDate;
       state.profile_user.awardCount = data.awardCount;
+      state.profile_user.isManager = data.isManager;
     },
     SET_PROFILE_STATS(state, data) {
       state.profile_user.stats = data
+
+      if (state.profile_user.stats.data.length == 0) {
+        state.profile_user.typeMsg = '는 어떤 사람일까?'
+      } else {
       // console.log('이거이거', state.profile_user.stats.data[0].tag)
       if (state.profile_user.stats.data[0].tag == "게임") {
           state.profile_user.typeMsg = '는 컴퓨터랑 연애한다 ♥'
@@ -65,7 +71,7 @@ const profileStore = {
           state.profile_user.typeMsg = '는 진정한 개발자... 제법 멋져'
         } else if (state.profile_user.stats.data[0].tag == "음식") {
           state.profile_user.typeMsg = '는 살려고 먹는게 아니라 먹으려고 살아'
-        }
+        }}
     }
   },
   getters: {
@@ -77,6 +83,7 @@ const profileStore = {
         username,
         ({ data }) => {
           commit('SET_PROFILE_USER', data);
+          console.log(data)
         },
         (error) => console.log(error),
       );
@@ -87,11 +94,11 @@ const profileStore = {
     getProfileStat(
       params,
       (res) => {
-        console.log('유저 보관함 요청 성공', res)
+        console.log('유저 스탯 요청 성공', res)
         commit('SET_PROFILE_STATS', res)
       },
       (err) => {
-        console.log('유저 보관함 요청 실패', err);
+        console.log('유저 스탯 요청 실패', err);
       }
     )
   }, 

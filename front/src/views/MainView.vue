@@ -1,7 +1,12 @@
 <template>
   <div class="dark:bg-zz-bd">
     <div v-if="open_chat_info" class="bg-negative" @click="close_chat"></div>
-    <OnlyBigLogoTopNav class="z-30" />
+    <div v-if="isLogged">
+      <OnlyBigLogoTopNav class="z-30" />
+    </div>
+    <div v-else>
+      <MainNotLoggedNav class="z-30" />
+    </div>
     <AcademyList />
     <RecommendedJjalList />
     <PopularJjalList />
@@ -22,6 +27,7 @@
 <script>
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav";
 import OnlyBigLogoTopNav from "../components/Common/NavBar/OnlyBigLogoTopNav";
+import MainNotLoggedNav from "../components/Common/NavBar/MainNotLoggedNav";
 import AcademyList from "../components/Main/AcademyList";
 import RecommendedJjalList from "../components/Main/RecommendedJjalList";
 import PopularJjalList from "../components/Main/PopularJjalList";
@@ -43,12 +49,22 @@ export default {
     const open_chat_id = computed(
       () => store.state.quietChatStore.open_chat_id
     );
+    const open_list_modal = computed(
+      () => store.state.searchModalStore.open_list_modal
+    );
     const quiet_chat_data = computed(
       () => store.state.quietChatStore.hot_quiet_list
     )
     const close_chat_info = () => {
       store.commit("quietChatStore/close_chat_info");
     };
+    let isLogged = computed(() => {
+      if (window.localStorage.getItem('token')) {
+        return true;
+      } else {
+        return false;
+      }
+    });
     onBeforeMount(() => {
       // axios 요청
       store.dispatch("quietChatStore/getHotQuietList");
@@ -58,13 +74,16 @@ export default {
     });
     return {
       open_chat_info,
+      open_list_modal,
       open_chat_id,
       quiet_chat_data,
       close_chat_info,
+      isLogged
     };
   },
   components: {
     MainBottomNav,
+    MainNotLoggedNav,
     OnlyBigLogoTopNav,
     AcademyList,
     RecommendedJjalList,
@@ -85,12 +104,19 @@ export default {
       this.close_chat_info();
     },
   },
-  get watch() {
-    return this._watch;
-  },
-  set watch(value) {
-    this._watch = value;
-  },
+  // get watch() {
+  //   return this._watch;
+  // },
+  // set watch(value) {
+  //   this._watch = value;
+  // },
+  watch: {
+    open_list_modal: function (value) {
+      value
+        ? (document.body.style.overflow = "hidden")
+        : document.body.style.removeProperty("overflow");
+    },
+  }
 };
 </script>
 

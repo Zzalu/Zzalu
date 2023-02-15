@@ -5,7 +5,7 @@
         <title-competition-list-item
           class="academy-list"
           :title_competition="title_competition"
-          @click="goToTitleCompetition(title_competition.openData)"
+          @click="goToTitleCompetition(title_competition.openDate)"
         />
       </li>
     </ol>

@@ -1,5 +1,7 @@
 <template>
-  <div class="quiet-chat-card-contain">
+  <div class="quiet-chat-card-contain"
+  :style="this.room_data.imagePath ? `background-image:url(${this.room_data.imagePath})` : null"
+  >
     <div v-if="here">
       <div class="animations-start-contain">        
       </div>
@@ -37,8 +39,8 @@ export default {
   computed: {
     like() {
       let user_num = null
-      if (localStorage.getItem('profile_id')) {
-        user_num = localStorage.getItem('profile_id')
+      if (localStorage.getItem('current_pk')) {
+        user_num = localStorage.getItem('current_pk')
       }
       return this.room_data.likeMemberId.includes(Number(user_num))
     },
@@ -91,8 +93,8 @@ export default {
 }
 .quiet-chat-card-contain {
   box-shadow: 0 0 5px black;
-  background-image: url("../../QuietChat/QuietChatList/assets/sad_man.gif");
-  @apply border-2 h-48 w-36 bg-center bg-cover rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
+  background-image: url("../../QuietChat/QuietChatList/assets/favicon.png");
+  @apply border-2 h-48 w-36 bg-center bg-contain bg-no-repeat rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
 }
 
 .quiet-chat-like-contain {

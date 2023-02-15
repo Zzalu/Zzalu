@@ -1,6 +1,9 @@
 <template>
   <div>
-    <div class="flex flex-col justify-center items-center mt-5" v-if="sort_type == 'POPULAR' && comments.length == 0">
+    <div
+      class="flex flex-col justify-center items-center mt-5 mb-2"
+      v-if="sort_type == 'POPULAR' && comments.length == 0"
+    >
       <p class="text-center text-xl font-bhs">
         앗! 이런! <br />좋아요를 받은 제목이 아직 없네요 <br />당신의 웃음벨에게 좋아요를 주세요!
       </p>
@@ -18,8 +21,7 @@
         class="mb-1"
         :id="'comment-' + comment.commentId"
       >
-        <CommentListItem :comment="comment" :index="index" />
-        <span class="w-full h-divider-height bg-zz-light-div dark:border-b-zz-dark-div"></span>
+        <CommentListItem :comment="comment" :index="index" :sort_type="sort_type" />
       </li>
     </ol>
   </div>

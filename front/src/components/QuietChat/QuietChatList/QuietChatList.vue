@@ -1,11 +1,15 @@
 <template>
   <div>
     <div class="card-container">
-      <div class="card-img-contanier"></div>
+      <div v-if="room_data.imagePath" class="card-img-contanier"
+      :style="`background-image:url(${this.room_data.imagePath})`"
+      ></div>
+      <div v-else class="card-img-contanier">
+      </div>
       <div class="card-content">
         <div class="flex">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="master-p">{{ room_data.userNmae }}</p>
+          <p class="master-p">{{ room_data.userName }}</p>
         </div>
         <p class="title-p">{{ room_data.roomName }} 고독방</p>
         <p class="content-p">{{ room_data.description }}</p>
@@ -38,7 +42,7 @@ export default {
       return this.room_datas
     },
     like() {
-      let user_num = localStorage.getItem('profile_id')
+      let user_num = localStorage.getItem('current_pk')
       return this.room_datas.likeMemberId.includes(Number(user_num))
     },
     hash() {
@@ -51,7 +55,7 @@ export default {
     date() {
       let date1 = new Date(this.room_data.lastActivation);
       const betweenTime =
-        Math.floor((new Date().getTime() - date1.getTime()) / 1000 / 60) - 540;
+        Math.floor((new Date().getTime() - date1.getTime()) / 1000 / 60);
       const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
       const betweenTimeHour = Math.floor(betweenTime / 60);
 
@@ -74,11 +78,11 @@ export default {
 <style scoped lang="postcss">
 .card-container {
   box-shadow: 0 0 7px black;
-  @apply grid grid-cols-12 text-white mt-5 h-32 font-spoq rounded-lg dark:border-zz-dark-div;
+  @apply grid grid-cols-12 text-white mt-5 font-spoq rounded-lg dark:border-zz-dark-div h-full;
 }
 .card-img-contanier {
-  background-image: url(./assets/nyang.gif);
-  @apply col-span-4 border-2 bg-cover bg-center bg-no-repeat rounded-l-lg dark:border-zz-dark-div;
+  background-image: url(./assets/favicon.png);
+  @apply col-span-4 border-2 bg-contain bg-center bg-no-repeat rounded-l-lg dark:border-zz-dark-div;
 }
 .card-content {
   word-break: keep-all;

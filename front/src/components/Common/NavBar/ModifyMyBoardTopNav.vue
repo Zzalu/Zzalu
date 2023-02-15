@@ -88,9 +88,9 @@
           취소
         </button>
         <button class="modal-create-btn">
-          <router-link to="/chat-list"
+          <button
           @click="BoardDelete"
-          > 삭제 </router-link>
+          > 삭제 </button>
         </button>
       </div>
     </div>
@@ -153,6 +153,7 @@ export default {
     },
     BoardDelete() {
       this.board_delte(Number(this.board_id))
+      this.$router.go(-1)
     }
   },
 };

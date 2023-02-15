@@ -51,4 +51,9 @@ function removeBoardJjal(datas, params, res, err) {
         .then(res).catch(err)
 }
 
-export { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal }
+function userstatistics(datas,params,res,err) {
+    authapi.post(`/statistics/download?gifId=${params}`)
+    .then(res).catch(err)
+}
+
+export { getStoreList, createBoard, putBoardData, getUserBoard, getBoard, nameChange, boardDel, removeBoardJjal, userstatistics }

@@ -8,12 +8,8 @@
       <div class="resting-face">:|</div>
     </div>
     <!-- 해당페이지는 로그인 후 이용하실 수 있어요 -->
-    <div class="text-oneline">
-      <div class="page-sub-title-black">해당 페이지는</div>
-      <div class="page-sub-title-primary">
-        로그인
-      </div>
-      <div class="page-sub-title-black">후 이용하실 수 있어요</div>
+    <div class="text-oneline justify-text-center">
+      <div class="page-sub-title-black">해당 페이지는 로그인 후 이용하실 수 있어요</div>
     </div>
     <!-- 아직 회원이 아니신가요? 회원가입 -->
     <div class="redir-accounts">
@@ -63,6 +59,7 @@ export default {
 }
 
 .page-sub-title-black {
+  word-break: keep-all;
   @apply mt-60 mx-1 font-spoq font-bold dark:text-zz-p;
 }
 

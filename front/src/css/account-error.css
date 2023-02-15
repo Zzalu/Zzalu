@@ -195,15 +195,18 @@
 /* 해시태그 */
 
 .hashtag {
+  word-break: keep-all;
   @apply bg-zz-s text-white font-spoq rounded-full px-4 mx-1 my-1
 }
 
 .hashtag-edit {
+  word-break: keep-all;
   @apply absolute text-white border-2 border-zz-error rounded-full bg-zz-error
 }
 
 /* -------------------------------------------------- */
 /* 프로필 */
 .profile-title {
+  word-break: keep-all;
   @apply text-zz-p font-bold font-spoq text-lg
 }

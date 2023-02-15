@@ -1,4 +1,4 @@
-import { getPopularGIF, getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal, getDetailData } from "@/api/zzalList"
+import { getPopularGIF, getRecommendGIF, getFirstRandomGIF, getMoreRandomGIF, getSearchZzal, getDetailData, putRequest } from "@/api/zzalList"
 
 const zzalListStore = {
   namespaced: true,
@@ -123,6 +123,18 @@ const zzalListStore = {
         },
         (err) => {
           console.log(err, '짤 디테일 get 실패');
+        }
+      )
+    },
+    putRequestEdit({commit}, params) {
+      putRequest(
+        commit,
+        params,
+        (data) => {
+          console.log(data, '짤 수정 요청 성공');
+        },
+        (err) => {
+          console.log(err,'짤 수정 요청 실패');
         }
       )
     }

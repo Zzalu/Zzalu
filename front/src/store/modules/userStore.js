@@ -1,4 +1,4 @@
-import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestDelete, requestChangeInfo, requestManager } from "@/api/userAccount";
+import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestChangeInfo, requestDelete, requestManager } from "@/api/userAccount";
 
 const userStore = {
   namespaced: true,
@@ -16,6 +16,7 @@ const userStore = {
     refreshToken: "",
     nickname: "",
     isManager: false,
+    pk: null
   }),
   mutations: {
     SAVE_USER_TEMP(state, credentialsData) {
@@ -30,16 +31,15 @@ const userStore = {
       window.localStorage.setItem("temp_email", credentialsEmailCode.email)
     },
     SAVE_CURRENT_USER(state, loginData ) {
-      console.log('지금 접속한 사람 저장')
-      console.log(loginData)
-      console.log(loginData.data)
       state.user = loginData.data.username
       state.accessToken = loginData.data.accessToken
       state.refreshToken = loginData.data.refreshToken
       state.nickname = loginData.data.nickname
       state.isManager = loginData.data.isManager
+      state.pk = loginData.data.id
       localStorage.setItem('current_userid', loginData.data.username)
       localStorage.setItem('current_nickname', loginData.data.nickname)
+      localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
     },
@@ -102,9 +102,9 @@ const userStore = {
     },
     // 닉네임 중복확인
     uniqueNicknameAction: async (commit, nickname) => {
-        // console.log(nickname);
+        console.log(nickname);
         const response = await checkNickname({"nickname": nickname});
-        // console.log(response)
+        console.log(response)
         return response
     },
     // 이메일 중복확인
@@ -157,14 +157,26 @@ const userStore = {
     // 로그인
     loginAction: async (context, loginData ) => {
       // console.log("store잘 들어옴", loginData)
-      const response = await requestLogin(loginData)
+      const response = await requestLogin(
+        loginData,
+        (res) => {
+          console.log(res)
+          context.commit('SAVE_CURRENT_USER', res)
+          return res
+        },
+        (error) => {
+          console.log(error.response, "에러에러");
+          
+          return error.response
+        }
+        )
       // console.log("store 다시 잘 들어옴", response)
-      context.commit('SAVE_CURRENT_USER', response)
-      console.log(response.data)
+      
+
       // localStorage.setItem('id', response.data.username)
       // localStorage.setItem('token', response.data.accessToken)
-      console.log("지금 접속유저 저장 잘 됨", response)
       return response
+
     },
 
     // 로그아웃
@@ -200,23 +212,20 @@ const userStore = {
     },
     // ----------------------------------------------------------
     // 회원정보수정
-    patchUserInfoAction: async (context, changedData) => {
-      // context.commit('PATCH_USER_INFO', changedData)
-      console.log(changedData)
-      
-      const response = await requestChangeInfo(
-        // await requestChangeInfo(
-        changedData,
-        (res) => {
-          console.log("유저인포 잘고침?ㅇㅇ",res)
-          return res
+    patchUserInfoAction: (params, form) => {
+      console.log(form)
+      requestChangeInfo(
+        params,
+        form,
+        ({data}) => {
+          localStorage.removeItem('current_nickname')
+          console.log(data, "성공입니다")
+          localStorage.setItem('current_nickname', data.nickname)
         },
         (err) => {
-          console.log("뭔가뭔가... 잘못됨")
-          console.log(err)
-          return err.response
+          console.log(err, "실패입니다")
+          alert(err.response.data.message);
       })
-      console.log('리스폰스', response)
     },
     // ----------------------------------------------------------
     // 매니저

@@ -14,8 +14,10 @@
     <div class="image-container">
       <div v-if="url != null" class="preview-image" :style="`background-image:url(${this.url})`"></div>
       <div v-else class="preview-image"></div>
-      <input @change="upload" type="file" id="file" class="select-image" />
-      <label class="select-image-text" for="file"> <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label>
+      <form>
+        <input @change="upload" type="file" name="image" id="image" class="select-image" ref="serveyImage"/>
+        <label class="select-image-text" for="image"> <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label>
+      </form>
     </div>
 
     <p class="guide">고독방 이름</p>
@@ -64,12 +66,26 @@
 </template>
 
 <script>
+import { useStore } from "vuex";
+
 import CannotEditModal from '../../components/QuietChat/MakeChat/CannotEditModal.vue';
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav"
 import KorGoBackTopNavBar from "../../components/Common/NavBar/KorGoBackTopNavBar"
+import Swal from 'sweetalert2'
+// var imageFile = document.getElementById("image");
 
 export default {
   name: 'MakeChatView',
+  setup() {
+    const store = useStore();
+
+    const get_img_path = (e) => {
+      store.dispatch("quietChatStore/getImagePath",e)
+    }
+    return {
+      get_img_path
+    }
+  },
   data() {
     return {
       url: null,
@@ -93,8 +109,13 @@ export default {
     upload(e) {
       let file = e.target.files;
       this.url = URL.createObjectURL(file[0]);
-      console.log(file);
-      console.log(this.url);
+      // 여기서 api 요청
+      this.img_file = this.$refs.serveyImage.files[0]
+      let image_file = { data : this.img_file}
+      this.get_img_path(image_file)
+
+      // console.log(file);
+      // console.log(this.url);
     },
     InputHashtag() {
       this.hashtags_input_mode = true; 
@@ -102,10 +123,16 @@ export default {
     AddHashtag() {
       const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
       if (this.hash_input=='') {
-        alert('내용을 입력해주세요')
+        Swal.fire({
+            icon: "warnning",
+            text:"해시태그 내용을 반드시 입력해주세요."
+            })
         this.hashtags_input_mode = false
       } else if (regex.test(this.hash_input) == false) {
-        alert('한글과 숫자와 영어만 입력해주세요')
+        Swal.fire({
+            icon: "warnning",
+            text:"한글과 숫자와 영어만 입력해주세요."
+            })
       } else {
         this.hashtags.push(this.hash_input)
         this.hash_input = ''
@@ -156,7 +183,7 @@ export default {
   @apply text-center mb-4 ;
 }
 .preview-image {
-  background-image: url(../../components/QuietChat/QuietChatList/assets/zzalu_logo_dark.png);
+  background-image: url(../../components/QuietChat/QuietChatList/assets/favicon.png);
   @apply bg-contain bg-center bg-no-repeat rounded-l-lg h-48 w-24 mx-auto bg-transparent;
 }
 .select-image {

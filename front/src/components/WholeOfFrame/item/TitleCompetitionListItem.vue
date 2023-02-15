@@ -38,16 +38,18 @@
 import { reactive, ref } from 'vue-demi';
 import { toRefs } from '@vueuse/shared';
 import { getBestComments } from '@/api/titleCompetition';
+import { onMounted } from 'vue';
 export default {
   name: 'TitleCompetitionListItem',
   props: {
     title_competition: Object,
   },
   setup(props) {
+    console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
-      open_date: props.title_competition.openData,
-      zzal_url: props.title_competition.zzalurl,
+      open_date: props.title_competition.openDate,
+      zzal_url: props.title_competition.zzalUrl,
       state: props.title_competition.state,
     });
 
@@ -74,6 +76,11 @@ export default {
     let open_date_obj = new Date(title_competition.open_date);
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();
+
+    onMounted(() => {
+      console.log('[on mounted in list item]' + JSON.stringify(props));
+    });
+
     return {
       ...toRefs(title_competition),
       best_comment_nickname,
@@ -81,6 +88,7 @@ export default {
       best_comment_content,
       month,
       date,
+      onMounted,
     };
   },
 };

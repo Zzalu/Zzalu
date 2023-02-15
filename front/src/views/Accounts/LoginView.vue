@@ -48,8 +48,8 @@
 
     <!-- 아이디 비번찾기 -->
     <div class="redir-accounts">
-      <router-link to="/find-id" class="find-id">아이디 |</router-link>
-      <router-link to="/reset-password">비밀번호 찾기</router-link>
+      <router-link to="/find-id" class="find-id">아이디를 잊으셨다면?</router-link>
+      <!-- <router-link to="/reset-password">비밀번호 찾기</router-link> -->
     </div>
     <!-- 소셜로그인 -->
     <!-- <div class="divide-social">
@@ -111,9 +111,15 @@
         } else {
         // console.log('로그인 데이터', loginData)
         const res = await store.dispatch('userStore/loginAction', loginData)
-        if (res) {
+        console.log(res)
+        if (res.status==200) {
           console.log("로그인 요청 잘 갔음")
           router.push({name: 'main'})
+          } else {
+          Swal.fire({
+            icon: "error",
+            html: "회원이 존재하지 않습니다. <br> 회원정보를 확인해주세요."
+            })
         }
         }
         

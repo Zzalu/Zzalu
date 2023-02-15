@@ -35,8 +35,34 @@ const titleCompetitionStore = {
     getCommentCount: (state) => state.total_comment_cnt,
     getComments: (state) => state.comments,
     getLastCommentId: (state) => state.last_comment_id,
+    getState: (state) => state.state,
   },
   mutations: {
+    INIT_STORE_DATA(state) {
+      state.open_date = '';
+      state.total_comment_cnt = 0;
+      state.title_competition_id = 0;
+      state.zzal_url = '';
+      state.state = '';
+
+      // 댓글
+      state.sort_typ = 'POPULAR';
+      state.comments = [];
+      state.last_comment_id = Number.MAX_SAFE_INTEGER;
+
+      // 대댓글
+      state.new_nested_comments = [];
+      state.isNested = false;
+      state.comment_writer = {
+        comment_id: '',
+        nickname: '',
+      };
+
+      // 소켓 관련
+      state.is_top = true;
+      state.socket_comment_cnt = 0;
+      state.socket_comments = [];
+    },
     // 날짜 바꾸기
     SET_OPEN_DATE(state, open_date) {
       state.open_date = open_date;
@@ -47,6 +73,7 @@ const titleCompetitionStore = {
       state.total_comment_cnt = title_competition_data.totalComment;
       state.zzal_url = title_competition_data.zzalUrl;
       state.state = title_competition_data.state;
+      // state.state = 'abc';
     },
 
     // 댓글 sort 수정하기
@@ -81,6 +108,11 @@ const titleCompetitionStore = {
     },
     ADD_SOCKET_COMMENT(state, comment) {
       state.socket_comments.push(comment);
+    },
+
+    PLUS_TOTAL_COMMENT_CNT(state) {
+      state.total_comment_cnt += 1;
+      console.log(state.total_comment_cnt);
     },
 
     // 댓글 추가하기
@@ -126,10 +158,18 @@ const titleCompetitionStore = {
     DELETE_COMMENT(state, comment_index) {
       state.comments.splice(comment_index, 1);
     },
+
+    SET_IS_TOP_TRUE(state) {
+      state.is_top = true;
+    },
   },
   actions: {
+    async initStoreData({ commit }) {
+      commit('INIT_STORE_DATA');
+      console.log('이닛!');
+    },
     async init({ state, dispatch }, data) {
-      // console.log(data);
+      console.log('init: ' + data);
       await dispatch('getTitleCompetition', data.open_date);
       await dispatch('getBestComments');
       await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
@@ -141,6 +181,7 @@ const titleCompetitionStore = {
         getTitleCompetition(
           open_date,
           ({ data }) => {
+            console.log('action/getTitleCompetition: ' + data);
             commit('SET_TITLE_COMPETITION', data);
             resolve();
           },
@@ -166,6 +207,13 @@ const titleCompetitionStore = {
     setIsTop({ commit }) {
       commit('SET_IS_TOP');
     },
+
+    setIsTopTrue({ commit }) {
+      return new Promise(() => {
+        commit('SET_IS_TOP_TRUE');
+      });
+    },
+
     // 댓글
     async getComments({ commit, state, dispatch }, size) {
       const params = {
@@ -269,6 +317,9 @@ const titleCompetitionStore = {
 
     // 소켓 통신 관련
 
+    plusTotalCommentCnt({ commit }) {
+      commit('PLUS_TOTAL_COMMENT_CNT');
+    },
     // 새로운 댓글 추가
     addSocketCommentCnt({ commit }) {
       commit('ADD_SOCKET_COMMENT_CNT');

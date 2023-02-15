@@ -27,6 +27,12 @@
         src="../../../assets/zzalu_logo_light.png"
       />
     </div>
+      <div class="absolute right-6 my-auto">
+        <button class="bg-zz-p rounded-xl text-sm py-1 px-2 border-2 border-zz-s text-white font-spoq" @click="toCreate">
+          <font-awesome-icon icon="fa-solid fa-upload" />
+          업로드
+        </button>
+      </div>
   </div>
 </template>
 
@@ -40,6 +46,11 @@ export default {
     return {
       isDark,
     };
+  },
+  methods: {
+    toCreate() {
+      this.$router.push({ name: "create-zzal" });
+    },
   },
 };
 </script>

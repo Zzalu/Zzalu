@@ -10,15 +10,19 @@
     </div>
     <div class="img-container">
       <img
-        src="../../QuietChat/QuietChatList/assets/9_16img.jpg"
+        v-if="room_data.imagePath"
+        :src="`${room_data.imagePath}`"
         class="modal-img"
       />
+      <img 
+      v-else
+      src="../QuietChatList/assets/favicon.png" class="modal-img" alt="">
     </div>
     <div class="modal-content-box">
       <div class="modal-first-line">
         <div class="group">
           <font-awesome-icon class="master-icon" icon="fa-solid fa-crown" />
-          <p class="first-line-content">{{ room_data.userNmae }}</p>
+          <p class="first-line-content">{{ room_data.userName }}</p>
         </div>
         <div class="group">
           <font-awesome-icon
@@ -47,8 +51,8 @@
       </div>
     </div>
     <div class="flex place-content-evenly">
-      <button class="modal-create-btn">
-        <router-link :to="{ name: 'chat', params: { chat_id: room_data.roomId }, query: { room_name: room_data.roomName, room_id : room_data.roomId, member_Id : room_data.memberId, like : like}}"> 입장하기 </router-link>
+      <button class="modal-create-btn" @click="into_chat">
+        입장하기
       </button>
     </div>
   </div>
@@ -89,12 +93,20 @@ export default {
     close_modal() {
       this.close_chat_info();
     },
+    into_chat() {
+      if (localStorage.getItem("token") == null) {
+      this.$router.push({name: 'login-required'})
+      }else {
+        this.$router.push({ name: 'chat', params: { chat_id: this.room_data.roomId }, query: { room_name: this.room_data.roomName, room_id : this.room_data.roomId, member_Id : this.room_data.memberId, like : this.like}})
+      }
+    }
+
   },
   computed:{
     like() {
       let user_num = null
-      if (localStorage.getItem('profile_id')) {
-        user_num = localStorage.getItem('profile_id')
+      if (localStorage.getItem('current_pk')) {
+        user_num = localStorage.getItem('current_pk')
       }
       return this.room_data.likeMemberId.includes(Number(user_num))
     },

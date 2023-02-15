@@ -1,12 +1,26 @@
 <template>
   <li>
-    <div class="dark:text-white">
+    <div class="dark:text-white border-b-2 p-1 border-zz-light-input">
+      <!-- best -->
+      <div
+        v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
+        class="bg-zz-light-p rounded flex flex-row justify-center items-center w-14 my-2 text-white"
+      >
+        <p>BEST {{ index + 1 }}</p>
+      </div>
+      <div
+        v-if="sort_type == 'POPULAR' && (index == 3 || index == 4)"
+        class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
+      >
+        <p>BEST {{ index + 1 }}</p>
+      </div>
       <div class="flex items-center mb-2">
-        <div class="w-3 h-3 rounded-full mr-2" @click="goToProfile">
+        <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
+
         <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="text-base mb-1">{{ content }}</p>
@@ -63,6 +77,7 @@ export default {
     comment: Object,
     index: Number,
     id: String,
+    sort_type: String,
   },
   setup(props) {
     const store = useStore();
@@ -84,7 +99,6 @@ export default {
     const goToProfile = () => {
       router.push(`/profile/${comment_data.username}`);
     };
-
     // 삭제 버튼
     const canDelete = computed(() => {
       return comment_data.username == user_id;
