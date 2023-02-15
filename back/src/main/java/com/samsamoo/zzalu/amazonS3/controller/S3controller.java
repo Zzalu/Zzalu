@@ -1,15 +1,11 @@
 package com.samsamoo.zzalu.amazonS3.controller;
 
-import com.samsamoo.zzalu.TitleHakwon.entity.TitleHakwon;
-import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
-import com.samsamoo.zzalu.advice.ConflictException;
 import com.samsamoo.zzalu.amazonS3.dto.S3request;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Map;

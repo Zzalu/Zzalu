@@ -1,17 +1,14 @@
 package com.samsamoo.zzalu.member.entity;
 
-import com.samsamoo.zzalu.TitleHakwon.entity.Comment;
-import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
+import com.samsamoo.zzalu.titlehakwon.entity.Comment;
 import com.samsamoo.zzalu.board.entity.Board;
 import com.samsamoo.zzalu.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.member.dto.UpdateMember;
-import com.samsamoo.zzalu.member.dto.UpdateMemberRequest;
 import com.samsamoo.zzalu.notice.entity.Notice;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.web.multipart.MultipartFile;
 
 
 import javax.persistence.*;

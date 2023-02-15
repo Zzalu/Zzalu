@@ -1,17 +1,16 @@
 package com.samsamoo.zzalu.member.service;
 
-import com.samsamoo.zzalu.AwardRecord.RankDtoInterface;
-import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
-import com.samsamoo.zzalu.AwardRecord.dto.AwardResponse;
-import com.samsamoo.zzalu.AwardRecord.entity.AwardRecord;
-import com.samsamoo.zzalu.AwardRecord.repository.AwardRecordRepository;
+import com.samsamoo.zzalu.award.RankDtoInterface;
+import com.samsamoo.zzalu.award.dto.AwardCountResponse;
+import com.samsamoo.zzalu.award.dto.AwardResponse;
+import com.samsamoo.zzalu.award.entity.AwardRecord;
+import com.samsamoo.zzalu.award.repository.AwardRecordRepository;
 import com.samsamoo.zzalu.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.board.dto.MembersBoardInfo;
 import com.samsamoo.zzalu.board.dto.MembersBoardList;
 import com.samsamoo.zzalu.board.entity.Board;
-import com.samsamoo.zzalu.board.service.BoardService;
 import com.samsamoo.zzalu.mail.service.MailService;
 import com.samsamoo.zzalu.member.dto.*;
 import com.samsamoo.zzalu.member.entity.Member;
@@ -27,8 +26,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.io.IOException;

@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.member.controller;
 
-import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
-import com.samsamoo.zzalu.AwardRecord.dto.AwardResponse;
+import com.samsamoo.zzalu.award.dto.AwardCountResponse;
+import com.samsamoo.zzalu.award.dto.AwardResponse;
 import com.samsamoo.zzalu.auth.dto.LoginRequest;
 import com.samsamoo.zzalu.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.member.dto.*;

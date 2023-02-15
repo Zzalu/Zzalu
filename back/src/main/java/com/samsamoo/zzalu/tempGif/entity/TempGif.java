@@ -1,14 +1,11 @@
 package com.samsamoo.zzalu.tempGif.entity;
 
-import com.samsamoo.zzalu.TitleHakwon.enums.TitleHakwonState;
-import com.samsamoo.zzalu.TitleHakwon.enums.converter.TitleHakwonConverter;
 import com.samsamoo.zzalu.member.entity.Member;
 import com.samsamoo.zzalu.tempGif.enums.RequestType;
 import com.samsamoo.zzalu.tempGif.enums.RequestTypeConverter;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.samsamoo.zzalu.member.dto;
 
-import com.samsamoo.zzalu.AwardRecord.dto.AwardCountResponse;
+import com.samsamoo.zzalu.award.dto.AwardCountResponse;
 import com.samsamoo.zzalu.board.dto.MembersBoardList;
 import com.samsamoo.zzalu.member.entity.Member;
 import lombok.Getter;
@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Getter
 @Setter
