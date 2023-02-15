@@ -16,18 +16,10 @@
             <div class="mb-4"></div>
             <!-- 짤 이미지 -->
 
-            <font-awesome-icon
-              icon="fa-solid fa-play"
-              class="my-message-balloon"
-            />
+            <font-awesome-icon icon="fa-solid fa-play" class="my-message-balloon" />
             <div class="my-image-group">
               <span class="my-write-time">{{ message.sendDate }}</span>
-              <img
-                class="my-image-box"
-                :src="`${message.message}`"
-                alt=""
-                @click="GoToDetail(message.gifId)"
-              />
+              <img class="my-image-box" :src="`${message.message}`" alt="" @click="GoToDetail(message.gifId)" />
             </div>
           </div>
           <!-- ---------------------------------------------------------------------------------- -->
@@ -38,15 +30,7 @@
             <!-- 만약 방장이라면"  -->
             <div
               v-if="message.profilePath"
-              class="
-                h-12
-                w-12
-                rounded-full
-                bg-center bg-no-repeat
-                absolute
-                bg-contain
-                text-zz-p
-              "
+              class="h-12 w-12 rounded-full bg-center bg-no-repeat absolute bg-contain text-zz-p"
               :style="`background-image:url(${message.profilePath})`"
               @click="GoToProfile(message.memberId)"
             ></div>
@@ -61,19 +45,13 @@
               <p class="profile-nickname dark:text-white">
                 {{ message.sender }}
               </p>
-              <font-awesome-icon
-                icon="fa-solid fa-play"
-                class="message-balloon"
-              />
+              <font-awesome-icon icon="fa-solid fa-play" class="message-balloon" />
             </div>
             <div v-else>
               <p class="profile-nicknames dark:text-white">
                 {{ message.sender }}
               </p>
-              <font-awesome-icon
-                icon="fa-solid fa-play"
-                class="message-balloons"
-              />
+              <font-awesome-icon icon="fa-solid fa-play" class="message-balloons" />
             </div>
           </div>
         </div>
@@ -81,12 +59,7 @@
           <!-- 짤 이미지 -->
           <div class="image-contain" v-if="that_member_Id != message.memberId">
             <div class="image-group">
-              <img
-                class="image-box"
-                :src="`${message.message}`"
-                alt=""
-                @click="GoToDetail(message.gifId)"
-              />
+              <img class="image-box" :src="`${message.message}`" alt="" @click="GoToDetail(message.gifId)" />
               <!-- 작성 시간  -->
               <span class="write-time">{{ message.sendDate }}</span>
             </div>
@@ -99,40 +72,28 @@
 
     <div class="navbar-main">
       <div class="navbar-input-box" @click="open_search_modal">
-        <font-awesome-icon
-          icon="fa-solid fa-magnifying-glass"
-          class="navbar-icon"
-        />
-        <input
-          type="text"
-          placeholder="짤 검색하기"
-          class="navbar-input"
-          disabled
-        />
+        <font-awesome-icon icon="fa-solid fa-magnifying-glass" class="navbar-icon" />
+        <input type="text" placeholder="짤 검색하기" class="navbar-input" disabled />
       </div>
     </div>
 
     <!--  -->
     <div class="pb-20"></div>
-    <MainBottomNavInChat
-      @gif_data="gif_data"
-      @gif_data2="gif_data2"
-      :search_modal="search_modal"
-    />
+    <MainBottomNavInChat @gif_data="gif_data" @gif_data2="gif_data2" :search_modal="search_modal" />
   </div>
 </template>
 
 <script>
-import MainBottomNavInChat from "../../components/Common/NavBar/MainBottomNavInChat";
-import ChatRoomTopNav from "../../components/Common/NavBar/ChatRoomTopNav";
-import Stomp from "webstomp-client";
-import SockJS from "sockjs-client";
-import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
+import MainBottomNavInChat from '../../components/Common/NavBar/MainBottomNavInChat';
+import ChatRoomTopNav from '../../components/Common/NavBar/ChatRoomTopNav';
+import Stomp from 'webstomp-client';
+import SockJS from 'sockjs-client';
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
 // import { findQuiteChatRoom } from '@/api/quietChatList.js'
 
 export default {
-  name: "ChatInsideView",
+  name: 'ChatInsideView',
 
   components: {
     MainBottomNavInChat,
@@ -140,16 +101,16 @@ export default {
   },
   setup() {
     const store = useStore();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const get_past_message = (room_id) => {
-      store.dispatch("quietChatStore/getPastMessage", room_id);
+      store.dispatch('quietChatStore/getPastMessage', room_id);
     };
     const user_stat = (e) => {
-      store.dispatch("quietChatStore/postUserStat", e);
+      store.dispatch('quietChatStore/postUserStat', e);
     };
     const get_user_store = (data) => {
-      store.dispatch("boardListStore/getUserStoreList", data);
+      store.dispatch('boardListStore/getUserStoreList', data);
     };
 
     const messages = computed(() => store.state.quietChatStore.past_message);
@@ -167,10 +128,10 @@ export default {
     this.room_id = this.$route.query.room_id;
     this.get_past_message(this.room_id);
     this.access_token = this.token;
-    console.log("token : " + this.token);
+    console.log('token : ' + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
 
-    this.socket = new SockJS("http://i8c109.p.ssafy.io:8090" + "/ws-stomp");
+    this.socket = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),
@@ -180,38 +141,38 @@ export default {
 
     this.reconnect = 0;
     this.connect();
-    console.log("created_end");
+    console.log('created_end');
   },
   data() {
     return {
-      findQuiteChatList: "",
-      room_id: "",
-      access_token: "",
+      findQuiteChatList: '',
+      room_id: '',
+      access_token: '',
       test_tenmporal_member_id: 1,
-      socket: "",
-      web_stomp: "",
+      socket: '',
+      web_stomp: '',
       reconnect: 0,
-      message: "",
+      message: '',
       // messages: [],
       gif_id: 0,
       search_modal: false,
 
       // 방장 확인
       master_Id: this.$route.query.member_Id,
-      that_member_Id: localStorage.getItem("current_pk"),
+      that_member_Id: localStorage.getItem('current_pk'),
 
       // 본인 확인
-      user_nickname: localStorage.getItem("current_nickname"),
+      user_nickname: localStorage.getItem('current_nickname'),
     };
   },
 
   methods: {
     GoToProfile(member_id) {
-      this.$router.push({ name: "profile", params: { username: member_id } });
+      this.$router.push({ name: 'profile', params: { username: member_id } });
     },
     GoToDetail(gifid) {
       this.get_user_store(gifid);
-      this.$router.push({ name: "zzal", params: { zzal_id: gifid } });
+      this.$router.push({ name: 'zzal', params: { zzal_id: gifid } });
     },
     open_search_modal() {
       this.search_modal = !this.search_modal;
@@ -219,7 +180,7 @@ export default {
     gif_data(data) {
       this.message = data.gifPath;
       console.log(this.message, this.message);
-      console.log("gifId : ", data.id);
+      console.log('gifId : ', data.id);
       this.gif_id = data.id;
 
       this.sendMessage();
@@ -229,14 +190,14 @@ export default {
       // header에 AccessToken 넣어서 보내야함
       // post 요청
 
-      this.message = "";
+      this.message = '';
     },
     gif_data2(data2) {
       this.message = data2.gifPath;
-      console.log("gifId : ", data2.id);
+      console.log('gifId : ', data2.id);
       this.gif_id = data2.id;
       this.sendMessage();
-      this.message = "";
+      this.message = '';
       // console.log(data, "여기서데이터받음2");
     },
     findRoom() {
@@ -244,38 +205,38 @@ export default {
     },
     sendMessage() {
       this.web_stomp.send(
-        "/pub/chat/message",
+        '/pub/chat/message',
         JSON.stringify({
-          type: "TALK",
+          type: 'TALK',
           roomId: this.room_id,
           sender: this.access_token,
           message: this.message,
           gifId: this.gif_id,
         }),
-        {}
+        {},
       );
     },
     reciveMessage(recv) {
-      console.log("receive message: " + recv);
-      console.log("test", recv);
+      console.log('receive message: ' + recv);
+      console.log('test', recv);
       let totalheight = document.body.scrollHeight;
-      let tmp = "";
-      let sendtime = "";
+      let tmp = '';
+      let sendtime = '';
       tmp += recv.sendDate[11];
       tmp += recv.sendDate[12];
       if (Number(tmp) > 12) {
-        sendtime += "오후 ";
+        sendtime += '오후 ';
         sendtime += Number(tmp - 12);
       } else if (Number(tmp) == 12) {
-        sendtime += "오후 ";
+        sendtime += '오후 ';
         sendtime += recv.sendDate[11];
         sendtime += recv.sendDate[12];
       } else {
-        sendtime += "오전 ";
+        sendtime += '오전 ';
         sendtime += recv.sendDate[11];
         sendtime += recv.sendDate[12];
       }
-      sendtime += ":";
+      sendtime += ':';
       (sendtime += recv.sendDate[14]),
         (sendtime += recv.sendDate[15]),
         this.messages.unshift({
@@ -290,7 +251,7 @@ export default {
           memberId: recv.memberId,
         });
       setTimeout(() => {
-        window.scrollTo({ top: totalheight, left: 0, behavior: "smooth" });
+        window.scrollTo({ top: totalheight, left: 0, behavior: 'smooth' });
       }, 100);
     },
     connect() {
@@ -302,28 +263,25 @@ export default {
       let local_room_id = this.room_id;
       let local_token = this.access_token;
 
-      console.log("local_web_stomp : " + local_web_stomp);
-      console.log("local_room_id : " + local_room_id);
+      console.log('local_web_stomp : ' + local_web_stomp);
+      console.log('local_room_id : ' + local_room_id);
 
       local_web_stomp.connect(
         {},
         function (frame) {
-          console.log("frame : " + frame);
-          local_web_stomp.subscribe(
-            "/sub/chat/room/" + local_room_id,
-            function (message) {
-              let recv = JSON.parse(message.body);
-              local_recive_message(recv);
-            }
-          );
+          console.log('frame : ' + frame);
+          local_web_stomp.subscribe('/sub/chat/room/' + local_room_id, function (message) {
+            let recv = JSON.parse(message.body);
+            local_recive_message(recv);
+          });
           local_web_stomp.send(
-            "/pub/chat/message",
+            '/pub/chat/message',
             JSON.stringify({
-              type: "ENTER",
+              type: 'ENTER',
               roomId: local_room_id,
               sender: local_token,
             }),
-            {}
+            {},
           );
         },
         function (error) {
@@ -338,7 +296,7 @@ export default {
           //     local_connect();
           //   }, 10 * 1000);
           // }
-        }
+        },
       );
     },
   },
