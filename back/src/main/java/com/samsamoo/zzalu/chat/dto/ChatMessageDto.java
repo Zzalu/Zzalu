@@ -24,6 +24,7 @@ public class ChatMessageDto implements Serializable {
     private MessageType type;
     private String roomId;
     private Long memberId;
+    private String memberName;
     private Long gifId;
     private String sender;
     private String message;

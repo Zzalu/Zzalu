@@ -31,6 +31,7 @@ public class ChatController {
         // 토큰 검사 => 에외 발생 시 Exception
         Member requestMember = jwtTokenProvider.getMember(message.getSender());
         message.setSender(requestMember.getNickname());
+        message.setMemberName(requestMember.getUsername());
         message.setProfilePath(requestMember.getProfilePath());
         message.setMemberId(requestMember.getId());
         message.setSendDate(LocalDateTime.now());
