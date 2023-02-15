@@ -44,7 +44,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     password: zzalu_c109!
-    url: jdbc:mysql://127.0.0.1:3306/ZZALUBE?useUnicode=true&serverTimezone=Asia/Seoul
+    url: jdbc:mysql://127.0.0.1:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
     username: zzalu
   kafka:
     bootstrap-servers: 127.0.0.1:9092
