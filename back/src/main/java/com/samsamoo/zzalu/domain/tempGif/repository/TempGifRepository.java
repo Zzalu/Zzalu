@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.tempGif.repo;
+package com.samsamoo.zzalu.domain.tempGif.repository;
 
 import com.samsamoo.zzalu.domain.member.entity.Member;
 import com.samsamoo.zzalu.domain.tempGif.entity.TempGif;

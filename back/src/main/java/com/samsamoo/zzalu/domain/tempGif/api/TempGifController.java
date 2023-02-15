@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.tempGif.controller;
+package com.samsamoo.zzalu.domain.tempGif.api;
 
 import com.samsamoo.zzalu.domain.tempGif.dto.TempGifRequest;
 import com.samsamoo.zzalu.domain.tempGif.entity.TempGif;

@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.gifs.controller;
+package com.samsamoo.zzalu.domain.gifs.api;
 
 import com.samsamoo.zzalu.global.advice.NotFoundException;
 

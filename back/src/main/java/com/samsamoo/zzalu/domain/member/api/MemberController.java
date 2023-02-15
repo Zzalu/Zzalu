@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.member.controller;
+package com.samsamoo.zzalu.domain.member.api;
 
 import com.samsamoo.zzalu.domain.award.dto.AwardCountResponse;
 import com.samsamoo.zzalu.domain.award.dto.AwardResponse;

@@ -1,11 +1,11 @@
-package com.samsamoo.zzalu.domain.statistics.controller;
+package com.samsamoo.zzalu.domain.statistics.api;
 
 import com.samsamoo.zzalu.global.advice.NotFoundException;
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.domain.gifs.entity.Gifs;
 import com.samsamoo.zzalu.domain.gifs.service.GifsService;
 import com.samsamoo.zzalu.domain.member.entity.Member;
-import com.samsamoo.zzalu.domain.member.repo.MemberRepository;
+import com.samsamoo.zzalu.domain.member.repository.MemberRepository;
 import com.samsamoo.zzalu.domain.statistics.entity.GifStatistics;
 import com.samsamoo.zzalu.domain.statistics.entity.MemberTagStatistics;
 import com.samsamoo.zzalu.domain.statistics.service.GifStatisticsService;

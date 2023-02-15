@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.global.auth.sevice;
 
 import com.samsamoo.zzalu.domain.member.entity.Member;
-import com.samsamoo.zzalu.domain.member.repo.MemberRepository;
+import com.samsamoo.zzalu.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

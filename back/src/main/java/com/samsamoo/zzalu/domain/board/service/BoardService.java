@@ -9,7 +9,7 @@ import com.samsamoo.zzalu.domain.gifs.entity.Gifs;
 import com.samsamoo.zzalu.domain.gifs.repository.GifsRepository;
 import com.samsamoo.zzalu.domain.member.entity.Member;
 import com.samsamoo.zzalu.domain.member.exception.NotMatchException;
-import com.samsamoo.zzalu.domain.member.repo.MemberRepository;
+import com.samsamoo.zzalu.domain.member.repository.MemberRepository;
 import com.samsamoo.zzalu.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

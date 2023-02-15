@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.member.repo;
+package com.samsamoo.zzalu.domain.member.repository;
 
 import com.samsamoo.zzalu.domain.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -16,7 +16,7 @@ import com.samsamoo.zzalu.domain.titlehakwon.repository.TitleHackwonRepository;
 import com.samsamoo.zzalu.global.advice.BadRequestException;
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.domain.member.entity.Member;
-import com.samsamoo.zzalu.domain.member.repo.MemberRepository;
+import com.samsamoo.zzalu.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

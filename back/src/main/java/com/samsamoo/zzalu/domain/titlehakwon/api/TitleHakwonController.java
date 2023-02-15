@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.titlehakwon.controller;
+package com.samsamoo.zzalu.domain.titlehakwon.api;
 
 
 import com.samsamoo.zzalu.domain.titlehakwon.dto.CommentResponse;

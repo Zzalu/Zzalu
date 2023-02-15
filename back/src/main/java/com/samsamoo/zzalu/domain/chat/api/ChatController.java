@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.chat.controller;
+package com.samsamoo.zzalu.domain.chat.api;
 
 
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;

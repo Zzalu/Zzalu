@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.board.controller;
+package com.samsamoo.zzalu.domain.board.api;
 
 import com.samsamoo.zzalu.domain.board.dto.*;
 import com.samsamoo.zzalu.domain.board.service.BoardService;

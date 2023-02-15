@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.mail.controller;
+package com.samsamoo.zzalu.domain.mail.api;
 
 import com.samsamoo.zzalu.domain.mail.dto.ChangePassEmailRequest;
 import com.samsamoo.zzalu.domain.mail.dto.EmailRequest;

@@ -1,4 +1,4 @@
-package com.samsamoo.zzalu.domain.member.controller;
+package com.samsamoo.zzalu.domain.member.api;
 
 import com.samsamoo.zzalu.domain.member.dto.follow.FollowResponse;
 import com.samsamoo.zzalu.domain.member.dto.follow.FollowStateResponse;
