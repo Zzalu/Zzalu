@@ -1,30 +1,30 @@
 <template>
-  <div>
-    <p class="focus-text">역대 제목학원 명예의 전당</p>
-    <hr class="mb-3 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
-    <ol class="items">
+  <div >
+    <ol class="flex flex-wrap justify-center">
       <li v-for="title_competition in title_competitions" :key="title_competition.titleHakwonId">
-        <title-competition-list-item
+        <TitleCompetitionListItemsmall
           class="academy-list"
           :title_competition="title_competition"
-          @click="goToTitleCompetition(title_competition.openData)"
+          @click="goToTitleCompetition(title_competition.openDate)"
         />
       </li>
     </ol>
+    <div class="pb-10"></div>
   </div>
 </template>
 
 <script>
-import TitleCompetitionListItem from '@/components/WholeOfFrame/item/TitleCompetitionListItem.vue';
+import TitleCompetitionListItemsmall from './item/TitleCompetitionListItemsmall.vue';
 import { getFinishTitleCompetition } from '@/api/titleCompetition';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-
+// import { useStore } from 'vuex';
 export default {
-  name: 'AcademyList',
+  name: 'TitleCompetitionListsmall',
   components: {
-    TitleCompetitionListItem,
+    TitleCompetitionListItemsmall,
   },
+
   setup() {
     const router = useRouter();
     let title_competitions = ref();
@@ -38,6 +38,7 @@ export default {
     );
 
     const goToTitleCompetition = (open_date) => {
+      console.log(open_date);
       router.push(`/title-competition/${open_date}`);
     };
 
@@ -50,17 +51,8 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-.focus-text {
-  @apply font-bhs text-2xl line-clamp-1 mt-5 dark:text-white;
-}
-.items {
-  @apply flex overflow-x-auto;
-}
-.items::-webkit-scrollbar {
-  display: none;
-}
 .academy-list {
   box-shadow: 0 0 7px black;
-  @apply mt-2;
+  @apply m-2;
 }
 </style>

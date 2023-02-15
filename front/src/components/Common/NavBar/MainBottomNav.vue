@@ -92,7 +92,6 @@ export default {
     const open_modal = () => {
       store.commit("searchModalStore/open_search_modal");
       // 랜덤짤일때, 서치짤일때 함수 분리
-      console.log("오픈모달", random_gif_data);
       if (random_gif_data.value) {
         if (
           random_gif_data.value.length == 0 ||
@@ -142,13 +141,11 @@ export default {
 
     GoToProfile() {
       if (this.logged_in != null) {
-        // console.log('지금 접속했어요');
         this.$router.push({
           name: "profile",
           params: { username: this.current_user },
         });
       } else {
-        // console.log('지금 접속 안했어요', this.logged_in);
         this.$router.push({ name: "login-required" });
       }
     },

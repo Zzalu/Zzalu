@@ -34,7 +34,6 @@ export default {
     let title_competition_id = ref(award.value.titleHakwonId);
 
     const goToTitleCompetition = () => {
-      console.log(award.value.openDate);
       router.push(`/title-competition/${award.value.openDate}`);
     };
     return {

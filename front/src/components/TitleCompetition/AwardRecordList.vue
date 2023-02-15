@@ -37,7 +37,6 @@ export default {
     };
  */
     watchEffect(async () => {
-      console.log(sort.value);
       await getAwardRecord(
         member_id.value,
         { sort: sort.value },

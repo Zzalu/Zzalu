@@ -66,7 +66,6 @@ export default {
         console.log(res)
         alert("게시물이 삭제되었습니다.")
         isDisplay.value = false
-
       })
       .catch((err) => {
         console.log(err)

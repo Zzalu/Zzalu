@@ -78,7 +78,6 @@ export default {
     const date = open_date_obj.getDate();
 
     onMounted(() => {
-      console.log('[on mounted in list item]' + JSON.stringify(props));
     });
 
     return {

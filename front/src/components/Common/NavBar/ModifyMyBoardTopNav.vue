@@ -43,7 +43,7 @@
         px-4
         absolute
         right-14
-        text-zz-s text-xs text-zz-error
+        text-xs text-zz-error
         font-spoq
       "
       @click="this.delete_mode = true"
@@ -105,6 +105,7 @@ export default {
   name: "ModifyMyBoardTopNav",
   setup() {
     const store = useStore();
+    const userid = localStorage.getItem("current_userid");
 
     const board_name_change = (data) => {
       store.dispatch("boardListStore/boardNameChange", data);
@@ -117,12 +118,17 @@ export default {
     )
     const board_title = computed (
       () => store.state.boardListStore.board_title
-    )
+    );
+    const getBoardData = (user_id) => {
+      store.dispatch("boardListStore/getUserBoardList", user_id);
+    };
     return {
       board_name_change,
       board_delte,
       changed_board_name,
+      getBoardData,
       board_title,
+      userid,
     };
   },
   props: {
@@ -139,6 +145,7 @@ export default {
   methods: {
     BoardNameChange() {
       if (this.input_store_title== '') {
+        this.$emit('EditMode')
         return
       }
       let datas = []
@@ -153,7 +160,8 @@ export default {
     },
     BoardDelete() {
       this.board_delte(Number(this.board_id))
-      this.$router.go(-1)
+        this.$router.go(-1)
+        this.getBoardData(this.userid)
     }
   },
 };

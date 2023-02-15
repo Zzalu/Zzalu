@@ -60,14 +60,7 @@
             <div class="dark:border-zz-dark-div">
               <div class="modal">
                 <div
-                  class="
-                    flex flex-wrap
-                    justify-center
-                    fixed
-                    overflow-y-scroll
-                    top-40
-                    pb-24
-                  "
+                  class="flex flex-wrap justify-center fixed overflow-y-scroll top-40 pb-24"
                   ref="notification-list"
                   @scroll="handleNotificationListScroll"
                 >
@@ -315,7 +308,7 @@ export default {
     handleNotificationListScroll(e) {
       const { scrollHeight, scrollTop, clientHeight } = e.target;
       if (scrollTop + clientHeight > scrollHeight - 1) {
-        if (this.search_gif_data[0] != []) {
+        if (this.search_gif_data[0] != undefined) {
           this.load_state = true;
           if (this.search_gif_data[1]) {
             setTimeout(() => {
@@ -362,12 +355,10 @@ export default {
     send_message() {
       this.$emit("gif_path", this.gif_path);
       this.close_search_modal();
-      console.log(this.gif_path, "여기서보냄 gif_path");
     },
     path(gifpath) {
       this.$emit("gif_path", gifpath);
       this.close_search_modal();
-      console.log(gifpath, "보낼 gif_path");
     },
   },
   watch: {
@@ -398,7 +389,7 @@ export default {
 body {
   margin-top: 100px;
   background-color: #137b85;
-  color: #fff;
+  color: #ffffff8e;
   text-align: center;
 }
 

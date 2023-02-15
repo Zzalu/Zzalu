@@ -8,18 +8,18 @@
 
         <header class="title-header">
           <div>
-            <span class="text-xs font-medium">{{ open_date }}</span>
-            <h1 v-if="state == 'DONE'" class="text-lg font-bold">그 시절, 우리가 좋아했던 제목학원</h1>
-            <h1 v-else class="text-xl font-bold">오늘의 제목학원</h1>
+            <span class="text-xs font-medium font-spoq">{{ open_date }}</span>
+            <h1 v-if="state == 'DONE'" class="text-lg font-bold font-spoq">그 시절, 우리가 좋아했던 제목학원</h1>
+            <h1 v-else class="text-xl font-bold font-spoq">오늘의 제목학원</h1>
           </div>
           <div class="whole-of-frame-btn">
-            <button class="text-xs text-white" @click="GoToWholeOfFrame">역대 제목학원</button>
+            <button class="text-xs text-white font-spoq" @click="GoToWholeOfFrame">역대 제목학원</button>
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
 
           <div ref="zzalComponent" class="h-44">
-            <img :src="zzal_url" alt="짤" class="w-full h-full contain" />
+            <img :src="zzal_url" alt="짤" class="w-full h-44 bg-contain" />
             <div v-if="isScrolled" class="zzal-fixed">
               <img :src="zzal_url" alt="짤" />
             </div>
@@ -31,12 +31,12 @@
         <!-- 댓글 main -->
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
-          <nav class="fixed w-11/12 flex justify-between bg-white py-1 border-b-2 border-zz-light-input">
-            <div class="flex">
-              <h2 class="text-xl text-zz-p">댓글</h2>
-              <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
+          <nav class="fixed z-20 w-11/12 flex justify-between bg-white border-b-2 border-zz-light-input">
+            <div class="flex items-end">
+              <h2 class="text-xl text-zz-p font-spoq">댓글</h2>
+              <span class="text-zz-p font-spoq ml-1">({{ total_comment_cnt }})</span>
             </div>
-            <div>
+            <div class="font-spoq">
               <button
                 :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
                 @click="clickSortBtn('POPULAR')"
@@ -71,7 +71,8 @@
           <div
             v-show="!is_top"
             @click="goToTop"
-            class="fixed top-1/2 left-1/2 transform flex flex-col justify-center items-center text-zz-p"
+            class="fixed top-80
+             left-1/2 transform flex flex-col justify-center items-center text-zz-p"
           >
             <font-awesome-icon icon="fa-solid fa-circle-arrow-up" class="text-3xl" />
             <div v-show="sort_type == 'LATEST' && socket_comment_cnt" class="flex items-center">
@@ -110,8 +111,6 @@ export default {
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
-    console.log(JSON.parse(JSON.stringify(store.state.titleCompetitionStore)));
-    console.log(store.state.titleCompetitionStore);
     const route = useRoute();
     const router = useRouter();
     const open_date = route.params.open_date; // 제목학원 날짜
@@ -121,18 +120,18 @@ export default {
     // const state = ref(store.state.titleCompetitionStore.state);
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
     store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
-      console.log('init이후 then에서...: ' + state.value);
       if (state.value == 'PROCEED') {
-        console.log('값: ' + state.value);
         connect();
       }
-    });
-    /*       .catch((error) => {
-        console.log(error);
-        setTimeout()
-        router.push(`/error-404`);
-        ws.disconnect();
-      }); */
+    })
+        .catch((error) => {
+        console.log(error,'에러뜸');
+        // setTimeout()
+        setTimeout(() => {
+          router.push(`/error-404`);
+          ws.disconnect();
+        }, 100);
+      });
     // const state = computed(() => store.getters['titleCompetitionStore/getState']);
     const state = computed(() => store.state.titleCompetitionStore.state);
 
@@ -185,7 +184,7 @@ export default {
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
       // let start = new Date();
@@ -196,12 +195,9 @@ export default {
       localWs.connect(
         {},
         function () {
-          console.log('댓글 받을준비');
           // 댓글 관련
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
-            console.log(message);
             let recv_comment_data = JSON.parse(message.body);
-            console.log('recv_comment_data: ' + recv_comment_data);
 
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
             if (sort_type.value == 'LATEST') {
@@ -222,20 +218,14 @@ export default {
           });
           // 좋아요 관련
           localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
-            console.log(message);
             let recv_like_data = JSON.parse(message.body);
             document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
-            console.log('recv_like_data: ' + recv_like_data);
           });
         },
         function (error) {
-          console.log(error);
-          let end = new Date();
-          console.log(`에러: ` + end);
-          console.log('error: ' + error);
+          console.log(error)
           setTimeout(function () {
-            console.log('connection reconnect');
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
+            localSock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
         },
@@ -261,7 +251,6 @@ export default {
     }); */
     onUnmounted(() => {
       ws.disconnect();
-      console.log('끊습니다');
       store.dispatch('titleCompetitionStore/initStoreData');
     });
     /*     onMounted(() => {
@@ -296,10 +285,10 @@ export default {
 };
 </script>
 
-<style>
-.transform {
+<style scoped lang="postcss">
+/* .transform {
   transform: translate(-50%, -50%);
-}
+} */
 .title-header {
   @apply fixed w-full flex flex-col items-center justify-center;
 }
@@ -315,10 +304,10 @@ export default {
 }
 
 .comment-main {
-  @apply fixed bottom-0 w-11/12 mb-20 overflow-y-scroll h-1/2;
+  @apply fixed bottom-0 w-full top-72 overflow-y-scroll h-1/2;
 }
 .comment-list {
-  @apply w-full mt-5  h-auto;
+  @apply w-full mt-2 h-auto font-spoq;
 }
 
 .comment-list ::-webkit-scrollbar {

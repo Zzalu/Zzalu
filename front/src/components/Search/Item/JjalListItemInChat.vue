@@ -78,7 +78,6 @@ export default {
   },
   methods: {
     send_message_select() {
-      console.log('dd');
       this.$emit("select_id", this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
     },

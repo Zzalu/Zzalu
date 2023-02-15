@@ -155,7 +155,6 @@ export default {
     handleNotificationListScroll(e) {
       // 랜덤짤일때, 서치짤일때 함수 분리
       const { scrollHeight, scrollTop, clientHeight } = e.target;
-      console.log(scrollHeight, scrollTop, clientHeight);
       if (scrollTop + clientHeight > scrollHeight - 1) {
         this.load_state = true;
         setTimeout(() => {
