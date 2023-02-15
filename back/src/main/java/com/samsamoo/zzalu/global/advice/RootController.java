@@ -6,10 +6,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class RootController implements ErrorController {
+    private final String ERROR_PATH = "/error";
 
-    @GetMapping("/error")
+    @GetMapping(ERROR_PATH)
     public String redirectRoot(){
-        return "index.html";
+        return "/static/index.html";
     }
 
     public String getErrorPath(){
