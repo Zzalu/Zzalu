@@ -2,6 +2,15 @@
   <div class="title-competition-card-container">
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
+
+      <div class="absolute">
+        <font-awesome-icon icon="fa-solid fa-bookmark" class="date-icon" />
+      </div>
+      <div class="absolute z-10 ml-4 flex-col justify-center">
+        <p class="title-competiton-icon">{{ month }}</p>
+        <p class="title-competiton-icon">{{ date }}</p>
+      </div>
+
       <img :src="zzal_url" class="title-competiton-img" alt="" />
     </div>
     <div class="border-l-2 border-b-2 border-r-2 h-20 rounded-b-2xl border-white dark:border-zz-dark-div">
@@ -31,12 +40,12 @@ import { toRefs } from '@vueuse/shared';
 import { getBestComments } from '@/api/titleCompetition';
 import { onMounted } from 'vue';
 export default {
-  name: 'TitleCompetitionListBigItem',
+  name: 'TitleCompetitionListItemsmall',
   props: {
     title_competition: Object,
   },
   setup(props) {
-    console.log('poooooooooo 이 씨ㅃ썌끼가 먼저 부ㅡㄹ림');
+    console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
@@ -87,49 +96,48 @@ export default {
 
 <style scoped lang="postcss">
 .title-competition-card-container {
-  @apply w-60 h-72 rounded-2xl ml-3 mr-2 mb-1 relative;
+  @apply w-36 h-48 rounded-2xl ml-3 mr-2 mb-1 relative;
 }
 .title-competiton-img-container {
-  @apply flex justify-center pb-2 bg-contain pt-2;
+  @apply relative;
 }
-/* .date-icon {
+.date-icon {
   @apply w-14 h-12 text-zz-p;
-} */
+}
 
-/* .title-competiton-icon {
+.title-competiton-icon {
   font-size: 0.8rem;
   text-align: center;
   @apply font-bhs text-white;
-} */
+}
 
 .title-competiton-img {
   overflow: hidden;
-  @apply h-40 w-36 rounded-xl border-2 dark:border-zz-dark-div;
+  @apply h-28 w-36 rounded-t-xl border-2 dark:border-zz-dark-div;
 }
 .title-competition-content-profile {
   @apply flex items-center mt-2 mr-12;
 }
 .title-competiton-content-img {
-  @apply rounded-full w-6 mx-1;
+  @apply rounded-full w-4 mx-1;
 }
 .title-competiton-content-text {
-  font-size: 0.8rem;
+  font-size: 0.4rem;
   @apply font-spoq line-clamp-1 dark:text-white;
 }
 .title-competiton-button-contain {
-  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-3 mr-1 absolute right-1 w-10 h-4 dark:border-zz-dark-div;
+  @apply border flex rounded-2xl bg-zz-p items-center px-1 ml-1 mt-2 mr-1 absolute right-1 w-10 h-4 dark:border-zz-dark-div;
 }
 .title-competiton-button-icon {
   font-size: 0.5rem;
   @apply mr-1 text-zz-s;
 }
 .title-competiton-button-text {
-  font-size: 0.6rem;
-  transform:translateY(-0.05rem);
+  font-size: 0.4rem;
   @apply text-white w-8 truncate;
 }
 .title-competiton-content {
   word-break: keep-all;
-  @apply mt-3 ml-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white line-clamp-4;
+  @apply mt-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white;
 }
 </style>

@@ -15,19 +15,9 @@
       >
         <p>BEST {{ index + 1 }}</p>
       </div> -->
-      <div class="flex items-center mb-2">
-        <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
-          <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
-        </div>
-        <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
-        <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
-
-        <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
-      </div>
       <div
         v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
-        class="rounded flex flex-row justify-center items-center w-10 text-white"
-        style="transform:translate(2rem,-0.5rem)"
+        class="rounded flex absolute flex-row justify-center items-center w-12 text-white right-12"
         >
         <p v-if="index==0" class="bg-zz-gold w-full text-center rounded">{{ index + 1 }}위</p>
         <p v-if="index==1" class="bg-zz-silver w-full text-center rounded">{{ index + 1 }}위</p>
@@ -38,6 +28,17 @@
         class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
       >
         <p>BEST {{ index + 1 }}</p>
+      </div>
+      <div class="flex items-center mb-2">
+        <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
+          <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full"
+          style="transform:translateY(0.3rem)"
+          />
+        </div>
+        <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
+        <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
+
+        <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="comment-base">{{ content }}</p>
       <div class="text-zz-p h-1" style="transform:translate(2rem,-1.2rem)">
