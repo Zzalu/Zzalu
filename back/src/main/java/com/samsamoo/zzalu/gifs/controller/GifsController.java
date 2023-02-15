@@ -108,9 +108,12 @@ public class GifsController {
     //------------------------------------------- 인기짤 API-----------------------------------------------
     @GetMapping("/popular")
     public ResponseEntity popularGif() {
-        List<GifStatistics> statisticsList = gifStatisticsRepository.findTop30ByOrderByUseCountDesc();
+        List<GifStatistics> useList = gifStatisticsRepository.findTop15ByOrderByUseCountDesc();
+        List<GifStatistics> downList = gifStatisticsRepository.findTop15ByOrderByDownloadCountDesc();
+        Set<GifStatistics> set = new HashSet<>(useList);
+        set.addAll(downList);
         List<Gifs> gifs = new ArrayList<>();
-        for(GifStatistics statistics : statisticsList) {
+        for(GifStatistics statistics : set) {
             Gifs gif = gifsRepository.findById(statistics.getGifId())
                     .orElseThrow(()-> new NotFoundException("해당 gif는 찾을 수 없습니다."));
             gifs.add(gif);
