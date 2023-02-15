@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.infra.redis.config;
 
 
-import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
+import com.samsamoo.zzalu.domain.chat.dto.ChatMessageDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;

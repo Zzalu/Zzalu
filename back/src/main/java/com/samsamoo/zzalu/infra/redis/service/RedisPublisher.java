@@ -2,11 +2,11 @@ package com.samsamoo.zzalu.infra.redis.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samsamoo.zzalu.titlehakwon.dto.CommentResponse;
-import com.samsamoo.zzalu.titlehakwon.dto.LikeResponse;
+import com.samsamoo.zzalu.domain.titlehakwon.dto.CommentResponse;
+import com.samsamoo.zzalu.domain.titlehakwon.dto.LikeResponse;
 
-import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
-import com.samsamoo.zzalu.chat.repository.ChatRoomRedisRepository;
+import com.samsamoo.zzalu.domain.chat.dto.ChatMessageDto;
+import com.samsamoo.zzalu.domain.chat.repository.ChatRoomRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;

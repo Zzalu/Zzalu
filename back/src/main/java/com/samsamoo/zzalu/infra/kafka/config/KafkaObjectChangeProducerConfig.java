@@ -1,7 +1,7 @@
 package com.samsamoo.zzalu.infra.kafka.config;
 
 
-import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
+import com.samsamoo.zzalu.domain.chat.dto.ChatMessageDto;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

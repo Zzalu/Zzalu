@@ -2,9 +2,9 @@ package com.samsamoo.zzalu.global.auth.sevice;
 
 
 import com.samsamoo.zzalu.global.auth.dto.TokenInfo;
-import com.samsamoo.zzalu.member.entity.Member;
-import com.samsamoo.zzalu.member.exception.MemberNotFoundException;
-import com.samsamoo.zzalu.member.repo.MemberRepository;
+import com.samsamoo.zzalu.domain.member.entity.Member;
+import com.samsamoo.zzalu.domain.member.exception.MemberNotFoundException;
+import com.samsamoo.zzalu.domain.member.repo.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

@@ -1,9 +1,9 @@
 package com.samsamoo.zzalu.infra.redis.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.samsamoo.zzalu.titlehakwon.dto.CommentResponse;
-import com.samsamoo.zzalu.titlehakwon.dto.LikeResponse;
-import com.samsamoo.zzalu.chat.dto.ChatMessageDto;
+import com.samsamoo.zzalu.domain.titlehakwon.dto.CommentResponse;
+import com.samsamoo.zzalu.domain.titlehakwon.dto.LikeResponse;
+import com.samsamoo.zzalu.domain.chat.dto.ChatMessageDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
