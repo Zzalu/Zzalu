@@ -19,7 +19,7 @@
           <!-- 짤 -->
 
           <div ref="zzalComponent" class="h-44">
-            <img :src="zzal_url" alt="짤" class="w-full h-full contain" />
+            <img :src="zzal_url" alt="짤" class="w-full h-44 bg-contain" />
             <div v-if="isScrolled" class="zzal-fixed">
               <img :src="zzal_url" alt="짤" />
             </div>
@@ -31,7 +31,7 @@
         <!-- 댓글 main -->
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
-          <nav class="fixed w-11/12 flex justify-between bg-white py-1 border-b-2 border-zz-light-input">
+          <nav class="fixed z-20 w-11/12 flex justify-between bg-white border-b-2 border-zz-light-input">
             <div class="flex">
               <h2 class="text-xl text-zz-p">댓글</h2>
               <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
@@ -126,13 +126,15 @@ export default {
         console.log('값: ' + state.value);
         connect();
       }
-    });
-    /*       .catch((error) => {
-        console.log(error);
-        setTimeout()
-        router.push(`/error-404`);
-        ws.disconnect();
-      }); */
+    })
+        .catch((error) => {
+        console.log(error,'에러뜸');
+        // setTimeout()
+        setTimeout(() => {
+          router.push(`/error-404`);
+          ws.disconnect();
+        }, 100);
+      });
     // const state = computed(() => store.getters['titleCompetitionStore/getState']);
     const state = computed(() => store.state.titleCompetitionStore.state);
 
@@ -296,10 +298,10 @@ export default {
 };
 </script>
 
-<style>
-.transform {
+<style scoped lang="postcss">
+/* .transform {
   transform: translate(-50%, -50%);
-}
+} */
 .title-header {
   @apply fixed w-full flex flex-col items-center justify-center;
 }
@@ -315,10 +317,10 @@ export default {
 }
 
 .comment-main {
-  @apply fixed bottom-0 w-11/12 mb-20 overflow-y-scroll h-1/2;
+  @apply fixed bottom-0 w-full top-72 overflow-y-scroll h-1/2;
 }
 .comment-list {
-  @apply w-full mt-5  h-auto;
+  @apply w-full mt-2 h-auto font-spoq;
 }
 
 .comment-list ::-webkit-scrollbar {
