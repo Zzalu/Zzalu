@@ -3,7 +3,7 @@
   <!-- <div>{{ follower }}</div> -->
   <!-- <div>{{ id }}</div> -->
 
-  <div v-if="isMyFollowPage" class="flex justify-between items-center p-1">
+  <!--   <div v-if="isMyFollowPage" class="flex justify-between items-center p-1">
     <div class="flex" @click="goToProfile">
       <img
         v-if="follower.profilePath != null"
@@ -14,8 +14,8 @@
       <button v-if="!follower.followState" class="text-zz-p text-xs btn" @click="followRequest">팔로우</button>
     </div>
     <button class="bg-zz-negative btn">삭제</button>
-  </div>
-  <div v-else class="flex justify-between items-center p-1">
+  </div> -->
+  <div class="flex justify-between items-center p-1">
     <div class="flex" @click="goToProfile">
       <img
         v-if="follower.profilePath != null"
@@ -26,7 +26,7 @@
     </div>
     <div v-if="follower.username != my_id">
       <button v-if="follower.followState == true" class="bg-zz-negative btn" @click="unFollowRequest">팔로잉</button>
-      <button v-else class="bg-zz-p btn" @click="followRequest">팔로우</button>
+      <button v-else class="bg-zz-p btn text-white" @click="followRequest">팔로우</button>
     </div>
   </div>
   <!-- <button @click="follow_request">{{ follower.followState }}</button> -->
