@@ -10,16 +10,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Component
 public class ContreeCommonError implements ErrorPageRegistrar {
-    private final String ERROR_PATH = "/error";
-
-    @GetMapping(ERROR_PATH)
-    public String redirectRoot(){
-        return "/static/index.html";
-    }
-
-    public String getErrorPath(){
-        return null;
-    }
+//    private final String ERROR_PATH = "/error";
+//
+//    @GetMapping(ERROR_PATH)
+//    public String redirectRoot(){
+//        return "/static/index.html";
+//    }
+//
+//    public String getErrorPath(){
+//        return null;
+//    }
 
     @Override
     public void registerErrorPages(ErrorPageRegistry registry) {
