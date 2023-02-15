@@ -35,7 +35,9 @@
       v-model="descriptions"
     />
   </div>
-  <div class="mt-6 mb-1 font-bold font-spoq text-zz-p">관련 유튜브 소개하기</div>
+  <div class="mt-6 mb-1 font-bold font-spoq text-zz-p">
+    관련 유튜브 소개하기
+  </div>
   <div class="edit-original-vid">
     <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" />
     <input type="text" class="edit-original-link" v-model="relationsVideos" />
@@ -51,7 +53,7 @@
 </template>
 
 <script>
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 import { useStore } from "vuex";
 
 export default {
@@ -60,23 +62,23 @@ export default {
     const store = useStore();
 
     const PutRequestEdit = (form) => {
-      store.dispatch("zzalListStore/putRequestEdit",form)
-    }
+      store.dispatch("zzalListStore/putRequestEdit", form);
+    };
     return {
-      PutRequestEdit
-    }
+      PutRequestEdit,
+    };
   },
   data() {
     return {
       hashtags_input_mode: false,
       hash_input_err: false,
       hash_input: "",
-      descriptions: '',
-      relationsVideos: '',
+      descriptions: "",
+      relationsVideos: "",
       tags: this.jjal_detail_data.tags.split(","),
-      request_form : {
-        originId : this.jjal_detail_data.id,
-      }
+      request_form: {
+        originId: this.jjal_detail_data.id,
+      },
     };
   },
   props: {
@@ -85,7 +87,7 @@ export default {
   },
   computed: {
     hash_tags() {
-      return this.tags
+      return this.tags;
     },
     // relationsVideo() {
     //   if (this.this.jjal_detail_data.relationsVideo) {
@@ -101,8 +103,8 @@ export default {
       return this.jjal_detail_data.id;
     },
     description() {
-      return this.jjal_detail_data.description
-    }
+      return this.jjal_detail_data.description;
+    },
   },
   methods: {
     RemoveHashtag(i) {
@@ -115,15 +117,15 @@ export default {
       const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
       if (this.hash_input == "") {
         Swal.fire({
-            icon: "warnning",
-            text:"해시태그 내용을 반드시 입력해주세요."
-            })
+          icon: "warnning",
+          text: "해시태그 내용을 반드시 입력해주세요.",
+        });
         this.hashtags_input_mode = false;
       } else if (regex.test(this.hash_input) == false) {
         Swal.fire({
-            icon: "warnning",
-            text:"한글과 숫자와 영어만 입력해주세요."
-            })
+          icon: "warnning",
+          text: "한글과 숫자와 영어만 입력해주세요.",
+        });
       } else {
         this.tags.push(this.hash_input);
         this.hash_input = "";
@@ -143,14 +145,13 @@ export default {
         this.request_form.relationsVideo = this.relationsVideos;
       }
       // console.log(this.request_form.updated_description,  this.request_form.updated_tags, this.request_form.updated_relationsVideo, this.request_form)
-      this.PutRequestEdit(this.request_form)
+      this.PutRequestEdit(this.request_form);
       Swal.fire({
-            icon: "success",
-            html:"짤 수정요청을 보냈습니다. <br> 관리자 혹은 매니저가 검토 후 <br> 수정내용이 반영됩니다."
-            })
-      this.$emit('view_mode')
+        icon: "success",
+        html: "짤 수정요청을 보냈습니다. <br> 관리자 혹은 매니저가 검토 후 <br> 수정내용이 반영됩니다.",
+      });
+      this.$emit("view_mode");
     },
-
   },
   watch: {
     hash_input(nv, ov) {
