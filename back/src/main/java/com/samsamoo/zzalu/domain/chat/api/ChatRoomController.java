@@ -311,7 +311,11 @@ public class ChatRoomController {
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
 
+        long beforeTime = System.currentTimeMillis();
         List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        System.out.println("Redis DiffTime(m) : "+secDiffTime);
         return chatMessageDtos;
     }
 
@@ -321,6 +325,7 @@ public class ChatRoomController {
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
 
+        long beforeTime = System.currentTimeMillis();
         List<ChatMessageDto> chatMessageDtos = new LinkedList<>();
         List<ChatMessage> chatMessages = chatRepository.findTop200ByOrderBySendDateDesc();
         for(ChatMessage chatMessage : chatMessages) {
@@ -335,6 +340,10 @@ public class ChatRoomController {
             chatMessageDto.setProfilePath(requestMember.getProfilePath());
             chatMessageDtos.add(chatMessageDto);
         }
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        System.out.println("MariaDB DiffTime(m) : "+secDiffTime);
         return chatMessageDtos;
     }
 
