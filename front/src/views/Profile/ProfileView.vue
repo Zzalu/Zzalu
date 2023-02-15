@@ -11,7 +11,7 @@
     <user-award></user-award>
     <user-board></user-board>
     
-    <div class="h-6"></div>
+    <div class="pb-12"></div>
     <main-bottom-nav></main-bottom-nav>
   </div>
 </template>
