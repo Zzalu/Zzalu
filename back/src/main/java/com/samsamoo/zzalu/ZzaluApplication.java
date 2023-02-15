@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 @EnableScheduling
 @SpringBootApplication
+@ComponentScan(basePackages={"web"})
 public class ZzaluApplication {
 
 	@PostConstruct
