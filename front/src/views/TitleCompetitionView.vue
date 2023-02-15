@@ -8,12 +8,12 @@
 
         <header class="title-header">
           <div>
-            <span class="text-xs font-medium">{{ open_date }}</span>
-            <h1 v-if="state == 'DONE'" class="text-lg font-bold">그 시절, 우리가 좋아했던 제목학원</h1>
-            <h1 v-else class="text-xl font-bold">오늘의 제목학원</h1>
+            <span class="text-xs font-medium font-spoq">{{ open_date }}</span>
+            <h1 v-if="state == 'DONE'" class="text-lg font-bold font-spoq">그 시절, 우리가 좋아했던 제목학원</h1>
+            <h1 v-else class="text-xl font-bold font-spoq">오늘의 제목학원</h1>
           </div>
           <div class="whole-of-frame-btn">
-            <button class="text-xs text-white" @click="GoToWholeOfFrame">역대 제목학원</button>
+            <button class="text-xs text-white font-spoq" @click="GoToWholeOfFrame">역대 제목학원</button>
             <font-awesome-icon icon="fa-solid fa-chevron-right " class="text-xs text-white" />
           </div>
           <!-- 짤 -->
@@ -32,11 +32,11 @@
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
           <nav class="fixed z-20 w-11/12 flex justify-between bg-white border-b-2 border-zz-light-input">
-            <div class="flex">
-              <h2 class="text-xl text-zz-p">댓글</h2>
-              <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
+            <div class="flex items-end">
+              <h2 class="text-xl text-zz-p font-spoq">댓글</h2>
+              <span class="text-zz-p font-spoq ml-1">({{ total_comment_cnt }})</span>
             </div>
-            <div>
+            <div class="font-spoq">
               <button
                 :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
                 @click="clickSortBtn('POPULAR')"
@@ -71,7 +71,8 @@
           <div
             v-show="!is_top"
             @click="goToTop"
-            class="fixed top-1/2 left-1/2 transform flex flex-col justify-center items-center text-zz-p"
+            class="fixed top-80
+             left-1/2 transform flex flex-col justify-center items-center text-zz-p"
           >
             <font-awesome-icon icon="fa-solid fa-circle-arrow-up" class="text-3xl" />
             <div v-show="sort_type == 'LATEST' && socket_comment_cnt" class="flex items-center">
