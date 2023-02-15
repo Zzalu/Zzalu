@@ -1,11 +1,12 @@
 <template>
   <li>
-    <div class="dark:text-white border-b-2 p-1 border-zz-light-input">
+    <div class="dark:text-white w-11/12 border-b-2 p-1 border-zz-light-input">
       <!-- best -->
-      <div
+      <!-- <div
         v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
         class="bg-zz-light-p rounded flex flex-row justify-center items-center w-14 my-2 text-white"
-      >
+        
+        >
         <p>BEST {{ index + 1 }}</p>
       </div>
       <div
@@ -13,7 +14,7 @@
         class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
       >
         <p>BEST {{ index + 1 }}</p>
-      </div>
+      </div> -->
       <div class="flex items-center mb-2">
         <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
           <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
@@ -23,10 +24,34 @@
 
         <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
-      <p class="text-base mb-1">{{ content }}</p>
-      <div class="flex flex-row mb-2">
-        <div class="w-full">
-          <button @click="writeNestedComment" class="text-xs mr-2">답글쓰기</button>
+      <div
+        v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
+        class="rounded flex flex-row justify-center items-center w-10 text-white"
+        style="transform:translate(2rem,-0.5rem)"
+        >
+        <p v-if="index==0" class="bg-zz-gold w-full text-center rounded">{{ index + 1 }}위</p>
+        <p v-if="index==1" class="bg-zz-silver w-full text-center rounded">{{ index + 1 }}위</p>
+        <p v-if="index==2" class="bg-zz-bronze w-full text-center rounded">{{ index + 1 }}위</p>
+      </div>
+      <div
+        v-if="sort_type == 'POPULAR' && (index == 3 || index == 4)"
+        class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
+      >
+        <p>BEST {{ index + 1 }}</p>
+      </div>
+      <p class="comment-base">{{ content }}</p>
+      <div class="text-zz-p h-1" style="transform:translate(2rem,-1.2rem)">
+        <button class="my-auto like-btn" @click="clickLikeBtn" :id="'comment-id-' + comment_id + '-like-btn'">
+          <font-awesome-icon v-if="!is_liked" icon="fa-regular fa-heart" class="text-xs" />
+          <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
+        </button>
+        <span class="text-xs ml-1" :id="'comment-id-' + comment_id + '-like-cnt'">
+          {{ like_cnt }}
+        </span>
+      </div>
+      <div class="flex flex-row h-3">
+        <div style="transform:translate(4.2rem,-1.45rem)">
+          <button @click="writeNestedComment" class="text-xs mr-2 text-zz-p">답글쓰기</button>
           <button v-if="nested_comment_cnt > 0 && !nested_active" class="text-xs">
             <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
             <span class="text-center" @click="nested_active = !nested_active"
@@ -39,15 +64,6 @@
           </button>
         </div>
         <!-- 좋아요 -->
-        <div class="flex items-center text-zz-p">
-          <span class="text-xs mr-1" :id="'comment-id-' + comment_id + '-like-cnt'">
-            {{ like_cnt }}
-          </span>
-          <button class="my-auto like-btn" @click="clickLikeBtn" :id="'comment-id-' + comment_id + '-like-btn'">
-            <font-awesome-icon v-if="!is_liked" icon="fa-regular fa-heart" class="text-xs" />
-            <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
-          </button>
-        </div>
       </div>
       <!-- 대댓글 -->
       <div class="w-full flex justify-end">
@@ -217,4 +233,12 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="postcss">
+
+.comment-base {
+  font-size:0.2rem;
+  transform:translate(2rem,-0.7rem);
+  @apply text-base mb-1 w-11/12
+}
+
+</style>
