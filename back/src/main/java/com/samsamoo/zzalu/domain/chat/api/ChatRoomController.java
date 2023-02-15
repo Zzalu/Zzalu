@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.domain.chat.api;
 
+import com.samsamoo.zzalu.domain.gifs.entity.Gifs;
+import com.samsamoo.zzalu.domain.gifs.service.GifsService;
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
 import com.samsamoo.zzalu.domain.chat.dto.ChatMessageDto;
 import com.samsamoo.zzalu.domain.chat.dto.ChatRoomEnroll;
@@ -11,6 +13,7 @@ import com.samsamoo.zzalu.domain.chat.service.ChatRoomService;
 import com.samsamoo.zzalu.domain.member.entity.Member;
 import com.samsamoo.zzalu.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,7 @@ public class ChatRoomController {
     private final MemberRepository memberRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final JwtTokenProvider jwtTokenProvider;
+    private final GifsService gifsService;
 
     // =============== redis ======================
 //    @GetMapping("/rooms")
@@ -309,5 +313,10 @@ public class ChatRoomController {
 
         List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
         return chatMessageDtos;
+    }
+
+    @GetMapping("/gif/search")
+    public ResponseEntity<List<Gifs>> findByTags(@RequestParam("searchKeyword") String searchKeyword) {
+        return ResponseEntity.ok().body(gifsService.findByTags(searchKeyword));
     }
 }
