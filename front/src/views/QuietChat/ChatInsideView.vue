@@ -131,7 +131,7 @@ export default {
     console.log('token : ' + this.token);
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
 
-    this.socket = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    this.socket = new SockJS('http://i8c109.p.ssafy.io:8090' + '/ws-stomp');
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),
