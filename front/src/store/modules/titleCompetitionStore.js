@@ -110,6 +110,11 @@ const titleCompetitionStore = {
       state.socket_comments.push(comment);
     },
 
+    PLUS_TOTAL_COMMENT_CNT(state) {
+      state.total_comment_cnt += 1;
+      console.log(state.total_comment_cnt);
+    },
+
     // 댓글 추가하기
     ADD_COMMENTS(state, new_comments) {
       console.log('댓글 추가하기');
@@ -301,6 +306,9 @@ const titleCompetitionStore = {
 
     // 소켓 통신 관련
 
+    plusTotalCommentCnt({ commit }) {
+      commit('PLUS_TOTAL_COMMENT_CNT');
+    },
     // 새로운 댓글 추가
     addSocketCommentCnt({ commit }) {
       commit('ADD_SOCKET_COMMENT_CNT');

@@ -16,7 +16,7 @@
           </div>
           <!-- 짤 -->
 
-          <div ref="zzalComponent" class="w-60 h-60">
+          <div ref="zzalComponent" class="h-44">
             <img :src="zzal_url" alt="짤" class="w-full h-full contain" />
             <div v-if="isScrolled" class="zzal-fixed">
               <img :src="zzal_url" alt="짤" />
@@ -34,7 +34,7 @@
               <h2 class="text-xl text-zz-p">댓글</h2>
               <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
             </div>
-            <div>
+            <div class="mr-5">
               <button
                 :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
                 @click="clickSortBtn('POPULAR')"
@@ -54,6 +54,14 @@
                 과거순
               </button>
             </div>
+            <div
+              v-show="sort_type != 'LATEST' && socket_comment_cnt"
+              class="flex items-center fixed right-10 bg-zz-p px-2 rounded-3xl"
+              @click="clickSortBtn('LATEST')"
+            >
+              <font-awesome-icon icon="fa-solid fa-bell" class="mr-1 text-xs" />
+              <p class="text-ls">{{ socket_comment_cnt }}</p>
+            </div>
           </nav>
 
           <!-- 댓글을 내려봤을 때 -->
@@ -68,14 +76,7 @@
               <p class="text-ls">{{ socket_comment_cnt }}</p>
             </div>
           </div>
-          <div
-            v-show="sort_type != 'LATEST' && socket_comment_cnt"
-            class="flex items-center fixed right-5 bg-zz-p px-2 rounded-3xl"
-            @click="clickSortBtn('LATEST')"
-          >
-            <font-awesome-icon icon="fa-solid fa-bell" class="mr-1 text-xs" />
-            <p class="text-ls">{{ socket_comment_cnt }}</p>
-          </div>
+
           <!-- 댓글 리스트 -->
           >
           <comment-list ref="commentListComponent" class="comment-list"></comment-list>
@@ -197,7 +198,9 @@ export default {
             let recv_comment_data = JSON.parse(message.body);
             console.log('recv_comment_data: ' + recv_comment_data);
 
+            store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
             if (sort_type.value == 'LATEST') {
+              // 댓글 총 개수 바꾸기
               // 최신순 정렬
               if (is_top.value) {
                 store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
