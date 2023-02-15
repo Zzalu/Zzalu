@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface TempGifRepository extends JpaRepository<TempGif, Long> {
     Optional<TempGif> findById(Long id);
     List<TempGif> findAll();
+    List<TempGif> findAllByAllowedMembersContaining(Member member);
 }

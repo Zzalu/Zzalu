@@ -70,6 +70,13 @@ public class ChatRoom {
         }
     }
 
+    public void deleteLikeMember(Member member) {
+        this.likeMembers.remove(member);
+        if(member.getLikeChatRooms().contains(this)) {
+            member.deleteLikeChatRoom(this);
+        }
+    }
+
     public void addLikeMembers(Member member) {
         likeMembers.add(member);
     }

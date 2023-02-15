@@ -23,7 +23,7 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom, Long> {
     List<ChatRoom> findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(String keyword1, String keyword2);
     List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Long memberId, String keyword1, String keyword2);
     List<ChatRoom> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Long memberId, String keyword1, String keyword2);
-    List<ChatRoom> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(Member mebmer, String keyword1, String keyword2);
-    List<ChatRoom> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(Member mebmer, String keyword1, String keyword2);
+    List<ChatRoom> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(List<Member> member, String keyword1, String keyword2);
+    List<ChatRoom> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(List<Member> member, String keyword1, String keyword2);
 
 }

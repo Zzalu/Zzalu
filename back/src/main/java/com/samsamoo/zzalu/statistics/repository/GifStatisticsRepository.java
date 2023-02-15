@@ -11,5 +11,6 @@ import java.util.Optional;
 public interface GifStatisticsRepository extends JpaRepository<GifStatistics, Long> {
     Optional<GifStatistics> findByGifId(Long id);
 //    List<GifStatistics> findTop20ByTagOrderByUseCountDesc(String tag);
-    List<GifStatistics> findTop30ByOrderByUseCountDesc();
+    List<GifStatistics> findTop15ByOrderByUseCountDesc();
+    List<GifStatistics> findTop15ByOrderByDownloadCountDesc();
 }

@@ -9,7 +9,8 @@ import java.util.List;
 @Repository
 public interface GifsRepository extends JpaRepository<Gifs, Long> {
 //    List<Gifs> findTop30ByOrderByLikeCountDesc();
-    List<Gifs> findByTagsContains(String searcKeyword);
+    List<Gifs> findByTagsContains(String searchKeyword);
+    List<Gifs> findTop20ByTagsContainsOrderByVisitedCountDesc(String search);
     Long countBy();
     List<Gifs> findByIdIn(List<Long> gifIds);
 

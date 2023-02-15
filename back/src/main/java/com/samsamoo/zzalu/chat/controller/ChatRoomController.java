@@ -237,28 +237,32 @@ public class ChatRoomController {
 
     @GetMapping("/search-like-order-lastactivation")
     @ResponseBody
-    public List<ChatRoomListDto> findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersContainsAndTagsContainsOrRoomNameContainsOrderByLastActivationDesc(requestMember, keyword, keyword);
+        List<Member> member = new ArrayList<>();
+        member.add(requestMember);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLastActivationDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
-            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
-            chatRoomListDtos.add(chatRoomListDto);
+            if(chatRoom.getLikeMembers().contains(requestMember))
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
         }
         return chatRoomListDtos;
     }
 
     @GetMapping("/search-like-order-likecount")
     @ResponseBody
-    public List<ChatRoomListDto> findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
+    public List<ChatRoomListDto> findAllByLikeMembersInAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByLikeMembersAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember, keyword, keyword);
+        List<Member> member = new ArrayList<>();
+        member.add(requestMember);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
-            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
-            chatRoomListDtos.add(chatRoomListDto);
+            if(chatRoom.getLikeMembers().contains(requestMember))
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
         }
         return chatRoomListDtos;
     }
@@ -279,20 +283,15 @@ public class ChatRoomController {
         Optional<ChatRoom> optionalChatRoom = chatRoomService.findByRoomId(roomId);
         if(optionalChatRoom.isPresent()) {
             ChatRoom chatRoom = optionalChatRoom.get();
-            System.out.println("chatRoom.getLikeMembers() : " + chatRoom.getLikeMembers());
             if(!chatRoom.getLikeMembers().contains(requestMember)) {
                 requestMember.addLikeChatRoom(chatRoom);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() + 1);
+                memberRepository.save(requestMember);
                 chatRoomService.save(chatRoom);
                 return true;
             } else {
-                List<ChatRoom> likeChatRoom = requestMember.getLikeChatRooms();
-                likeChatRoom.remove(requestMember);
-                requestMember.setLikeChatRooms(likeChatRoom);
+                chatRoom.deleteLikeMember(requestMember);
                 chatRoom.setLikeCount(chatRoom.getLikeCount() - 1);
-                List<Member> likeMembers = chatRoom.getLikeMembers();
-                likeMembers.remove(chatRoom);
-                chatRoom.setLikeMembers(likeMembers);
                 chatRoomService.save(chatRoom);
                 memberRepository.save(requestMember);
 //                System.out.println("이미 클릭한 사용자 입니다. Error Exception 필요");
