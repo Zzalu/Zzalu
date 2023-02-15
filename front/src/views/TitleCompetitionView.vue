@@ -5,10 +5,12 @@
       <div class="w-full dark:text-white">
         <!-- 오늘의 제목학원 header -->
         <!-- <header class="relative w-full flex flex-col items-center">` -->
+
         <header class="title-header">
           <div>
             <span class="text-xs font-medium">{{ open_date }}</span>
-            <h1 class="text-xl font-bold">오늘의 제목학원</h1>
+            <h1 v-if="state == 'DONE'" class="text-lg font-bold">그 시절, 우리가 좋아했던 제목학원</h1>
+            <h1 v-else class="text-xl font-bold">오늘의 제목학원</h1>
           </div>
           <div class="whole-of-frame-btn">
             <button class="text-xs text-white" @click="GoToWholeOfFrame">역대 제목학원</button>
@@ -29,12 +31,12 @@
         <!-- 댓글 main -->
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
-          <nav class="fixed w-10/12 flex justify-between bg-white py-1 border-b-2 border-zz-light-input">
+          <nav class="fixed w-11/12 flex justify-between bg-white py-1 border-b-2 border-zz-light-input">
             <div class="flex">
               <h2 class="text-xl text-zz-p">댓글</h2>
               <span class="text-base text-zz-p">({{ total_comment_cnt }})</span>
             </div>
-            <div class="mr-5">
+            <div>
               <button
                 :class="[sort_type == 'POPULAR' ? 'sort-text-active' : 'sort-text']"
                 @click="clickSortBtn('POPULAR')"
@@ -56,11 +58,12 @@
             </div>
             <div
               v-show="sort_type != 'LATEST' && socket_comment_cnt"
-              class="flex items-center fixed right-10 bg-zz-p px-2 rounded-3xl"
+              class="flex items-center fixed right-1/2 bg-zz-p p-2 rounded-3xl translate-x-1/2 translate-y-1/2"
               @click="clickSortBtn('LATEST')"
             >
               <font-awesome-icon icon="fa-solid fa-bell" class="mr-1 text-xs" />
-              <p class="text-ls">{{ socket_comment_cnt }}</p>
+              <p class="text-xs">새로운 {{ socket_comment_cnt }}개의 댓글</p>
+              <!-- <p class="text-ls">{{ socket_comment_cnt }}</p> -->
             </div>
           </nav>
 
@@ -128,7 +131,9 @@ export default {
         ws.disconnect();
         router.push({ name: 'error-404' });
       }); */
-    const state = computed(() => store.getters['titleCompetitionStore/getState']);
+    // const state = computed(() => store.getters['titleCompetitionStore/getState']);
+    const state = computed(() => store.state.titleCompetitionStore.state);
+
     let socket_comment_cnt = computed(() => store.state.titleCompetitionStore.socket_comment_cnt);
     let socket_comments = computed(() => store.state.titleCompetitionStore.socket_comments);
     // 날짜를 통해서 제목학원 정보를 store에 저장한다
@@ -268,6 +273,7 @@ export default {
     }); */
 
     return {
+      state,
       sock,
       ws,
       connect,
