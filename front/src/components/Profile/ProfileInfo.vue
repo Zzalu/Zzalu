@@ -16,13 +16,15 @@
       <font-awesome-icon v-else class="profile-image-none" icon="fa-solid fa-user" />
       <!-- <img src="" alt=""> -->
       <div class="mx-auto">
-        <div class="flex">
-          <div @click="[getFollower(), goFollow()]" class="follower-and-following">
+        <div class="flex" @click="goToFollowList()">
+          <div class="follower-and-following">
+            <!-- <div @click="[getFollower(), goFollow()]" class="follower-and-following"> -->
             <!-- <div>{{ this.profile_user_data.followerCnt }}</div> -->
             <div>{{ profile_user_data.followerCnt }}</div>
             <div>팔로워</div>
           </div>
-          <div @click="[getFollowing(), goFollow()]" class="follower-and-following">
+          <div class="follower-and-following">
+            <!-- <div @click="[getFollowing(), goFollow()]" class="follower-and-following"> -->
             <!-- <div @click="[GetFollowing(), goFollow()]" class="follower-and-following"> -->
             <!-- <div>{{ this.profile_user_data.followingCnt }}</div> -->
             <div>{{ profile_user_data.followingCnt }}</div>
@@ -50,10 +52,14 @@
     </div>
     <div class="mt-4 mb-4">
       <div class="flex">
-        <div class="profile-title">{{ this.profile_user_data.nickname }}</div>
-        <div v-if="this.profile_user_data.isManager == true">
+        <!-- <div class="profile-title">{{ this.profile_user_data.nickname }}</div> -->
+        <div class="profile-title">{{ profile_user_data.nickname }}</div>
+        <div v-if="profile_user_data.isManager == true">
           <font-awesome-icon icon="fa-solid fa-crown" class="text-zz-p ml-2" />
         </div>
+        <!-- <div v-if="this.profile_user_data.isManager == true">
+          <font-awesome-icon icon="fa-solid fa-crown" class="text-zz-p ml-2" />
+        </div> -->
       </div>
 
       <div class="text-zz-negative font-spoq text-xs my-auto">@{{ this.profile_user_data.username }}</div>
@@ -67,7 +73,7 @@
 
 <script>
 import { useStore } from 'vuex';
-// import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 // import { computed } from '@vue/runtime-core';
 import { computed, ref } from 'vue';
 import { follow, unfollow, checkFollowState } from '@/api/follow.js';
@@ -83,10 +89,10 @@ export default {
   setup() {
     const my_id = localStorage.getItem('current_userid');
     const store = useStore();
-    // const router = useRouter();
-    // const route = useRoute();
+    const router = useRouter();
+    const route = useRoute();
     const profile_user_data = computed(() => store.state.profileStore.profile_user);
-    // const your_username = route.params.username; // 팔로우 페이지
+    // const username = route.params.username; // 팔로우 페이지
 
     let isFollowed = ref(false);
 
@@ -102,7 +108,15 @@ export default {
       );
     };
 
-    /*     const goFollow = () => {
+    const goToFollowList = async () => {
+      await store.dispatch('followStore/getFollowerList', profile_user_data.value.id);
+      await store.dispatch('followStore/getFollowingList', profile_user_data.value.id);
+
+      console.log('오ㅐ안감');
+      router.push(`/follow/${route.params.username}`);
+    };
+    /*
+    const goFollow = () => {
       router.push({ name: 'follow', params: { username: profile_user_data.value.username } });
     };
     const getFollower = () => {
@@ -202,6 +216,7 @@ export default {
       // getFollower,
       // getFollowing,
       // goFollow,
+      goToFollowList,
       followRequest,
       unFollowRequest,
       profile_user_data,
