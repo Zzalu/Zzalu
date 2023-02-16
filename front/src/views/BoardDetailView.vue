@@ -124,7 +124,7 @@ export default {
       this.RemoveBoardJjal(datas);
       setTimeout(() => {
         this.getBoardData(this.$route.params.board_id)
-      }, 1000);
+      }, 300);
     },
     title(data) {
       this.board_title = data

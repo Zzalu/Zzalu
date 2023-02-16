@@ -55,6 +55,7 @@
               <div
                 class="flex place-items-end"
                 @click="this.open_list_modal(gif_id.id)"
+                v-if="token"
               >
                 <font-awesome-icon
                   icon="fa-solid fa-star"
@@ -79,6 +80,7 @@
           <button
             class="edit-button text-zz-edit flex float-right font-spoq"
             @click="EditMode"
+            v-if="token"
           >
             [편집하기]
           </button>
@@ -148,6 +150,7 @@ export default {
   name: "ZzalDetailView",
   setup() {
     const store = useStore();
+    const token = localStorage.getItem("token");
 
     // const FollowerListItemData = computed(
     //   () => store.state.zzalListStore.follower_list
@@ -178,6 +181,7 @@ export default {
       jjal_detail_data,
       update_request,
       open_list_modals,
+      token
     };
   },
   components: {

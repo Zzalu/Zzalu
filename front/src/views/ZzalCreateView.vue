@@ -12,8 +12,8 @@
         <!-- <button @click="profileUploadBtn"></button> -->
       </div>
       <!-- <form class="flex justify-center mt-4"> -->
-        <!-- <input type="file" ref="serveyImage" @change="onInputImage()" /> -->
-        <!-- <input type="file" :v-model="request_form.updated_image"> -->
+      <!-- <input type="file" ref="serveyImage" @change="onInputImage()" /> -->
+      <!-- <input type="file" :v-model="request_form.updated_image"> -->
       <!-- </form> -->
       <div class="flex" for="file_input">
         <div
@@ -22,13 +22,13 @@
           <label
             class="px-4 flex flex-col items-center bg-white dark:bg-gray-500 rounded-lg shadow-lg tracking-wide uppercase border border-blue cursor-pointer hover:bg-blue hover:text-white"
           >
-          <form class="flex justify-center">
-            <input
-              type="file"
-              ref="serveyImage"
-              class="hidden"
-              @change="onInputImage()"
-            />
+            <form class="flex justify-center">
+              <input
+                type="file"
+                ref="serveyImage"
+                class="hidden"
+                @change="onInputImage()"
+              />
             </form>
             <!-- <input type="file" name="profile_image" id="profile_image"/> -->
             <!-- <button @click="profileUploadBtn"></button> -->
@@ -61,7 +61,7 @@
       </div>
       <!-- 해시태그 인풋 -->
       <div v-if="hashtags_input_mode" class="input_contain">
-        <input type="text" class="bg-white" v-model="hash_input" autofocus />
+        <input type="text" class="input_value" v-model="hash_input" autofocus />
       </div>
       <!-- 해시태그 인풋 버튼 -->
       <button
@@ -69,7 +69,7 @@
         class="hashtag-btn"
         @click="AddHashtag"
       >
-        <button class="bg-zz-s mb-5 mx-2 px-1 rounded-sm">등록</button>
+        <button class="bg-zz-s text-white mx-2 px-1 rounded-sm">등록</button>
       </button>
       <button v-else class="hashtag-btn" @click="InputHashtag">
         <font-awesome-icon icon="fa-solid fa-plus" class="text-xl" />
@@ -77,14 +77,13 @@
     </div>
 
     <div class="mt-6 mb-2 font-bold font-spoq text-zz-p">이 짤의 유래는?</div>
-    <div class="zzal-origin-edit">
-      <input
-        type="textarea"
-        class="bg-white"
-        v-model="request_form.updated_description"
-        placeholder="이 짤의 유래를 입력해주세요!"
-      />
-    </div>
+
+    <input
+      type="textarea"
+      class="edit-original-link-top"
+      v-model="request_form.updated_description"
+      placeholder="이 짤의 유래를 입력해주세요!"
+    />
 
     <div class="edit-original-vid">
       <font-awesome-icon icon="fa-solid fa-link" class="yt-icon" />
@@ -92,6 +91,7 @@
         type="text"
         class="edit-original-link"
         v-model="request_form.updated_relationsVideo"
+        placeholder="출처를 아시나요?"
       />
       <font-awesome-icon icon="fa-solid fa-square-plus" class="plus-icon" />
     </div>
@@ -113,6 +113,7 @@
 import OnlyGoBackTopNav from "../components/Common/NavBar/OnlyGoBackTopNav.vue";
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav.vue";
 import { useStore } from "vuex";
+import Swal from 'sweetalert2'
 
 export default {
   name: "ZzalCreateView",
@@ -125,9 +126,15 @@ export default {
     const update_request = (form) => {
       // form.updated_image = imageFile.files[0];
       if (form.updated_image == "") {
-        alert("gif를 업로드 해주세요.");
+          Swal.fire({
+            icon: "error",
+            html:"gif 업로드는 필수입니다."
+            })
       } else if (form.updated_tags == "") {
-        alert("태그를 한 개 이상 넣어주세요.");
+          Swal.fire({
+            icon: "error",
+            html:"태그를 한개 이상 넣어주세요."
+            })
       } else {
         store.dispatch("tempGifStore/postTempGif", form);
       }
@@ -176,10 +183,16 @@ export default {
     AddHashtag() {
       const regex = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]+$/;
       if (this.hash_input == "") {
-        alert("내용을 입력해주세요");
+          Swal.fire({
+            icon: "error",
+            html:"내용을 입력해주세요."
+            })
         this.hashtags_input_mode = false;
       } else if (regex.test(this.hash_input) == false) {
-        alert("한글과 숫자와 영어만 입력해주세요");
+          Swal.fire({
+            icon: "error",
+            html:"한글, 숫자, 영어만 입력 가능합니다."
+            })
       } else {
         this.tags.push(this.hash_input);
         this.hash_input = "";
@@ -215,7 +228,7 @@ export default {
   @apply border-2;
 }
 
-.view-count {
+/* .view-count {
   @apply my-3 mx-2 text-zz-negative;
 }
 
@@ -258,5 +271,86 @@ export default {
 
 .plus-icon {
   @apply my-auto ml-3 text-zz-p;
+} */
+.hashtag-container {
+  @apply mt-10 flex flex-wrap;
+}
+.hashtag-contain {
+  @apply flex flex-wrap mt-2;
+}
+.hashtag-div {
+  @apply flex text-white flex-wrap;
+}
+.hashtag-text {
+  @apply border rounded-lg bg-zz-p px-2 py-1 mr-2 mb-2 font-spoq dark:border-zz-dark-div;
+}
+
+.hashtag-deleted {
+  @apply absolute inset-0;
+}
+
+.hashtag-edited {
+  transform: translate(-6px, -6px);
+  @apply text-white border-2 border-zz-error rounded-full bg-zz-error;
+}
+
+.create-btn {
+  @apply text-center border-2 w-9/12 text-white bg-zz-s rounded-lg h-8 mx-auto mt-8 cursor-pointer font-spoq dark:border-zz-dark-div;
+}
+
+.input_contain {
+  font-size: 1rem;
+  width: 5.5rem;
+  @apply mr-4 h-8 mt-1 border border-zz-p dark:border-zz-s;
+}
+.input_value {
+  width: 5.3rem;
+  @apply align-middle h-6 bg-transparent dark:text-white;
+}
+.hashtag-btn {
+  @apply text-zz-p;
+}
+.hashtag-deleted {
+  @apply absolute inset-0;
+}
+
+.last-edited {
+  @apply text-zz-negative text-xs;
+}
+
+/* .zzal-origin {
+  @apply bg-zz-light-input;
+} */
+
+/* .zzal-origin-edit {
+  min-height: 2rem;
+  @apply border-2 bg-zz-light-input  border-zz-s;
+} */
+
+.edit-original-link-top {
+  @apply flex-col border-2 mt-1 mb-2 border-zz-s rounded-sm w-full px-1;
+}
+
+.input-box {
+  @apply w-full bg-transparent dark:text-white font-spoq;
+}
+.original-vid {
+  @apply mt-6 flex justify-center;
+}
+
+.edit-original-vid {
+  @apply flex mb-10;
+}
+
+.edit-original-link {
+  @apply flex-col border-2 mt-4 border-zz-s rounded-sm w-4/5 px-1;
+}
+
+.yt-icon {
+  @apply mt-6 mr-3 text-zz-s;
+}
+
+.plus-icon {
+  @apply mt-5 ml-3 text-zz-s;
 }
 </style>
