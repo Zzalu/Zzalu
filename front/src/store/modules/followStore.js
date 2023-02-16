@@ -84,7 +84,7 @@ const followStore = {
             console.log(error, '실패입니다.');
             Swal.fire({
               icon: 'error',
-              html: error.response.data.message,
+              html: "알 수 없는 오류가 발생했습니다.",
             });
             reject('fail');
           },
@@ -106,7 +106,7 @@ const followStore = {
             console.log(error, '실패입니다.');
             Swal.fire({
               icon: 'error',
-              html: error.response.data.message,
+              html: "알 수 없는 오류가 발생했습니다.",
             });
             reject('2');
           },

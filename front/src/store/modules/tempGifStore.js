@@ -27,7 +27,8 @@ const tempGifStore = {
           console.log(error, '실패입니다.');
           Swal.fire({
             icon: 'error',
-            html: error.response.data.message,
+            title: "임시 게시물 조회 실패",
+            html: "관리자 권한을 확인하세요. <br> 매니저라면, 재로그인 후 다시 확인해주세요.",
           });
         },
       );
@@ -44,9 +45,11 @@ const tempGifStore = {
             resolve('sucess');
           },
           (error) => {
+            console.log(error)
             Swal.fire({
               icon: 'error',
-              html: error.response.data.message,
+              title: '임시 게시물 등록 실패',
+              html: "알 수 없는 오류가 발생했습니다.",
             });
             reject('fail');
           },

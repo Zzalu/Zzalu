@@ -130,42 +130,9 @@ export default {
     //   console.log(this.$refs.profilePic.filters)
     // }
 
-  const saveEditInfo = function (form) {
-      // let changedData = new FormData();
-  //     if (this.state.formdata.newNickname) {
-  //       changedData.append("nickname", this.state.formdata.newNickname)
-  //     }
-  //     console.log(imageFile,'jjjj')
-  //     if (imageFile != null) {
-  //       changedData.append("profileMultipartFile", imageFile)
-  //     }
-  //     if (this.state.profileIntro) {
-  //       changedData.append("profileMessage", this.state.formdata.profileIntro)
-  //     }
-      
-  //     for (let key of changedData.keys()) {
-  //       console.log(key, "키값");
-  //     }
-
-  // //     // FormData의 value 확인
-  //     for (let value of changedData.values()) {
-  //       console.log(value);
-  //     }
-      
+  const saveEditInfo = function (form) {      
       store.dispatch('userStore/patchUserInfoAction', form )
-      // if (result.status==200) {
-      //   state.newNicknameState = true
-      //   Swal.fire({
-      //     icon: "success",
-      //     text:"사용 가능한 닉네임입니다."
-      //     })
-      // } else {
-      //   state.newNicknameState = false
-      //   Swal.fire({
-      //     icon: "error",
-      //     html:"이미 사용 중인 닉네임입니다. <br>다른 닉네임을 등록해주세요."
-      //     })
-      // }
+
 
     }
   //   let profile_Image = null;
