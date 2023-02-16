@@ -22,6 +22,9 @@ public class ReplyCommentResponse {
 
     /** 작성자 닉네임 **/
     private String nickname;
+    /** 작성자 프로필 url **/
+    private String profileUrl;
+
 
     /** 대댓글 작성 시간 **/
     private String createdTime;
@@ -35,6 +38,7 @@ public class ReplyCommentResponse {
         this.username = replyComment.getMember().getUsername();
         this.nickname = replyComment.getMember().getNickname();
         this.createdTime = replyComment.getCreatedDate();
+        this.profileUrl=replyComment.getMember().getProfilePath();
         this.isUpdated = replyComment.isUpdated();
     }
 
