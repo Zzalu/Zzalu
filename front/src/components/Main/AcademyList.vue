@@ -7,7 +7,7 @@
         <title-competition-list-item
           class="academy-list"
           :title_competition="title_competition"
-          @click="goToTitleCompetition(title_competition.openData)"
+
         />
       </li>
     </ol>
@@ -30,7 +30,9 @@ export default {
     let title_competitions = ref();
     getFinishTitleCompetition(
       (data) => {
+        console.log(data);
         title_competitions.value = data.data;
+        console.log(title_competitions.value);
       },
       (error) => {
         console.log(error);
