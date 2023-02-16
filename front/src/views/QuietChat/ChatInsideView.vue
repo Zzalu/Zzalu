@@ -234,7 +234,7 @@ export default {
         (sendtime += recv.sendDate[15]),
         this.messages.unshift({
           type: recv.type,
-          member_name: recv.memberName,
+          memberName: recv.memberName,
           sender: recv.sender,
           message: recv.message,
           // send_date: recv.sendDate,
