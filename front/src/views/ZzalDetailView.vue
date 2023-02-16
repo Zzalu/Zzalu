@@ -27,7 +27,7 @@
       >
         저장하기
       </button>
-      
+
     </div> -->
 
     <DetailKorGoBackTopNavBar @notEditMode="notEditMode" />
@@ -101,7 +101,7 @@
             이 짤의 유래는?
           </div>
           <div class="zzal-origin-edit">
-            <div v-if="description" class="font-spoq">
+            <div v-if="description" class="font-spoq dark:text-white">
               {{ description }}
             </div>
             <div v-else class="dark:text-white font-spoq">
@@ -131,7 +131,7 @@
               icon="fa-solid fa-square-plus"
               class="plus-icon"
             /> -->
-            
+
         </div>
       </div>
     </div>

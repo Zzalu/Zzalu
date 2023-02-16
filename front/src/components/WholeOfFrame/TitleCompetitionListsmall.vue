@@ -5,7 +5,7 @@
         <TitleCompetitionListItemsmall
           class="academy-list"
           :title_competition="title_competition"
-          @click="goToTitleCompetition(title_competition)"
+
         />
       </li>
     </ol>
@@ -16,7 +16,6 @@
 <script>
 import TitleCompetitionListItemsmall from './item/TitleCompetitionListItemsmall.vue';
 import { getFinishTitleCompetition } from '@/api/titleCompetition';
-import { useRouter } from 'vue-router';
 import { ref } from 'vue';
 // import { useStore } from 'vuex';
 export default {
@@ -26,7 +25,6 @@ export default {
   },
 
   setup() {
-    const router = useRouter();
     let title_competitions = ref();
     getFinishTitleCompetition(
       (data) => {
@@ -37,14 +35,8 @@ export default {
       },
     );
 
-    const goToTitleCompetition = (open_date) => {
-      console.log(open_date);
-      router.push(`/title-competition/${open_date}`);
-    };
-
     return {
       title_competitions,
-      goToTitleCompetition,
     };
   },
 };
