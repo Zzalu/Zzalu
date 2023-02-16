@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor  //얘가 자동으로 생성자 주입해줌
+@RequiredArgsConstructor
 @Repository
 public class CommentService {
 
@@ -113,7 +113,6 @@ public class CommentService {
 
 
 
-
     private Page<Comment> fetchRecentCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
         PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
         return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
@@ -161,7 +160,6 @@ public class CommentService {
         }
     }
 
-
     /**
      * 대댓글 최신순 가져오기
      * 커서 기반 페이지 네이션
@@ -197,7 +195,6 @@ public class CommentService {
     }
 
     /**
-     * [UPDATE]
      * 댓글 수정
      * 이 댓글을 작성한 사용자인지 아닌지 판단하게끔 백에서 해줘야하나?
      */
@@ -205,7 +202,6 @@ public class CommentService {
 
        Optional<Comment> comment = commentRepository.findById(commentRequest.getCommentId());
 
-        //수정하고자 하는 댓글이 존재할때만 수정한다.
         if(comment!=null){
             if(!StringUtils.isEmpty(commentRequest.getContent())) {
                 comment.get().upDateContent(commentRequest.getContent(), true);
@@ -217,7 +213,6 @@ public class CommentService {
 
 
     /**
-     * [UPDATE]
      * 대댓글 수정
      */
 
@@ -249,7 +244,6 @@ public class CommentService {
 
     }
 
-
     /**
      * 대댓글 삭제
      */
@@ -267,13 +261,12 @@ public class CommentService {
 
     }
 
-
     /**
      * 댓글에 좋아요 누르기
      */
     public LikeResponse clickCommentLikes(Long commentId , String token){
 
-        //존재하지 않은 댓글이였다면 예외처리
+
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
         Member member = jwtTokenProvider.getMember(token);
 
@@ -286,18 +279,14 @@ public class CommentService {
         comment.plusLikeNum();
         commentRepository.save(comment);
 
-
-
-
         return new LikeResponse(commentId,comment.getLikeNum());
 
     }
 
     /**
-     * 댓글에 좋아요 취소하기
+     * 댓글 좋아요 취소하기
      */
     @Transactional
-
     public LikeResponse cancelCommentLikes(Long commentId , String token){
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new CommentNotFoundException());
         Member member = jwtTokenProvider.getMember(token);
@@ -311,9 +300,8 @@ public class CommentService {
 
     }
 
-
     /**
-     * 댓글 좋아요 기록이 존재하는지
+     * 댓글 좋아요 기록이 존재 확인
      */
 
     public  boolean existCommentLikeWithUserName(Long commentId ,String username ){
