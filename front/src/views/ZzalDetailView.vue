@@ -112,10 +112,15 @@
 
           <!-- 푸터 -->
           <div class="mt-6 mb-2 font-bold font-spoq text-zz-p"> 관련 링크</div>
-          <div class="edit-original-vid">
+          <div class="edit-original-vid" v-if="sourcesPostUrl">
             <font-awesome-icon icon="fa-solid fa-link" class="text-zz-s text-sm mt-1" />
-            <!-- <iframe :src="sourcesPostUrl"> dfgdfgf</iframe> -->
             <a :href="'//'+sourcesPostUrl" target="_blank" class="text-zz-s font-bold font-spoq mx-3 ">원본 링크가 궁금하다면?</a>
+          </div>
+          <div class="edit-original-vid" v-else>
+            <font-awesome-icon icon="fa-solid fa-link" class="text-zz-s text-sm mt-1" />
+            <p class="text-zz-s font-bold font-spoq mx-3 ">등록된 원본 링크가 없습니다.</p>
+          </div>
+            <!-- <iframe :src="sourcesPostUrl"> dfgdfgf</iframe> -->
             <!-- <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" /> -->
             <!-- <input
               type="text"
@@ -127,7 +132,6 @@
               class="plus-icon"
             /> -->
             
-          </div>
         </div>
       </div>
     </div>
