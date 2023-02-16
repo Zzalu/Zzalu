@@ -114,6 +114,7 @@ import OnlyGoBackTopNav from "../components/Common/NavBar/OnlyGoBackTopNav.vue";
 import MainBottomNav from "../components/Common/NavBar/MainBottomNav.vue";
 import { useStore } from "vuex";
 import Swal from 'sweetalert2'
+import { useRouter } from 'vue-router';
 
 export default {
   name: "ZzalCreateView",
@@ -122,6 +123,7 @@ export default {
     MainBottomNav,
   },
   setup() {
+    const router = useRouter();
     const store = useStore();
     const update_request = (form) => {
       // form.updated_image = imageFile.files[0];
@@ -137,6 +139,11 @@ export default {
             })
       } else {
         store.dispatch("tempGifStore/postTempGif", form);
+        Swal.fire({
+            icon: "success",
+            html:"요청이 등록되었습니다."
+            })
+        router.go(-1);
       }
 
       // 이전 페이지로
