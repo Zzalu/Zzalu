@@ -19,7 +19,10 @@ export default {
     const deleteAccount = async function () {
       const result = await store.dispatch('userStore/userDeleteAction', state.password)
       if (result == 400) {
-        alert("다시해")
+            Swal.fire ({
+                icon: "error",
+                html: "지금 계정을 삭제할 수 없습니다. <br>나중에 다시 시도해주세요"
+              })
       }
     }
 

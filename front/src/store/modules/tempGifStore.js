@@ -24,7 +24,10 @@ const tempGifStore = {
         },
         (error) => {
           console.log(error, "실패입니다.");
-          alert(error.response.data.message);
+            Swal.fire ({
+                icon: "error",
+                html: error.response.data.message
+              })
         },
       )
     },
@@ -40,7 +43,10 @@ const tempGifStore = {
             resolve("sucess");
           },
           (error) => {
-            alert(error.response.data.message);
+            Swal.fire ({
+                icon: "error",
+                html: error.response.data.message
+              })
             reject("fail");
           },
         )
@@ -57,7 +63,10 @@ const tempGifStore = {
           console.log(data, "성공입니다.");
         },
         (error) => {
-          alert(error.response.data.message);
+          Swal.fire ({
+            icon: "error",
+            html: error.response.data.message
+          })
         },
       )
     },
@@ -70,7 +79,10 @@ const tempGifStore = {
           console.log(data, "성공입니다.");
         },
         (error) => {
-          alert(error.response.data.message);
+          Swal.fire ({
+            icon: "error",
+            html: error.response.data.message
+          })
         },
       )
     },

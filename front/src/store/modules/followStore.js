@@ -82,7 +82,10 @@ const followStore = {
           },
           (error) => {
             console.log(error, '실패입니다.');
-            alert(error.response.data.message);
+            Swal.fire ({
+              icon: "error",
+              html: error.response.data.message
+            })
             reject('fail');
           },
         );
@@ -101,7 +104,10 @@ const followStore = {
           },
           (error) => {
             console.log(error, '실패입니다.');
-            alert(error.response.data.message);
+            Swal.fire ({
+              icon: "error",
+              html: error.response.data.message
+            })
             reject('2');
           },
         );

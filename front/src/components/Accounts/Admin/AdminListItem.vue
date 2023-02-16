@@ -64,7 +64,10 @@ export default {
       store.dispatch("tempGifStore/deleteTempGif", id.value)
       .then((res) => {
         console.log(res)
-        alert("게시물이 삭제되었습니다.")
+          Swal.fire({
+            icon: "warning",
+            html: "게시물이 삭제되었습니다."
+          })
         isDisplay.value = false
       })
       .catch((err) => {
