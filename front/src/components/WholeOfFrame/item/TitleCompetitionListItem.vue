@@ -71,7 +71,7 @@ export default {
         sort: 'POPULAR',
       },
       (data) => {
-        console.log(data);
+        // console.log(data);
         best_comment_nickname.value = data.data[0].nickname;
         best_comment_like.value = data.data[0].likeNumber;
         best_comment_content.value = data.data[0].content;

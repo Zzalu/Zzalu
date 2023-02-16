@@ -42,7 +42,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    console.log(props);
+    // console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
@@ -63,7 +63,7 @@ export default {
         sort: 'POPULAR',
       },
       (data) => {
-        console.log(data);
+        // console.log(data);
         best_comment_nickname.value = data.data[0].nickname;
         best_comment_like.value = data.data[0].likeNumber;
         best_comment_content.value = data.data[0].content;
