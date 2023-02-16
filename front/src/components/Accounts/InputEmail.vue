@@ -77,7 +77,10 @@ export default {
         errorMsgs.err.emailSend = '이메일을 보낼 때 시간이 소요됩니다...'
         const result = await store.dispatch('userStore/sendEmailAction', state.credentials.email )
         if (result.status == 400) {
-          alert("이미 사용중인 이메일입니다.\n다른 이메일을 입력해주세요.")
+          Swal.fire({
+            icon: "error",
+            html: "이미 사용중인 이메일입니다.<br>다른 이메일을 입력해주세요."
+          })
         } else if (result.status == 200) {
           const credentialsEmailCode = {
             email: state.credentials.email,

@@ -2,8 +2,8 @@
 <template>
   <div>
     <!-- logo  얘 로고같은데 왜 밑에 불러도 맨 밑에 붙을까요-->
-
-    <small-logo-top-nav></small-logo-top-nav>
+    <only-small-logo-top-nav class="z-30"></only-small-logo-top-nav>
+    <!-- <small-logo-top-nav></small-logo-top-nav> -->
 
     <!-- 오늘 진행 중인 제목학원  (왜 계속 처 붙음) -->
     <div>
@@ -28,7 +28,7 @@
       <hr class="mb-3 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
 
       <!--역대 제목학원 List -->
-      <TitleCompetitionListsmall/>
+      <TitleCompetitionListsmall />
       <div class="pb-8"></div>
     </div>
     <main-bottom-nav />
@@ -37,20 +37,21 @@
 </template>
 
 <script>
-import SmallLogoTopNav from "@/components/Common/NavBar/SmallLogoTopNav.vue";
-import TitleCompetitionListsmall from "@/components/WholeOfFrame/TitleCompetitionListsmall";
+// import SmallLogoTopNav from '@/components/Common/NavBar/SmallLogoTopNav.vue';
+import TitleCompetitionListsmall from '@/components/WholeOfFrame/TitleCompetitionListsmall';
 // import TitleCompetitionListItem from "@/components/WholeOfFrame/item/TitleCompetitionListItem.vue";
-import MainBottomNav from "@/components/Common/NavBar/MainBottomNav.vue";
-
-import TitleCompetitionListBigItem from "@/components/WholeOfFrame/item/TitleCompetitionListBigItem.vue";
-import { getTitleCompetition } from "@/api/titleCompetition";
-import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
+import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
+import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
+import TitleCompetitionListBigItem from '@/components/WholeOfFrame/item/TitleCompetitionListBigItem.vue';
+import { getTitleCompetition } from '@/api/titleCompetition';
+import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
   components: {
     TitleCompetitionListBigItem,
     TitleCompetitionListsmall,
-    SmallLogoTopNav,
+    OnlySmallLogoTopNav,
+    // SmallLogoTopNav,
     MainBottomNav,
   },
 
@@ -63,67 +64,60 @@ export default {
 
     let title_competition = ref();
 
-    //현재 날짜 구하기 (yyyy-mm--dd)
-    // const getCurrentDate = () => {
-    //   let today = new Date();
-    //   let year = today.getFullYear();
-    //   var month = ("0" + (today.getMonth() + 1)).slice(-2);
-    //   let date = today.getDate(); // 일
+    function leftPad(value) {
+      if (value >= 10) {
+        return value;
+      }
 
-    //   console.log(year + "-" + month + "-" + date);
-    //   return year + "-" + month + "-" + date;
-    // };
+      return `0${value}`;
+    }
 
+    function toStringByFormatting(source, delimiter = '-') {
+      const year = source.getFullYear();
+      const month = leftPad(source.getMonth() + 1);
+      const day = leftPad(source.getDate());
+
+      return [year, month, day].join(delimiter);
+    }
+    const getCurrentDate = () => {
+      let today = new Date();
+      let hour = today.getHours();
+
+      if (hour >= 0 && hour < 7) {
+        today.setDate(today.getDate() - 1);
+      }
+      // console.log(toStringByFormatting(today));
+      return toStringByFormatting(today);
+    };
+
+    let today = getCurrentDate();
+    console.log(today);
+    // console.log(today);
     getTitleCompetition(
-      "2023-02-15",
+      today,
       (data) => {
         //제목학원 출력
-        console.log("[제목학원 respose] " + JSON.stringify(data.data));
+        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
 
         // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
         title_competition.value = data.data;
-        title_competition.value.openDate = "2023-02-15";
+        title_competition.value.openDate = today;
+        console.log(title_competition);
 
         //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
 
-        //console.log("[제목학원 respose] " + JSON.stringify(title_competition.value));
-        //console.log(title_competition.value.openDate);
+        console.log('[제목학원 respose] ' + JSON.stringify(title_competition.value));
+        console.log(title_competition.value.openDate);
       },
       (error) => {
         console.log(error);
-      }
+      },
     );
 
     //해당 날짜의 제목학원 페이지로 이동
     const goToTitleCompetition = (open_date) => {
       router.push(`/title-competition/${open_date}`);
     };
-
-    onMounted(() => {
-      console.log("on mounted");
-
-      getTitleCompetition(
-        "2023-02-15",
-        (data) => {
-          //제목학원 출력
-          console.log(
-            "[제목학원 ddddddddddrespose] " + JSON.stringify(data.data)
-          );
-
-          // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
-          title_competition.value = data.data;
-          title_competition.value.openDate = "2023-02-15";
-
-          //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
-
-          //console.log("[제목학원 respose] " + JSON.stringify(title_competition.value));
-          //console.log(title_competition.value.openDate);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    });
 
     return {
       title_competition,

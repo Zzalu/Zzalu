@@ -130,7 +130,7 @@ export default {
     this.access_token = this.token;
     // this.room_id = "71682114-325a-458c-85de-bb007a724546"
 
-    this.socket = new SockJS('http://i8c109.p.ssafy.io:8089' + '/ws-stomp');
+    this.socket = new SockJS('http://i8c109.p.ssafy.io:8090' + '/ws-stomp');
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),
@@ -165,7 +165,7 @@ export default {
 
   methods: {
     GoToProfile(member_name) {
-      console.log(member_name);
+      // console.log(member_name);
       this.$router.push({ name: 'profile', params: { username: member_name } });
     },
     GoToDetail(gifid) {
@@ -256,7 +256,7 @@ export default {
       local_web_stomp.connect(
         {},
         function (frame) {
-          console.log(frame)
+          console.log(frame);
           local_web_stomp.subscribe('/sub/chat/room/' + local_room_id, function (message) {
             let recv = JSON.parse(message.body);
             local_recive_message(recv);

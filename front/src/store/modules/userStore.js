@@ -209,11 +209,21 @@ const userStore = {
         params,
         form,
         ({data}) => {
-          localStorage.removeItem('current_nickname')
-          localStorage.setItem('current_nickname', data.nickname)
+          if (data.nickname) {
+            localStorage.removeItem('current_nickname')
+            localStorage.setItem('current_nickname', data.nickname)
+          }
+          Swal.fire({
+            icon: "success",
+            html: "정보가 성공적으로 변경되었습니다."
+          })
         },
         (err) => {
-          alert(err.response.data.message);
+          console.log(err)
+          Swal.fire({
+            icon: "error",
+            html: "새로고침 후 다시 시도해주세요."
+          })
       })
     },
     // ----------------------------------------------------------
@@ -243,7 +253,6 @@ const userStore = {
                 html: "아직 조건이 충족되지 않았습니다. <br> 더 활발한 활동을 해보세요."
               }
             )
-            // alert("ㄴㄴㄴㄴ")
           }
         );
         // setTimeout(() => {        

@@ -1,5 +1,6 @@
 <template>
   <div class="title-competition-card-container">
+    {{ zzal_url }}
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
       <img :src="zzal_url" class="title-competiton-img" alt="" />
@@ -9,7 +10,13 @@
         <div>
           <!-- 컨텐트 -->
           <div class="title-competition-content-profile">
-            <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" />
+            <!-- <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" /> -->
+            <img
+              v-if="best_comment_profile_image != null"
+              class="profile-image"
+              :style="{ backgroundImage: `url(${best_comment_profile_image})` }"
+            />
+            <img v-else class="profile-image" :style="{ backgroundImage: `url(${best_comment_profile_image})` }" />
             <p class="title-competiton-content-text">{{ best_comment_nickname }}</p>
           </div>
         </div>
@@ -36,6 +43,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
+    // console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
@@ -47,6 +55,7 @@ export default {
     const best_comment_nickname = ref(null);
     const best_comment_like = ref(null);
     const best_comment_content = ref(null);
+    const best_comment_profile_image = ref(null);
 
     getBestComments(
       title_competition.title_competition_id,
@@ -55,9 +64,11 @@ export default {
         sort: 'POPULAR',
       },
       (data) => {
+        // console.log(data);
         best_comment_nickname.value = data.data[0].nickname;
         best_comment_like.value = data.data[0].likeNumber;
         best_comment_content.value = data.data[0].content;
+        best_comment_profile_image.value = data.data[0].profilePath;
       },
       (error) => {
         console.log(error);
@@ -67,14 +78,14 @@ export default {
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();
 
-    onMounted(() => {
-    });
+    onMounted(() => {});
 
     return {
       ...toRefs(title_competition),
       best_comment_nickname,
       best_comment_like,
       best_comment_content,
+      best_comment_profile_image,
       month,
       date,
       onMounted,
@@ -123,11 +134,32 @@ export default {
 }
 .title-competiton-button-text {
   font-size: 0.6rem;
-  transform:translateY(-0.05rem);
+  transform: translateY(-0.05rem);
   @apply text-white w-8 truncate;
 }
 .title-competiton-content {
   word-break: keep-all;
   @apply mt-3 ml-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white line-clamp-4;
+}
+
+.profile-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: cover;
+
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply mr-3 rounded-full bg-center bg-no-repeat;
+}
+
+.profile-image-none {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: cover;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply mr-3 rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
 }
 </style>

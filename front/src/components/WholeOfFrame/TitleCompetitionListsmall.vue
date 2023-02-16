@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <ol class="flex flex-wrap justify-center">
       <li v-for="title_competition in title_competitions" :key="title_competition.titleHakwonId">
         <TitleCompetitionListItemsmall
@@ -38,7 +38,7 @@ export default {
     );
 
     const goToTitleCompetition = (open_date) => {
-      console.log(open_date);
+      // console.log(open_date);
       router.push(`/title-competition/${open_date}`);
     };
 
