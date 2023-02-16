@@ -36,6 +36,7 @@
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
 import { addComment, addNestedComment } from '@/api/titleCompetition';
+
 export default {
   name: 'CommentInput',
   setup() {
@@ -77,7 +78,7 @@ export default {
         addComment(
           comment_data,
           ({ data }) => {
-            console.log(data)
+            console.log(data);
             if (store.state.state != 'LATEST') {
               store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
             }
@@ -98,6 +99,8 @@ export default {
           nested_comment_data,
           ({ data }) => {
             console.log(data);
+            store.dispatch('titleCompetitionStore/modifySortType', store.state.titleCompetitionStore.sort_type);
+            store.dispatch('titleCompetitionStore/initNestedData');
           },
           (error) => {
             console.log(error);
