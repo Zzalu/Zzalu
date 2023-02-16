@@ -259,14 +259,12 @@ export default {
   @apply text-base mb-1 w-11/12;
 }
 .profile-image {
-  width: 2.5rem;
-  height: 2.5rem;
   background-size: cover;
 
   /* max-width: 100px;
     max-height: 100px; */
   /* object-fit: cover; */
-  @apply mr-3 rounded-full bg-center bg-no-repeat;
+  @apply mr-3 mt-1 rounded-full bg-center bg-no-repeat w-6 h-6;
 }
 
 .profile-image-none {

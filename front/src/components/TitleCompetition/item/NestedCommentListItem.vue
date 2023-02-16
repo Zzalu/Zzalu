@@ -1,8 +1,8 @@
 <template>
   <div>
     <li>
-      <div class="flex items-center mb-2">
-        <div class="w-3 h-3 rounded-full mr-2" @click="goToProfile">
+      <div class="flex items-center mb-2 mt-1">
+        <div class="w-5 h-5 rounded-full mr-2" @click="goToProfile">
           <!-- <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" /> -->
           <img
             v-if="profile_image != null"
@@ -11,7 +11,7 @@
           />
           <img v-else class="profile-image" :style="{ backgroundImage: `url(${profile_image})` }" />
         </div>
-        <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
+        <p class="text-xs mr-2 font-bold ">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ new_time }}</p>
         <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
@@ -36,8 +36,8 @@ export default {
   setup(props, ctx) {
     console.log(props);
     const nested_comment_data = reactive({
-      profile_image: 'profile.jpg',
-      // profile_image: props.comment.profilePath,
+      // profile_image: 'profile.jpg',
+      profile_image: props.nested_comment.profileUrl,
       username: props.nested_comment.username,
       nested_comment_id: props.nested_comment.replyCommentId,
       nickname: props.nested_comment.nickname,
@@ -121,14 +121,14 @@ export default {
 
 <style scoped>
 .profile-image {
-  width: 2.5rem;
-  height: 2.5rem;
+  /* width: 2.5rem;
+  height: 2.5rem; */
   background-size: cover;
 
   /* max-width: 100px;
     max-height: 100px; */
   /* object-fit: cover; */
-  @apply mr-3 rounded-full bg-center bg-no-repeat;
+  @apply mr-3 rounded-full bg-center bg-no-repeat w-full h-full;
 }
 
 .profile-image-none {

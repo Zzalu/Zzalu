@@ -131,6 +131,7 @@ export default {
       .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
       .then(() => {
         if (state.value == 'PROCEED') {
+          console.log('connet 함수 부른다')
           connect();
         }
       })
@@ -196,19 +197,64 @@ export default {
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
     let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
     let ws = Stomp.over(sock, options);
-    function connect() {
+        function connect() {
       // let start = new Date();
       // console.log(`시작: ` + start);
-      // console.log('connect 시작');
+      console.log('connect 시작');
+      ws.connect(
+        {},
+        function () {
+          // 댓글 관련
+          console.log('통신 시작');
+          ws.subscribe('/sub/title-hakwon/comments/', function (message) {
+            let recv_comment_data = JSON.parse(message.body);
+            console.log('받아옵니다')
+            store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
+            if (sort_type.value == 'LATEST') {
+              // 댓글 총 개수 바꾸기
+              // 최신순 정렬
+              if (is_top.value) {
+                store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
+              } else {
+                // console.log('어딘디');
+                store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+                store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+              }
+            } else {
+              // 과거순 or 인기순 정렬
+              // console.log('어딘디22');
+              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+            }
+          });
+          // 좋아요 관련
+          ws.subscribe('/sub/title-hakwon/comments/likes', function (message) {
+            let recv_like_data = JSON.parse(message.body);
+            document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
+          });
+        },
+        function (error) {
+          console.log(error);
+          setTimeout(function () {
+            sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+            ws = Stomp.over(sock);
+          }, 10 * 1000);
+        },
+      );
+    }
+/*     function connect() {
+      // let start = new Date();
+      // console.log(`시작: ` + start);
+      console.log('connect 시작');
       let localWs = ws;
       let localSock = sock;
       localWs.connect(
         {},
         function () {
           // 댓글 관련
+          console.log('통신 시작');
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
-
+            console.log('받아옵니다')
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
             if (sort_type.value == 'LATEST') {
               // 댓글 총 개수 바꾸기
@@ -235,14 +281,14 @@ export default {
         function (error) {
           console.log(error);
           setTimeout(function () {
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
+            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
         },
       );
-    }
+    } */
     // connect();
-    /*     console.log(state.value);
+/*          console.log(state.value);
     setTimeout(function () {
       console.log(state.value);
       if (state.value == 'PROCEED') {
