@@ -21,17 +21,12 @@ public class RedisCommentRepository {
     private final RedisSubscriber redisSubscriber;
     @PostConstruct
     private void init (){
+
         titleTopics= new HashMap<>();
-        // 댓글 Topic
         titleTopics.put("comments",new ChannelTopic("comments"));
-        // 좋아요 Topic
         titleTopics.put("likes",new ChannelTopic("likes"));
-
-
-        //리스너 연결
         redisMessageListener.addMessageListener(redisSubscriber, titleTopics.get("comments"));
         redisMessageListener.addMessageListener(redisSubscriber, titleTopics.get("likes"));
-
 
     }
 

@@ -1,5 +1,6 @@
 <template>
   <div class="title-competition-card-container">
+    짤 유알엘 {{ zzal_url }}
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
       <img :src="zzal_url" class="title-competiton-img" alt="" />
@@ -34,22 +35,81 @@
 <script>
 import { reactive, ref } from 'vue-demi';
 import { toRefs } from '@vueuse/shared';
-import { getBestComments } from '@/api/titleCompetition';
+import { getBestComments, getTitleCompetition } from '@/api/titleCompetition';
 import { onMounted } from 'vue';
 export default {
   name: 'TitleCompetitionListBigItem',
-  props: {
-    title_competition: Object,
+  computed: {
+    title_competition() {
+      console.log('text', this.title_competition);
+      return this.title_competition;
+    },
   },
-  setup(props) {
+  created() {
+    console.log('BigItem - created - title_competition : ', this.title_competition);
+  },
+  // data() {
+  //   return {
+  //     local_title_competition: '',
+  //   };
+  // },
+  setup() {
+    console.log('card setup');
     // console.log(props);
     const title_competition = reactive({
-      title_competition_id: props.title_competition.titleHakwonId,
-      open_date: props.title_competition.openDate,
-      zzal_url: props.title_competition.zzalUrl,
-      state: props.title_competition.state,
+      title_competition_id: title_competition.titleHakwonId,
+      open_date: title_competition.openDate,
+      zzal_url: title_competition.zzalUrl,
+      state: title_competition.state,
     });
+    console.log(title_competition);
+    getTitleCompetition(
+      today,
+      (data) => {
+        //제목학원 출력
+        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
 
+        // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
+        title_competition.value = data.data;
+        title_competition.value.openDate = today;
+        console.log(title_competition);
+
+        //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
+
+        console.log('[제목학원 respose] ' + JSON.stringify(title_competition.value));
+        console.log(title_competition.value.openDate);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+
+    function leftPad(value) {
+      if (value >= 10) {
+        return value;
+      }
+
+      return `0${value}`;
+    }
+    function toStringByFormatting(source, delimiter = '-') {
+      const year = source.getFullYear();
+      const month = leftPad(source.getMonth() + 1);
+      const day = leftPad(source.getDate());
+
+      return [year, month, day].join(delimiter);
+    }
+    const getCurrentDate = () => {
+      let today = new Date();
+      let hour = today.getHours();
+
+      if (hour >= 0 && hour < 7) {
+        today.setDate(today.getDate() - 1);
+      }
+      // console.log(toStringByFormatting(today));
+      return toStringByFormatting(today);
+    };
+
+    let today = getCurrentDate();
     // best comment를 가져온다.
     const best_comment_nickname = ref(null);
     const best_comment_like = ref(null);
@@ -77,7 +137,9 @@ export default {
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();
 
-    onMounted(() => {});
+    onMounted(() => {
+      console.log('온마운트: ' + 'sss');
+    });
 
     return {
       ...toRefs(title_competition),
