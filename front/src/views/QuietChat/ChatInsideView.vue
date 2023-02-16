@@ -165,7 +165,7 @@ export default {
 
   methods: {
     GoToProfile(member_name) {
-      console.log(member_name);
+      // console.log(member_name);
       this.$router.push({ name: 'profile', params: { username: member_name } });
     },
     GoToDetail(gifid) {
