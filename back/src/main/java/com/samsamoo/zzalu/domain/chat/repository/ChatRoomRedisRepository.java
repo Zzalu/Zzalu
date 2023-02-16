@@ -7,6 +7,9 @@ import com.samsamoo.zzalu.domain.chat.entity.ChatMessage;
 import com.samsamoo.zzalu.domain.chat.entity.ChatRoom;
 import com.samsamoo.zzalu.infra.redis.service.RedisSubscriber;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.Cache;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -56,8 +59,10 @@ public class ChatRoomRedisRepository {
 
     // Created 2023.01.27 by Hye Sung
 
+    @Cacheable(value = "chat-message", key="#id+#id")
     public List<ChatMessageDto> findAllChatMessage(String id) {
         long size = opsListChatMessage.size(id + id);
+        System.out.println("cache not found");
         List<ChatMessageDto> chatMessageDtos = opsListChatMessage.range(id + id, size - 200 > 0 ? size - 200 : 0, size);
         return chatMessageDtos;
     }
@@ -103,10 +108,23 @@ public class ChatRoomRedisRepository {
     }
 
 
-    public void setChatMessage(ChatMessageDto message) {
+    @CachePut(value = "chat-message", key="#roomId+#roomId")
+    public List<ChatMessageDto> setChatMessage(ChatMessageDto message, String roomId) {
         LocalDateTime sendDate = LocalDateTime.now();
         System.out.println("setChatMessage ===");
         message.setSendDate(sendDate);
+
+        // Redis에 저장하기 전 Cahce 등록
+        // 저장하고 할 경우 Cache miss 발생
+        System.out.println(message.getRoomId());
+        System.out.println("SET CHAT HERE");
+        List<ChatMessageDto> chatMessageDtos = findAllChatMessage(message.getRoomId());
+        if(chatMessageDtos.size() >= 200) {
+            chatMessageDtos.remove(0);
+            chatMessageDtos.add(message);
+        } else {
+            chatMessageDtos.add(message);
+        }
 
         System.out.println("setChatMessage Enter");
         // Redis에 저장
@@ -126,6 +144,8 @@ public class ChatRoomRedisRepository {
         } else {
             System.out.println("need chat room not found exception throw");
         }
+
+        return chatMessageDtos;
     }
 
     /**

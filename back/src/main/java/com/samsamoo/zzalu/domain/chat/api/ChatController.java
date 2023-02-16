@@ -43,7 +43,7 @@ public class ChatController {
         kafkaProducer.sendMessage(message);
         // 입장이 아닐때만 저장
         if (!ChatMessageDto.MessageType.ENTER.equals(message.getType())) {
-            chatRoomRedisRepository.setChatMessage(message);
+            chatRoomRedisRepository.setChatMessage(message, message.getRoomId());
         }
 //        redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
     }
