@@ -206,7 +206,7 @@ spring:
   1. Git clone 이후 /back 폴더 안(gradlew 파일이 있어야 함)에서 cmd 열기
   2. cmd에 **gradlew build** 입력
 
-     ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled.png)
+<img src='image/Untitled.png'> 
 
 - [GUI] 로컬에서 실행
   - IntelliJ 설치되어 있어야 함
@@ -227,7 +227,7 @@ spring:
 - 백엔드 application.yml 파일 포트 설정 확인 필요
 - 프론트 빌드로 생성 된 dist 폴더 안 파일들을 스프링부트 /resources/static에 복사한 후 스프링부트를 실행시킨다.
 - static 폴더 안은 다음과 같다.
-  ![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%201.png)
+<img src='image/Untitled 1.png'> 
 
 ---
 
@@ -468,7 +468,7 @@ config set slave-read-only no
   2. Jenkins는 Git Lab의 main, dev, be 브랜치와 Web Hook 연결이 되어 있으며 Push 또는 Merge가 발생할 경우 해당 브랜치를 빌드하고 빌드 결과를 EC2에 SSHPublisher를 이용하여 전송한다.
   3. 이후 nohup java -jar 명령어를 이용하여 Tomcat을 실행시킨다.
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%202.png)
+<img src='image/Untitled 2.png'> 
 
 - 채팅 메세지 Kafka, Redis 적용 구조
   1. 사용자가 Action 또는 Event를 발생 시켰을 경우 해당 서버의 Kafka Producer가 해당 Topic으로 발행한다.
@@ -477,7 +477,7 @@ config set slave-read-only no
   4. Redis Publisher는 Redis에 발행하고 (ConvertAndSend) 이후 모든 구독자에게 해당 메세지가 전달된다.
   5. 그림에는 생략되어 있지만 Web Socket과 STOMP가 사용되었다.
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%203.png)
+<img src='image/Untitled 3.png'> 
 
 ---
 
@@ -491,17 +491,17 @@ config set slave-read-only no
 
 ### 1. **버킷 이름에 사용자가 원하는 버킷 이름을 입력한다. (ex : zzalu-bucket)**
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%204.png)
+<img src='image/Untitled 4.png'> 
 
 ### 2. **객체 소유권 ACL 활성화를 한다.**
 
 - Spring 을 통하여 Amazon S3에 파일을 업로드 하기 위해서는 ACL을 활성화 해야한다. 비활성화 상태라면 AmazonS3Exception: The bucket does not allow ACL이 발생한다
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%205.png)
+<img src='image/Untitled 5.png'> 
 
 ### 3. **버킷의 퍼블릭 엑세스 차단 설정** (상황에 맞게 조절)
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%206.png)
+<img src='image/Untitled 6.png'> 
 
 ## AWS IAM 생성
 
@@ -511,7 +511,7 @@ config set slave-read-only no
 
 ### 1. 대시보드에서 사용자 클릭
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%207.png)
+<img src='image/Untitled 7.png'> 
 
 ### 2. 사용자 만들기
 
@@ -519,21 +519,20 @@ config set slave-read-only no
 - 여기서 추가한 사용자는 하나의 접근 계정이라고 생각하면 됩니다.
 - **어플리케이션에서 버킷에 접근을 위해 필요한 계정입니다**.
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%208.png)
-
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%209.png)
+<img src='image/Untitled 8.png'> 
+<img src='image/Untitled 9.png'> 
 
 ### 3. 권한 설정
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%2010.png)
+<img src='image/Untitled 10.png'> 
 
 ### 4. IAM > 보안 자격 증명
 
 - 들어가서 액세스 키를 발급합니다.
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%2011.png)
+<img src='image/Untitled 11.png'> 
 
-![Untitled](%E1%84%91%E1%85%A9%E1%84%90%E1%85%B3%20%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AF%E1%84%83%E1%85%B5%E1%86%BC%20%E1%84%86%E1%85%AE%E1%86%AB%E1%84%89%E1%85%A5%20679facfd3da44114b154abe810a3d6b0/Untitled%2012.png)
+<img src='image/Untitled 12.png'> 
 
 - .csv 파일을 다운로드 후 안에 적혀있는 엑세스 키와 시크릿 키를 이용합니다.
 
