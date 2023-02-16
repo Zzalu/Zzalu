@@ -1,8 +1,10 @@
 <template>
   <div>
-    <div class="items">
+    <div class="items font-spoq">
       <div v-for="(following, index) in followings" :key="index">
-        <following-list-item :following="following" :index="index" />
+        <following-list-item :following="following" :index="index" 
+        class="my-2"
+        />
       </div>
     </div>
   </div>

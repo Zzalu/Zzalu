@@ -9,7 +9,8 @@
         <div>
           <!-- 컨텐트 -->
           <div class="title-competition-content-profile">
-            <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" />
+            <!-- <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" /> -->
+
             <p class="title-competiton-content-text">{{ best_comment_nickname }}</p>
           </div>
         </div>
@@ -67,8 +68,7 @@ export default {
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();
 
-    onMounted(() => {
-    });
+    onMounted(() => {});
 
     return {
       ...toRefs(title_competition),
@@ -123,7 +123,7 @@ export default {
 }
 .title-competiton-button-text {
   font-size: 0.6rem;
-  transform:translateY(-0.05rem);
+  transform: translateY(-0.05rem);
   @apply text-white w-8 truncate;
 }
 .title-competiton-content {
