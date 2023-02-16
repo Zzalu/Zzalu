@@ -1,5 +1,5 @@
 <template>
-  <div class="title-competition-card-container">
+  <div class="title-competition-card-container" @click="goToTitleCompetition">
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
 
@@ -45,12 +45,14 @@ import { reactive, ref } from 'vue-demi';
 import { toRefs } from '@vueuse/shared';
 import { getBestComments } from '@/api/titleCompetition';
 import { onMounted } from 'vue';
+import { useRouter } from 'vue-router';
 export default {
   name: 'TitleCompetitionListItemsmall',
   props: {
     title_competition: Object,
   },
   setup(props) {
+    const router = useRouter();
     console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
@@ -65,6 +67,10 @@ export default {
     const best_comment_content = ref(null);
     const best_comment_profile_image = ref(null);
 
+
+    const goToTitleCompetition = () => {
+      router.push(`/title-competition/${title_competition.open_date}`);
+    };
     getBestComments(
       title_competition.title_competition_id,
       {
@@ -95,7 +101,7 @@ export default {
       best_comment_like,
       best_comment_content,
       best_comment_profile_image,
-
+      goToTitleCompetition,
       month,
       date,
       onMounted,
