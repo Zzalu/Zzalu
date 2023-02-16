@@ -1,5 +1,5 @@
 import { checkUsername, checkNickname, checkEmail, requestRegister, requestLogin, requestUsername, requestChangeInfo, requestDelete, requestManager } from "@/api/userAccount";
-
+import Swal from 'sweetalert2'
 const userStore = {
   namespaced: true,
   state:()=> ({
@@ -77,6 +77,8 @@ const userStore = {
     // }
     SAVE_MANAGER_STATE (state) {
       state.isManager = true
+      localStorage.removeItem("isManager")
+      localStorage.setItem("isManager", true)
     }
   },
   getters: {
@@ -215,26 +217,42 @@ const userStore = {
     },
     // ----------------------------------------------------------
     // 매니저
-    managerApplyAction: async (context) => {
+    managerApplyAction:  (context) => {
       // let test = null
-      return new Promise((resolve, reject) => {
+      // return new Promise((resolve, reject) => {
         requestManager(
           (res) => {
             console.log(res)
             context.commit('SAVE_MANAGER_STATE')
-            resolve(200)
+            Swal.fire (
+              {
+                icon: "success",
+                title: "축하합니다!",
+                html: "이제 타인의 게시물을 승인할 수 있습니다."
+              }
+            )
+            // resolve(200)
           },
           (error) => {
-            console.log(error)
-            reject(500)
+            console.log(error.response)
+            // reject(500)
+            Swal.fire (
+              {
+                icon: "warning",
+                html: "아직 조건이 충족되지 않았습니다. <br> 더 활발한 활동을 해보세요."
+              }
+            )
+            // alert("ㄴㄴㄴㄴ")
           }
         );
         // setTimeout(() => {        
         //   console.log('리턴값', test)
         //   return
         // }, 100);
-      }
-      )
+      // }
+      // )
+      // console.log(result)
+      // return result
 
     },
   // --------------------------------------------------------------
