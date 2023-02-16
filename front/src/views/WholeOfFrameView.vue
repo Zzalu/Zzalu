@@ -13,6 +13,13 @@
       <!-- 현재 진행중인 제목학원  item-->
 
       <!-- 현재 진행중인 제목학원 가져와야 될듯함 -->
+      <!--       <div class="flex justify-center">
+        <title-competition-list-big-item
+          class="academy-list"
+          :title_competitions="title_competition"
+          @click="goToTitleCompetition(title_competition.openDate)"
+        />
+      </div> -->
       <div class="flex justify-center">
         <title-competition-list-big-item
           class="academy-list"

@@ -35,17 +35,14 @@
 <script>
 import { reactive, ref } from 'vue-demi';
 import { toRefs } from '@vueuse/shared';
-import { getBestComments } from '@/api/titleCompetition';
+import { getBestComments, getTitleCompetition } from '@/api/titleCompetition';
 import { onMounted } from 'vue';
 export default {
   name: 'TitleCompetitionListBigItem',
-  props: {
-    title_competitions: Object,
-  },
   computed: {
     title_competition() {
-      console.log('text', this.title_competitions);
-      return this.title_competitions;
+      console.log('text', this.title_competition);
+      return this.title_competition;
     },
   },
   created() {
@@ -56,16 +53,36 @@ export default {
   //     local_title_competition: '',
   //   };
   // },
-  setup(props) {
+  setup() {
     console.log('card setup');
     // console.log(props);
     const title_competition = reactive({
-      title_competition_id: props.title_competition.titleHakwonId,
-      open_date: props.title_competition.openDate,
-      zzal_url: props.title_competition.zzalUrl,
-      state: props.title_competition.state,
+      title_competition_id: title_competition.titleHakwonId,
+      open_date: title_competition.openDate,
+      zzal_url: title_competition.zzalUrl,
+      state: title_competition.state,
     });
+    console.log(title_competition);
+    getTitleCompetition(
+      today,
+      (data) => {
+        //제목학원 출력
+        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
 
+        // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
+        title_competition.value = data.data;
+        title_competition.value.openDate = today;
+        console.log(title_competition);
+
+        //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
+
+        console.log('[제목학원 respose] ' + JSON.stringify(title_competition.value));
+        console.log(title_competition.value.openDate);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
     // best comment를 가져온다.
     const best_comment_nickname = ref(null);
     const best_comment_like = ref(null);
