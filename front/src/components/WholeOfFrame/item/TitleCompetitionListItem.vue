@@ -145,7 +145,7 @@ export default {
 }
 .title-competiton-content {
   word-break: keep-all;
-  @apply mt-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white;
+  @apply mt-2 text-xs line-clamp-3 font-spoq mx-1 dark:text-white;
 }
 
 .profile-image {
