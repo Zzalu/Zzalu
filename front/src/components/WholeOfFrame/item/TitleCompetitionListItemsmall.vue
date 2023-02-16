@@ -18,7 +18,7 @@
         <div>
           <!-- 컨텐트 -->
           <div class="title-competition-content-profile">
-            <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" />
+            <!-- <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" /> -->
             <p class="title-competiton-content-text">{{ best_comment_nickname }}</p>
           </div>
         </div>
@@ -45,7 +45,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    console.log(props);
+    // console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
@@ -78,7 +78,7 @@ export default {
     const date = open_date_obj.getDate();
 
     onMounted(() => {
-      console.log('[on mounted in list item]' + JSON.stringify(props));
+      // console.log('[on mounted in list item]' + JSON.stringify(props));
     });
 
     return {

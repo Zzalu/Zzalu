@@ -1,6 +1,7 @@
 <template>
   <div>
-    <only-small-logo-top-nav class="z-30"></only-small-logo-top-nav>
+    <!-- <only-small-logo-top-nav class="z-30"></only-small-logo-top-nav> -->
+    <small-logo-top-nav></small-logo-top-nav>
     <div class="flex flex-col items-center">
       <div class="w-full dark:text-white">
         <!-- 오늘의 제목학원 header -->
@@ -94,7 +95,8 @@
 </template>
 
 <script>
-import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
+// import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
+import SmallLogoTopNav from '@/components/Common/NavBar/SmallLogoTopNav.vue';
 import { useStore } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
 import { computed, onUnmounted, ref } from 'vue';
@@ -107,7 +109,13 @@ import Stomp from 'webstomp-client';
 import SockJS from 'sockjs-client';
 
 export default {
-  components: { OnlySmallLogoTopNav, CommentList, MainBottomNav, CommentInput },
+  components: {
+    // OnlySmallLogoTopNav,
+    SmallLogoTopNav,
+    CommentList,
+    MainBottomNav,
+    CommentInput,
+  },
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
@@ -186,7 +194,7 @@ export default {
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
       // let start = new Date();
