@@ -42,7 +42,19 @@ export default {
   props: {
     title_competition: Object,
   },
+  created() {
+    this.title_competition = props.title_competition;
+    console.log('1 : ', this.title_competition_id);
+    console.log('2 :', props);
+    console.log('3 :', props.title_competition);
+  },
+  data() {
+    return {
+      title_competition: '',
+    };
+  },
   setup(props) {
+    console.log('card setup');
     // console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
