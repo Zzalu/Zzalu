@@ -154,6 +154,13 @@ methods: {
   paramStore(param1, param2) {
     this.title_competition = param1;
     this.best_comment = param2;
+    if(this.best_comment.length == 0) {
+        this.best_comment = [{
+        nickname: '',
+        content: '',
+        likeCnt: '',
+      }]
+    }
     console.log('this: ' + this.title_competition);
     console.log('this: ' + this.best_comment);
     console.log(this.best_comment);
