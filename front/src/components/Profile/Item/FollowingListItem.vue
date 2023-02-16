@@ -1,14 +1,19 @@
 <template>
-  <div class="flex justify-between items-center p-1">
-    <div class="flex justify-center items-center" @click="goToProfile">
+  <div class="flex justify-between items-center p-1 ml-5">
+    <div class="flex relative items-center" @click="goToProfile">
       <img
         v-if="following.profilePath != null"
         class="profile-image"
         :style="{ backgroundImage: `url(${following.profilePath})` }"
       />
-      <div>{{ following.nickname }}</div>
+      <img
+        v-else
+        class="profile-image"
+        :style="{ backgroundImage: `url(${following.profilePath})` }"
+      />
+      <div class="ml-7">{{ following.nickname }}</div>
     </div>
-    <div v-if="following.username != my_id">
+    <div v-if="following.username != my_id" class="absolute right-12">
       <button v-if="!following.followState" class="bg-zz-p btn text-white" @click="followRequest">팔로우</button>
       <button v-else class="bg-zz-negative btn" @click="unFollowRequest">팔로잉</button>
     </div>

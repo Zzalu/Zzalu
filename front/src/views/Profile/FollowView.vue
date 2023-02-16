@@ -1,9 +1,11 @@
 <template>
   <div>
     <follow-top-nav></follow-top-nav>
-    <div class="grid grid-cols-2 text-center">
-      <button class="py-2 border-b-2" @click="clickFollowers">팔로워</button>
-      <button class="py-2 border-b-2" @click="clickFollowings">팔로잉</button>
+    <div class="grid grid-cols-2 text-center font-spoq">
+      <button v-if="filter1==true" class="py-2 border-b-2 text-zz-p border-zz-p" @click="clickFollowers">팔로워</button>
+      <button v-if="filter1==true" class="py-2 border-b-2" @click="[clickFollowings(),filterchange()]">팔로잉</button>
+      <button v-if="filter1==false" class="py-2 border-b-2" @click="[clickFollowers(),filterchange()]">팔로워</button>
+      <button v-if="filter1==false" class="py-2 border-b-2 text-zz-p border-zz-p" @click="clickFollowings">팔로잉</button>
     </div>
     <follower-list v-if="isFollwers"></follower-list>
     <following-list v-else> </following-list>
@@ -27,6 +29,7 @@ export default {
     FollowingList,
   },
   setup() {
+
     let isFollwers = ref(true);
     const clickFollowers = () => {
       isFollwers.value = true;
@@ -47,7 +50,15 @@ export default {
       clickFollowings,
     };
   },
+  data() {
+    return {
+      filter1 : true,  
+    }
+  },
   methods: {
+    filterchange() {
+      this.filter1 = !this.filter1
+    }
     // GetFollower() {
     //   let member_id = 1
     //   this.get_follower(member_id)

@@ -15,7 +15,9 @@
       <div></div> -->
       <font-awesome-icon v-else class="profile-image-none" icon="fa-solid fa-user" />
       <!-- <img src="" alt=""> -->
-      <div class="mx-auto">
+      <div class="mx-auto font-spoq"
+      style="transform:translateY(-2rem)"
+      >
         <div class="flex" @click="goToFollowList()">
           <div class="follower-and-following">
             <!-- <div @click="[getFollower(), goFollow()]" class="follower-and-following"> -->
@@ -32,17 +34,17 @@
           </div>
         </div>
         <!-- <div v-if="this.profile_user_data.username != this.me"> -->
-        <div v-if="profile_user_data.username != my_id">
+        <div v-if="profile_user_data.username != my_id" class="my-3 ml-2">
           <button
             v-if="isFollowed"
-            class="bg-zz-negative mt-2 ml-4 text-white text-xl font-spoq px-5 py-1 rounded"
+            class="bg-zz-negative mt-2 ml-4 text-white text-sm font-spoq px-5 py-1 rounded-2xl w-20 h-8"
             @click="unFollowRequest"
           >
             팔로잉
           </button>
           <button
             v-else
-            class="bg-zz-p mt-2 ml-4 text-white text-xl font-spoq px-5 py-1 rounded"
+            class="bg-zz-p mt-2 ml-4 text-white text-sm font-spoq px-5 py-1 rounded-2xl w-20 h-8"
             @click="followRequest"
           >
             팔로우

@@ -15,16 +15,21 @@
     </div>
     <button class="bg-zz-negative btn">삭제</button>
   </div> -->
-  <div class="flex justify-between items-center p-1">
-    <div class="flex" @click="goToProfile">
+  <div class="flex items-center p-1 ml-5">
+    <div class="flex items-center relative" @click="goToProfile">
       <img
         v-if="follower.profilePath != null"
         class="profile-image"
         :style="{ backgroundImage: `url(${follower.profilePath})` }"
       />
-      <div class="mr-3">{{ follower.nickname }}</div>
+      <img
+        v-else
+        class="profile-image"
+        :style="{ backgroundImage: `url(${follower.profilePath})` }"
+      />
+      <div class="ml-7">{{ follower.nickname }}</div>
     </div>
-    <div v-if="follower.username != my_id">
+    <div v-if="follower.username != my_id" class="absolute right-12">
       <button v-if="follower.followState == true" class="bg-zz-negative btn" @click="unFollowRequest">팔로잉</button>
       <button v-else class="bg-zz-p btn text-white" @click="followRequest">팔로우</button>
     </div>
