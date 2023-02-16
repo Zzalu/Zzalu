@@ -99,7 +99,7 @@ export default {
           nested_comment_data,
           ({ data }) => {
             console.log(data);
-            store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
+            store.dispatch('titleCompetitionStore/modifySortType', store.state.titleCompetitionStore.sort_type);
             store.dispatch('titleCompetitionStore/initNestedData');
           },
           (error) => {
