@@ -42,7 +42,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    // console.log(props);
+    console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,

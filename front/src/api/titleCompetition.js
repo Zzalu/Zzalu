@@ -11,6 +11,7 @@ const api = apiInstance();
 const authApi = authApiInstance();
 // 제목학원 가져오기
 async function getTitleCompetition(open_date, success, fail) {
+  console.log(open_date);
   await api.get(`/title-hakwon/${open_date}`).then(success).catch(fail);
 }
 

@@ -91,23 +91,23 @@ export default {
     };
 
     let today = getCurrentDate();
-
+    console.log(today);
     // console.log(today);
     getTitleCompetition(
       today,
       (data) => {
         //제목학원 출력
-        // console.log('[제목학원 respose] ' + JSON.stringify(data.data));
+        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
 
         // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
         title_competition.value = data.data;
         title_competition.value.openDate = today;
-        // console.log(title_competition);
+        console.log(title_competition);
 
         //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
 
-        //console.log("[제목학원 respose] " + JSON.stringify(title_competition.value));
-        //console.log(title_competition.value.openDate);
+        console.log('[제목학원 respose] ' + JSON.stringify(title_competition.value));
+        console.log(title_competition.value.openDate);
       },
       (error) => {
         console.log(error);
@@ -118,30 +118,6 @@ export default {
     const goToTitleCompetition = (open_date) => {
       router.push(`/title-competition/${open_date}`);
     };
-
-    onMounted(() => {
-      // console.log('on mounted');
-      // console.log(getCurrentDate);
-      getTitleCompetition(
-        today,
-        (data) => {
-          //제목학원 출력
-          // console.log('[제목학원 ddddddddddrespose] ' + JSON.stringify(data.data));
-
-          // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
-          title_competition.value = data.data;
-          title_competition.value.openDate = today;
-
-          //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
-
-          //console.log("[제목학원 respose] " + JSON.stringify(title_competition.value));
-          //console.log(title_competition.value.openDate);
-        },
-        (error) => {
-          console.log(error);
-        },
-      );
-    });
 
     return {
       title_competition,
