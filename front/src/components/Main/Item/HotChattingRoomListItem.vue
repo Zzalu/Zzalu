@@ -3,7 +3,7 @@
   :style="this.room_data.imagePath ? `background-image:url(${this.room_data.imagePath})` : null"
   >
     <div v-if="here">
-      <div class="animations-start-contain">        
+      <div class="animations-start-contain">
       </div>
     </div>
     <!-- 고독방 정보 -->
@@ -47,7 +47,7 @@ export default {
   },
   setup() {
     const store = useStore();
-  
+
     const open_chat_id = computed(
       () => store.state.quietChatStore.open_chat_id
     );
@@ -94,7 +94,7 @@ export default {
 .quiet-chat-card-contain {
   box-shadow: 0 0 5px black;
   background-image: url("../../QuietChat/QuietChatList/assets/favicon.png");
-  @apply border-2 h-48 w-36 bg-center bg-contain bg-no-repeat rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
+  @apply border-2 h-48 w-36 bg-center bg-cover bg-no-repeat rounded-2xl relative ml-2 mr-3 mb-1  dark:border-zz-dark-div;
 }
 
 .quiet-chat-like-contain {

@@ -16,7 +16,7 @@
               :style="{ backgroundImage: `url(${best_comment_profile_image})` }"
             />
             <img v-else class="profile-image" :style="{ backgroundImage: `url(${best_comment_profile_image})` }" /> -->
-            <p class="title-competiton-content-text">{{ best_comment[0].nickname }}</p>
+            <p class="title-competiton-content-text font-spoq ml-2">닉네임 : {{ best_comment[0].nickname }}</p>
           </div>
         </div>
         <!-- 좋아요 -->
@@ -212,7 +212,7 @@ methods: {
 }
 .title-competiton-content {
   word-break: keep-all;
-  @apply mt-3 ml-2 text-xs line-clamp-2 font-spoq mx-1 dark:text-white line-clamp-4;
+  @apply mt-3 ml-2 text-lg line-clamp-2 font-spoq mx-1 dark:text-white
 }
 
 .profile-image {

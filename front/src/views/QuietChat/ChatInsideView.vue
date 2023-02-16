@@ -299,8 +299,7 @@ export default {
   @apply bg-zz-p bg-left bg-contain h-40 bg-no-repeat ml-3 border-2 border-zz-p rounded-2xl;
 }
 .my-write-time {
-  font-size: 0.2rem;
-  @apply dark:text-white text-right text-zz-dark-p;
+  @apply dark:text-white text-xs text-right text-zz-dark-p;
 }
 
 .my-message-balloon {
@@ -349,8 +348,7 @@ export default {
   @apply bg-zz-p bg-left bg-contain h-40 bg-no-repeat mr-3 border-2 border-zz-p rounded-2xl;
 }
 .write-time {
-  font-size: 0.2rem;
-  @apply dark:text-white text-right text-zz-dark-p;
+  @apply dark:text-white text-xs text-right text-zz-dark-p;
 }
 
 /* 서치바 */

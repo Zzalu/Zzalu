@@ -131,6 +131,7 @@ export default {
       .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
       .then(() => {
         if (state.value == 'PROCEED') {
+          console.log('connet 함수 부른다')
           connect();
         }
       })
@@ -194,21 +195,22 @@ export default {
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8090/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
       // let start = new Date();
       // console.log(`시작: ` + start);
-      // console.log('connect 시작');
+      console.log('connect 시작');
       let localWs = ws;
       let localSock = sock;
       localWs.connect(
         {},
         function () {
           // 댓글 관련
+          console.log('통신 시작');
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
-
+            console.log('받아옵니다')
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
             if (sort_type.value == 'LATEST') {
               // 댓글 총 개수 바꾸기
@@ -235,14 +237,14 @@ export default {
         function (error) {
           console.log(error);
           setTimeout(function () {
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
+            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
             localWs = Stomp.over(localSock);
           }, 10 * 1000);
         },
       );
     }
     // connect();
-    /*     console.log(state.value);
+/*          console.log(state.value);
     setTimeout(function () {
       console.log(state.value);
       if (state.value == 'PROCEED') {

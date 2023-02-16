@@ -102,7 +102,7 @@ export default {
         state.formdata.newNickname
         );
       const errors = validations.checkValidations();
-      
+
       if ('nickname' in errors) {
         errorMsgs.err.nickname = errors['nickname']
         this.state.newNicknameState = false
@@ -142,7 +142,7 @@ export default {
   //     if (this.state.profileIntro) {
   //       changedData.append("profileMessage", this.state.formdata.profileIntro)
   //     }
-      
+
   //     for (let key of changedData.keys()) {
   //       console.log(key, "키값");
   //     }
@@ -151,7 +151,7 @@ export default {
   //     for (let value of changedData.values()) {
   //       console.log(value);
   //     }
-      
+
       store.dispatch('userStore/patchUserInfoAction', form )
       // if (result.status==200) {
       //   state.newNicknameState = true
