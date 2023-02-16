@@ -77,7 +77,9 @@ export default {
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();
 
-    onMounted(() => {});
+    onMounted(() => {
+      console.log('온마운트: ' + JSON.stringify(props));
+    });
 
     return {
       ...toRefs(title_competition),
