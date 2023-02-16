@@ -36,6 +36,7 @@
 import { useStore } from 'vuex';
 import { computed, ref } from 'vue';
 import { addComment, addNestedComment } from '@/api/titleCompetition';
+
 export default {
   name: 'CommentInput',
   setup() {
@@ -77,7 +78,7 @@ export default {
         addComment(
           comment_data,
           ({ data }) => {
-            console.log(data)
+            console.log(data);
             if (store.state.state != 'LATEST') {
               store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
             }
@@ -98,6 +99,8 @@ export default {
           nested_comment_data,
           ({ data }) => {
             console.log(data);
+            store.dispatch('titleCompetitionStore/modifySortType', store.state.titleCompetitionStore.sort_type);
+            store.dispatch('titleCompetitionStore/initNestedData');
           },
           (error) => {
             console.log(error);
@@ -126,20 +129,21 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="postcss">
 .comment_write {
   @apply w-11/12 bg-zz-light-input flex rounded-lg p-1 fixed bottom-14;
 }
 
 .comment_textarea {
-  @apply w-10/12 bg-transparent text-xs h-6 px-2 focus:outline-none;
+  @apply w-10/12 bg-transparent text-xs h-5 px-2 focus:outline-none font-spoq;
   min-height: 0.75rem;
 }
 .comment_input {
-  @apply w-full bg-transparent text-xs h-7 px-2 focus:outline-none;
+  @apply w-full bg-transparent text-xs h-7 px-2 focus:outline-none font-spoq;
 }
 
 .comment_submit {
-  @apply absolute bottom-1 right-1 text-xs w-14 h-7 px-2 bg-zz-light-p rounded-xl text-white;
+  transform: translateY(0.1rem);
+  @apply absolute bottom-1 right-1 text-xs w-12 h-6 px-2 bg-zz-p rounded-xl text-white mr-2;
 }
 </style>

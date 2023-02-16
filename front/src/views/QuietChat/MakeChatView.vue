@@ -16,7 +16,7 @@
       <div v-else class="preview-image"></div>
       <form>
         <input @change="upload" type="file" name="image" id="image" class="select-image" ref="serveyImage"/>
-        <label class="select-image-text" for="image"> <font-awesome-icon icon="fa-solid fa-upload" /> gif 첨부하기!</label>
+        <label class="select-image-text" for="image"> <font-awesome-icon icon="fa-solid fa-upload" /> 사진 혹은 gif 첨부하기!</label>
       </form>
     </div>
 

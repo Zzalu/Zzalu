@@ -14,8 +14,9 @@
       />
 
       <div class="signup-error" v-if="errorMsgs.err.email" >{{ errorMsgs.err.email }}</div>
+      <div class="signup-error-emailgo" v-if="errorMsgs.err.emailSend" >{{ errorMsgs.err.emailSend }}</div>
     <div class="flex float-right mt-10" v-if="$route.name == 'input-signup-email'">
-      <button class="go-next-button" @click="[sendEmailCode(), loadingAni()]">다음</button>
+      <button class="go-next-button" @click="sendEmailCode">다음</button>
     </div>
     <div class="flex float-right mt-10" v-if="$route.name == 'find-id-input-email'">
       <button class="go-next-button" @click="sendUsername">다음</button>
@@ -27,7 +28,7 @@
 <script>
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
-import { reactive } from 'vue'
+import { reactive, watch } from 'vue'
 import SignupEmailValidations from '../../services/SignupEmailValidations'
 import Swal from 'sweetalert2'
 
@@ -46,6 +47,7 @@ export default {
     const errorMsgs = reactive({
       err: {
         email: "",
+        emailSend: "",
       }
     })
     // 이메일 네이밍규칙
@@ -60,7 +62,11 @@ export default {
         errorMsgs.err.email = null
       }
     }
-
+    watch(() => state.credentials.email, (newValue, oldValue) => {
+      if (newValue != oldValue) {
+        errorMsgs.err.email= null
+        }
+    })
     // 이메일 중복확인 및 코드 요청 보내기
     const sendEmailCode = async function () {
       const validations = new SignupEmailValidations(state.credentials.email);
@@ -68,6 +74,7 @@ export default {
       if ('email' in errors) {
         errorMsgs.err.email = errors['email']
       } else {
+        errorMsgs.err.emailSend = '이메일을 보낼 때 시간이 소요됩니다...'
         const result = await store.dispatch('userStore/sendEmailAction', state.credentials.email )
         if (result.status == 400) {
           alert("이미 사용중인 이메일입니다.\n다른 이메일을 입력해주세요.")
@@ -85,13 +92,6 @@ export default {
       }
     }
 
-    const loadingAni = () => {
-      if (this.errorMsgs.err.email) {
-        return true
-      } else {
-        return false
-      }
-    }
 
     // 내가 잊은 아이디를 메일로 보내기
     const sendUsername = async function () {
@@ -111,7 +111,6 @@ export default {
       sendEmailCode,
       sendUsername,
       onSubmit,
-      loadingAni
     }
   },
   data() {
@@ -127,5 +126,9 @@ export default {
 <style lang="postcss" scoped>
 .find-id-input-title {
   @apply dark:text-white mb-1 font-spoq mx-2
+}
+
+.signup-error-emailgo {
+  @apply text-lg dark:text-white font-spoq
 }
 </style>

@@ -270,9 +270,6 @@ public class CommentService {
 
     /**
      * 댓글에 좋아요 누르기
-     * 1. 댓글 좋아요 기록에 추가
-     * 2. 댓글 좋아요 +1
-     * 할일 -> optional
      */
     public LikeResponse clickCommentLikes(Long commentId , String token){
 
@@ -298,8 +295,6 @@ public class CommentService {
 
     /**
      * 댓글에 좋아요 취소하기
-     * 1.댓글 좋아요 기록에서 삭제
-     * 2. 댓글 좋아요 -1
      */
     @Transactional
 
@@ -340,24 +335,30 @@ public class CommentService {
      * 상위 50개 댓글 가져오기
      */
 
-    public List<CommentResponse> getBest50CommentList ( Long titleHakwonId ,String token){
+    public List<CommentResponse> getBestLikesCommentList ( Long titleHakwonId ,String token ,int limit){
+
+        Page<Comment> comments = fetchBestCommentPages(titleHakwonId,limit);
 
 
-
-        List<Comment> commentList = commentRepository.findTop50ByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(titleHakwonId,0);
         if(token== null || !jwtTokenProvider.validateToken(token)){
 
-            return getCommentList(commentList,null);
+            return getCommentList(comments.getContent(),null);
 
         }else {
             String username = jwtTokenProvider.getUserNameWithToken(token);
             if (memberRepository.findByUsername(username).isPresent()) {
-                return getCommentList(commentList, username);
+                return getCommentList(comments.getContent(), username);
             } else {
-                return getCommentList(commentList, null);
+                return getCommentList(comments.getContent(), null);
             }
 
         }
+    }
+
+
+    private Page<Comment> fetchBestCommentPages(Long titleHakwonId ,int size) {
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return commentRepository.findByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(titleHakwonId ,0, pageRequest);
     }
 
 

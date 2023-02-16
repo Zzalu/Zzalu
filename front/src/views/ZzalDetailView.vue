@@ -55,6 +55,7 @@
               <div
                 class="flex place-items-end"
                 @click="this.open_list_modal(gif_id.id)"
+                v-if="token"
               >
                 <font-awesome-icon
                   icon="fa-solid fa-star"
@@ -79,6 +80,7 @@
           <button
             class="edit-button text-zz-edit flex float-right font-spoq"
             @click="EditMode"
+            v-if="token"
           >
             [편집하기]
           </button>
@@ -110,10 +112,15 @@
 
           <!-- 푸터 -->
           <div class="mt-6 mb-2 font-bold font-spoq text-zz-p"> 관련 링크</div>
-          <div class="edit-original-vid">
+          <div class="edit-original-vid" v-if="sourcesPostUrl">
             <font-awesome-icon icon="fa-solid fa-link" class="text-zz-s text-sm mt-1" />
-            <!-- <iframe :src="sourcesPostUrl"> dfgdfgf</iframe> -->
             <a :href="'//'+sourcesPostUrl" target="_blank" class="text-zz-s font-bold font-spoq mx-3 ">원본 링크가 궁금하다면?</a>
+          </div>
+          <div class="edit-original-vid" v-else>
+            <font-awesome-icon icon="fa-solid fa-link" class="text-zz-s text-sm mt-1" />
+            <p class="text-zz-s font-bold font-spoq mx-3 ">등록된 원본 링크가 없습니다.</p>
+          </div>
+            <!-- <iframe :src="sourcesPostUrl"> dfgdfgf</iframe> -->
             <!-- <font-awesome-icon icon="fa-brands fa-youtube" class="yt-icon" /> -->
             <!-- <input
               type="text"
@@ -125,7 +132,6 @@
               class="plus-icon"
             /> -->
             
-          </div>
         </div>
       </div>
     </div>
@@ -148,6 +154,7 @@ export default {
   name: "ZzalDetailView",
   setup() {
     const store = useStore();
+    const token = localStorage.getItem("token");
 
     // const FollowerListItemData = computed(
     //   () => store.state.zzalListStore.follower_list
@@ -178,6 +185,7 @@ export default {
       jjal_detail_data,
       update_request,
       open_list_modals,
+      token
     };
   },
   components: {

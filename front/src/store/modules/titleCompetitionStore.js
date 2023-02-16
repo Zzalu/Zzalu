@@ -63,6 +63,14 @@ const titleCompetitionStore = {
       state.socket_comment_cnt = 0;
       state.socket_comments = [];
     },
+
+    INIT_NESTED_DATA(state) {
+      state.isNested = false;
+      state.comment_writer = {
+        comment_id: '',
+        nickname: '',
+      };
+    },
     // 날짜 바꾸기
     SET_OPEN_DATE(state, open_date) {
       state.open_date = open_date;
@@ -163,6 +171,10 @@ const titleCompetitionStore = {
     async initStoreData({ commit }) {
       commit('INIT_STORE_DATA');
     },
+
+    async initNestedData({ commit }) {
+      commit('INIT_NESTED_DATA');
+    },
     async init({ state, dispatch }, data) {
       await dispatch('getTitleCompetition', data.open_date);
       await dispatch('getBestComments');
@@ -179,7 +191,7 @@ const titleCompetitionStore = {
             resolve();
           },
           (error) => {
-            console.log(error)
+            console.log(error);
             reject();
           },
         );
@@ -268,7 +280,7 @@ const titleCompetitionStore = {
             resolve();
           },
           (error) => {
-            console.log(error)
+            console.log(error);
             reject();
           },
         );

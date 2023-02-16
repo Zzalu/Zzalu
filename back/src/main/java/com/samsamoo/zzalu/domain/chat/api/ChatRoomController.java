@@ -1,5 +1,7 @@
 package com.samsamoo.zzalu.domain.chat.api;
 
+import com.samsamoo.zzalu.domain.chat.entity.ChatMessage;
+import com.samsamoo.zzalu.domain.chat.repository.ChatRepository;
 import com.samsamoo.zzalu.domain.gifs.entity.Gifs;
 import com.samsamoo.zzalu.domain.gifs.service.GifsService;
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
@@ -17,10 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Controller
@@ -34,6 +33,7 @@ public class ChatRoomController {
     private final ChatRoomRepository chatRoomRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final GifsService gifsService;
+    private final ChatRepository chatRepository;
 
     // =============== redis ======================
 //    @GetMapping("/rooms")
@@ -311,7 +311,39 @@ public class ChatRoomController {
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
 
+        long beforeTime = System.currentTimeMillis();
         List<ChatMessageDto> chatMessageDtos = chatRoomRedisRepository.findAllChatMessage(roomId);
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        System.out.println("Redis DiffTime(m) : "+secDiffTime);
+        return chatMessageDtos;
+    }
+
+    @GetMapping("/messages-jpa")
+    @ResponseBody
+    public List<ChatMessageDto> findAllChatMessageJpa(@RequestHeader(value = "Authorization")String bearerToken, @RequestParam String roomId) {
+        String token = bearerToken.substring(7);
+        Member requestMember = jwtTokenProvider.getMember(token);
+
+        long beforeTime = System.currentTimeMillis();
+        List<ChatMessageDto> chatMessageDtos = new LinkedList<>();
+        List<ChatMessage> chatMessages = chatRepository.findTop200ByOrderBySendDateDesc();
+        for(ChatMessage chatMessage : chatMessages) {
+            ChatMessageDto chatMessageDto = new ChatMessageDto();
+            chatMessageDto.setType(chatMessage.getType());
+            chatMessageDto.setRoomId(chatMessage.getRoomId());
+            chatMessageDto.setMemberId(chatMessage.getMemberId());
+            chatMessageDto.setMemberName(requestMember.getUsername());
+            chatMessageDto.setGifId(chatMessage.getGifId());
+            chatMessageDto.setSender(chatMessage.getSender());
+            chatMessageDto.setMessage(chatMessage.getMessage());
+            chatMessageDto.setProfilePath(requestMember.getProfilePath());
+            chatMessageDtos.add(chatMessageDto);
+        }
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        System.out.println("MariaDB DiffTime(m) : "+secDiffTime);
         return chatMessageDtos;
     }
 

@@ -76,7 +76,7 @@
       <div class="creating-input-contain">
         <input
           placeholder="보관함 이름 입력.."
-          class="font-spoq dark:text-white"
+          class="font-spoq dark:text-white w-full"
           style="background-color: transparent"
           @input="input_store_title = $event.target.value"
         />
@@ -140,7 +140,9 @@ export default {
     };
   },
   mounted() {
-    this.get_user_list(this.select_gif_id);
+    setTimeout(() => {
+      this.get_user_list(this.select_gif_id);
+    }, 100);
     if (this.open_list_modal) {
       setTimeout(() => {
         document.addEventListener("click", this.ListoutClick);

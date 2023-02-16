@@ -63,7 +63,6 @@
 import OnlyGoBackTopNav from "../../components/Common/NavBar/OnlyGoBackTopNav.vue"
 import MainBottomNav from "../../components/Common/NavBar/MainBottomNav.vue"
 import { useDark, useToggle } from "@vueuse/core";
-import Swal from 'sweetalert2'
 const isDark = useDark();
 import { useStore } from "vuex";
 import { useRouter } from 'vue-router';
@@ -96,13 +95,7 @@ export default {
       router.push({name: 'change-password'})
     }
     const managerApply = async () => {
-      const response = await store.dispatch('userStore/managerApplyAction')
-      if (response==500) {
-        Swal.fire({
-          icon: "error",
-          html:"짤 업로드 및 수정 허가 횟수가 3회 미만입니다 <br> 더 활발하게 활동해보세요."
-          })
-      }
+      await store.dispatch('userStore/managerApplyAction')
     }
     const goAdmin = () => {
       router.push({name: 'admin'})

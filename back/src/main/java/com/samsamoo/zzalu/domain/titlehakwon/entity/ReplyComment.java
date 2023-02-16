@@ -3,14 +3,11 @@ package com.samsamoo.zzalu.domain.titlehakwon.entity;
 import com.samsamoo.zzalu.domain.member.entity.Member;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-/**
- * 대댓글 Entity
- */
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -26,7 +23,7 @@ public class ReplyComment {
 
     /** 대댓글 내용 **/
     @Column(nullable = false)
-    @Lob //가변길의를 갖는 큰 데이터를 저장하는데 사용하는 데이터형이다
+    @Lob
     String content;
 
     /** 작성자 아이디 **/

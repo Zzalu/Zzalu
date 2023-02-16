@@ -189,6 +189,8 @@ public class BoardService {
     }
 
     public void updateBoardName(String token, Long boardId, String newBoardName) {
+        // 토큰 검증
+        memberService.checkToken(token);
         Board board = getBoardById(boardId);
         // 본인 보드인지 확인 and
         // 보드 이름 중복인지 검증
