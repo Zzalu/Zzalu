@@ -1,6 +1,6 @@
 <template>
   <div class="title-competition-card-container">
-    {{ zzal_url }}
+    짤 유알엘 {{ zzal_url }}
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
       <img :src="zzal_url" class="title-competiton-img" alt="" />
