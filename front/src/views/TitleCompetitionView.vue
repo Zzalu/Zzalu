@@ -199,53 +199,10 @@ export default {
 
     //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
     let ws = Stomp.over(sock, options);
     function connect() {
-      // let start = new Date();
-      // console.log(`시작: ` + start);
-      console.log('connect 시작');
-      ws.connect(
-        {},
-        function () {
-          // 댓글 관련
-          console.log('통신 시작');
-          ws.subscribe('/sub/title-hakwon/comments/', function (message) {
-            let recv_comment_data = JSON.parse(message.body);
-            console.log('받아옵니다')
-            store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
-            if (sort_type.value == 'LATEST') {
-              // 댓글 총 개수 바꾸기
-              // 최신순 정렬
-              if (is_top.value) {
-                store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
-              } else {
-                // console.log('어딘디');
-                store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-                store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
-              }
-            } else {
-              // 과거순 or 인기순 정렬
-              // console.log('어딘디22');
-              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-            }
-          });
-          // 좋아요 관련
-          ws.subscribe('/sub/title-hakwon/comments/likes', function (message) {
-            let recv_like_data = JSON.parse(message.body);
-            document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
-          });
-        },
-        function (error) {
-          console.log(error);
-          setTimeout(function () {
-            sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-            ws = Stomp.over(sock);
-          }, 10 * 1000);
-        },
-      );
-    }
-/*     function connect() {
       // let start = new Date();
       // console.log(`시작: ` + start);
       console.log('connect 시작');
@@ -253,8 +210,9 @@ export default {
       let localSock = sock;
       localWs.connect(
         {},
-        function () {
+        function (frame) {
           // 댓글 관련
+          console.log(frame);
           console.log('통신 시작');
           localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
@@ -290,36 +248,20 @@ export default {
           }, 10 * 1000);
         },
       );
-    } */
+    }
     // connect();
-/*          console.log(state.value);
-    setTimeout(function () {
-      console.log(state.value);
-      if (state.value == 'PROCEED') {
-        console.log('값: ' + state.value);
-        connect();
-      }
-    }, 1); */
-    /*     onMounted(() => {
-      console.log('온마운티드');
-      console.log(state);
-      console.log(state.value);
-      if (state.value == 'PROCEED') {
-        console.log('값: ' + state.value);
-        connect();
-      }
-    }); */
+    // console.log(state.value);
+    // setTimeout(function () {
+    //   console.log(state.value);
+    //   if (state.value == 'PROCEED') {
+    //     console.log('값: ' + state.value);
+    //     connect();
+    //   }
+    // }, 1);
     onUnmounted(() => {
       ws.disconnect();
       store.dispatch('titleCompetitionStore/initStoreData');
     });
-    /*     onMounted(() => {
-      setTimeout(function () {
-        if (state.value == 'PROCEED') {
-          connect();
-        }
-      }, 100);
-    }); */
 
     return {
       state,

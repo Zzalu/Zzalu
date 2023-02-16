@@ -5,7 +5,7 @@
         <TitleCompetitionListItemsmall
           class="academy-list"
           :title_competition="title_competition"
-          @click="goToTitleCompetition(title_competition.openDate)"
+          @click="goToTitleCompetition(title_competition)"
         />
       </li>
     </ol>
@@ -38,7 +38,7 @@ export default {
     );
 
     const goToTitleCompetition = (open_date) => {
-      // console.log(open_date);
+      console.log(open_date);
       router.push(`/title-competition/${open_date}`);
     };
 
