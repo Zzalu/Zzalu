@@ -19,7 +19,7 @@ public class MailController {
     private final MailService mailService;
 
     //--------------------------------------회원가입 이메일 인증-------------------------------------------
-    @PostMapping("/signup/mail/signup")
+    @PostMapping("/mail/signup")
     public ResponseEntity<EmailResponse> sendSignupEmail(@RequestBody @Valid EmailRequest emailRequest) {
         EmailResponse emailResponse = mailService.sendMail(emailRequest.getUserEmail());
         return ResponseEntity.ok().body(emailResponse);
