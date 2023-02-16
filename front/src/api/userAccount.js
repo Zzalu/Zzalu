@@ -54,7 +54,7 @@ const requestChangeInfo = (params, form, res, err) => {
 // 계정 삭제 (8)
 const requestDelete = (pwd, res, err) => {
     const data = JSON.stringify({"rawPassword": pwd})
-    auth_api.delete(`members`, {data: data}).then(res).catch(err)
+    auth_api.delete(`/members`, {data: data}).then(res).catch(err)
 }
 
 // 매니저권한 요청 (12)
