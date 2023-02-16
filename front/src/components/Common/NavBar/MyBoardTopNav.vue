@@ -34,7 +34,7 @@
         @click="this.$router.go(-1)"
       />
     </span>
-    <div
+    <div v-if="un==usernick"
       class="absolute right-0"
       @click="[this.save_board_name2(this.board_name), this.$emit('EditMode')]"
     >
@@ -64,12 +64,16 @@ export default {
   name: "BoardTopNav",
   props: {
     board_name: String,
+    usernick:String,
+    un:String,
   },
   methods: {
     save_board_name2(zzz) {
       this.save_board_name(zzz);
     },
   },
+  data() {
+  }
 };
 </script>
 

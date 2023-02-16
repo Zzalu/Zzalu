@@ -17,7 +17,7 @@ export default class Validations {
 
 
   static passwordNaming(name) {
-    const pwdRule = /^(?=.*\d)(?=.*[a-z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,20}$/
+    const pwdRule = /^(?=.*[a-zA-Z])(?=.*[!@#$%^~*+=-])(?=.*[0-9]).{8,20}$/;
     if (!name.match(pwdRule)) {
       return false;
     }
