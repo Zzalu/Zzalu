@@ -131,6 +131,7 @@ const userStore = {
     },
     // 회원정보 세이브 2
     signupSecondAction: async (context, credentialsEmailCode) => {
+      console.log(credentialsEmailCode)
       context.commit('SAVE_EMAIL_TEMP', credentialsEmailCode)
       
       return true
