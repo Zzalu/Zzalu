@@ -15,9 +15,7 @@
       <div></div> -->
       <font-awesome-icon v-else class="profile-image-none" icon="fa-solid fa-user" />
       <!-- <img src="" alt=""> -->
-      <div class="mx-auto font-spoq"
-      style="transform:translateY(-2rem)"
-      >
+      <div class="mx-auto font-spoq" style="transform: translateY(-2rem)">
         <div class="flex" @click="goToFollowList()">
           <div class="follower-and-following">
             <!-- <div @click="[getFollower(), goFollow()]" class="follower-and-following"> -->
@@ -103,9 +101,9 @@ export default {
       checkFollowState(
         profile_user_data.value.id,
         ({ data }) => {
-          console.log(data);
+          // console.log(data);
           isFollowed.value = data.followState;
-          console.log(isFollowed.value);
+          // console.log(isFollowed.value);
         },
         (error) => console.log(error),
       );
@@ -142,7 +140,7 @@ export default {
     };
  */
     const followRequest = () => {
-      console.log(profile_user_data.value.id);
+      // console.log(profile_user_data.value.id);
       follow(
         profile_user_data.value.id,
         ({ data }) => {
@@ -156,7 +154,7 @@ export default {
       );
     };
     const unFollowRequest = () => {
-      console.log(profile_user_data.value.id);
+      // console.log(profile_user_data.value.id);
       unfollow(
         profile_user_data.value.id,
         ({ data }) => {

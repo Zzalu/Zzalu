@@ -14,10 +14,11 @@
     <HotChattingRoomList />
 
     <div v-if="open_chat_info">
-      <ChatInfoModal 
-      :room_data="quiet_chat_data[open_chat_id]"
-      :hashtag="quiet_chat_data[open_chat_id].tags"
-      class="z-50" />
+      <ChatInfoModal
+        :room_data="quiet_chat_data[open_chat_id]"
+        :hashtag="quiet_chat_data[open_chat_id].tags"
+        class="z-50"
+      />
     </div>
     <div class="h-5"></div>
     <MainBottomNav />
@@ -25,42 +26,32 @@
 </template>
 
 <script>
-import MainBottomNav from "../components/Common/NavBar/MainBottomNav";
-import OnlyBigLogoTopNav from "../components/Common/NavBar/OnlyBigLogoTopNav";
-import MainNotLoggedNav from "../components/Common/NavBar/MainNotLoggedNav";
-import AcademyList from "../components/Main/AcademyList";
-import RecommendedJjalList from "../components/Main/RecommendedJjalList";
-import PopularJjalList from "../components/Main/PopularJjalList";
-import HotChattingRoomList from "../components/Main/HotChattingRoomList";
-import ChatInfoModal from "../components/QuietChat/QuietChatList/ChatInfoModal";
-import HotCahttingRoomData from "../views/QuietChat/QuietChatListData.js";
-import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
-import { onBeforeMount } from "@vue/runtime-core";
+import MainBottomNav from '../components/Common/NavBar/MainBottomNav';
+import OnlyBigLogoTopNav from '../components/Common/NavBar/OnlyBigLogoTopNav';
+import MainNotLoggedNav from '../components/Common/NavBar/MainNotLoggedNav';
+import AcademyList from '../components/Main/AcademyList';
+import RecommendedJjalList from '../components/Main/RecommendedJjalList';
+import PopularJjalList from '../components/Main/PopularJjalList';
+import HotChattingRoomList from '../components/Main/HotChattingRoomList';
+import ChatInfoModal from '../components/QuietChat/QuietChatList/ChatInfoModal';
+import HotCahttingRoomData from '../views/QuietChat/QuietChatListData.js';
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
+import { onBeforeMount } from '@vue/runtime-core';
 
 export default {
-  name: "MainView",
+  name: 'MainView',
   setup() {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('token');
     const store = useStore();
 
-    const open_chat_info = computed(
-      () => store.state.quietChatStore.open_chat_info
-    );
-    const open_chat_id = computed(
-      () => store.state.quietChatStore.open_chat_id
-    );
-    const open_list_modal = computed(
-      () => store.state.searchModalStore.open_list_modal
-    );
-    const quiet_chat_data = computed(
-      () => store.state.quietChatStore.hot_quiet_list
-    )
-    const recommend_data = computed(
-      () => store.state.zzalListStore.recommend_gif_data
-    )
+    const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
+    const open_chat_id = computed(() => store.state.quietChatStore.open_chat_id);
+    const open_list_modal = computed(() => store.state.searchModalStore.open_list_modal);
+    const quiet_chat_data = computed(() => store.state.quietChatStore.hot_quiet_list);
+    const recommend_data = computed(() => store.state.zzalListStore.recommend_gif_data);
     const close_chat_info = () => {
-      store.commit("quietChatStore/close_chat_info");
+      store.commit('quietChatStore/close_chat_info');
     };
     let isLogged = computed(() => {
       if (window.localStorage.getItem('token')) {
@@ -71,12 +62,12 @@ export default {
     });
     onBeforeMount(() => {
       // axios 요청
-      store.dispatch("quietChatStore/getHotQuietList");
-      store.dispatch("zzalListStore/getPopularGIFList");
-      store.commit("searchModalStore/default_select_num");
+      store.dispatch('quietChatStore/getHotQuietList');
+      store.dispatch('zzalListStore/getPopularGIFList');
+      store.commit('searchModalStore/default_select_num');
       if (token) {
-        console.log(token,'token');
-        store.dispatch("zzalListStore/getRecommendGIFList");
+        // console.log(token,'token');
+        store.dispatch('zzalListStore/getRecommendGIFList');
       }
     });
     return {
@@ -87,7 +78,7 @@ export default {
       close_chat_info,
       isLogged,
       token,
-      recommend_data
+      recommend_data,
     };
   },
   components: {
@@ -121,11 +112,9 @@ export default {
   // },
   watch: {
     open_list_modal: function (value) {
-      value
-        ? (document.body.style.overflow = "hidden")
-        : document.body.style.removeProperty("overflow");
+      value ? (document.body.style.overflow = 'hidden') : document.body.style.removeProperty('overflow');
     },
-  }
+  },
 };
 </script>
 
