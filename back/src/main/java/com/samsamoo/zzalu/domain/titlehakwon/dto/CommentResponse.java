@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
 @NoArgsConstructor
 @Getter
 public class CommentResponse {
@@ -22,6 +21,10 @@ public class CommentResponse {
     private String username;
     /** 사용자 닉네임 **/
     private String nickname;
+
+    /** 사용자 프로필 **/
+    private String profilePath;
+
     /** 대댓글 개수 **/
     private int replyCommentsSize;
     /** 좋아요 개수 **/
@@ -44,6 +47,7 @@ public class CommentResponse {
         this.content = comment.getContent();
         this.username = comment.getMember().getUsername();
         this.nickname = comment.getMember().getNickname();
+        this.profilePath = comment.getMember().getProfilePath();
         this.replyCommentsSize = comment.getReplyCommentList().size();
         this.likeNumber = comment.getLikeNum();
         this.createdTime =  comment.getCreatedDate();

@@ -23,8 +23,6 @@ public class CommentController {
     private final RedisCommentRepository redisCommentRepository;
 
 
-
-
     /**
      * [POST]
      * 댓글 저장하기
@@ -34,7 +32,6 @@ public class CommentController {
     public ResponseEntity<CommentResponse> addComent(@RequestHeader(value = "Authorization") String bearerToken ,@RequestBody CommentRequest requestComent){
 
 
-        //댓글의 내용이 빈칸으로 왔을경우 예외처리한다.
         if(requestComent.getContent().isBlank()){
           throw  new BadRequestException("[Error] 댓글의 내용을 입력해주세요.");
         }
@@ -42,10 +39,8 @@ public class CommentController {
         String token = bearerToken.substring(7);
 
         CommentResponse cr = commentService.addComment(token ,requestComent);
-
-
         redisPublisher.publishTitleHakwon(redisCommentRepository.getTopic("comments"),cr);
-        //201리턴
+
         return ResponseEntity.status(HttpStatus.CREATED).body(cr);
 
     }
@@ -62,14 +57,11 @@ public class CommentController {
             throw  new BadRequestException("[Error] 대댓글의 내용을 입력해주세요.");
         }
 
-
         String token = bearerToken.substring(7);
         ReplyCommentResponse rp =  commentService.addReplyComment(token ,replyCommentRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(rp);
 
     }
-
-
 
 
     /**
@@ -113,7 +105,6 @@ public class CommentController {
 
     }
 
-
     /**
      * [DELETE]
      * 대댓글  삭제
@@ -143,10 +134,7 @@ public class CommentController {
         }else{
 
            LikeResponse likeResponse = commentService.clickCommentLikes(commentId,token);
-
-
             redisPublisher.pubLikes(redisCommentRepository.getTopic("likes"),likeResponse);
-
 
             return new ResponseEntity<>("좋아요 완료 ",HttpStatus.CREATED);
         }

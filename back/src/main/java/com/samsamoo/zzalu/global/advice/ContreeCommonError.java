@@ -21,9 +21,5 @@ public class ContreeCommonError implements ErrorController {
         return null;
     }
 
-//    @Override
-//    public void registerErrorPages(ErrorPageRegistry registry) {
-//        ErrorPage e404 = new ErrorPage(HttpStatus.NOT_FOUND, "/static/index.html");
-//        registry.addErrorPages(e404);
-//    }
+
 }
