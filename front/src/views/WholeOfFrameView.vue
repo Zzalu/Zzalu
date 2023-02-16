@@ -86,13 +86,13 @@ export default {
       if (hour >= 0 && hour < 7) {
         today.setDate(today.getDate() - 1);
       }
-      console.log(toStringByFormatting(today));
+      // console.log(toStringByFormatting(today));
       return toStringByFormatting(today);
     };
 
     let today = getCurrentDate();
 
-    console.log(today);
+    // console.log(today);
     getTitleCompetition(
       today,
       (data) => {
