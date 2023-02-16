@@ -92,8 +92,7 @@ export default {
   @apply mt-2 mr-1 text-zz-light-p text-xs;
 }
 .master-p {
-  font-size: 0.25rem;
-  @apply pt-2 line-clamp-1;
+  @apply pt-2 line-clamp-1 text-xs;
 }
 .title-p {
   @apply text-xl font-bold line-clamp-1;
