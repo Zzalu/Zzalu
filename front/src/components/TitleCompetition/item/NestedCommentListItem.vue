@@ -3,7 +3,13 @@
     <li>
       <div class="flex items-center mb-2">
         <div class="w-3 h-3 rounded-full mr-2" @click="goToProfile">
-          <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" />
+          <!-- <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" /> -->
+          <img
+            v-if="profile_image != null"
+            class="profile-image"
+            :style="{ backgroundImage: `url(${profile_image})` }"
+          />
+          <img v-else class="profile-image" :style="{ backgroundImage: `url(${profile_image})` }" />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ new_time }}</p>
@@ -29,7 +35,8 @@ export default {
   emits: ['popNestedComment'],
   setup(props, ctx) {
     const nested_comment_data = reactive({
-      profile_image: 'profile.jpg',
+      // profile_image: 'profile.jpg',
+      profile_image: props.comment.profilePath,
       username: props.nested_comment.username,
       nested_comment_id: props.nested_comment.replyCommentId,
       nickname: props.nested_comment.nickname,
@@ -111,4 +118,25 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.profile-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: cover;
+
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply mr-3 rounded-full bg-center bg-no-repeat;
+}
+
+.profile-image-none {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: cover;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply mr-3 rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
+}
+</style>

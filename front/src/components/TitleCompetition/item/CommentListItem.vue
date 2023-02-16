@@ -32,11 +32,17 @@
       <div class="flex items-center mb-2">
         <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
           <img
+            v-if="profile_image != null"
+            class="profile-image"
+            :style="{ backgroundImage: `url(${profile_image})` }"
+          />
+          <img v-else class="profile-image" :style="{ backgroundImage: `url(${profile_image})` }" />
+          <!-- <img
             :src="require(`@/assets/${profile_image}`)"
             alt="프로필 이미지"
             class="rounded-full"
             style="transform: translateY(0.3rem)"
-          />
+          /> -->
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
@@ -102,7 +108,8 @@ export default {
   setup(props) {
     const store = useStore();
     const comment_data = reactive({
-      profile_image: 'profile.jpg',
+      // profile_image: 'profile.jpg',
+      profile_image: props.comment.profilePath,
       username: props.comment.username,
       comment_id: props.comment.commentId,
       nickname: props.comment.nickname,
@@ -250,5 +257,25 @@ export default {
   font-size: 0.2rem;
   transform: translate(2rem, -0.7rem);
   @apply text-base mb-1 w-11/12;
+}
+.profile-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: cover;
+
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply mr-3 rounded-full bg-center bg-no-repeat;
+}
+
+.profile-image-none {
+  width: 2.5rem;
+  height: 2.5rem;
+  background-size: cover;
+  /* max-width: 100px;
+    max-height: 100px; */
+  /* object-fit: cover; */
+  @apply mr-3 rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
 }
 </style>
