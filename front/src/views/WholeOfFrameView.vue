@@ -97,7 +97,6 @@ export default {
     let today = getCurrentDate();
     console.log(today);
     // console.log(today);
-/*  */
 
     //해당 날짜의 제목학원 페이지로 이동
     const goToTitleCompetition = (open_date) => {

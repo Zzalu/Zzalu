@@ -97,10 +97,8 @@
 <script>
 // import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import SmallLogoTopNav from '@/components/Common/NavBar/SmallLogoTopNav.vue';
-import { useStore } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 // import { onBeforeUnmount, onMounted, ref } from 'vue';
-import { computed, onUnmounted, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
 import CommentList from '@/components/TitleCompetition/CommentList.vue';
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import CommentInput from '@/components/TitleCompetition/CommentInput.vue';
@@ -117,231 +115,108 @@ export default {
     CommentInput,
   },
   name: 'TitleCompetitionView',
-  setup() {
-    const store = useStore();
-    const route = useRoute();
-    const router = useRouter();
-    const open_date = route.params.open_date; // 제목학원 날짜
-    const isScrolled = ref(null);
-    const zzalComponent = ref(null);
-    let is_top = computed(() => store.state.titleCompetitionStore.is_top);
-    // const state = ref(store.state.titleCompetitionStore.state);
+  data() {
+    return {
+      socket: '',
+      web_stomp: '',
+      reconnect: 0,
+      message: '',
+      open_date: '',
+      isScrolled: false,
+    };
+  },
+  computed: {
+    ...mapState('titleCompetitionStore',['is_top', 'state', 'socket_comment_cnt',
+'socket_comments', 'total_comment_cnt', 'zzal_url', 'sort_type'])
+  },
+  created() {
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
-    // store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
-
-    store
-      .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
-      .then(() => {
-        if (state.value == 'PROCEED') {
+    this.socket = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    let options = {
+      debug: false,
+      protocols: Stomp.VERSIONS.supportedProtocols(),
+    };
+    this.web_stomp = Stomp.over(this.socket, options);
+    this.init({ open_date: this.$route.params.open_date, size: 10 }).
+      then(() => {
+        console.log('init!');
+        if (this.state == 'PROCEED') {
           console.log('connet 함수 부른다')
           setTimeout(() => {
-            connect();
+            this.connect();
           }, 1000);
         }
       })
       .catch((error) => {
         console.log(error, '에러뜸');
         // setTimeout()
-        setTimeout(() => {
-          router.push(`/error-404`);
-          ws.disconnect();
-        }, 100);
+        // setTimeout(() => {
+        //   this.$router.push(`/error-404`);
+        //   this.web_stomp.disconnect();
+        // }, 100);
       });
-    // const state = computed(() => store.getters['titleCompetitionStore/getState']);
-    const state = computed(() => store.state.titleCompetitionStore.state);
+  },
+  methods: {
+    ...mapActions('titleCompetitionStore',['plusTotalCommentCnt', 'pushComment', 'addSocketCommentCnt', 'addSocketComment', 'init']),
+    GoToWholeOfFrame() {
+      this.$router.push(`/whole-of-frame`);
+    },
 
-    let socket_comment_cnt = computed(() => store.state.titleCompetitionStore.socket_comment_cnt);
-    let socket_comments = computed(() => store.state.titleCompetitionStore.socket_comments);
-    // 날짜를 통해서 제목학원 정보를 store에 저장한다
-    let total_comment_cnt = computed(() => store.state.titleCompetitionStore.total_comment_cnt); // 댓글 개수
-    let zzal_url = computed(() => store.state.titleCompetitionStore.zzal_url);
-    const GoToWholeOfFrame = () => {
-      router.push(`/whole-of-frame`);
-    };
-    let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
-
-    const clickSortBtn = (sort_type) => {
+    clickSortBtn(sort_type){
+      console.log(sort_type);
       // is_top.value = true;
-      store.dispatch('titleCompetitionStore/setIsTopTrue');
       document.documentElement.scrollTop = 0;
-
-      store.dispatch('titleCompetitionStore/setSocketDataInit');
-      store.dispatch('titleCompetitionStore/modifySortType', sort_type);
-    };
-
-    //! 스크롤 관련
-    const loadMoreComments = () => {
-      store.dispatch('titleCompetitionStore/getComments', 4);
-    };
-
-    const handleCommentListScroll = async (e) => {
-      const { scrollHeight, scrollTop, clientHeight } = e.target;
-
-      if (scrollTop == 0 && is_top.value == false) {
-        store.dispatch('titleCompetitionStore/setIsTop');
-        if (sort_type.value == 'LATEST') {
-          await store.dispatch('titleCompetitionStore/pushSocketComments');
-        }
-      } else if (scrollTop != 0 && is_top.value == true) {
-        store.dispatch('titleCompetitionStore/setIsTop');
-      }
-
-      if (scrollTop + clientHeight > scrollHeight - 1) {
-        setTimeout(() => {
-          loadMoreComments();
-        }, 1000);
-      }
-    };
-
-    const goToTop = async () => {
+    },
+    async goToTop() {
       document.querySelector('#comment-main').scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
-    //! 소켓 관련
-    let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
-    let ws = Stomp.over(sock, options);
-    function connect() {
+    },
+    connect() {
+      let local_web_stomp = this.web_stomp;
       // let start = new Date();
       // console.log(`시작: ` + start);
+
       console.log('connect 시작');
-      ws.connect(
+      local_web_stomp.connect(
         {},
-        function () {
+        function (frame) {
           // 댓글 관련
+          console.log(frame);
           console.log('통신 시작');
-          ws.subscribe('/sub/title-hakwon/comments/', function (message) {
+          local_web_stomp.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
             console.log('받아옵니다')
-            store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
-            if (sort_type.value == 'LATEST') {
+            this.plusTotalCommentCnt();
+            if (this.sort_type == 'LATEST') {
               // 댓글 총 개수 바꾸기
               // 최신순 정렬
-              if (is_top.value) {
-                store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
+              if (this.is_top.value) {
+                this.pushComment(recv_comment_data);
               } else {
-                // console.log('어딘디');
-                store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-                store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
+                this.addSocketCommentCnt();
+                this.addSocketComment(recv_comment_data);
               }
             } else {
               // 과거순 or 인기순 정렬
-              // console.log('어딘디22');
-              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
+              this.addSocketCommentCnt();
             }
           });
           // 좋아요 관련
-          ws.subscribe('/sub/title-hakwon/comments/likes', function (message) {
+          local_web_stomp.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             let recv_like_data = JSON.parse(message.body);
             document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
           });
         },
         function (error) {
           console.log(error);
-          setTimeout(function () {
-            sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-            ws = Stomp.over(sock);
-          }, 10 * 1000);
+          // setTimeout(function () {
+          //   sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+          //   ws = Stomp.over(sock);
+          // }, 10 * 1000);
         },
       );
     }
-/*     function connect() {
-      // let start = new Date();
-      // console.log(`시작: ` + start);
-      console.log('connect 시작');
-      let localWs = ws;
-      let localSock = sock;
-      localWs.connect(
-        {},
-        function () {
-          // 댓글 관련
-          console.log('통신 시작');
-          localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
-            let recv_comment_data = JSON.parse(message.body);
-            console.log('받아옵니다')
-            store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
-            if (sort_type.value == 'LATEST') {
-              // 댓글 총 개수 바꾸기
-              // 최신순 정렬
-              if (is_top.value) {
-                store.dispatch('titleCompetitionStore/pushComment', recv_comment_data);
-              } else {
-                // console.log('어딘디');
-                store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-                store.dispatch('titleCompetitionStore/addSocketComment', recv_comment_data);
-              }
-            } else {
-              // 과거순 or 인기순 정렬
-              // console.log('어딘디22');
-              store.dispatch('titleCompetitionStore/addSocketCommentCnt');
-            }
-          });
-          // 좋아요 관련
-          localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
-            let recv_like_data = JSON.parse(message.body);
-            document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
-          });
-        },
-        function (error) {
-          console.log(error);
-          setTimeout(function () {
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-            localWs = Stomp.over(localSock);
-          }, 10 * 1000);
-        },
-      );
-    } */
-    // connect();
-/*          console.log(state.value);
-    setTimeout(function () {
-      console.log(state.value);
-      if (state.value == 'PROCEED') {
-        console.log('값: ' + state.value);
-        connect();
-      }
-    }, 1); */
-    /*     onMounted(() => {
-      console.log('온마운티드');
-      console.log(state);
-      console.log(state.value);
-      if (state.value == 'PROCEED') {
-        console.log('값: ' + state.value);
-        connect();
-      }
-    }); */
-    onUnmounted(() => {
-      ws.disconnect();
-      store.dispatch('titleCompetitionStore/initStoreData');
-    });
-    /*     onMounted(() => {
-      setTimeout(function () {
-        if (state.value == 'PROCEED') {
-          connect();
-        }
-      }, 100);
-    }); */
-
-    return {
-      state,
-      sock,
-      ws,
-      connect,
-      open_date,
-      is_top,
-      total_comment_cnt,
-      zzal_url,
-      isScrolled,
-      scroll,
-      zzalComponent,
-      clickSortBtn,
-      GoToWholeOfFrame,
-      sort_type,
-      handleCommentListScroll,
-      goToTop,
-      socket_comment_cnt,
-      socket_comments,
-    };
   },
+
 };
 </script>
 
