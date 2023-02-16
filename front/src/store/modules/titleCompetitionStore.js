@@ -175,11 +175,18 @@ const titleCompetitionStore = {
     async initNestedData({ commit }) {
       commit('INIT_NESTED_DATA');
     },
-    async init({ state, dispatch }, data) {
+    async init({ dispatch }, data) {
       await dispatch('getTitleCompetition', data.open_date);
       await dispatch('getBestComments');
-      await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
+      await dispatch('setLastCommentId', Number.MAX_SAFE_INTEGER);
+      await dispatch('modifySortType', 'POPULAR');
     },
+    /* async init({ state, dispatch }, data) {
+      await dispatch('getTitleCompetition', data.open_date);
+      await dispatch('getBestComments');
+      await dispatch('setLastCommentId', Number.MAX_SAFE_INTEGER);
+      // await dispatch('setLastCommentId', state.comments[state.comments.length - 1].commentId);
+    }, */
     // 제목학원 가져오기
     async getTitleCompetition({ commit }, open_date) {
       return new Promise((resolve, reject) => {

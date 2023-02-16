@@ -198,10 +198,16 @@ export default {
     const sendSignupInfo = async function () {
       // 아이디 닉네임 중복확인 다 했는지 확인
       if (!state.usernameState){
-        alert("아이디 중복확인이 필요합니다.")
+          Swal.fire({
+            icon: "error",
+            html: "아이디 중복확인이 필요합니다."
+          })
         return
       } else if (!state.nicknameState){
-        alert("닉네임 중복확인이 필요합니다.")
+          Swal.fire({
+            icon: "error",
+            html: "닉네임 중복확인이 필요합니다."
+          })
         return
       } else {
         const credentialsData = {

@@ -165,7 +165,7 @@ export default {
 
   methods: {
     GoToProfile(member_name) {
-      console.log(member_name);
+      // console.log(member_name);
       this.$router.push({ name: 'profile', params: { username: member_name } });
     },
     GoToDetail(gifid) {
@@ -234,7 +234,7 @@ export default {
         (sendtime += recv.sendDate[15]),
         this.messages.unshift({
           type: recv.type,
-          member_name: recv.memberName,
+          memberName: recv.memberName,
           sender: recv.sender,
           message: recv.message,
           // send_date: recv.sendDate,
@@ -256,7 +256,7 @@ export default {
       local_web_stomp.connect(
         {},
         function (frame) {
-          console.log(frame)
+          console.log(frame);
           local_web_stomp.subscribe('/sub/chat/room/' + local_room_id, function (message) {
             let recv = JSON.parse(message.body);
             local_recive_message(recv);
