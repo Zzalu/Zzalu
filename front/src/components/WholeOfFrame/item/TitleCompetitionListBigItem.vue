@@ -42,7 +42,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    // console.log(props);
+    console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
@@ -77,7 +77,9 @@ export default {
     const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
     const date = open_date_obj.getDate();
 
-    onMounted(() => {});
+    onMounted(() => {
+      console.log('온마운트: ' + JSON.stringify(props));
+    });
 
     return {
       ...toRefs(title_competition),
