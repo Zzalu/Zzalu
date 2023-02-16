@@ -14,5 +14,5 @@ public interface ReplyCommentRepository extends JpaRepository<ReplyComment, Stri
     Optional<ReplyComment> findById(Long id);
     Page<ReplyComment> findByIdLessThanAndParentCommentIdOrderByIdDesc(Long lastReplyCommentId , Long parentCommentId , PageRequest pageRequest);
     Page<ReplyComment> findByIdGreaterThanAndParentCommentId(Long lastReplyCommentId , Long parentCommentId , PageRequest pageRequest);
-    void     deleteById (Long id);
+    void deleteById (Long id);
 }

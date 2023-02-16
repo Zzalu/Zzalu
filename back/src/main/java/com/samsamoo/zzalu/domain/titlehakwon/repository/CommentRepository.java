@@ -9,14 +9,10 @@ import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    //제목학원의 redis Topic을 저장할 Map
-
-
     Page<Comment> findByIdLessThanAndTitleHakwonIdOrderByIdDesc(Long lastCommentId, Long titleHackwonId , PageRequest pageRequest);
     Page<Comment> findByIdGreaterThanAndTitleHakwonId (Long lastCommentId, Long titleHackwonId , PageRequest pageRequest);
 
     Page<Comment> findByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(Long titleHackwonId,int likesize ,PageRequest pageRequest);
-
 
     List<Comment> findTop3ByTitleHakwonIdAndLikeNumGreaterThanOrderByLikeNumDesc(Long titleHackwonId,int likesize);
 }

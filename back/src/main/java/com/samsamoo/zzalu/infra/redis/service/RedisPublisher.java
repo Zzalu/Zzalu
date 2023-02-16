@@ -24,24 +24,18 @@ public class RedisPublisher {
     public void kafkaListener(String message) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         ChatMessageDto chatMessageDto = objectMapper.readValue(message, ChatMessageDto.class);
-//        chatMessageDto.setSendDate(LocalDateTime.now());
         System.out.println("publish : " + chatMessageDto.toString());
         redisTemplate.convertAndSend(((ChannelTopic) chatRoomRedisRepository.getTopic(chatMessageDto.getRoomId())).getTopic(), chatMessageDto);
     }
 
-//    public void publish(ChannelTopic topic, ChatMessageDto message) {
-//        redisTemplate.convertAndSend(topic.getTopic(), message);
-//    }
 
     public void publishTitleHakwon(ChannelTopic topic, CommentResponse commentResponse) {
         System.out.println("[publishTItlehakwon]"+ topic.getTopic());
-        System.out.println(commentResponse.getContent()+"댓글 정보");
         redisTemplate.convertAndSend(topic.getTopic(), commentResponse);
     }
 
     public void pubLikes(ChannelTopic topic, LikeResponse likeResponse) {
         System.out.println("[publish Likes]"+ topic.getTopic());
-        System.out.println(likeResponse.getLikeNum()+"좋아요 정보");
         redisTemplate.convertAndSend(topic.getTopic(), likeResponse);
     }
 }
