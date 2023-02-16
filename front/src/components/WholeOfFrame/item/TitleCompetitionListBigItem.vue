@@ -40,7 +40,13 @@ import { onMounted } from 'vue';
 export default {
   name: 'TitleCompetitionListBigItem',
   props: {
-    title_competition: Object,
+    title_competitions: Object,
+  },
+  computed: {
+    title_competition() {
+      console.log('text', this.title_competitions);
+      return this.title_competitions;
+    },
   },
   created() {
     console.log('BigItem - created - title_competition : ', this.title_competition);

@@ -16,7 +16,7 @@
       <div class="flex justify-center">
         <title-competition-list-big-item
           class="academy-list"
-          :title_competition="title_competition"
+          :title_competitions="title_competition"
           @click="goToTitleCompetition(title_competition.openDate)"
         />
       </div>
