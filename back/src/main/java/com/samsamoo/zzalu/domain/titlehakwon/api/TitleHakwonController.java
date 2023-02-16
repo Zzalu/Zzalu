@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/title-hakwon")
-@CrossOrigin("*")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TitleHakwonController {
 
     private String DIRNAME ="TitleHakwon";
