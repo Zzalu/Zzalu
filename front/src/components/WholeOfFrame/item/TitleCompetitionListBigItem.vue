@@ -83,6 +83,33 @@ export default {
         console.log(error);
       },
     );
+
+    function leftPad(value) {
+      if (value >= 10) {
+        return value;
+      }
+
+      return `0${value}`;
+    }
+    function toStringByFormatting(source, delimiter = '-') {
+      const year = source.getFullYear();
+      const month = leftPad(source.getMonth() + 1);
+      const day = leftPad(source.getDate());
+
+      return [year, month, day].join(delimiter);
+    }
+    const getCurrentDate = () => {
+      let today = new Date();
+      let hour = today.getHours();
+
+      if (hour >= 0 && hour < 7) {
+        today.setDate(today.getDate() - 1);
+      }
+      // console.log(toStringByFormatting(today));
+      return toStringByFormatting(today);
+    };
+
+    let today = getCurrentDate();
     // best comment를 가져온다.
     const best_comment_nickname = ref(null);
     const best_comment_like = ref(null);
@@ -111,7 +138,7 @@ export default {
     const date = open_date_obj.getDate();
 
     onMounted(() => {
-      console.log('온마운트: ' + JSON.stringify(props));
+      console.log('온마운트: ' + 'sss');
     });
 
     return {

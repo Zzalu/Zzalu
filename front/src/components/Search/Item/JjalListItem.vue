@@ -6,26 +6,23 @@
         <font-awesome-icon class="view-icon" icon="fa-solid fa-eye" />
         <p class="view-count">{{ zzal_info.visitedCount }}</p>
       </div>
-      <div v-if="toke">
+      <div v-if="token">
         <font-awesome-icon
           v-if="already"
           class="scrap-icon"
           icon="fa-solid fa-star"
           @click="open_list_modal"
-          @click.stop="''"
+          @click.stop="'';"
         />
         <font-awesome-icon
           v-else
           class="scrap-icon"
           icon="fa-regular fa-star"
           @click="open_list_modal"
-          @click.stop="''"
+          @click.stop="'';"
         />
       </div>
-      <div
-        class="select-jjal-img"
-        :style="`background-image:url(${this.gifPath})`"
-      ></div>
+      <div class="select-jjal-img" :style="`background-image:url(${this.gifPath})`"></div>
     </div>
     <div v-else class="jjal-box">
       <div
@@ -39,32 +36,28 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
-import { computed } from "@vue/runtime-core";
+import { useStore } from 'vuex';
+import { computed } from '@vue/runtime-core';
 
 export default {
-  name: "JjalListItem",
+  name: 'JjalListItem',
   setup() {
     const store = useStore();
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem('token');
 
     const open_list_modal = () => {
-      store.commit("searchModalStore/open_list_modal");
+      store.commit('searchModalStore/open_list_modal');
     };
     const close_search_modal = () => {
-      store.commit("searchModalStore/open_search_modal");
+      store.commit('searchModalStore/open_search_modal');
     };
     const send_select_gif_id_data = (data) => {
-      store.commit("boardListStore/SELECT_GIF", data);
+      store.commit('boardListStore/SELECT_GIF', data);
     };
-    const select_jjal_num = computed(
-      () => store.state.searchModalStore.select_jjal_num
-    );
-    const user_store_list = computed(
-      () => store.state.boardListStore.user_store_list
-    );
+    const select_jjal_num = computed(() => store.state.searchModalStore.select_jjal_num);
+    const user_store_list = computed(() => store.state.boardListStore.user_store_list);
     const get_user_list = (data) => {
-      store.dispatch("boardListStore/getUserStoreList", data);
+      store.dispatch('boardListStore/getUserStoreList', data);
     };
 
     return {
@@ -74,13 +67,13 @@ export default {
       get_user_list,
       select_jjal_num,
       user_store_list,
-      token
+      token,
     };
   },
   data() {
     return {
       start_time: null,
-      already : false
+      already: false,
     };
   },
   props: {
@@ -96,27 +89,27 @@ export default {
       }
     },
     zzal_info() {
-      return this.jjal_info
+      return this.jjal_info;
     },
     gifPath() {
-      return this.zzal_info.gifPath
-    }
+      return this.zzal_info.gifPath;
+    },
   },
   watch: {
     user_store_list(nv) {
       if (nv.boards) {
-        let flag
-        for (let i=0; i<nv.boards.length; i++) {
+        let flag;
+        for (let i = 0; i < nv.boards.length; i++) {
           if (nv.boards[i].gifContainState == true) {
-            flag = true
-            break
+            flag = true;
+            break;
           }
-          flag = false
+          flag = false;
         }
         if (flag) {
-          this.already = true
+          this.already = true;
         } else {
-          this.already = false
+          this.already = false;
         }
       }
     },
@@ -125,7 +118,7 @@ export default {
     route() {
       this.get_user_list(this.zzal_info.id);
       this.$router.push({
-        name: "zzal",
+        name: 'zzal',
         params: { zzal_id: this.zzal_info.id },
         // query: {
         //   gifpath: this.zzal_info.gifPath,
@@ -137,7 +130,7 @@ export default {
       this.close_search_modal();
     },
     long_click() {
-      this.$emit("select_id", this.i);
+      this.$emit('select_id', this.i);
       this.send_select_gif_id_data(this.zzal_info.id);
       this.get_user_list(this.zzal_info.id);
     },
