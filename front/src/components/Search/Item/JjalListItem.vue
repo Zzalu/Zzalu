@@ -12,17 +12,20 @@
           class="scrap-icon"
           icon="fa-solid fa-star"
           @click="open_list_modal"
-          @click.stop="'';"
+          @click.stop="''"
         />
         <font-awesome-icon
           v-else
           class="scrap-icon"
           icon="fa-regular fa-star"
           @click="open_list_modal"
-          @click.stop="'';"
+          @click.stop="''"
         />
       </div>
-      <div class="select-jjal-img" :style="`background-image:url(${this.gifPath})`"></div>
+      <div
+        class="select-jjal-img"
+        :style="`background-image:url(${this.gifPath})`"
+      ></div>
     </div>
     <div v-else class="jjal-box">
       <div

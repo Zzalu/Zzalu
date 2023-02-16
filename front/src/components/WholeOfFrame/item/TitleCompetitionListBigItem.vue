@@ -1,9 +1,8 @@
 <template>
-  <div class="title-competition-card-container">
-    짤 유알엘 {{ zzal_url }}
+  <div class="title-competition-card-container" @click="goToTitleCompetition">
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
-      <img :src="zzal_url" class="title-competiton-img" alt="" />
+      <img :src="title_competition.zzalUrl" class="title-competiton-img" alt="" />
     </div>
     <div class="border-l-2 border-b-2 border-r-2 h-20 rounded-b-2xl border-white dark:border-zz-dark-div">
       <div class="flex">
@@ -11,73 +10,67 @@
           <!-- 컨텐트 -->
           <div class="title-competition-content-profile">
             <!-- <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" /> -->
-            <img
+            <!-- <img
               v-if="best_comment_profile_image != null"
               class="profile-image"
               :style="{ backgroundImage: `url(${best_comment_profile_image})` }"
             />
-            <img v-else class="profile-image" :style="{ backgroundImage: `url(${best_comment_profile_image})` }" />
-            <p class="title-competiton-content-text">{{ best_comment_nickname }}</p>
+            <img v-else class="profile-image" :style="{ backgroundImage: `url(${best_comment_profile_image})` }" /> -->
+            <p class="title-competiton-content-text">{{ best_comment[0].nickname }}</p>
           </div>
         </div>
         <!-- 좋아요 -->
         <div class="title-competiton-button-contain">
           <font-awesome-icon icon="fa-solid fa-heart" class="title-competiton-button-icon" />
-          <p class="title-competiton-button-text">{{ best_comment_like }}</p>
+          <p class="title-competiton-button-text">{{ best_comment[0].likeNumber }}</p>
         </div>
       </div>
       <!-- 내용 -->
-      <p class="title-competiton-content">{{ best_comment_content }}</p>
+      <p class="title-competiton-content">{{ best_comment[0].content }}</p>
     </div>
   </div>
 </template>
 
 <script>
-import { reactive, ref } from 'vue-demi';
-import { toRefs } from '@vueuse/shared';
 import { getBestComments, getTitleCompetition } from '@/api/titleCompetition';
-import { onMounted } from 'vue';
 export default {
   name: 'TitleCompetitionListBigItem',
-  computed: {
-    title_competition() {
-      console.log('text', this.title_competition);
-      return this.title_competition;
-    },
-  },
+  // computed: {
+  //   title_competition() {
+  //     console.log('text', this.title_competition);
+  //     return this.title_competition;
+  //   },
+  // },
   created() {
     console.log('BigItem - created - title_competition : ', this.title_competition);
-  },
-  // data() {
-  //   return {
-  //     local_title_competition: '',
-  //   };
-  // },
-  setup() {
-    console.log('card setup');
-    // console.log(props);
-    const title_competition = reactive({
-      title_competition_id: title_competition.titleHakwonId,
-      open_date: title_competition.openDate,
-      zzal_url: title_competition.zzalUrl,
-      state: title_competition.state,
-    });
-    console.log(title_competition);
-    getTitleCompetition(
+    let local_title_competition = "";
+    let local_best_comment = "";
+    let local_param_store = this.paramStore;
+    const getCurrentTitleCompetition = () => getTitleCompetition(
       today,
       (data) => {
         //제목학원 출력
         console.log('[제목학원 respose] ' + JSON.stringify(data.data));
-
-        // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
-        title_competition.value = data.data;
-        title_competition.value.openDate = today;
-        console.log(title_competition);
-
-        //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
-
-        console.log('[제목학원 respose] ' + JSON.stringify(title_competition.value));
-        console.log(title_competition.value.openDate);
+        local_title_competition = data.data;
+        console.log(local_title_competition);
+        console.log(local_title_competition.titleHakwonId);
+        getBestComments(
+        local_title_competition.titleHakwonId,
+          {
+            limit: 1,
+            sort: 'POPULAR',
+          },
+      (data) => {
+        console.log('베스트댓글: ' + data.data);
+        console.log(data);
+        local_best_comment = data.data;
+        console.log(local_best_comment);
+        local_param_store(local_title_competition, local_best_comment);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
       },
       (error) => {
         console.log(error);
@@ -88,16 +81,16 @@ export default {
       if (value >= 10) {
         return value;
       }
-
       return `0${value}`;
     }
+
     function toStringByFormatting(source, delimiter = '-') {
       const year = source.getFullYear();
       const month = leftPad(source.getMonth() + 1);
       const day = leftPad(source.getDate());
-
       return [year, month, day].join(delimiter);
     }
+
     const getCurrentDate = () => {
       let today = new Date();
       let hour = today.getHours();
@@ -110,48 +103,67 @@ export default {
     };
 
     let today = getCurrentDate();
+    this.today = today;
     // best comment를 가져온다.
-    const best_comment_nickname = ref(null);
-    const best_comment_like = ref(null);
-    const best_comment_content = ref(null);
-    const best_comment_profile_image = ref(null);
 
-    getBestComments(
-      title_competition.title_competition_id,
+
+/*    const getBestComment = (title_competition) => getBestComments(
+      title_competition.titleHakwonId,
       {
         limit: 1,
         sort: 'POPULAR',
       },
       (data) => {
-        // console.log(data);
+
+        best_comment.value = data.data;
+        console.log(best_comment.value);
         best_comment_nickname.value = data.data[0].nickname;
         best_comment_like.value = data.data[0].likeNumber;
         best_comment_content.value = data.data[0].content;
         best_comment_profile_image.value = data.data[0].profilePath;
+
       },
       (error) => {
         console.log(error);
       },
-    );
-    let open_date_obj = new Date(title_competition.open_date);
-    const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
-    const date = open_date_obj.getDate();
+    ); */
 
-    onMounted(() => {
-      console.log('온마운트: ' + 'sss');
-    });
+    // let open_date_obj = new Date(this.title_competition.open_date);
+    // const month = open_date_obj.toLocaleString('en-US', { month: 'short' });
+    // const date = open_date_obj.getDate();
 
+    getCurrentTitleCompetition();
+
+
+    console.log('create end');
+
+  },
+  data() {
     return {
-      ...toRefs(title_competition),
-      best_comment_nickname,
-      best_comment_like,
-      best_comment_content,
-      best_comment_profile_image,
-      month,
-      date,
-      onMounted,
+      title_competition: {},
+      best_comment: [{
+        nickname: '',
+        content: '',
+        likeCnt: '',
+      }],
+      today : ''
     };
   },
+
+methods: {
+  paramStore(param1, param2) {
+    this.title_competition = param1;
+    this.best_comment = param2;
+    console.log('this: ' + this.title_competition);
+    console.log('this: ' + this.best_comment);
+    console.log(this.best_comment);
+  },
+
+  goToTitleCompetition() {
+      this.$router.push(`/title-competition/${this.today}`);
+    }
+
+},
 };
 </script>
 

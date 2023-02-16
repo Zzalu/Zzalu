@@ -50,7 +50,6 @@ import TitleCompetitionListsmall from '@/components/WholeOfFrame/TitleCompetitio
 import MainBottomNav from '@/components/Common/NavBar/MainBottomNav.vue';
 import OnlySmallLogoTopNav from '@/components/Common/NavBar/OnlySmallLogoTopNav.vue';
 import TitleCompetitionListBigItem from '@/components/WholeOfFrame/item/TitleCompetitionListBigItem.vue';
-import { getTitleCompetition } from '@/api/titleCompetition';
 import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 export default {
@@ -100,26 +99,7 @@ export default {
     let today = getCurrentDate();
     console.log(today);
     // console.log(today);
-    getTitleCompetition(
-      today,
-      (data) => {
-        //제목학원 출력
-        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
-
-        // getTitleCompetition -> reponseDto 에 "openDate가 없음 따라서 여기서 걍 넣어줌"
-        title_competition.value = data.data;
-        title_competition.value.openDate = today;
-        console.log(title_competition);
-
-        //**생각한대로 데이터가 안넘어감 아마 저 박스가 만들어질때 값을 안주는거같음 **
-
-        console.log('[제목학원 respose] ' + JSON.stringify(title_competition.value));
-        console.log(title_competition.value.openDate);
-      },
-      (error) => {
-        console.log(error);
-      },
-    );
+/*  */
 
     //해당 날짜의 제목학원 페이지로 이동
     const goToTitleCompetition = (open_date) => {

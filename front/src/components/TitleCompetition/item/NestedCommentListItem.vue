@@ -34,9 +34,10 @@ export default {
   },
   emits: ['popNestedComment'],
   setup(props, ctx) {
+    console.log(props);
     const nested_comment_data = reactive({
-      // profile_image: 'profile.jpg',
-      profile_image: props.comment.profilePath,
+      profile_image: 'profile.jpg',
+      // profile_image: props.comment.profilePath,
       username: props.nested_comment.username,
       nested_comment_id: props.nested_comment.replyCommentId,
       nickname: props.nested_comment.nickname,
