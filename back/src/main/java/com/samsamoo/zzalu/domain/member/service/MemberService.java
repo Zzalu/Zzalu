@@ -5,6 +5,7 @@ import com.samsamoo.zzalu.domain.award.dto.AwardCountResponse;
 import com.samsamoo.zzalu.domain.award.dto.AwardResponse;
 import com.samsamoo.zzalu.domain.award.entity.AwardRecord;
 import com.samsamoo.zzalu.domain.award.repository.AwardRecordRepository;
+import com.samsamoo.zzalu.global.advice.BadRequestException;
 import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.global.auth.dto.TokenInfo;
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
@@ -289,10 +290,10 @@ public class MemberService {
                 member.makeManager();
                 memberRepository.save(member);
             } else {
-                throw new RuntimeException("이미 매니저 권한이 있습니다.");// 수정 필요
+                throw new BadRequestException("이미 매니저 권한이 있습니다.");// 수정 필요
             }
         } else {
-            throw new RuntimeException("짤 업로드 및 수정 허가 횟수가 5번 미만입니다.");// 수정 필요
+            throw new BadRequestException("짤 업로드 및 수정 허가 횟수가 5번 미만입니다.");// 수정 필요
         }
     }
 }
