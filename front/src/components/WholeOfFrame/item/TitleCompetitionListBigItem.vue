@@ -1,5 +1,6 @@
 <template>
   <div class="title-competition-card-container">
+    {{ zzal_url }}
     <div class="title-competiton-img-container">
       <!-- 아이콘 날짜 사진 -->
       <img :src="zzal_url" class="title-competiton-img" alt="" />
@@ -42,7 +43,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    console.log(props);
+    // console.log(props);
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
       open_date: props.title_competition.openDate,
