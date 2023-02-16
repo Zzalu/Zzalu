@@ -5,7 +5,7 @@ const form_api = formApiInstance();
 
 // 회원가입 (1)
 const requestRegister = (payload,res,err) => {
-    return api.post(`members/signup`, payload)
+    return api.post(`signup/members/signup`, payload)
     .then(res).catch(err)
 }
 
