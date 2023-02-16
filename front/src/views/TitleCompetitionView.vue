@@ -71,8 +71,7 @@
           <div
             v-show="!is_top"
             @click="goToTop"
-            class="fixed top-80
-             left-1/2 transform flex flex-col justify-center items-center text-zz-p"
+            class="fixed top-80 left-1/2 transform flex flex-col justify-center items-center text-zz-p"
           >
             <font-awesome-icon icon="fa-solid fa-circle-arrow-up" class="text-3xl" />
             <div v-show="sort_type == 'LATEST' && socket_comment_cnt" class="flex items-center">
@@ -87,6 +86,7 @@
         </div>
       </div>
       <!-- 댓글 input -->
+
       <comment-input></comment-input>
     </div>
     <main-bottom-nav />
@@ -119,13 +119,15 @@ export default {
     let is_top = computed(() => store.state.titleCompetitionStore.is_top);
     // const state = ref(store.state.titleCompetitionStore.state);
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
-    store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
-      if (state.value == 'PROCEED') {
-        connect();
-      }
-    })
-        .catch((error) => {
-        console.log(error,'에러뜸');
+    store
+      .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
+      .then(() => {
+        if (state.value == 'PROCEED') {
+          connect();
+        }
+      })
+      .catch((error) => {
+        console.log(error, '에러뜸');
         // setTimeout()
         setTimeout(() => {
           router.push(`/error-404`);
@@ -223,7 +225,7 @@ export default {
           });
         },
         function (error) {
-          console.log(error)
+          console.log(error);
           setTimeout(function () {
             localSock = new SockJS('http://i8c109.p.ssafy.io:8089/ws-stomp');
             localWs = Stomp.over(localSock);

@@ -5,7 +5,7 @@
       <!-- <div
         v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
         class="bg-zz-light-p rounded flex flex-row justify-center items-center w-14 my-2 text-white"
-        
+
         >
         <p>BEST {{ index + 1 }}</p>
       </div>
@@ -18,10 +18,10 @@
       <div
         v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
         class="rounded flex absolute flex-row justify-center items-center w-12 text-white right-12"
-        >
-        <p v-if="index==0" class="bg-zz-gold w-full text-center rounded">{{ index + 1 }}위</p>
-        <p v-if="index==1" class="bg-zz-silver w-full text-center rounded">{{ index + 1 }}위</p>
-        <p v-if="index==2" class="bg-zz-bronze w-full text-center rounded">{{ index + 1 }}위</p>
+      >
+        <p v-if="index == 0" class="bg-zz-gold w-full text-center rounded">{{ index + 1 }}위</p>
+        <p v-if="index == 1" class="bg-zz-silver w-full text-center rounded">{{ index + 1 }}위</p>
+        <p v-if="index == 2" class="bg-zz-bronze w-full text-center rounded">{{ index + 1 }}위</p>
       </div>
       <div
         v-if="sort_type == 'POPULAR' && (index == 3 || index == 4)"
@@ -31,8 +31,11 @@
       </div>
       <div class="flex items-center mb-2">
         <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
-          <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full"
-          style="transform:translateY(0.3rem)"
+          <img
+            :src="require(`@/assets/${profile_image}`)"
+            alt="프로필 이미지"
+            class="rounded-full"
+            style="transform: translateY(0.3rem)"
           />
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
@@ -41,7 +44,7 @@
         <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
       <p class="comment-base">{{ content }}</p>
-      <div class="text-zz-p h-1" style="transform:translate(2rem,-1.2rem)">
+      <div class="text-zz-p h-1" style="transform: translate(2rem, -1.2rem)">
         <button class="my-auto like-btn" @click="clickLikeBtn" :id="'comment-id-' + comment_id + '-like-btn'">
           <font-awesome-icon v-if="!is_liked" icon="fa-regular fa-heart" class="text-xs" />
           <font-awesome-icon v-else icon="fa-solid fa-heart" class="text-xs text-zz-p" />
@@ -51,7 +54,7 @@
         </span>
       </div>
       <div class="flex flex-row h-3">
-        <div style="transform:translate(4.2rem,-1.45rem)">
+        <div style="transform: translate(4.2rem, -1.45rem)">
           <button @click="writeNestedComment" class="text-xs mr-2 text-zz-p">답글쓰기</button>
           <button v-if="nested_comment_cnt > 0 && !nested_active" class="text-xs">
             <font-awesome-icon icon="fa-solid fa-chevron-down" class="mr-1 text-xs" />
@@ -112,6 +115,7 @@ export default {
       is_liked: props.comment.pressed,
     });
     const user_id = window.localStorage.getItem('current_userid');
+    const competition_state = store.state.titleCompetitionStore.state;
     const router = useRouter();
     const goToProfile = () => {
       router.push(`/profile/${comment_data.username}`);
@@ -157,12 +161,19 @@ export default {
 
     // 좋아요 버튼 클릭
     const clickLikeBtn = () => {
+      if (competition_state != 'PROCEED') {
+        Swal.fire({
+          icon: 'error',
+          text: '진행이 끝난 제목학원입니다!',
+        });
+        return;
+      }
       const comment_id = comment_data.comment_id;
       if (comment_data.is_liked) {
         minusLike(
           comment_id,
           ({ data }) => {
-            console.log(data)
+            console.log(data);
             comment_data.is_liked = false;
             comment_data.like_cnt -= 1;
           },
@@ -174,7 +185,7 @@ export default {
         plusLike(
           comment_id,
           ({ data }) => {
-            console.log(data)
+            console.log(data);
             comment_data.is_liked = true;
             comment_data.like_cnt += 1;
           },
@@ -235,11 +246,9 @@ export default {
 </script>
 
 <style scoped lang="postcss">
-
 .comment-base {
-  font-size:0.2rem;
-  transform:translate(2rem,-0.7rem);
-  @apply text-base mb-1 w-11/12
+  font-size: 0.2rem;
+  transform: translate(2rem, -0.7rem);
+  @apply text-base mb-1 w-11/12;
 }
-
 </style>
