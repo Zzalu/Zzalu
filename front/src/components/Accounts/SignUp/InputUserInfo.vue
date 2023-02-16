@@ -26,7 +26,7 @@
     <input
       type="password"
       class="account-input"
-      placeholder="비밀번호를 입력하세요"
+      placeholder="영어, 숫자, 특수문자 포함 8~20자여야 합니다."
       v-model="state.credentials.password"
     />
   </div>
@@ -81,6 +81,7 @@ export default {
       },
       nicknameState: false,
       usernameState: false,
+      pwdState: true
     })
     const errorMsgs = reactive({
       err: {
@@ -103,6 +104,14 @@ export default {
       if (newValue != oldValue) {
         state.nicknameState = false
         errorMsgs.err.nickname= null
+        }
+      
+    })
+    watch(() => state.credentials.password, (newValue, oldValue) => {
+      if (newValue != oldValue) {
+        state.pwdState = true
+        errorMsgs.err.password= null
+        errorMsgs.err.passwordCheck= null
         }
       
     })
@@ -186,9 +195,11 @@ export default {
       }
       if ('password' in errors) {
         errorMsgs.err.password = errors['password']
+        this.state.pwdState = false
       }
       if ('passwordCheck' in errors) {
         errorMsgs.err.passwordCheck = errors['passwordCheck']
+        this.state.pwdState = false
       }
     }
     
@@ -198,15 +209,21 @@ export default {
     const sendSignupInfo = async function () {
       // 아이디 닉네임 중복확인 다 했는지 확인
       if (!state.usernameState){
-          Swal.fire({
-            icon: "error",
-            html: "아이디 중복확인이 필요합니다."
+        Swal.fire({
+          icon: "error",
+          text:"아이디 중복확인이 필요합니다."
           })
         return
       } else if (!state.nicknameState){
-          Swal.fire({
-            icon: "error",
-            html: "닉네임 중복확인이 필요합니다."
+        Swal.fire({
+          icon: "error",
+          text:"닉네임 중복확인이 필요합니다."
+          })
+        return
+      } else if (!state.pwdState){
+        Swal.fire({
+          icon: "error",
+          text:"비밀번호를 확인해주세요."
           })
         return
       } else {

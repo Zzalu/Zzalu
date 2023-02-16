@@ -11,6 +11,8 @@
     <MyBoardTopNav
       v-else
       :board_name="this.$route.query.board_name"
+      :un="his_name"
+      :usernick="usernick"
       @EditMode="EditMode"
     />
     <div v-if="board_jjal_list">
@@ -68,6 +70,7 @@ export default {
   name: "BoardDetailView",
   setup() {
     const store = useStore();
+    const usernick = localStorage.getItem('current_nickname')
 
     const board_jjal_list = computed(
       () => store.state.boardListStore.board_detail_list
@@ -84,6 +87,7 @@ export default {
     };
     return {
       board_jjal_list,
+      usernick,
       RemoveBoardJjal,
       getBoardData,
       getDetailData,
@@ -98,6 +102,7 @@ export default {
     return {
       edit_mode: false,
       board_title: this.$route.query.board_name,
+      his_name: this.$route.query.un,
     };
   },
   mounted() {
