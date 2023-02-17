@@ -53,19 +53,18 @@
 import { useStore } from "vuex";
 export default {
   setup() {
-    const usernick = localStorage.getItem('current_nickname')
     const store = useStore();
 
     const save_board_name = (title) =>
       store.commit("boardListStore/NAME_CHANGE", title);
     return {
       save_board_name,
-      usernick
     };
   },
   name: "BoardTopNav",
   props: {
     board_name: String,
+    usernick:String,
     un:String,
   },
   methods: {
