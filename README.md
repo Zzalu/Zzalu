@@ -5,7 +5,7 @@
   **안녕하세요 SSAFY 8기 광주 공통 프로젝트 광주 1반 C109팀 입니다.**
 
 
-<img src="exec/image/Untitled.PNG">
+<img src="exec/pageImage/고독방내부.png">
 
 </br>
 
