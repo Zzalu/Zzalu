@@ -34,7 +34,7 @@
         @click="this.$router.go(-1)"
       />
     </span>
-    <div v-if="un==usernick"
+    <div v-if="un==user_id"
       class="absolute right-0"
       @click="[this.save_board_name2(this.board_name), this.$emit('EditMode')]"
     >
@@ -54,11 +54,13 @@ import { useStore } from "vuex";
 export default {
   setup() {
     const store = useStore();
+    const user_id = localStorage.getItem('current_userid')
 
     const save_board_name = (title) =>
       store.commit("boardListStore/NAME_CHANGE", title);
     return {
       save_board_name,
+      user_id
     };
   },
   name: "BoardTopNav",
