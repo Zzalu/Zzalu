@@ -52,7 +52,7 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    console.log(props);
+    // console.log(props);
     const router = useRouter();
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,

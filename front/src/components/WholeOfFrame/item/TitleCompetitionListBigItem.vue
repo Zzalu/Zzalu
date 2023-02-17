@@ -50,10 +50,10 @@ export default {
       today,
       (data) => {
         //제목학원 출력
-        console.log('[제목학원 respose] ' + JSON.stringify(data.data));
+        // console.log('[제목학원 respose] ' + JSON.stringify(data.data));
         local_title_competition = data.data;
-        console.log(local_title_competition);
-        console.log(local_title_competition.titleHakwonId);
+        // console.log(local_title_competition);
+        // console.log(local_title_competition.titleHakwonId);
         getBestComments(
         local_title_competition.titleHakwonId,
           {
@@ -61,10 +61,10 @@ export default {
             sort: 'POPULAR',
           },
       (data) => {
-        console.log('베스트댓글: ' + data.data);
-        console.log(data);
+        // console.log('베스트댓글: ' + data.data);
+        // console.log(data);
         local_best_comment = data.data;
-        console.log(local_best_comment);
+        // console.log(local_best_comment);
         local_param_store(local_title_competition, local_best_comment);
       },
       (error) => {
@@ -135,7 +135,7 @@ export default {
     getCurrentTitleCompetition();
 
 
-    console.log('create end');
+    // console.log('create end');
 
   },
   data() {
@@ -161,9 +161,9 @@ methods: {
         likeCnt: '',
       }]
     }
-    console.log('this: ' + this.title_competition);
-    console.log('this: ' + this.best_comment);
-    console.log(this.best_comment);
+    // console.log('this: ' + this.title_competition);
+    // console.log('this: ' + this.best_comment);
+    // console.log(this.best_comment);
   },
 
   goToTitleCompetition() {

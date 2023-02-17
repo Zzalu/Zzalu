@@ -58,8 +58,8 @@ export default {
     const store = useStore();
     const router = useRouter();
     const my_id = localStorage.getItem('current_userid');
-    console.log(props);
-    console.log(props.index);
+    // console.log(props);
+    // console.log(props.index);
     const follower = reactive(props.follower);
     const goToProfile = () => {
       router.push(`/profile/${follower.username}`);
@@ -67,10 +67,10 @@ export default {
     const isMyFollowPage = computed(
       () => localStorage.getItem('profile_user') == localStorage.getItem('current_userid'),
     );
-    console.log(isMyFollowPage);
+    // console.log(isMyFollowPage);
     const followRequest = () => {
-      console.log(follower.id);
-      console.log(props.index);
+      // console.log(follower.id);
+      // console.log(props.index);
       follow(
         follower.id,
         ({ data }) => {
@@ -84,7 +84,7 @@ export default {
       );
     };
     const unFollowRequest = () => {
-      console.log(follower.id);
+      // console.log(follower.id);
       unfollow(
         follower.id,
         ({ data }) => {
