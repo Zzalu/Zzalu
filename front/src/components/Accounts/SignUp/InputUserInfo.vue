@@ -81,7 +81,7 @@ export default {
       },
       nicknameState: false,
       usernameState: false,
-      pwdState: false,
+      pwdState: true
     })
     const errorMsgs = reactive({
       err: {
@@ -109,7 +109,7 @@ export default {
     })
     watch(() => state.credentials.password, (newValue, oldValue) => {
       if (newValue != oldValue) {
-        state.pwdState = false
+        state.pwdState = true
         errorMsgs.err.password= null
         errorMsgs.err.passwordCheck= null
         }
