@@ -30,9 +30,9 @@ export default {
     let title_competitions = ref();
     getFinishTitleCompetition(
       (data) => {
-        console.log(data);
+        // console.log(data);
         title_competitions.value = data.data;
-        console.log(title_competitions.value);
+        // console.log(title_competitions.value);
       },
       (error) => {
         console.log(error);

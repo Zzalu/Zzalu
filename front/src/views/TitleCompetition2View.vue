@@ -139,9 +139,9 @@ export default {
     this.web_stomp = Stomp.over(this.socket, options);
     this.init({ open_date: this.$route.params.open_date, size: 10 }).
       then(() => {
-        console.log('init!');
+        // console.log('init!');
         if (this.state == 'PROCEED') {
-          console.log('connet 함수 부른다')
+          // console.log('connet 함수 부른다')
           setTimeout(() => {
             this.connect();
           }, 1000);
@@ -180,7 +180,7 @@ export default {
         {},
         function (frame) {
           // 댓글 관련
-          console.log(frame);
+          // console.log(frame);
           console.log('통신 시작');
           local_web_stomp.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);

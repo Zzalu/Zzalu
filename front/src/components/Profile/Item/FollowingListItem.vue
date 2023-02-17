@@ -45,15 +45,15 @@ export default {
     const router = useRouter();
     // const profile_user_data = computed(() => store.state.profileStore.profile_user);
     // const profile_user_data = computed(() => localStorage.getItem('profile_user'));
-    console.log(props);
+    // console.log(props);
     const my_id = localStorage.getItem('current_userid');
     const following = reactive(props.following);
-    console.log(following.id);
+    // console.log(following.id);
     const goToProfile = () => {
       router.push(`/profile/${following.username}`);
     };
     const followRequest = () => {
-      console.log(following.id);
+      // console.log(following.id);
       follow(
         following.id,
         ({ data }) => {
@@ -67,7 +67,7 @@ export default {
       );
     };
     const unFollowRequest = () => {
-      console.log(following.id);
+      // console.log(following.id);
       unfollow(
         following.id,
         ({ data }) => {
