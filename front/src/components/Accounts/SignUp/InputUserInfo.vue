@@ -198,15 +198,15 @@ export default {
         this.state.pwdState = false
       }
       else {
-        this.state.pwdState = true
-      }
-      if ('passwordCheck' in errors) {
+        if ('passwordCheck' in errors) {
         errorMsgs.err.passwordCheck = errors['passwordCheck']
         this.state.pwdState = false
+        }
+        else {
+          this.state.pwdState = true
+        }
       }
-      else {
-        this.state.pwdState = true
-      }
+      
     }
 
 
