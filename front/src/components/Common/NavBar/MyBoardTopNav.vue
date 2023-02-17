@@ -66,7 +66,6 @@ export default {
   name: "BoardTopNav",
   props: {
     board_name: String,
-    usernick:String,
     un:String,
   },
   methods: {
