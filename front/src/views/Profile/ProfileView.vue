@@ -9,7 +9,9 @@
     <profile-info></profile-info>
     <user-stats></user-stats>
     <user-award></user-award>
-    <user-board></user-board>
+    <user-board
+    :username="username"
+    ></user-board>
     
     <div class="pb-12"></div>
     <main-bottom-nav></main-bottom-nav>
@@ -54,6 +56,7 @@ export default {
     const current_user = localStorage.getItem('current_userid');
     return {
       current_user,
+      username,
     };
   },
 };
