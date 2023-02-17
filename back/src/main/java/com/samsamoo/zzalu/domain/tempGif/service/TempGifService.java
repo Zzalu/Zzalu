@@ -1,5 +1,6 @@
 package com.samsamoo.zzalu.domain.tempGif.service;
 
+import com.samsamoo.zzalu.domain.tempGif.dto.TempGifResponse;
 import com.samsamoo.zzalu.global.advice.NotFoundException;
 import com.samsamoo.zzalu.infra.amazonS3.upLoader.S3Uploader;
 import com.samsamoo.zzalu.global.auth.sevice.JwtTokenProvider;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +92,7 @@ public class TempGifService {
         }
     }
 
-    public List<TempGif> getAllTempGif(String token) {
+    public List<TempGifResponse> getAllTempGif(String token) {
         Member member = jwtTokenProvider.getMember(token);
         List<TempGif> list = tempGifRepository.findAll();
         for(Iterator<TempGif> myItr = list.iterator(); myItr.hasNext();) {
@@ -99,13 +101,12 @@ public class TempGifService {
                 myItr.remove();
             }
         }
-//        for (TempGif tempGif : list) {
-//            if (tempGif.getAllowedMembers().contains(member)) {
-//                list.remove(tempGif);
-//            }
-//        }
-        Collections.reverse(list);
-        return list;
+        List<TempGifResponse> responses = new ArrayList<>();
+        for (TempGif tempGif : list) {
+           responses.add(new TempGifResponse(tempGif));
+        }
+        Collections.reverse(responses);
+        return responses;
     }
 
     public void deleteTempGif(Long tempId) {
