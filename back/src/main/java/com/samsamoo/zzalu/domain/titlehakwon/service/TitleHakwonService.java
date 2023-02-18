@@ -40,10 +40,10 @@ public class TitleHakwonService {
     }
 
     /**
-     * 매일 아침 10시 제목학원 오픈
+     * 매일 새벽 0시 1분에 제목학원 오픈
      */
 
-     @Scheduled(cron = "0 0 10 * * *")
+     @Scheduled(cron = "0 1 0 * * *")
     public void openTitleHakwon(){
 
         LocalDateTime current = LocalDateTime.now();
@@ -63,10 +63,10 @@ public class TitleHakwonService {
 
 
     /**
-     * 매일 저녁 10시 제목학원 닫기 , 좋아요 1/2/3/등 유저에게 수상 기록 저장
+     * 매일 저녁 11 시  58분 제목학원 닫기 , 좋아요 1/2/3/등 유저에게 수상 기록 저장
      */
 
-    @Scheduled(cron = "0 3 21 * * *")
+    @Scheduled(cron = "0 58 23 * * *")
     public  void setRank () {
 
         LocalDateTime current = LocalDateTime.now();
