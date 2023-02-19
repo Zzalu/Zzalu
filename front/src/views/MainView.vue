@@ -34,15 +34,16 @@ import RecommendedJjalList from '../components/Main/RecommendedJjalList';
 import PopularJjalList from '../components/Main/PopularJjalList';
 import HotChattingRoomList from '../components/Main/HotChattingRoomList';
 import ChatInfoModal from '../components/QuietChat/QuietChatList/ChatInfoModal';
-import HotCahttingRoomData from '../views/QuietChat/QuietChatListData.js';
 import { useStore } from 'vuex';
 import { computed } from '@vue/runtime-core';
 import { onBeforeMount } from '@vue/runtime-core';
+import router from '@/router';
 
 export default {
   name: 'MainView',
   setup() {
     const token = localStorage.getItem('token');
+    const first_login = localStorage.getItem('firstlogin');
     const store = useStore();
 
     const open_chat_info = computed(() => store.state.quietChatStore.open_chat_info);
@@ -65,6 +66,13 @@ export default {
       store.dispatch('quietChatStore/getHotQuietList');
       store.dispatch('zzalListStore/getPopularGIFList');
       store.commit('searchModalStore/default_select_num');
+      console.log(first_login);
+      if (first_login == 'false') {
+        setTimeout(() => {
+          localStorage.setItem('firstlogin', true)
+          router.go(0)
+        }, 100);
+      }
       if (token) {
         // console.log(token,'token');
         store.dispatch('zzalListStore/getRecommendGIFList');
@@ -90,11 +98,6 @@ export default {
     PopularJjalList,
     HotChattingRoomList,
     ChatInfoModal,
-  },
-  data() {
-    return {
-      chat_data: HotCahttingRoomData,
-    };
   },
   unmounted() {
     this.close_chat_info();

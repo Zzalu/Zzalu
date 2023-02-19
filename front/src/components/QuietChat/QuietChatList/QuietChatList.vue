@@ -89,9 +89,10 @@ export default {
   @apply col-span-8 bg-zz-p rounded-r-lg pl-2 flex flex-col;
 }
 .master-icon {
-  @apply mt-2 mr-1 text-zz-light-p text-xs;
+  @apply pt-2 mr-1 text-zz-light-p text-xs;
 }
 .master-p {
+  transform:translateY(-0.1rem);
   @apply pt-2 line-clamp-1 text-xs;
 }
 .title-p {

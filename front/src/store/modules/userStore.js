@@ -42,6 +42,7 @@ const userStore = {
       localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
+      localStorage.setItem('firstlogin', false)
     },
     DELETE_TEMP_USER(state) {
       state.temp.username = ''
@@ -178,6 +179,7 @@ const userStore = {
       context.commit('LOGOUT')
       localStorage.removeItem('current_userid')
       localStorage.removeItem('current_nickname')
+      localStorage.removeItem('firstlogin')
       localStorage.removeItem('stat_title')
       localStorage.removeItem('temp_email')
       localStorage.removeItem('profile_id')

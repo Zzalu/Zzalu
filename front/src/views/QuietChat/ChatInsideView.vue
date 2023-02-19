@@ -340,7 +340,7 @@ export default {
 
 .image-group {
   transform: translate(0.1rem, -1.5rem);
-  @apply flex items-end ml-14 flex-wrap mb-4 z-20;
+  @apply flex items-end ml-14 flex-nowrap mb-4 z-20;
 }
 .image-box {
   max-width: 75%;
