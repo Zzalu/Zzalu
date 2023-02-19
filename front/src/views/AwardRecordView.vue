@@ -19,7 +19,7 @@
       </div>
     </nav>
     <!-- <award-record-list :member_id="member_id" :sort="sort"></award-record-list> -->
-    <ol class="grid grid-cols-3 pb-16" v-if="awards==[]">
+    <ol class="grid grid-cols-3 pb-16" v-if="awards!=[]">
       <li v-for="award in awards" :key="award.titleHakwonId">
         <medal-item :award="award"></medal-item>
       </li>
