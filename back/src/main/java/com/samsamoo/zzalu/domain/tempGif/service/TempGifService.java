@@ -34,20 +34,19 @@ public class TempGifService {
     private final S3Uploader s3Uploader;
     public Long createGifReq(String token, TempGifRequest request) throws IOException {
         Member writer = jwtTokenProvider.getMember(token);
-//        checkManager(writer);
 
         if (request.getTempGifMultipartFile() != null) {
             String tempUrl = s3Uploader.upload(request.getTempGifMultipartFile(), "TempGif");
             request.setReturnUrl(tempUrl);
+        } else {
+            Gifs originGif = gifsRepository.findById(request.getOriginId())
+                    .orElseThrow(() -> new NotFoundException("해당 원본 gif를 찾을 수 없습니다."));
+            request.setReturnUrl(originGif.getGifPath());
         }
         TempGif tempGif = tempGifRepository.save(request.toEntity(writer));
         return tempGif.getId();
     }
-//    public void checkManager(Member member) {
-//        if (!member.getRoles().contains("MANAGER")) {
-//            throw new AuthorizationException();
-//        }
-//    }
+
     public Gifs returnGifs(Long gifsId) {
         return gifsRepository.findById(gifsId)
                 .orElseThrow(()-> new NotFoundException("해당 원본 gif를 찾을 수 없습니다."));

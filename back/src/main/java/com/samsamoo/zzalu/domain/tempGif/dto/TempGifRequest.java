@@ -36,6 +36,7 @@ public class TempGifRequest {
         } else { // update 요청
             // enum code D
             return TempGif.builder()
+                    .gifPath(returnUrl)
                     .tags(tags)
                     .relationsVideo(relationsVideo)
                     .description(description)
