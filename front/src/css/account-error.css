@@ -180,13 +180,13 @@
 }
 
 .settings-right-letter-off {
-  top: 22.17rem;
+  top: 17.70rem;
   right: 1.77rem;
   @apply absolute mx-6 text-xs font-spoq text-zz-light-p font-bold dark:text-white
 }
 
 .settings-right-letter-on {
-  top: 22.17rem;
+  top: 17.70rem;
   right:3.5rem;
   @apply absolute mx-6 text-xs font-spoq text-white font-bold
 }

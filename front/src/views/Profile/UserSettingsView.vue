@@ -9,12 +9,12 @@
           
       </button>
     </div >
-    <div class="flex">
+    <!-- <div class="flex">
       <font-awesome-icon icon="fa-solid fa-lock" class='settings-icon-aligned-left'/>
       <button class="settings-button" @click="goChangePwd">
         <div class="text-zz-light-p dark:text-white">비밀번호 변경</div>
         </button>
-    </div>
+    </div> -->
 
 
     <div class="flex" v-if="this.isManager=='true'">
