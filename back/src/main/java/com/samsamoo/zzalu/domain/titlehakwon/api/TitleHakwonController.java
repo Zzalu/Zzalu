@@ -43,7 +43,7 @@ public class TitleHakwonController {
 
         String url =  s3Uploader.upload(multipartFile, DIRNAME);
         if(url==""){
-            //return new ResponseEntity<String>("fail", HttpStatus.NO_CONTENT);
+
             return "r";
         }else{
             //타이틀 학원을 등록한다.
@@ -62,7 +62,7 @@ public class TitleHakwonController {
     }
 
     //제목 학원 등록하기
-    // (will) 지금은 url을 직접 입력해야 하지만 , s3에 저장하고 url을 리턴받아 저장할 계획
+
 
     @PostMapping("/upload")
     public  ResponseEntity<String>   uploadTitleHakwon(@RequestParam ("zzalUrl") String url) throws IOException{

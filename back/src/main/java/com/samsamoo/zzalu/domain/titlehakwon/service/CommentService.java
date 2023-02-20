@@ -111,27 +111,36 @@ public class CommentService {
 
         }
 
-
-
     private Page<Comment> fetchRecentCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
-        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
-        return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return commentRepository.findByIdLessThanAndTitleHakwonIdOrderByIdDesc(lastCommentId,titleHakwonId , pageRequest);
     }
 
     /**
      * 댓글 과거순 조회하기
      */
-    public List<CommentResponse> getPastCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String username){
+    public List<CommentResponse> getPastCommentList (Long titleHakwonId ,  Long lastCommentId , int limit  ,String token){
+
 
         Page<Comment> comments = fetchPastCommentPages(lastCommentId ,titleHakwonId,limit);
 
-        return getCommentList(comments.getContent(),username);
+        if(token== null || !jwtTokenProvider.validateToken(token)){
+            return getCommentList(comments.getContent(),null);
+        }else{
+            String username = jwtTokenProvider.getUserNameWithToken(token);
+            if(memberRepository.findByUsername(username).isPresent()){
+                return getCommentList(comments.getContent(),username);
+            }
+            return getCommentList(comments.getContent(),null);
+
+        }
+
     }
 
 
     private Page<Comment> fetchPastCommentPages(Long lastCommentId, Long titleHakwonId ,int size) {
-        PageRequest pageRequest = PageRequest.of(0, size); // 페이지네이션을 위한 PageRequest, 페이지는 0으로 고정한다.
-        return commentRepository.findByIdGreaterThanAndTitleHakwonId(lastCommentId,titleHakwonId , pageRequest); // JPA 쿼리 메소드
+        PageRequest pageRequest = PageRequest.of(0, size);
+        return commentRepository.findByIdGreaterThanAndTitleHakwonId(lastCommentId,titleHakwonId , pageRequest);
     }
 
 
@@ -142,10 +151,9 @@ public class CommentService {
         }else{
             //사용자가 로그인이 되어있는 경우 좋아요를 눌렀던 기록을 불러온다.
             List<CommentResponse> commentResponseList = new ArrayList<>();
-            System.out.println("[Service List size]" + commentList.size());
+
             for(Comment comment : commentList){
                 CommentResponse  commentResponse = new CommentResponse(comment);
-                System.out.println("[Service getCommentList]" + commentResponse.getContent());
 
                 //좋아요 누른 기록이 존재한다면
                 if(existCommentLikeWithUserName(comment.getId(),username)){
@@ -196,7 +204,6 @@ public class CommentService {
 
     /**
      * 댓글 수정
-     * 이 댓글을 작성한 사용자인지 아닌지 판단하게끔 백에서 해줘야하나?
      */
     public void updateComment (UpdateCommentRequest commentRequest){
 
