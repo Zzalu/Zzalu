@@ -123,6 +123,14 @@ export default {
     const open_date = route.params.open_date; // 제목학원 날짜
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
+
+     //! 소켓 관련
+    let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
+    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+    let ws = Stomp.over(sock, options);
+    
+
     let is_top = computed(() => store.state.titleCompetitionStore.is_top);
     // const state = ref(store.state.titleCompetitionStore.state);
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
@@ -131,11 +139,13 @@ export default {
     store
       .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
       .then(() => {
+        console.log("[제목학원 상태값]"+state.value);
         if (state.value == 'PROCEED') {
           console.log('connet 함수 부른다')
-          setTimeout(() => {
-            connect();
-          }, 1000);
+          // setTimeout(() => {
+          //   connect();
+          // }, 1000);
+          connect();
         }
       })
       .catch((error) => {
@@ -196,24 +206,28 @@ export default {
       document.querySelector('#comment-main').scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    //! 소켓 관련
-    let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-    let ws = Stomp.over(sock, options);
+    // //! 소켓 관련
+    // let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
+    // // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+    // let ws = Stomp.over(sock, options);
     function connect() {
       // let start = new Date();
       // console.log(`시작: ` + start);
       console.log('connect 시작');
-      let localWs = ws;
-      let localSock = sock;
-      localWs.connect(
+      // let sock = sock;
+      // let localWs = ws;
+      // console.log(localWs);
+      // console.log(sock);
+    console.log(ws);
+    console.log(sock);
+      ws.connect(
         {},
         function (frame) {
           // 댓글 관련
           console.log(frame);
           console.log('통신 시작');
-          localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
+          ws.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
             console.log('받아옵니다')
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
@@ -234,7 +248,7 @@ export default {
             }
           });
           // 좋아요 관련
-          localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
+          ws.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             let recv_like_data = JSON.parse(message.body);
             document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
           });
@@ -242,8 +256,8 @@ export default {
         function (error) {
           console.log(error);
           setTimeout(function () {
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-            localWs = Stomp.over(localSock);
+            sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+            ws = Stomp.over(sock);
           }, 10 * 1000);
         },
       );
@@ -308,7 +322,7 @@ export default {
   @apply fixed bottom-0 w-full top-72 overflow-y-scroll h-1/2;
 }
 .comment-list {
-  @apply w-full mt-2 h-auto font-spoq;
+  @apply w-full mt-2 mb-5 h-auto font-spoq;
 }
 
 .comment-list ::-webkit-scrollbar {

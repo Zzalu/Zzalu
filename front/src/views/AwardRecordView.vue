@@ -19,11 +19,14 @@
       </div>
     </nav>
     <!-- <award-record-list :member_id="member_id" :sort="sort"></award-record-list> -->
-    <ol class="grid grid-cols-3 pb-16" v-if="awards==[]">
+    <ol class="grid grid-cols-3 pb-16" v-if="awards!=[]">
       <li v-for="award in awards" :key="award.titleHakwonId">
         <medal-item :award="award"></medal-item>
       </li>
     </ol>
+    <div v-else class="flex justify-center mt-10 font-spoq">
+      <p>수상하게도 아직 수상한 기록이 없네요</p>
+    </div>
 
     <main-bottom-nav></main-bottom-nav>
   </div>
@@ -39,7 +42,7 @@ import { getAwardRecord } from '@/api/titleCompetition.js';
 import MedalItem from '../components/TitleCompetition/item/MedalItem.vue';
 export default {
   components: { OnlyGoBackTopNav, MainBottomNav, MedalItem },
-  name: 'UserAward',
+  name: 'AwardRecordView',
   setup() {
     const route = useRoute();
     const member_id = route.params.member_id;
