@@ -5,7 +5,10 @@
     </div>
     <div v-if="user_board_list" class="flex flex-wrap justify-center">
       <div v-for="(board_list, i) in user_board_list.boards" :key="i">
-        <BoardTitleListItem :board_list="board_list" />
+        <BoardTitleListItem 
+        :board_list="board_list"
+        :username="username"
+        />
       </div>
     </div>
   </div>
@@ -35,6 +38,9 @@ export default {
       profile_user_data,
     };
   },
+  props: {
+    username : String,
+  }
 };
 </script>
 

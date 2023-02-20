@@ -14,7 +14,11 @@
         <div v-if="relationsVideo">관련 동영상: {{ this.relationsVideo }}</div>
         <div v-if="description">짤 설명: {{ this.description }}</div>
         <div>작성자 ID: {{ this.writerUsername }}</div>
-        <div v-if="originGifsId" class="mb-2">원본 gif 게시글: {{ this.originGifsId }}</div>
+        <div v-if="originGifsId" class="mb-2">원본 gif 게시글: 
+          <button class="bg-zz-s px-2 rounded-sm" @click="direct_to_origin">
+          {{ this.originGifsId }}
+          </button>
+        </div>
         <button class="bg-zz-error px-2 rounded-sm" @click="delete_temp_gif">
           <font-awesome-icon icon="fa-solid fa-circle-xmark" />
           승인 거부하기
@@ -26,6 +30,7 @@
 
 <script>
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { toRefs } from 'vue';
 import { ref } from 'vue';
 import Swal from 'sweetalert2';
@@ -47,17 +52,19 @@ export default {
     const { originGifsId } = toRefs(props.tempGif);
     const isDisplay = ref(true);
     const store = useStore();
+    const router = useRouter();
 
     const put_temp_gif = () => {
       store
         .dispatch('tempGifStore/putTempGif', id.value)
         .then((res) => {
           console.log(res);
-          if (permittedCount.value >= 2) {
-            isDisplay.value = false;
-          } else {
-            permittedCount.value = permittedCount.value + 1;
-          }
+          isDisplay.value = false;
+          // if (permittedCount.value >= 2) {
+          //   isDisplay.value = false;
+          // } else {
+          //   permittedCount.value = permittedCount.value + 1;
+          // }
         })
         .catch((err) => {
           console.log(err);
@@ -78,6 +85,10 @@ export default {
           console.log(err);
         });
     };
+    const direct_to_origin = () => {
+      router.push(`/zzal/${originGifsId.value}`)
+
+    };
     return {
       id,
       gifPath,
@@ -91,6 +102,12 @@ export default {
       put_temp_gif,
       delete_temp_gif,
       isDisplay,
+      direct_to_origin,
+    };
+  },
+  data() {
+    return {
+      isAllowed: false,
     };
   },
 };

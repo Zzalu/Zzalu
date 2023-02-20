@@ -32,7 +32,7 @@
         <!-- 댓글 main -->
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
-          <nav class="fixed z-20 w-11/12 flex justify-between bg-white border-b-2 border-zz-light-input">
+          <nav class="fixed z-20 w-11/12 flex justify-between bg-white border-b-2 border-zz-light-input dark:bg-zz-bd">
             <div class="flex items-end">
               <h2 class="text-xl text-zz-p font-spoq">댓글</h2>
               <span class="text-zz-p font-spoq ml-1">({{ total_comment_cnt }})</span>
@@ -82,8 +82,7 @@
           </div>
 
           <!-- 댓글 리스트 -->
-          >
-          <comment-list ref="commentListComponent" class="comment-list"></comment-list>
+          <comment-list ref="commentListComponent" class="comment-list pt-6"></comment-list>
         </div>
       </div>
       <!-- 댓글 input -->
@@ -216,15 +215,19 @@ export default {
       // let start = new Date();
       // console.log(`시작: ` + start);
       console.log('connect 시작');
-      let localWs = ws;
-      let localSock = sock;
-      localWs.connect(
+      // let sock = sock;
+      // let localWs = ws;
+      // console.log(localWs);
+      // console.log(sock);
+    console.log(ws);
+    console.log(sock);
+      ws.connect(
         {},
         function (frame) {
           // 댓글 관련
           console.log(frame);
           console.log('통신 시작');
-          localWs.subscribe('/sub/title-hakwon/comments/', function (message) {
+          ws.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
             console.log('받아옵니다')
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
@@ -245,7 +248,7 @@ export default {
             }
           });
           // 좋아요 관련
-          localWs.subscribe('/sub/title-hakwon/comments/likes', function (message) {
+          ws.subscribe('/sub/title-hakwon/comments/likes', function (message) {
             let recv_like_data = JSON.parse(message.body);
             document.querySelector(`#comment-id-${recv_like_data.id}-like-cnt`).innerHTML = recv_like_data.likeNum;
           });
@@ -253,8 +256,8 @@ export default {
         function (error) {
           console.log(error);
           setTimeout(function () {
-            localSock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-            localWs = Stomp.over(localSock);
+            sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+            ws = Stomp.over(sock);
           }, 10 * 1000);
         },
       );
@@ -319,7 +322,7 @@ export default {
   @apply fixed bottom-0 w-full top-72 overflow-y-scroll h-1/2;
 }
 .comment-list {
-  @apply w-full mt-2 h-auto font-spoq;
+  @apply w-full mt-2 mb-5 h-auto font-spoq;
 }
 
 .comment-list ::-webkit-scrollbar {

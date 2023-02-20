@@ -227,11 +227,12 @@ public class ChatRoomController {
     public List<ChatRoomListDto> findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(@RequestParam(name = "keyword") String keyword, @RequestHeader(value = "Authorization")String bearerToken){
         String token = bearerToken.substring(7);
         Member requestMember = jwtTokenProvider.getMember(token);
-        List<ChatRoom> chatRoomList = chatRoomService.findAllByMemberIdAndTagsContainsOrRoomNameContainsOrderByLikeCountDesc(requestMember.getId(), keyword, keyword);
+        List<ChatRoom> chatRoomList = chatRoomService.findAllByTagsContainsOrRoomNameContainsOrderByLikeCountDesc(keyword, keyword);
         List<ChatRoomListDto> chatRoomListDtos = new ArrayList<>();
         for(ChatRoom chatRoom : chatRoomList) {
-            ChatRoomListDto chatRoomListDto = new ChatRoomListDto(chatRoom);
-            chatRoomListDtos.add(chatRoomListDto);
+            if(chatRoom.getMemberId().equals(requestMember.getId())) {
+                chatRoomListDtos.add(new ChatRoomListDto(chatRoom));
+            }
         }
         return chatRoomListDtos;
     }

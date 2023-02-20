@@ -77,7 +77,10 @@ export default {
       store.dispatch("quietChatStore/noSearchCreatedRecent", user_id);
     };
     const search_created_recent = (e) => {
-      store.dispatch("quietChatStore/SearchCreatedRecent", e);
+      let tmp = []
+      tmp.push(e)
+      tmp.push(user_id)
+      store.dispatch("quietChatStore/SearchCreatedRecent", tmp);
     }
     const nosearch_created_like = () => {
       store.dispatch("quietChatStore/noSearchCreatedLike", user_id)

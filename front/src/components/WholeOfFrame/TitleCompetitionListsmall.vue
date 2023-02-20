@@ -1,7 +1,7 @@
 <template>
   <div>
-    <ol class="flex flex-wrap justify-center">
-      <li v-for="title_competition in title_competitions" :key="title_competition.titleHakwonId">
+    <ol class="flex flex-wrap justify-center" v-if="title_competitions">
+      <li v-for="title_competition in title_competitions.slice().reverse()" :key="title_competition.titleHakwonId">
         <TitleCompetitionListItemsmall
           class="academy-list"
           :title_competition="title_competition"

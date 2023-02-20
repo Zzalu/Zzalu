@@ -51,9 +51,14 @@ export default {
     }
   },
   props : {
-    room_name : String,
+    first_room_name : String,
     description : String,
     hashtags : Array,
+  },
+  computed: {
+    room_name() {
+      return this.first_room_name
+    }
   },
   data() {
     return {
@@ -69,12 +74,23 @@ export default {
         }
         this.tags += ','
       }
+      let queit_room_name
+      if (this.room_name.length>=3) {
+        if (this.room_name[this.room_name.length-3] == "고" && this.room_name[this.room_name.length-2] == "독" && this.room_name[this.room_name.length-1] == "방" ) {
+          this.room_name = this.room_name.substring(0,this.room_name.length-3)
+          queit_room_name = this.room_name.substring(0,this.room_name.length-3)
+        } else {
+          queit_room_name = this.room_name
+        } 
+      } else {
+        queit_room_name = this.roome_name
+      }
       let room_data = {
         "userName" : localStorage.getItem("current_nickname"),
         "memberId" : localStorage.getItem("current_pk"),
         "imagePath" : this.image_path,
         "tags" : this.tags,
-        "roomName" : this.room_name,
+        "roomName" : queit_room_name,
         "description" : this.description
       }
       this.create_quiet_room(room_data)
