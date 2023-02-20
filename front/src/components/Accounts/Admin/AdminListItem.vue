@@ -1,22 +1,22 @@
 <template>
   <div>
     <div v-if="this.isDisplay" class="bg-zz-p rounded-xl m-2">
-      <div class="text-white font-spoq relative">
-        <div class="pt-2 pl-2"><strong>{{ this.writerUsername }}</strong> 님의 
+      <div class="text-black font-spoq relative dark:text-white">
+        <div class="pt-2 pl-2 mb-6"><strong>{{ this.writerUsername }}</strong> 님의 
           <span v-if="this.requestType=='CREATE'"><strong class="text-lg">업로드</strong> 요청 # {{ this.id }}</span>
           <span v-if="this.requestType=='UPDATE'"><strong class="text-lg">수정</strong> 요청 # {{ this.id }}</span>
         </div>
-        <div v-if="originGifsId" class="pl-2 mt-2 text-end text-sm mr-2 mb-2" style="transform:translateY(-1rem)"
+        <div v-if="originGifsId" class="pl-2 mt-2 text-sm mb-2 absolute right-2" style="transform:translateY(-2rem)"
          @click="GoToDetail(this.originGifsId)">원본 확인하기 <font-awesome-icon icon="fa-solid fa-circle-arrow-right" class="move"/></div>
-        <img v-if="gifPath" :src="`${this.gifPath}`" alt="" class="col-span-2 justify-center h-40 mx-auto my-6" />
+        <img v-if="gifPath" :src="`${this.gifPath}`" alt="" class="col-span-2 justify-center h-40 mx-auto mb-6 rounded-lg" style="max-width:97%" />
         <div v-if="tags" class="pl-2 mb-2"><strong>태그:</strong> {{ this.tags }}</div>
-        <div v-if="relationsVideo" class="pl-2 mb-2"><strong>관련 동영상:</strong> {{ this.relationsVideo }}</div>
+        <div v-if="relationsVideo" class="pl-2 mb-2 line-clamp-6 break-all"><strong>관련 동영상:</strong> {{ this.relationsVideo }}</div>
         <div v-if="description" class="pl-2 mb-2"><strong>짤 설명:</strong> {{ this.description }}</div>
-        <div class="flex items-start place-content-evenly">
+        <div class="flex items-start place-content-evenly text-xs">
           <button class="bg-zz-s px-2 rounded-md mb-4 py-2" @click="put_temp_gif">
             승인 횟수 추가하기
-            <font-awesome-icon icon="fa-solid fa-thumbs-up" />
-            :
+            <font-awesome-icon icon="fa-solid fa-thumbs-up"  class="ml-1"/>
+            
             {{ this.permittedCount }}
           </button>
           <button class="bg-zz-error px-2 rounded-md py-2" @click="delete_temp_gif">
@@ -121,7 +121,7 @@ export default {
 
 <style scoped>
 .move {
-  transform:translate(-3rem,-1.5rem);
+  transform:translate(-1.5rem,-1.5rem);
   @apply text-xl absolute
 }
 </style>
