@@ -208,5 +208,5 @@
 /* 프로필 */
 .profile-title {
   word-break: keep-all;
-  @apply text-zz-p font-bold font-spoq text-lg
+  @apply text-zz-p font-bold font-spoq text-xl
 }

@@ -59,7 +59,7 @@
             </div>
             <div
               v-show="sort_type != 'LATEST' && socket_comment_cnt"
-              class="flex items-center fixed right-1/2 bg-zz-p p-2 rounded-3xl translate-x-1/2 translate-y-1/2"
+              class="flex items-center fixed right-1/2 left-1/2 bg-zz-p p-2 rounded-3xl translate-x-1/2 translate-y-1/2"
               @click="clickSortBtn('LATEST')"
             >
               <font-awesome-icon icon="fa-solid fa-bell" class="mr-1 text-xs" />

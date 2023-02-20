@@ -1,24 +1,29 @@
 <template>
   <div>
-    <div v-if="this.isDisplay" class="bg-zz-p rounded-xl p-8 m-2">
-      <div class="text-white font-spoq">
-        <button class="bg-zz-s px-2 rounded-sm mb-4" @click="put_temp_gif">
-          승인 횟수 추가하기
-          <font-awesome-icon icon="fa-solid fa-thumbs-up" />
-          :
-          {{ this.permittedCount }}
-        </button>
-        <div>{{ this.requestType }} 요청 # {{ this.id }}</div>
-        <img v-if="gifPath" :src="`${this.gifPath}`" alt="" class="col-span-2 justify-center h-40" />
-        <div v-if="tags">태그: {{ this.tags }}</div>
-        <div v-if="relationsVideo">관련 동영상: {{ this.relationsVideo }}</div>
-        <div v-if="description">짤 설명: {{ this.description }}</div>
-        <div>작성자 ID: {{ this.writerUsername }}</div>
-        <div v-if="originGifsId" class="mb-2">원본 gif 게시글: {{ this.originGifsId }}</div>
-        <button class="bg-zz-error px-2 rounded-sm" @click="delete_temp_gif">
-          <font-awesome-icon icon="fa-solid fa-circle-xmark" />
-          승인 거부하기
-        </button>
+    <div v-if="this.isDisplay" class="bg-zz-p rounded-xl m-2">
+      <div class="text-white font-spoq relative">
+        <div class="pt-2 pl-2"><strong>{{ this.writerUsername }}</strong> 님의 
+          <span v-if="this.requestType=='CREATE'"><strong class="text-lg">업로드</strong> 요청 # {{ this.id }}</span>
+          <span v-if="this.requestType=='UPDATE'"><strong class="text-lg">수정</strong> 요청 # {{ this.id }}</span>
+        </div>
+        <div v-if="originGifsId" class="pl-2 mt-2 text-end text-sm mr-2 mb-2" style="transform:translateY(-1rem)"
+         @click="GoToDetail(this.originGifsId)">원본 확인하기 <font-awesome-icon icon="fa-solid fa-circle-arrow-right" class="move"/></div>
+        <img v-if="gifPath" :src="`${this.gifPath}`" alt="" class="col-span-2 justify-center h-40 mx-auto my-6" />
+        <div v-if="tags" class="pl-2 mb-2"><strong>태그:</strong> {{ this.tags }}</div>
+        <div v-if="relationsVideo" class="pl-2 mb-2"><strong>관련 동영상:</strong> {{ this.relationsVideo }}</div>
+        <div v-if="description" class="pl-2 mb-2"><strong>짤 설명:</strong> {{ this.description }}</div>
+        <div class="flex items-start place-content-evenly">
+          <button class="bg-zz-s px-2 rounded-md mb-4 py-2" @click="put_temp_gif">
+            승인 횟수 추가하기
+            <font-awesome-icon icon="fa-solid fa-thumbs-up" />
+            :
+            {{ this.permittedCount }}
+          </button>
+          <button class="bg-zz-error px-2 rounded-md py-2" @click="delete_temp_gif">
+            <font-awesome-icon icon="fa-solid fa-circle-xmark" />
+            승인 거부하기
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -93,7 +98,17 @@ export default {
       isDisplay,
     };
   },
+  methods: {
+    GoToDetail(gif_id) {
+      this.$router.push({name: 'zzal', params: {zzal_id: gif_id}})
+    }
+  }
 };
 </script>
 
-<style></style>
+<style scoped>
+.move {
+  transform:translate(-3rem,-1.5rem);
+  @apply text-xl absolute
+}
+</style>

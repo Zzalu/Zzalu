@@ -1,7 +1,7 @@
 <template>
-  <only-go-back-top-nav></only-go-back-top-nav>
+  <only-go-back-top-nav class="z-50"></only-go-back-top-nav>
   <div>
-    <h1 class="profile-title">이런 짤들이 승인을 기다리고 있어요.</h1>
+    <h1 class="profile-title flex justify-center pt-2 text-xl">이런 짤들이 승인을 기다리고 있어요!</h1>
     <br>
     <div class="grid-cols-2">
       <div v-for="(tempGif,i) in tempGifList" :key="i">
@@ -11,6 +11,7 @@
 
     </div>
   </div>
+  <div class="pb-14"></div>
   <main-bottom-nav></main-bottom-nav>
 </template>
 

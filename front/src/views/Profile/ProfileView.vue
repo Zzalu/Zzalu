@@ -1,10 +1,10 @@
 <template>
   <div>
     <div v-if="this.current_user == this.userName">
-      <my-profile-top-nav></my-profile-top-nav>
+      <my-profile-top-nav class="z-50"></my-profile-top-nav>
     </div>
     <div v-if="this.current_user != this.userName">
-      <only-go-back-top-nav></only-go-back-top-nav>
+      <only-go-back-top-nav class="z-50"></only-go-back-top-nav>
     </div>
     <profile-info></profile-info>
     <user-stats></user-stats>
