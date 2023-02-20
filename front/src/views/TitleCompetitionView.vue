@@ -129,7 +129,7 @@ export default {
     // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
     let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
     let ws = Stomp.over(sock, options);
-    
+
 
     let is_top = computed(() => store.state.titleCompetitionStore.is_top);
     // const state = ref(store.state.titleCompetitionStore.state);
@@ -137,7 +137,11 @@ export default {
     // store.dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 });
 
     store
-      .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
+      .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
+        console.log('ㄱㄱ');
+        sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+        ws = Stomp.over(sock, options);
+      })
       .then(() => {
         console.log("[제목학원 상태값]"+state.value);
         if (state.value == 'PROCEED') {
