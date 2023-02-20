@@ -7,7 +7,6 @@
         <title-competition-list-item
           class="academy-list"
           :title_competition="title_competition"
-
         />
       </li>
     </ol>

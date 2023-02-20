@@ -115,11 +115,11 @@ export default {
     GoToDetail(gif_id) {
       this.$router.push({name: 'zzal', params: {zzal_id: gif_id}})
     }
-  }
+  },
 };
 </script>
 
-<style scoped>
+<style scoped lang="postcss">
 .move {
   transform:translate(-1.5rem,-1.5rem);
   @apply text-xl absolute
