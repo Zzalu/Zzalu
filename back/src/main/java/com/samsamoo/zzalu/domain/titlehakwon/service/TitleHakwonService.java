@@ -89,6 +89,10 @@ public class TitleHakwonService {
 
         }
 
+        //수상 기록 저장 후 오늘의 제목학원 종료하기
+        titleHakwon.setState(TitleHakwonState.DONE);
+        titleHackwonRepository.save(titleHakwon);
+
     }
 
     /**
