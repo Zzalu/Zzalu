@@ -25,9 +25,9 @@
       </div>
       <div
         v-if="sort_type == 'POPULAR' && (index == 3 || index == 4)"
-        class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
+        class="bg-zz-p absolute flex flex-row justify-center items-center w-12 my-2 text-white rounded right-12"
       >
-        <p>BEST {{ index + 1 }}</p>
+        <p>{{ index + 1 }}위</p>
       </div>
       <div class="flex items-center mb-2">
         <div class="w-6 h-6 rounded-full mr-2" @click="goToProfile">
