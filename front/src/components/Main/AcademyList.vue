@@ -2,8 +2,8 @@
   <div>
     <p class="focus-text">역대 제목학원 명예의 전당</p>
     <hr class="mb-3 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
-    <ol class="items">
-      <li v-for="title_competition in title_competitions" :key="title_competition.titleHakwonId">
+    <ol class="items" v-if="title_competitions">
+      <li v-for="title_competition in title_competitions.slice().reverse()" :key="title_competition.titleHakwonId">
         <title-competition-list-item
           class="academy-list"
           :title_competition="title_competition"

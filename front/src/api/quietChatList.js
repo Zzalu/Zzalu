@@ -53,7 +53,7 @@ function noSearchCreatedRecentroom(data, res, err) {
 }
 
 function SearchCreatedRecentroom(data, res, err) {
-    authapi.get(`/chat/member-order-lastactivation?memberId=${data}`)
+    authapi.get(`/chat/search-member-order-lastactivation?keyword=${data[0]}&memberId=${data[1]}`)
         .then(res).catch(err)
 }
 

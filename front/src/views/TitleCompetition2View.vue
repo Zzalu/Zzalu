@@ -32,7 +32,7 @@
         <!-- 댓글 main -->
 
         <div class="comment-main" id="comment-main" @scroll="handleCommentListScroll">
-          <nav class="fixed z-20 w-11/12 flex justify-between bg-white border-b-2 border-zz-light-input">
+          <nav class="fixed z-20 w-11/12 flex justify-between bg-transparent border-b-2 border-zz-light-input">
             <div class="flex items-end">
               <h2 class="text-xl text-zz-p font-spoq">댓글</h2>
               <span class="text-zz-p font-spoq ml-1">({{ total_comment_cnt }})</span>

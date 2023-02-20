@@ -4,7 +4,7 @@
       <!-- 아이콘 날짜 사진 -->
       <img :src="title_competition.zzalUrl" class="title-competiton-img" alt="" />
     </div>
-    <div class="border-l-2 border-b-2 border-r-2 h-20 rounded-b-2xl border-white dark:border-zz-dark-div">
+    <div class="h-20 border-white dark:border-zz-dark-div">
       <div class="flex">
         <div>
           <!-- 컨텐트 -->
