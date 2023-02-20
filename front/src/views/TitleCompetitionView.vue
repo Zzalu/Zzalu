@@ -124,6 +124,14 @@ export default {
     const open_date = route.params.open_date; // 제목학원 날짜
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
+
+     //! 소켓 관련
+    let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
+    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+    let ws = Stomp.over(sock, options);
+    
+
     let is_top = computed(() => store.state.titleCompetitionStore.is_top);
     // const state = ref(store.state.titleCompetitionStore.state);
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
@@ -132,11 +140,13 @@ export default {
     store
       .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 })
       .then(() => {
+        console.log("[제목학원 상태값]"+state.value);
         if (state.value == 'PROCEED') {
           console.log('connet 함수 부른다')
-          setTimeout(() => {
-            connect();
-          }, 1000);
+          // setTimeout(() => {
+          //   connect();
+          // }, 1000);
+          connect();
         }
       })
       .catch((error) => {
@@ -197,11 +207,11 @@ export default {
       document.querySelector('#comment-main').scrollTo({ top: 0, behavior: 'smooth' });
     };
 
-    //! 소켓 관련
-    let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
-    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
-    let ws = Stomp.over(sock, options);
+    // //! 소켓 관련
+    // let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
+    // // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    // let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+    // let ws = Stomp.over(sock, options);
     function connect() {
       // let start = new Date();
       // console.log(`시작: ` + start);
