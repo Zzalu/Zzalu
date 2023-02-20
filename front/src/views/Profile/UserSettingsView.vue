@@ -40,13 +40,13 @@
       <button class="settings-button">
         <div class="text-zz-light-p dark:text-white">다크모드</div>
         </button>
-      <font-awesome-icon icon="fa-solid fa-toggle-off" class='settings-toggle-right'/>
+      <font-awesome-icon icon="fa-solid fa-toggle-off" class='settings-toggle-right btn1'/>
       <div class="settings-right-letter-off">OFF</div>
     </div>
     <div class="flex" @click="toggleDark()" v-if="isDark==false">
       <font-awesome-icon icon="fa-regular fa-moon" class='settings-icon-aligned-left'/>
       <button class="settings-button">다크모드</button>
-      <font-awesome-icon icon="fa-solid fa-toggle-on" class='settings-toggle-right'/>
+      <font-awesome-icon icon="fa-solid fa-toggle-on" class='settings-toggle-right btn2'/>
       <div class="settings-right-letter-on">ON</div>
     </div>
   </div>
@@ -119,5 +119,25 @@ export default {
 
 .settings-icon-crown {
   @apply absolute mx-4 my-5 h-8 text-zz-light-p dark:text-white
+}
+
+@keyframes btn_move {
+  0% {
+    @apply absolute mx-5 my-5 h-8 dark:text-white
+  }
+  100% {
+    @apply absolute right-6 mx-5 my-2 h-14 dark:text-white
+  }
+}
+.btn1 {
+  animation: btn_move;
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+}
+
+.btn2 {
+  animation: btn_move;
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
 }
 </style>

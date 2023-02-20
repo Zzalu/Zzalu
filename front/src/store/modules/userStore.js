@@ -42,6 +42,7 @@ const userStore = {
       localStorage.setItem('current_pk', loginData.data.id)
       localStorage.setItem('token', loginData.data.accessToken)
       localStorage.setItem('isManager', loginData.data.isManager)
+      localStorage.setItem('firstlogin', false)
     },
     DELETE_TEMP_USER(state) {
       state.temp.username = ''
@@ -184,6 +185,7 @@ const userStore = {
       localStorage.removeItem('profile_user')
       localStorage.removeItem('isManager')
       localStorage.removeItem('stat_num')
+      localStorage.removeItem('firstlogin')
     },
     // ----------------------------------------------------------
     // 아이디찾기

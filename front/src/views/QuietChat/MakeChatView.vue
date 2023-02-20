@@ -4,7 +4,7 @@
     <div v-if="create_check" class="bg-negative"></div>
     <div v-if="create_check">
       <CannotEditModal @close-modal="create_check = $event"
-      :room_name="room_name_input"
+      :first_room_name="room_name_input"
       :description="description_input"
       :hashtags="hashtags"
       class="z-30"

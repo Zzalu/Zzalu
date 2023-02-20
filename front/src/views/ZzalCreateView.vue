@@ -47,7 +47,7 @@
     </div>
 
     <div class="hashtag-contain">
-      <div class="hashtag-div">
+      <div class="hashtag-div" v-if="tags[0] != ''">
         <div v-for="(hashtag, i) in tags" :key="i" class="relative">
           <div class="hashtag-text">{{ hashtag }}</div>
           <div class="hashtag-deleted">
@@ -228,11 +228,11 @@ export default {
 .profile-image {
   width: 200px;
   height: 200px;
-  background-size: contain;
+  background-size: cover;
   /* max-width: 100px;
     max-height: 100px; */
   /* object-fit: cover; */
-  @apply border-2;
+  @apply border-2 bg-no-repeat bg-center;
 }
 
 /* .view-count {
