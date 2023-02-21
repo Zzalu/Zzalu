@@ -8,7 +8,7 @@ export default class Validations {
   }
 
   static idNaming(name) {
-    const alphanumeric = /^[0-9a-zA-Z].{2,12}$/;
+    const alphanumeric = /^[0-9a-zA-Z]{2,12}$/;
     if (!name.match(alphanumeric)) {
       return false;
     }
