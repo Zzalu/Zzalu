@@ -31,7 +31,7 @@
         <!-- 좋아요 -->
         <div class="title-competiton-button-contain">
           <font-awesome-icon icon="fa-solid fa-heart" class="title-competiton-button-icon" />
-          <p class="title-competiton-button-text mb-1">{{ best_comment_like }}</p>
+          <p class="title-competiton-button-text">{{ best_comment_like }}</p>
         </div>
       </div>
       <!-- 내용 -->
