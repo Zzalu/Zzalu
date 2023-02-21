@@ -9,9 +9,9 @@
 
         <header class="title-header">
           <div :class=" connected ? `text-black` : `text-zz-s`">
-            <span class="text-xs font-medium font-spoq">{{ open_date }}</span>
+            <span class="text-xs font-medium font-spoq dark:text-white">{{ open_date }}</span>
             <h1 v-if="state == 'DONE'" class="text-lg font-bold font-spoq">그 시절, 우리가 좋아했던 제목학원</h1>
-            <h1 v-else class="text-xl font-bold font-spoq">오늘의 제목학원</h1>
+            <h1 v-else class="text-xl font-bold font-spoq dark:text-white">오늘의 제목학원</h1>
           </div>
           <div class="whole-of-frame-btn">
             <button class="text-xs text-white font-spoq" @click="GoToWholeOfFrame">역대 제목학원</button>
