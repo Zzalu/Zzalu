@@ -8,7 +8,7 @@
         <!-- <header class="relative w-full flex flex-col items-center">` -->
 
         <header class="title-header">
-          <div>
+          <div :class=" connected ? `text-black` : `text-zz-s`">
             <span class="text-xs font-medium font-spoq">{{ open_date }}</span>
             <h1 v-if="state == 'DONE'" class="text-lg font-bold font-spoq">그 시절, 우리가 좋아했던 제목학원</h1>
             <h1 v-else class="text-xl font-bold font-spoq">오늘의 제목학원</h1>
@@ -115,6 +115,11 @@ export default {
     MainBottomNav,
     CommentInput,
   },
+  methods: {
+    test() {
+      console.log('이거부름');
+    }
+  },
   name: 'TitleCompetitionView',
   setup() {
     const store = useStore();
@@ -123,6 +128,7 @@ export default {
     const open_date = route.params.open_date; // 제목학원 날짜
     const isScrolled = ref(null);
     const zzalComponent = ref(null);
+    let connected = ref(false);
 
      //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
@@ -138,14 +144,14 @@ export default {
 
     store
       .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
-        console.log('ㄱㄱ');
+        // console.log('ㄱㄱ');
         sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
         ws = Stomp.over(sock, options);
       })
       .then(() => {
-        console.log("[제목학원 상태값]"+state.value);
+        // console.log("[제목학원 상태값]"+state.value);
         if (state.value == 'PROCEED') {
-          console.log('connet 함수 부른다')
+          // console.log('connet 함수 부른다')
           // setTimeout(() => {
           //   connect();
           // }, 1000);
@@ -218,22 +224,25 @@ export default {
     function connect() {
       // let start = new Date();
       // console.log(`시작: ` + start);
-      console.log('connect 시작');
+      // console.log('connect 시작');
       // let sock = sock;
       // let localWs = ws;
       // console.log(localWs);
       // console.log(sock);
-    console.log(ws);
-    console.log(sock);
+    // console.log(ws);
+    // console.log(sock);
       ws.connect(
         {},
-        function (frame) {
+        function () {
           // 댓글 관련
-          console.log(frame);
+          // console.log(frame);
           console.log('통신 시작');
+          connected.value = true
+          // this.test()
+          console.log(connected.value)
           ws.subscribe('/sub/title-hakwon/comments/', function (message) {
             let recv_comment_data = JSON.parse(message.body);
-            console.log('받아옵니다')
+            // console.log('받아옵니다')
             store.dispatch('titleCompetitionStore/plusTotalCommentCnt');
             if (sort_type.value == 'LATEST') {
               // 댓글 총 개수 바꾸기
@@ -299,8 +308,10 @@ export default {
       goToTop,
       socket_comment_cnt,
       socket_comments,
+      connected,
     };
   },
+
 };
 </script>
 
