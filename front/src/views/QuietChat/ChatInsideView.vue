@@ -18,7 +18,7 @@
 
             <font-awesome-icon icon="fa-solid fa-play" class="my-message-balloon" />
             <div class="my-image-group">
-              <span class="my-write-time">{{ message.sendDate }}</span>
+              <span class="my-write-time w-20 text-right">{{ message.sendDate }}</span>
               <img class="my-image-box" :src="`${message.message}`" alt="" @click="GoToDetail(message.gifId)" />
             </div>
           </div>
@@ -61,7 +61,7 @@
             <div class="image-group">
               <img class="image-box" :src="`${message.message}`" alt="" @click="GoToDetail(message.gifId)" />
               <!-- 작성 시간  -->
-              <span class="write-time">{{ message.sendDate }}</span>
+              <span class="write-time text-left">{{ message.sendDate }}</span>
             </div>
           </div>
         </div>
@@ -343,12 +343,12 @@ export default {
   @apply flex items-end ml-14 flex-nowrap mb-4 z-20;
 }
 .image-box {
-  max-width: 75%;
+  max-width: 70%;
   min-width: 5%;
   @apply bg-zz-p bg-left bg-contain h-40 bg-no-repeat mr-3 border-2 border-zz-p rounded-2xl;
 }
 .write-time {
-  @apply dark:text-white text-xs text-right text-zz-dark-p;
+  @apply dark:text-white text-xs text-zz-dark-p;
 }
 
 /* 서치바 */
