@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="this.isDisplay" class="bg-zz-p rounded-xl m-2">
-      <div class="text-black font-spoq relative dark:text-white">
+      <div class="text-white font-spoq relative dark:text-white">
         <div class="pt-2 pl-2 mb-6"><strong>{{ this.writerUsername }}</strong> 님의 
           <span v-if="this.requestType=='CREATE'"><strong class="text-lg">업로드</strong> 요청 # {{ this.id }}</span>
           <span v-if="this.requestType=='UPDATE'"><strong class="text-lg">수정</strong> 요청 # {{ this.id }}</span>
