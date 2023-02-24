@@ -56,7 +56,7 @@
 
 > **메인 페이지**
 
-![메인](/uploads/f51a49f7d62a24ff13c82e2fdb35ebda/메인.png)
+<img src="/exec/pageImage/메인화면.gif" width="300" height="500"/>
 
 <aside>
 
