@@ -224,7 +224,7 @@
 
 >  **짤 검색👀**
 
-![짤검색](/uploads/48409044ba80079971d8d16496bce43d/짤검색.png)
+<img src="/exec/pageImage/짤검색.gif" width="300" height="500"/>
 
 <aside>
 
@@ -240,7 +240,7 @@
 
 ---
 
-![짤정보상세](/uploads/0efb8e8dd0ea72ab9f8efca2c0b153f2/짤정보상세.png)
+<img src="/exec/pageImage/짤상세.gif" width="300" height="500"/>
 <aside>
 
 ```
@@ -261,7 +261,7 @@
 
 ---
 
-![짤정보상세_스크랩](/uploads/c8b77477f902cf027a84badb24f78904/짤정보상세_스크랩.png)
+<img src="/exec/pageImage/짤스크랩.gif" width="300" height="500"/>
 
 <aside>
 
