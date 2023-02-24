@@ -191,7 +191,7 @@
 
 > **제목학원**
 
-![메인제목학원페이지](/uploads/8138eb11860676c7ab9b39785e3341b9/메인제목학원페이지.png)
+<img src="/exec/pageImage/제목학원목록.gif" width="300" height="500"/>
 
 <aside>
 
@@ -369,38 +369,25 @@
     - 관리자만 이 기능을 이용할 수 있습니다.
     
 - **다크 모드**
-
-![다크모드_내정보변경](/uploads/1b433bf271c34f50a9658ebb27b7ccd0/다크모드_내정보변경.png)
-
-            내 정보 수정
-
-![다크모드_비밀번호변경](/uploads/03d9e03bf7966a517bd0f9aa7c430e65/다크모드_비밀번호변경.png)
-
-            비밀번호변경
-
-![다크모드_관리자_짤승인페이지](/uploads/8c64536bc9860a4a157c8e2b72308b05/다크모드_관리자_짤승인페이지.png)
-
-        짤 승인하러 가기
+<img src="/exec/pageImage/다크모드.gif" width="300" height="500"/>
 
 ---
 
 > **회원 가입**
 
-![로그인페이지](/uploads/17ddb22a6ea55507dac885b8b1327b67/로그인페이지.png)
+<img src="/exec/pageImage/회원가입.gif" width="300" height="500"/>
 
-                로그인
+--- 
 
-![회원가입](/uploads/635e0818b1f7e6447ca6e8e983143d88/회원가입.png)
+> **로그인**
 
-              회원가입
+<img src="/exec/pageImage/로그인페이지.png" width="300" height="500"/>
 
-![이메일인증](/uploads/4377d8272330e58e3b485eb6dc021015/이메일인증.png)
-
-             이메일인증
+---
 
 > **에러 페이지**
 
-![에러페이지](/uploads/5921c7935722635cf6bec75aa401f753/에러페이지.png)
+<img src="/exec/pageImage/에러페이지.png" width="300" height="500"/>
 
 <aside>
 
@@ -417,5 +404,7 @@
 - **짤 등록**
 
 - **짤 정보 수정**
+
+- **고독방 입장**
 
 ---
