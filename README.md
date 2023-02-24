@@ -77,7 +77,7 @@
 
 ---
 
-![짤업로드](/uploads/dc8a0ae4a8c2aee82b1c093d15807cd3/짤업로드.png)
+<img src="/exec/pageImage/.gif" width="300" height="500"/>
 
 <aside>
 
@@ -140,7 +140,7 @@
 
 ---
 
-![고독방생성](/uploads/bf5da0e1650bcef51f87ecdec8408156/고독방생성.png)
+<img src="/exec/pageImage/고독방생성.gif" width="300" height="500"/>
 
 <aside>
 
@@ -161,7 +161,7 @@
 
 ---
 
-![고독방내부](/uploads/b8a6ae2bb98b25ee9fc5a485c9faea68/고독방내부.png)
+<img src="/exec/pageImage/제목학원목록.gif" width="300" height="500"/>
 
 <aside>
 
