@@ -320,7 +320,7 @@
 
 ---
 
-<img src="/exec/pageImage/설정화면.png" width="300" height="500"/>
+<img src="/exec/pageImage/설정화면.PNG" width="300" height="500"/>
 
 <aside>
 
