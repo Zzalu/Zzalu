@@ -295,7 +295,7 @@
 
 > **프로필**
 
-![프로필](/uploads/11c6db51aa1a661aca285034d242eaa6/프로필.png)
+<img src="/exec/pageImage/프로필.gif" width="300" height="500"/>
 
 <aside>
 
@@ -314,21 +314,9 @@
 - **짤 보드**
     - 스크랩한 짤을 확인 할 수 있습니다.
 
-![프로필_내보드](/uploads/aaa1847725a6bf82bfe6767fe7b43638/프로필_내보드.png)
-
-        보드 짤 조회
-
-![팔로우](/uploads/5812d15750cbace1572f62c855829176/팔로우.png)
-
-              팔로우
-
-![팔로잉](/uploads/58746a02de1e2a0490eed417f23d0a45/팔로잉.png)
-
-               팔로잉
-
 ---
 
-![설정화면](/uploads/6af840a9e57505a07fbb92f65ff7ba90/설정화면.png)
+<img src="/exec/pageImage/설정화면.png" width="300" height="500"/>
 
 <aside>
 
