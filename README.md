@@ -376,3 +376,15 @@
 - **고독방 입장**
 
 ---
+
+
+</br>
+</br>
+
+# 팀원
+
+|                        김지오(팀장)                        |                       김준영                       |                     이채은                       |                     강혜성                       |                  문여경                       |                  홍금비                      |
+| :----------------------------------------------------------: | :-------------------------------------------------------: | :-----------------------------------------------------: | :-----------------------------------------------------: | :-----------------------------------------------------: | :-----------------------------------------------------: |
+| <img src="https://github.com/giokim12.png" width="200"/> | <img src="https://github.com/ats166.png" width="200"/> | <img src="https://github.com/rachaen.png" width="200"/> | <img src="https://github.com/Fortuna3Co.png" width="200"/> |<img src="https://github.com/nana-moon.png" width="200"/> |<img src="https://github.com/GeumBi-Hong.png" width="200"/> |
+|       [giokim12](https://github.com/giokim12)        |         [ats166](https://github.com/ats166)         |          [rachaen](https://github.com/rachaen)          |          [Fortuna3Co](https://github.com/Fortuna3Co)          |     [nana-moon](https://github.com/nana-moon)          |     [GeumBi-Hong](https://github.com/GeumBi-Hong)          |
+|                         Web Frontend                          |                       Web Frontend                        |                       Web Frontend                        |                      Web BackEnd & DevOps                       |                 Web BackEnd                       |             Web BackEnd                       |
