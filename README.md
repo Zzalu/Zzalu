@@ -77,7 +77,7 @@
 
 ---
 
-<img src="/exec/pageImage/.gif" width="300" height="500"/>
+<img src="/exec/pageImage/짤등록.gif" width="300" height="500"/>
 
 <aside>
 
