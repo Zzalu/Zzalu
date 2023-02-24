@@ -187,7 +187,7 @@
 
 ---
 
-![진행중인제목학원](/uploads/1b2d8d69418943152f822959730debf7/진행중인제목학원.png)
+<img src="/exec/pageImage/제목학원정렬순조회.gif" width="300" height="500"/>
 
 <aside>
 
@@ -207,17 +207,19 @@
     
 - **지난 제목학원은 조회는 가능하시만 좋아요나 댓글은 작성하실 수 없습니다.**
 
-![댓글최신순](/uploads/340d359160a834be2da66ba7319c3091/댓글최신순.png)
+---
 
-             최신순 조회
+<aside>
+ 
+<img src="/exec/pageImage/제목학원실시간.gif" width="300" height="500"/>
+ 
+```
+📌 제목학원 게시판에서는 실시간으로 사용자들의 좋아요 반응과 댓글을 확인할 수 있습니다.
+```
 
-![댓글과거순](/uploads/7cdb81917e4ac135bad8fc452736ccfc/댓글과거순.png)
+</aside>
 
-             과거순 조회
-
-![지난_제목학원_조회](/uploads/ca5edd90ff7a15dadfa9dc2e173f844f/지난_제목학원_조회.png)
-
-          과거 제목학원 조회
+---
 
 </br>
 </br>
