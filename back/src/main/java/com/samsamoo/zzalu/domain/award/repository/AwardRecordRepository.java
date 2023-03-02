@@ -9,9 +9,9 @@ import java.util.List;
 
 public interface AwardRecordRepository  extends JpaRepository<AwardRecord , Long> {
 
-    @Query(value="SELECT count(CASE WHEN rank = 1 THEN 1 END) as 1st \r\n" +
-            "     , count(CASE WHEN rank = 2 THEN 1 END) as 2nd \r\n" +
-            "     , count(CASE WHEN rank = 3 THEN 1 END) as 3rd \r\n" +
+    @Query(value="SELECT count(CASE WHEN AWARD_RANK = 1 THEN 1 END) as 1st \r\n" +
+            "     , count(CASE WHEN AWARD_RANK = 2 THEN 1 END) as 2nd \r\n" +
+            "     , count(CASE WHEN AWARD_RANK = 3 THEN 1 END) as 3rd \r\n" +
             "  FROM award_record ar \r\n" +
             " WHERE ar.member_id = ?1", nativeQuery=true)
     RankDtoInterface getAwardRecordByMemberId(Long id);

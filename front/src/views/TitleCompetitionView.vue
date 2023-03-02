@@ -133,7 +133,7 @@ export default {
      //! 소켓 관련
     let options = { debug: false, protocols: Stomp.VERSIONS.supportedProtocols() };
     // let sock = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
-    let sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+    let sock = new SockJS('http://localhost:8080/ws-stomp');
     let ws = Stomp.over(sock, options);
 
 
@@ -145,7 +145,7 @@ export default {
     store
       .dispatch('titleCompetitionStore/init', { open_date: open_date, size: 10 }).then(() => {
         // console.log('ㄱㄱ');
-        sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+        sock = new SockJS('http://localhost:8080/ws-stomp');
         ws = Stomp.over(sock, options);
       })
       .then(() => {
@@ -269,7 +269,7 @@ export default {
         function (error) {
           console.log(error);
           setTimeout(function () {
-            sock = new SockJS('http://i8c109.p.ssafy.io:8080/ws-stomp');
+            sock = new SockJS('http://localhost:8080/ws-stomp');
             ws = Stomp.over(sock);
           }, 10 * 1000);
         },

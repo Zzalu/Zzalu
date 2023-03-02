@@ -160,11 +160,11 @@ public class MemberService {
     public AwardCountResponse getAwardCountRecord (String username){
 
         Member member = getMemberbyUsername(username);
-
+        System.out.println(1);
         RankDtoInterface rankDtoInterface = awardRecordRepository.getAwardRecordByMemberId(member.getId());
-
+        System.out.println(2);
         AwardCountResponse awardCount = new AwardCountResponse(rankDtoInterface.get1st(),rankDtoInterface.get2nd(),rankDtoInterface.get3rd());
-
+        System.out.println(3);
         return awardCount;
 
     }
@@ -195,6 +195,7 @@ public class MemberService {
         MembersBoardList membersBoardList = getMembersBoard(username);
         AwardCountResponse awardCount = getAwardCountRecord(username);
         ProfileDTO profile = new ProfileDTO(member, membersBoardList ,awardCount);
+//        ProfileDTO profile = new ProfileDTO(member, membersBoardList);
         return profile;
     }
 

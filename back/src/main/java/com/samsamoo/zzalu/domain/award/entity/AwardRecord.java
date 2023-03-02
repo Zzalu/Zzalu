@@ -38,6 +38,7 @@ public class AwardRecord {
     private TitleHakwon titleHakwon;
 
 
+    @Column(name = "AWARD_RANK")
     private int rank;
 
 }

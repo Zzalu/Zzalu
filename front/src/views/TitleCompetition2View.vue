@@ -131,7 +131,7 @@ export default {
   },
   created() {
     document.documentElement.scrollTop = 0; // 처음에 scroll을 올려준다
-    this.socket = new SockJS('http://i8c109.p.ssafy.io:8080' + '/ws-stomp');
+    this.socket = new SockJS('http://localhost:8080' + '/ws-stomp');
     let options = {
       debug: false,
       protocols: Stomp.VERSIONS.supportedProtocols(),

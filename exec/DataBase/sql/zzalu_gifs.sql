@@ -23,9 +23,9 @@ DROP TABLE IF EXISTS `gifs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `gifs` (
-  `gif_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `gif_id` bigint NOT NULL AUTO_INCREMENT,
   `description` varchar(255) DEFAULT NULL,
-  `gif_path` varchar(10000) NOT NULL,
+  `gif_path` varchar(700) NOT NULL,
   `import_datetime` varchar(255) DEFAULT NULL,
   `last_update_time` datetime DEFAULT NULL,
   `last_update_username` varchar(255) DEFAULT NULL,

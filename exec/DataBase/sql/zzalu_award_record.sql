@@ -24,7 +24,7 @@ DROP TABLE IF EXISTS `award_record`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `award_record` (
   `award_record_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `rank` int(11) NOT NULL,
+  `AWARD_RANK` int(11) NOT NULL,
   `member_id` bigint(20) DEFAULT NULL,
   `titlehakwon_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`award_record_id`),

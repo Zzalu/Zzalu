@@ -11,15 +11,15 @@ cloud:
     s3:
       bucket: zzalu-buket
     credentials:
-      access-key: 
-      secret-key: 
+      access-key: AKIAXEUXRPXD3GDITUSE
+      secret-key: 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
     stack:
       auto: false
 sp: ''
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         show_sql: true
@@ -29,8 +29,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: 
-    password: 
+    username: moona0222@hufs.ac.kr
+    password: zzalu_c109!
     properties:
       mail:
         smtp:
@@ -43,21 +43,11 @@ spring:
       max-request-size: 10MB
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    password: zzalu_c109!
+    password: ssafy
     url: jdbc:mysql://127.0.0.1:3306/ZZALU?useUnicode=true&serverTimezone=Asia/Seoul
-    username: zzalu
+    username: root
   kafka:
     bootstrap-servers: 127.0.0.1:9092
-  #    consumer:
-  #      auto-offset-reset: earliest
-  #      bootstrap-servers: localhost:9092
-  #      group-id: foo
-  #      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-  #      value-deserializer: org.apache.kafka.common.serialization.JsonDeserializer
-  #    producer:
-  #      bootstrap-servers: localhost:9092
-  #      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-  #      value-serializer: org.apache.kafka.common.serialization.JsonSerializer
   redis:
     lettuce:
       pool:
@@ -75,23 +65,3 @@ spring:
       enabled: false
   freemarker:
     cache: false
-
-
-
-## properties
-##h2 console ??? ? ?? ??
-#spring.h2.console.enabled=true
-#spring.h2.console.path=/h2-console
-#
-##h2 db ??
-#spring.datasource.url=jdbc:h2:~/test
-#spring.datasource.driverClassName=org.h2.Driver
-#spring.datasource.username=sa
-#spring.datasource.password=
-#spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-#spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.H2Dialect
-#
-##hibernate ??
-#spring.jpa.properties.hibernate.format_sql=true
-#spring.jpa.properties.hibernate.show_sql=true
-#spring.jpa.hibernate.ddl-auto=create
