@@ -11,8 +11,8 @@ cloud:
     s3:
       bucket: zzalu-buket
     credentials:
-      access-key: AKIAXEUXRPXD3GDITUSE
-      secret-key: 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
+      access-key: 
+      secret-key: 
     stack:
       auto: false
 sp: ''
@@ -29,8 +29,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: moona0222@hufs.ac.kr
-    password: zzalu_c109!
+    username: 
+    password: 
     properties:
       mail:
         smtp:
