@@ -30,7 +30,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: moona0222@hufs.ac.kr
-    password: 5525dnflwlq!
+    password: zzalu_c109!
     properties:
       mail:
         smtp:
