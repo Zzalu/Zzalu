@@ -18,7 +18,6 @@
         <div>
           <!-- 컨텐트 -->
           <div class="title-competition-content-profile">
-            <!-- <img class="title-competiton-content-img" src="../../QuietChat/QuietChatList/assets/Newjeans.jpg" /> -->
             <img
               v-if="best_comment_profile_image != null"
               class="profile-image"
@@ -52,7 +51,6 @@ export default {
     title_competition: Object,
   },
   setup(props) {
-    // console.log(props);
     const router = useRouter();
     const title_competition = reactive({
       title_competition_id: props.title_competition.titleHakwonId,
@@ -75,7 +73,6 @@ export default {
         sort: 'POPULAR',
       },
       (data) => {
-        // console.log(data);
         best_comment_nickname.value = data.data[0].nickname;
         best_comment_like.value = data.data[0].likeNumber;
         best_comment_content.value = data.data[0].content;
@@ -155,10 +152,6 @@ export default {
 
 .profile-image {
   background-size: cover;
-
-  /* max-width: 100px;
-    max-height: 100px; */
-  /* object-fit: cover; */
   @apply mr-2 rounded-full bg-center bg-no-repeat w-4 h-4;
 }
 
@@ -166,9 +159,6 @@ export default {
   width: 2.5rem;
   height: 2.5rem;
   background-size: cover;
-  /* max-width: 100px;
-    max-height: 100px; */
-  /* object-fit: cover; */
   @apply mr-3 rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
 }
 </style>

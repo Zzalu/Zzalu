@@ -3,7 +3,6 @@
     <li>
       <div class="flex items-center mb-2 mt-1">
         <div class="w-5 h-5 rounded-full mr-2" @click="goToProfile">
-          <!-- <img :src="require(`@/assets/${profile_image}`)" alt="프로필 이미지" class="rounded-full" /> -->
           <img
             v-if="profile_image != null"
             class="profile-image"
@@ -11,7 +10,7 @@
           />
           <img v-else class="profile-image" :style="{ backgroundImage: `url(${profile_image})` }" />
         </div>
-        <p class="text-xs mr-2 font-bold ">{{ nickname }}</p>
+        <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs mr-1">{{ new_time }}</p>
         <p v-if="canDelete" class="text-xs text-zz-negative" @click="clickDeleteBtn">· 삭제</p>
       </div>
@@ -36,14 +35,12 @@ export default {
   setup(props, ctx) {
     console.log(props);
     const nested_comment_data = reactive({
-      // profile_image: 'profile.jpg',
       profile_image: props.nested_comment.profileUrl,
       username: props.nested_comment.username,
       nested_comment_id: props.nested_comment.replyCommentId,
       nickname: props.nested_comment.nickname,
       time: props.nested_comment.createdTime,
       content: props.nested_comment.content,
-      // modified: false,
     });
 
     const current_userid = window.localStorage.getItem('current_userid');
@@ -87,11 +84,11 @@ export default {
       Swal.fire({
         icon: 'warning',
         text: '삭제하시겠습니까?',
-        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-        confirmButtonText: '승인', // confirm 버튼 텍스트 지정
-        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '승인',
+        cancelButtonText: '취소',
       }).then((result) => {
         if (result.isConfirmed) {
           ctx.emit('popNestedComment', props.index);
@@ -121,13 +118,7 @@ export default {
 
 <style scoped>
 .profile-image {
-  /* width: 2.5rem;
-  height: 2.5rem; */
   background-size: cover;
-
-  /* max-width: 100px;
-    max-height: 100px; */
-  /* object-fit: cover; */
   @apply mr-3 rounded-full bg-center bg-no-repeat w-full h-full;
 }
 
@@ -135,9 +126,6 @@ export default {
   width: 2.5rem;
   height: 2.5rem;
   background-size: cover;
-  /* max-width: 100px;
-    max-height: 100px; */
-  /* object-fit: cover; */
   @apply mr-3 rounded-full bg-center bg-no-repeat text-zz-light-p dark:text-zz-negative;
 }
 </style>

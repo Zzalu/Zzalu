@@ -2,11 +2,7 @@
   <div>
     <ol class="flex flex-wrap justify-center" v-if="title_competitions">
       <li v-for="title_competition in title_competitions.slice().reverse()" :key="title_competition.titleHakwonId">
-        <TitleCompetitionListItemsmall
-          class="academy-list"
-          :title_competition="title_competition"
-
-        />
+        <TitleCompetitionListItemsmall class="academy-list" :title_competition="title_competition" />
       </li>
     </ol>
     <div class="pb-10"></div>
@@ -17,7 +13,6 @@
 import TitleCompetitionListItemsmall from './item/TitleCompetitionListItemsmall.vue';
 import { getFinishTitleCompetition } from '@/api/titleCompetition';
 import { ref } from 'vue';
-// import { useStore } from 'vuex';
 export default {
   name: 'TitleCompetitionListsmall',
   components: {

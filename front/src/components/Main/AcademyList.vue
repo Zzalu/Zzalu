@@ -4,10 +4,7 @@
     <hr class="mb-3 border-0 h-1 bg-zz-light-input dark:bg-zz-dark-div" />
     <ol class="items" v-if="title_competitions">
       <li v-for="title_competition in title_competitions.slice().reverse()" :key="title_competition.titleHakwonId">
-        <title-competition-list-item
-          class="academy-list"
-          :title_competition="title_competition"
-        />
+        <title-competition-list-item class="academy-list" :title_competition="title_competition" />
       </li>
     </ol>
   </div>
@@ -29,9 +26,7 @@ export default {
     let title_competitions = ref();
     getFinishTitleCompetition(
       (data) => {
-        // console.log(data);
         title_competitions.value = data.data;
-        // console.log(title_competitions.value);
       },
       (error) => {
         console.log(error);

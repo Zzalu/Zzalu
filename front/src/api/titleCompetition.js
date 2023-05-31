@@ -11,7 +11,6 @@ const api = apiInstance();
 const authApi = authApiInstance();
 // 제목학원 가져오기
 async function getTitleCompetition(open_date, success, fail) {
-  // console.log(open_date);
   await api.get(`/title-hakwon/${open_date}`).then(success).catch(fail);
 }
 
@@ -22,16 +21,9 @@ async function getFinishTitleCompetition(success, fail) {
 
 // 상위 50개 좋아요 순 댓글
 async function getBestComments(title_competition_id, params, success, fail) {
-  // console.log(title_competition_id);
-  // console.log(params);
-  // console.log(`/title-hakwon/${title_competition_id}/comments/best`);
   const url = `/title-hakwon/${title_competition_id}/comments/best`;
-  // console.log(url);
 
-  await isLogined()
-    .get(url, { params: params })
-    .then(success)
-    .catch(fail);
+  await isLogined().get(url, { params: params }).then(success).catch(fail);
 }
 
 // 댓글 최신순 조회하기
@@ -81,7 +73,6 @@ async function getAwardRecord(member_id, params, success, fail) {
 }
 
 export {
-  // getNewestComments,
   getBestComments,
   getComments,
   getNestedComments,

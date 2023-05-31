@@ -17,7 +17,6 @@ import TitleCompetitionListItem from './item/TitleCompetitionListItem.vue';
 import { getFinishTitleCompetition } from '@/api/titleCompetition';
 import { useRouter } from 'vue-router';
 import { ref } from 'vue';
-// import { useStore } from 'vuex';
 export default {
   name: 'TitleCompetitionList',
   components: {

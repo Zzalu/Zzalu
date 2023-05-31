@@ -18,7 +18,6 @@
       @change="changeInput"
       placeholder="글 남기기..."
     />
-    <!-- <input v-if="isLogined" type="text" class="comment_input" @change="changeInput" placeholder="글 남기기..." /> -->
     <input
       v-else
       type="text"
@@ -78,13 +77,9 @@ export default {
         addComment(
           comment_data,
           () => {
-            // console.log(data);
             if (store.state.state != 'LATEST') {
               store.dispatch('titleCompetitionStore/modifySortType', 'LATEST');
             }
-            /*             else {
-              store.dispatch('titleCompetitionStore/pushComment', data);
-            } */
           },
           (error) => {
             console.log(error);
@@ -98,7 +93,6 @@ export default {
         addNestedComment(
           nested_comment_data,
           () => {
-            // console.log(data);
             store.dispatch('titleCompetitionStore/modifySortType', store.state.titleCompetitionStore.sort_type);
             store.dispatch('titleCompetitionStore/initNestedData');
           },

@@ -21,21 +21,6 @@ export default {
     let member_id = ref(props.member_id);
     const sort = ref(props.sort);
     let awards = ref(null);
-    /*     const setAwardRecord = () => {
-      console.log('dd');
-      const params = {
-        sort: sort.value,
-      };
-      getAwardRecord(
-        member_id.value,
-        params,
-        ({ data }) => {
-          awards.value = data;
-        },
-        (error) => console.log(error),
-      );
-    };
- */
     watchEffect(async () => {
       await getAwardRecord(
         member_id.value,
@@ -47,9 +32,7 @@ export default {
       );
     });
 
-    // setAwardRecord();
     return {
-      // setAwardRecord,
       awards,
     };
   },

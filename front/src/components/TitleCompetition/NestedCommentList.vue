@@ -45,7 +45,6 @@ export default {
     };
 
     // 답글 읽기
-    // TODO: 과거순 정렬이면 답글도 과거순으로
     const loadMoreNestedComments = async () => {
       await store.dispatch('titleCompetitionStore/getNestedCommentList', {
         comment_id: props.comment_id,

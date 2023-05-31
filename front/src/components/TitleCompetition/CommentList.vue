@@ -30,9 +30,7 @@
 <script>
 import CommentListItem from './item/CommentListItem.vue';
 import { useStore } from 'vuex';
-// import { ref } from 'vue';
 import { ref, computed } from 'vue';
-// import { onMounted, ref } from 'vue';
 
 export default {
   components: { CommentListItem },
@@ -42,23 +40,9 @@ export default {
     const commentListComponent = ref(null);
     let sort_type = computed(() => store.state.titleCompetitionStore.sort_type);
     let comments = computed(() => store.state.titleCompetitionStore.comments);
-    // let comments = store.state.titleCompetitionStore.comments;
     const clickLatest = (sort_type) => {
       store.dispatch('titleCompetitionStore/modifySortType', sort_type);
     };
-    /*  onMounted(() => {
-      window.addEventListener('scroll', handleScroll);
-    });
- */
-
-    /* const handleScroll = () => {
-      let element = commentListComponent.value;
-
-      // TODO: 댓글 스크롤 내리면 마지막이 계속 불러와지는 오류 고치기
-      if (element.getBoundingClientRect().bottom < window.innerHeight) {
-        loadMoreComments();
-      }
-    }; */
 
     return {
       comments,

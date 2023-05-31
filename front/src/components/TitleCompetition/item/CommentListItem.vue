@@ -1,20 +1,6 @@
 <template>
   <li>
     <div class="dark:text-white w-11/12 border-b-2 p-1 border-zz-light-input">
-      <!-- best -->
-      <!-- <div
-        v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
-        class="bg-zz-light-p rounded flex flex-row justify-center items-center w-14 my-2 text-white"
-
-        >
-        <p>BEST {{ index + 1 }}</p>
-      </div>
-      <div
-        v-if="sort_type == 'POPULAR' && (index == 3 || index == 4)"
-        class="bg-zz-negative rounded flex flex-row justify-center items-center w-14 my-2 text-white"
-      >
-        <p>BEST {{ index + 1 }}</p>
-      </div> -->
       <div
         v-if="sort_type == 'POPULAR' && (index == 0 || index == 1 || index == 2)"
         class="rounded flex absolute flex-row justify-center items-center w-12 text-white right-12"
@@ -37,12 +23,6 @@
             :style="{ backgroundImage: `url(${profile_image})` }"
           />
           <img v-else class="profile-image" :style="{ backgroundImage: `url(${profile_image})` }" />
-          <!-- <img
-            :src="require(`@/assets/${profile_image}`)"
-            alt="프로필 이미지"
-            class="rounded-full"
-            style="transform: translateY(0.3rem)"
-          /> -->
         </div>
         <p class="text-xs mr-2 font-bold">{{ nickname }}</p>
         <p class="text-xs text-zz-darkgray mr-1">{{ new_time }}</p>
@@ -108,7 +88,6 @@ export default {
   setup(props) {
     const store = useStore();
     const comment_data = reactive({
-      // profile_image: 'profile.jpg',
       profile_image: props.comment.profilePath,
       username: props.comment.username,
       comment_id: props.comment.commentId,
@@ -116,7 +95,6 @@ export default {
       time: props.comment.createdTime,
       content: props.comment.content,
       nested_comment_cnt: props.comment.replyCommentsSize,
-      // modified: false,
       nested_active: false,
       like_cnt: props.comment.likeNumber,
       is_liked: props.comment.pressed,
@@ -208,11 +186,11 @@ export default {
       Swal.fire({
         icon: 'warning',
         text: '삭제하시겠습니까?',
-        showCancelButton: true, // cancel버튼 보이기. 기본은 원래 없음
-        confirmButtonColor: '#3085d6', // confrim 버튼 색깔 지정
-        cancelButtonColor: '#d33', // cancel 버튼 색깔 지정
-        confirmButtonText: '승인', // confirm 버튼 텍스트 지정
-        cancelButtonText: '취소', // cancel 버튼 텍스트 지정
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: '승인',
+        cancelButtonText: '취소',
       }).then((result) => {
         if (result.isConfirmed) {
           store.dispatch('titleCompetitionStore/deleteComment', props.index);
@@ -227,16 +205,6 @@ export default {
           );
         }
       });
-      /*       store.dispatch('titleCompetitionStore/deleteComment', props.index);
-      deleteComment(
-        comment_data.comment_id,
-        ((data) => {
-          console.log(data);
-        },
-        (error) => {
-          console.log(error);
-        }),
-      ); */
     };
 
     return {
